@@ -1,7 +1,0 @@
-INDEX VERSION 1.4+C:\Users\1027\Documents\GitHub\run-bike-project\.metadata\.plugins\org.eclipse.wst.jsdt.core\indexes
-3177955576.index
-176709267.index
-476361404.index
-3992892329.index
-2797738556.index
-2158604351.index

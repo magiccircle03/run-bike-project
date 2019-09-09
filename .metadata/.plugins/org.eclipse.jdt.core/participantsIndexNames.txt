@@ -1,3 +1,0 @@
-INDEX VERSION 1.131
-C:\Users\1027\Documents\GitHub\run-bike-project\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\176709267.index
-\Run-bike\src\main\java
