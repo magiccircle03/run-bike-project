@@ -17,6 +17,7 @@
 	<resources mapping="/resources/**" location="/resources/" />
 	<resources mapping="/css/**" location="/css/" />
 	<resources mapping="/images/**" location="/images/" />
+	<resources mapping="/assets/**" location="/assets/" />
 	<resources mapping="/uploadfile/**" location="/uploadfile/" />
 
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
@@ -37,7 +38,7 @@
 	<beans:bean id="dataSource"
 		class="org.apache.commons.dbcp2.BasicDataSource"
 		p:driverClassName="com.mysql.jdbc.Driver"
-		p:url="jdbc:mysql://localhost:3306/project?characterEncoding=utf8"
+		p:url="jdbc:mysql://mysql-manager.c964x8p7xsuk.ap-northeast-2.rds.amazonaws.com:3306/run_bike?characterEncoding=utf8"
 		p:username="bit" p:password="bit" />
 
 	<beans:bean id="jdbcTemplate"
