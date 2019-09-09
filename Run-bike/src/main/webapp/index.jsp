@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE HTML>
 <!--
 	Spectral by HTML5 UP
@@ -30,7 +31,7 @@
 									<div id="menu">
 										<ul>
 											<li><a href="#"><i class="fas fa-biking"></i> 혼자 라이딩 </a></li>
-											<li><a href="#"><i class="fas fa-users"></i> 같이 달리기 </a></li>
+											<li><a href="<c:url value='party' />"><i class="fas fa-users"></i> 같이 달리기 </a></li>
 											<li><a href="#"><i class="far fa-laugh"></i> 스탬프투어 </a></li>
 											<li><a href="#"><i class="fas fa-crown"></i> 나의 리워드 </a></li>
 											<li><a href="#"><i class="fas fa-headset"></i> 문의하기 </a></li>
