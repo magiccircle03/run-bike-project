@@ -9,7 +9,7 @@ import com.teamrun.runbike.party.dao.PartyDaoInterface;
 import com.teamrun.runbike.party.domain.RequestPartyCreate;
 
 @Service
-public class CreatePartyService {
+public class PartyCreateService {
 	
 	private PartyDaoInterface dao;
 	

@@ -8,12 +8,32 @@
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+<script src="https://kit.fontawesome.com/8653072c68.js"></script>
 <style type="text/css">
+
 .right{
 	text-align: right;
 }
 .width90{
 	width:90%;
+}
+.card-title{
+	font-weight: bold;
+	font-size: 22px;
+}
+
+.mint{
+	background-color: #21B2A6;
+	color: #fefefe;
+	width: 49%;
+}
+
+.card-style{
+	box-shadow: 5px 5px 5px #dedede;
+	padding: 20px;
+	font-size: 16px;
+	background-color: #efefef;
+	color : #555555;
 }
 </style>
 </head>
@@ -22,10 +42,30 @@
 	<div class="right"><a class="btn" data-toggle="modal" data-target="#createPartyModal">방 만들기</a></div>
 	<div id="partyListContainer">
 		<div id="partyList">
-			* 만들어진 방의 리스트 * 일단 단순출력 해보자
+		
+			<div class="row">
 			
-		</div>
+				<div class="col-sm-6">
+				<div class="card card-style">
+					<div class="card-body">
+		              <h5 class="card-title">제목제목 ( 현재 인원 수 / 수용 인원수 )</h5>
+		              <p class="card-text">
+		              	<i class="fas fa-map-marked-alt"></i> 출발지 : 출발지 <br>
+						<i class="fas fa-flag-checkered"></i> 목적지 : 목적지 <br>
+						<i class="far fa-clock"></i> 출발 예정 시간 : 시간시간 <br>
+		              </p>
+		              <p class="card-text">소개글소개글 소개글소개글</p>
+		              <a href="#" class="btn mint"><i class="fas fa-info-circle"></i> 방 정보 보기</a>
+		              <a href="#" class="btn mint"><i class="fas fa-child"></i> 참여하기!!</a>
+		            </div>
+				</div>
+				</div>
+				
+			</div><!-- row 끝 -->
+		</div><!-- partyList 끝 -->
+		
 		<p id="pageArea"></p>
+		
 	</div>
 
 	<!-- 모달시작 -->
@@ -135,7 +175,7 @@ function list() {
 			var html = '';
 
 			for (var i = 0; i < data.length; i++) {
-				
+				alert(data[i].p_num);
 			}
 
 			$('#partyList').html(html);
