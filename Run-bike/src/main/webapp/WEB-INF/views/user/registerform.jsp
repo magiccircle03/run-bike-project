@@ -38,7 +38,7 @@
 					<section id="modal-register">
 					    <div class="inner">
 					        <h3>회원가입</h3>
-					        <form id="regform" method="post" action="#" enctype="multipart/form-data">
+					        <form id="regform" method="post" enctype="multipart/form-data">
 					            <div class="row gtr-uniform">
 					                <div class="col-12 col-12-xsmall">
                                         <label for="u_id">아이디(이메일)</label><input type="email" name="u_id" id="u_id" value="" placeholder="example@email.com" />
@@ -49,7 +49,7 @@
 					                </div>
 					                <div class="col-12 col-11-xsmall">
                                         <label for="u_repw">비밀번호 확인</label>
-					                    <input type="password" name="u_repw" id="u_repw" value="" placeholder="confirm password" />
+					                    <input type="password" id="u_repw" value="" placeholder="confirm password" />
 					                </div>
 					                <div class="col-12 col-11-xsmall">
                                         <label for="u_name">이름</label>
@@ -59,18 +59,6 @@
                                         <label for="u_photo">사진</label>
 					                    <input type="file" name="u_photo" id="u_photo" value="" placeholder="confirm password" />
 					                </div>
-					                <div class="col-4 col-12-small">
-					                    <label for="chkid">아이디 저장</label>
-					                    <input type="checkbox" name="chkid" id="chkid" />
-					                    
-					                </div>
-					                <div class="col-4 col-12-small">
-					                    <input type="checkbox" name="rememberid" id="rememberid" />
-					                    <label for="rememberid">아이디 기억하기</label>
-					                    
-					                </div>
-					                
-					                
 					            </div>
 					            <button type="submit" class="col-4">회원가입</button>
 					            <button type="reset" class="col-4">취소</button>
@@ -78,9 +66,48 @@
 					    </div>
                 </section>
 			</div>
-
-			<script src="<c:url value='/assets/js/jquery.min.js'/>"></script>
 			
+			<script src="<c:url value='/assets/js/jquery.min.js'/>"></script>
+			<script>
+				$(document).ready(function(){
+					alert("gkdl");
+					
+					$('#regform').submit(function(){
+						alert("보냇습당");
+						var formData = new FormData();
+						var file = $('#u_photo')[0].files[0];
+						
+						formData.append('u_id',$('#u_id').val());
+						formData.append('u_pw',$('#u_pw').val());
+						formData.append('u_name',$('#u_name').val());
+						if(file != undefined){
+							formData.append('u_photo',file);
+						}
+						
+						$.ajax({			
+							type: 'POST',
+							enctype: 'multipart/form-data',
+							url: 'http://localhost:8080/runbike/user/register#',
+							contentType: false,
+							processData: false,
+							data : formData,
+							success : function(data){
+								console.log(data);
+								if(data=='ok'){
+									alert("회원가입이 완료되었습니다. 이메일 인증 후 이용하시기 바랍니다.");
+									location.href = 'http://localhost:8080/runbike/';
+									
+								} else {
+									alert("회원가입에 실패했습니다. 관리자에게 문의하세요.");
+									history.go(-1);
+								}
+							}
+						});
+						return false;
+					});
+						
+				});
+			</script>
 			<script src="assets/js/jquery.scrollex.min.js"></script>
 			<script src="assets/js/jquery.scrolly.min.js"></script>
 			<script src="assets/js/browser.min.js"></script>

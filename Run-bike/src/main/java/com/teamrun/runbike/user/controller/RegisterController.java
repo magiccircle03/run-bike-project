@@ -1,15 +1,19 @@
 package com.teamrun.runbike.user.controller;
 
-import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+
+import com.teamrun.runbike.user.domain.RegisterInfo;
+import com.teamrun.runbike.user.service.RegisterService;
 
 @Controller
-@RequestMapping("/member/register")
+@RequestMapping("/user/register")
 public class RegisterController {
 	
 	@Autowired
@@ -21,9 +25,11 @@ public class RegisterController {
 	}
 	
 	@RequestMapping(method=RequestMethod.POST)
-	public String regist(HttpServletRequest request, @RequestBody RequestRegisterInfo regInfo) {
-		int result = regService.register(request, regInfo);
+	@ResponseBody
+	public String regist(MultipartHttpServletRequest request, RegisterInfo regInfo) {
+		int result = regService.regService(request, regInfo);
 		
-		return "user/regist";
+		
+		return result > 0 ? "ok" : "no";
 	}
 }

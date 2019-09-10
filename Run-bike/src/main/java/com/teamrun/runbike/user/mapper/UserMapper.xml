@@ -2,7 +2,26 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.teamrun.runbike.user.dao.UserDao">
 
-<insert id="insertMember">
-	insert into run_bike
+<resultMap id="userInfoMap" type="com.teamrun.runbike.user.domain.UserInfo">
+	<id property="u_idx" column="u_idx" />
+	<result property="u_id" column="u_id" />
+	<result property="u_pw" column="u_pw" />
+	<result property="u_name" column="u_name" />
+	<result property="u_photo" column="u_photo" />
+	<result property="regdate" column="regdate" />
+	<result property="u_code" column="u_code" />
+	<result property="u_sns" column="u_sns" />
+</resultMap>
+
+<insert id="insertUser">
+	insert into user (u_id, u_pw, u_name, u_photo, regdate, u_code) values(#{u_id},#{u_pw},#{u_name},#{u_photo}, #{regdate},#{u_code}) 
 </insert>
+
+<update id="chkVerify">
+	update user set u_verify=true where u_id=#{param1} and u_code = #{param2}
+</update>
+
+<select id="selectUserById" resultMap="userInfoMap">
+	select * from user where u_id=#{u_id}
+</select>
 </mapper>
