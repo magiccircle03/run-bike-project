@@ -143,6 +143,8 @@ Run-bike/.settings/
 # Directories #
 /build/
 /bin/
-target/
 .idea
 classes/
+*/target
+*/target/
+target/
