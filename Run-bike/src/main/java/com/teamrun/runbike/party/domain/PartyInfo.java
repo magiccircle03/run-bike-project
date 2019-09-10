@@ -1,5 +1,6 @@
 package com.teamrun.runbike.party.domain;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class PartyInfo {
@@ -7,12 +8,9 @@ public class PartyInfo {
 	private String p_name;
 	private String p_start_info;
 	private String p_end_info;
-	//private String p_XY;//원본 json 데이터. 제이슨 오브젝트 타입? 스트링타입? 아니면 내가 만든 클래스 타입?
-	//출발지 x좌표
-	//출발지 x좌표
-	//도착지 y좌표
-	//도착지 y좌표
+	private String p_XY; //출발지,도착지 x,y좌표
 	private Date p_time;
+	private String p_time_f; //포매팅된 날짜
 	private int p_capacity;
 	private String p_content;
 	private Date p_generate_date;
@@ -28,13 +26,16 @@ public class PartyInfo {
 		super();
 	}
 	
+	
+	
 	// 사용자가 입력한 정보로 방을 만들 때 사용하는 생성자
-	public PartyInfo(String p_name, String p_start_info, String p_end_info, Date p_time, int p_capacity,
+	public PartyInfo(String p_name, String p_start_info, String p_end_info, String p_XY, Date p_time, int p_capacity,
 			String p_content, String p_password) {
 		super();
 		this.p_name = p_name;
 		this.p_start_info = p_start_info;
 		this.p_end_info = p_end_info;
+		this.p_XY = p_XY;
 		this.p_time = p_time;
 		this.p_capacity = p_capacity;
 		this.p_content = p_content;
@@ -56,7 +57,6 @@ public class PartyInfo {
 	public String getP_name() {
 		return p_name;
 	}
-
 
 
 	public void setP_name(String p_name) {
@@ -88,6 +88,16 @@ public class PartyInfo {
 	}
 
 
+	public String getP_XY() {
+		return p_XY;
+	}
+
+
+
+	public void setP_XY(String p_XY) {
+		this.p_XY = p_XY;
+	}
+
 
 	public Date getP_time() {
 		return p_time;
@@ -100,6 +110,16 @@ public class PartyInfo {
 	}
 
 
+	public String getP_time_f() {
+		return p_time_f;
+	}
+
+
+	public void setP_time_f(Date p_time) {
+		SimpleDateFormat f = new SimpleDateFormat("yyyy.MM.dd aaa hh:mm");
+		String p_time_f = f.format(p_time);
+		this.p_time_f = p_time_f;
+	}
 
 	public int getP_capacity() {
 		return p_capacity;
@@ -209,16 +229,14 @@ public class PartyInfo {
 
 
 
-	// 좌표 없는 투스트링
 	@Override
 	public String toString() {
 		return "PartyInfo [p_num=" + p_num + ", p_name=" + p_name + ", p_start_info=" + p_start_info + ", p_end_info="
-				+ p_end_info + ", p_time=" + p_time + ", p_capacity=" + p_capacity + ", p_content=" + p_content
-				+ ", p_generate_date=" + p_generate_date + ", p_riding_km=" + p_riding_km + ", p_riding_time="
-				+ p_riding_time + ", p_start_time=" + p_start_time + ", p_end_time=" + p_end_time + ", p_password="
-				+ p_password + ", p_closedYN=" + p_closedYN + "]";
+				+ p_end_info + ", p_XY=" + p_XY + ", p_time=" + p_time + ", p_time_f=" + p_time_f + ", p_capacity="
+				+ p_capacity + ", p_content=" + p_content + ", p_generate_date=" + p_generate_date + ", p_riding_km="
+				+ p_riding_km + ", p_riding_time=" + p_riding_time + ", p_start_time=" + p_start_time + ", p_end_time="
+				+ p_end_time + ", p_password=" + p_password + ", p_closedYN=" + p_closedYN + "]";
 	}
 
 
-	
 }

@@ -1,5 +1,6 @@
 package com.teamrun.runbike.party.domain;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class RequestPartyCreate {
@@ -7,12 +8,9 @@ public class RequestPartyCreate {
 	private String p_name;
 	private String p_start_info;
 	private String p_end_info;
-	//private String p_XY;//원본 json 데이터(스트링으로 받나..?)
-	//출발지 x좌표
-	//출발지 x좌표
-	//도착지 y좌표
-	//도착지 y좌표
+	private String p_XY;
 	private Date p_time;
+	private String p_time_f;
 	private int p_capacity;
 	private String p_content;
 	private String p_password;
@@ -20,8 +18,7 @@ public class RequestPartyCreate {
 	public RequestPartyCreate() {
 		super();
 	}
-
-
+	
 	public String getP_name() {
 		return p_name;
 	}
@@ -46,13 +43,39 @@ public class RequestPartyCreate {
 		this.p_end_info = p_end_info;
 	}
 
+	
+	public String getP_XY() {
+		return p_XY;
+	}
+
+
+	public void setP_XY(String p_XY) {
+		this.p_XY = p_XY;
+	}
+
+
 	public Date getP_time() {
 		return p_time;
 	}
 
 	public void setP_time(Date p_time) {
+		setP_time_f(p_time);
 		this.p_time = p_time;
 	}
+
+	
+	public String getP_time_f() {
+		return p_time_f;
+	}
+
+
+
+	public void setP_time_f(Date p_time) {
+		SimpleDateFormat f = new SimpleDateFormat("yyyy.MM.dd aaa hh:mm");
+		String p_time_f = f.format(p_time);
+		this.p_time_f = p_time_f;
+	}
+
 
 	public int getP_capacity() {
 		return p_capacity;
@@ -78,14 +101,15 @@ public class RequestPartyCreate {
 	public void setP_password(String p_password) {
 		this.p_password = p_password;
 	}
-	
 
-	//좌표 없는 상태의 to스트링
+
+
 	@Override
 	public String toString() {
-		return "RequestCreateParty [p_name=" + p_name + ", p_start_info=" + p_start_info + ", p_end_info=" + p_end_info
-				+ ", p_time=" + p_time + ", p_capacity=" + p_capacity + ", p_content=" + p_content
-				+ ", p_password=" + p_password + "]";
+		return "RequestPartyCreate [p_name=" + p_name + ", p_start_info=" + p_start_info + ", p_end_info=" + p_end_info
+				+ ", p_XY=" + p_XY + ", p_time=" + p_time + ", p_time_f=" + p_time_f + ", p_capacity=" + p_capacity
+				+ ", p_content=" + p_content + ", p_password=" + p_password + "]";
 	}
-	
+
+
 }
