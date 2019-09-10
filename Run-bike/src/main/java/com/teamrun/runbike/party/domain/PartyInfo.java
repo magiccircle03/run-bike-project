@@ -42,8 +42,10 @@ public class PartyInfo {
 		this.p_generate_date = new Date();
 		this.p_password = p_password;
 	}
+	
+	// 제이슨 형식으로 바꿔 반환하는 메서드
 
-
+	/* 게터와 세터 */
 	public int getP_num() {
 		return p_num;
 	}
