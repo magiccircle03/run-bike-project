@@ -3,4 +3,12 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.teamrun.runbike.party.dao.PartyDaoInterface">
+
+	<!-- 방 만들기. 좌표는 일단 더미 -->
+	<insert id="insertParty" parameterType="com.teamrun.runbike.party.domain.RequestPartyCreate">
+		insert into party (p_name, p_start_info, p_end_info, p_XY, p_time, p_capacity, p_content, p_generate_date, p_password) 
+		  values
+		(#{p_name},#{p_start_info},#{p_end_info},'{"x":"123.4", "y":"123.4"}',#{p_time},#{p_capacity},#{p_content},default,#{p_password})
+	</insert>
+	
 </mapper>
