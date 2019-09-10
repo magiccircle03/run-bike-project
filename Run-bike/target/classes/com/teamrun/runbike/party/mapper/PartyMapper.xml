@@ -4,11 +4,34 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.teamrun.runbike.party.dao.PartyDaoInterface">
 
+	<resultMap id="resultPartyInfo" type="com.teamrun.runbike.party.domain.PartyInfo">
+		<id property="p_num" column="p_num" />
+		<result property="p_name" column="p_name" />
+		<result property="p_start_info" column="p_start_info" />
+		<result property="p_end_info" column="p_end_info" />
+		<result property="p_XY" column="p_XY" />
+		<result property="p_time" column="p_time" />
+		<result property="p_capacity" column="p_capacity" />
+		<result property="p_content" column="p_content" />
+		<result property="p_generate_date" column="p_generate_date" />
+		<result property="p_riding_km" column="p_riding_km" />
+		<result property="p_riding_time" column="p_riding_time" />
+		<result property="p_start_time" column="p_start_time" />
+		<result property="p_end_time" column="p_end_time" />
+		<result property="p_password" column="p_password" />
+		<result property="p_closedYN" column="p_closedYN" />
+	</resultMap>
+
 	<!-- 방 만들기. 좌표는 일단 더미 -->
 	<insert id="insertParty" parameterType="com.teamrun.runbike.party.domain.RequestPartyCreate">
 		insert into party (p_name, p_start_info, p_end_info, p_XY, p_time, p_capacity, p_content, p_generate_date, p_password) 
 		  values
 		(#{p_name},#{p_start_info},#{p_end_info},#{p_XY},#{p_time},#{p_capacity},#{p_content},default,#{p_password})
 	</insert>
+	
+	<!-- 전체 방의 리스트 구하기 -->
+	<select id="selectAllPartyList" resultMap="resultPartyInfo">
+		select * from party order by p_num desc
+	</select>
 	
 </mapper>

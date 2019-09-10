@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.teamrun.runbike.party.domain.PartyInfo;
 import com.teamrun.runbike.party.domain.RequestPartyCreate;
 import com.teamrun.runbike.party.service.PartyCreateService;
+import com.teamrun.runbike.party.service.PartyListService;
 
 @Controller
 @RequestMapping("/party")
@@ -21,8 +22,8 @@ public class PartyMainContoller {
 	@Autowired
 	private PartyCreateService createService;
 	
-	//@Autowired
-	//private PartyListService listService;
+	@Autowired
+	private PartyListService listService;
 	
 	@RequestMapping(method = RequestMethod.GET)
 	public String getMain() {
@@ -38,12 +39,12 @@ public class PartyMainContoller {
 		return result>0?"success":"fail";
 	}
 
-//	@CrossOrigin
-//	@ResponseBody
-//	@RequestMapping(value = "/list", method = RequestMethod.GET)
-//	public List<PartyInfo> getAllList(){ 
-//		return listService.getAllList();
-//	} 
+	@CrossOrigin
+	@ResponseBody
+	@RequestMapping(value = "/list", method = RequestMethod.GET)
+	public List<PartyInfo> getAllList(){ 
+		return listService.getAllList();
+	} 
 	
 	
 }

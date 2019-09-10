@@ -14,15 +14,15 @@
 .right{
 	text-align: right;
 }
-.width90{
-	width:90%;
-}
+.width{
+	width:60%;
+} 
 .card-title{
 	font-weight: bold;
 	font-size: 22px;
 }
 
-.mint{
+.mintbtn{
 	background-color: #21B2A6;
 	color: #fefefe;
 	width: 49%;
@@ -34,6 +34,8 @@
 	font-size: 16px;
 	background-color: #efefef;
 	color : #555555;
+	margin: 15px 0;
+	line-height: 35px;
 }
 </style>
 </head>
@@ -41,27 +43,8 @@
 <div class="container">
 	<div class="right"><a class="btn" data-toggle="modal" data-target="#createPartyModal">방 만들기</a></div>
 	<div id="partyListContainer">
-		<div id="partyList">
-		
-			<div class="row">
-			
-				<div class="col-sm-6">
-				<div class="card card-style">
-					<div class="card-body">
-		              <h5 class="card-title">제목제목 ( 현재 인원 수 / 수용 인원수 )</h5>
-		              <p class="card-text">
-		              	<i class="fas fa-map-marked-alt"></i> 출발지 : 출발지 <br>
-						<i class="fas fa-flag-checkered"></i> 목적지 : 목적지 <br>
-						<i class="far fa-clock"></i> 출발 예정 시간 : 시간시간 <br>
-		              </p>
-		              <p class="card-text">소개글소개글 소개글소개글</p>
-		              <a href="#" class="btn mint"><i class="fas fa-info-circle"></i> 방 정보 보기</a>
-		              <a href="#" class="btn mint"><i class="fas fa-child"></i> 참여하기!!</a>
-		            </div>
-				</div>
-				</div>
-				
-			</div><!-- row 끝 -->
+		<div id="partyList" class="row">
+
 		</div><!-- partyList 끝 -->
 		
 		<p id="pageArea"></p>
@@ -70,7 +53,7 @@
 
 	<!-- 모달시작 -->
 	<div class="modal fade" id="createPartyModal" tabindex="-1" role="dialog" aria-labelledby="createPartyTitle" aria-hidden="true">
-	  <div class="modal-dialog width90">
+	  <div class="modal-dialog width">
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -175,7 +158,24 @@ function list() {
 			var html = '';
 
 			for (var i = 0; i < data.length; i++) {
-				alert(data[i].p_num);
+				//alert(data[i].p_name);
+				html += '<div class="col-sm-6">\n';
+				html += '<div class="card card-style">\n';
+				html += '<div class="card-body">\n';
+				html += '<h5 class="card-title">\n';
+				html += data[i].p_name + '('+'현재인원'+'/'+data[i].p_capacity+')\n'
+				html += '</h5>\n';
+				html += '<p class="card-text">\n';
+				html += '<i class="fas fa-map-marked-alt"></i> 출발지 : '+data[i].p_start_info+'<br>\n';
+				html += '<i class="fas fa-flag-checkered"></i> 목적지 : '+data[i].p_end_info+' <br>\n';
+				html += '<i class="far fa-clock"></i> 출발 예정 시간 : '+data[i].p_time_f+'<br>\n';
+				html += '</p>\n';
+				html += '<p class="card-text">'+data[i].p_content+'</p>\n';
+				html += '<a href="#" class="btn mintbtn"><i class="fas fa-info-circle"></i>방 정보 보기</a>\n';
+				html += '<a href="#" class="btn mintbtn"><i class="fas fa-child"></i> 참여하기!!</a>\n';
+				html += '</div>\n';
+				html += '</div>\n';
+				html += '</div>';
 			}
 
 			$('#partyList').html(html);
