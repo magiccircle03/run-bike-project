@@ -10,7 +10,6 @@ public class PartyInfo {
 	private String p_end_info;
 	private String p_XY; //출발지,도착지 x,y좌표
 	private Date p_time;
-	private String p_time_f; //포매팅된 날짜
 	private int p_capacity;
 	private String p_content;
 	private Date p_generate_date;
@@ -21,12 +20,17 @@ public class PartyInfo {
 	private String p_password;
 	private char p_closedYN;
 	
+	// 날짜타입 출력 쉽게 포맷팅한 변수들
+	private String p_time_f;
+	private String p_generate_date_f;
+//	private String p_start_time_f;
+//	private String p_end_time_f;
+	
+	SimpleDateFormat f = new SimpleDateFormat("yyyy.MM.dd aaa hh:mm");
 	
 	public PartyInfo() {
 		super();
 	}
-	
-	
 	
 	// 사용자가 입력한 정보로 방을 만들 때 사용하는 생성자
 	public PartyInfo(String p_name, String p_start_info, String p_end_info, String p_XY, Date p_time, int p_capacity,
@@ -112,16 +116,7 @@ public class PartyInfo {
 	}
 
 
-	public String getP_time_f() {
-		return p_time_f;
-	}
 
-
-	public void setP_time_f(Date p_time) {
-		SimpleDateFormat f = new SimpleDateFormat("yyyy.MM.dd aaa hh:mm");
-		String p_time_f = f.format(p_time);
-		this.p_time_f = p_time_f;
-	}
 
 	public int getP_capacity() {
 		return p_capacity;
@@ -228,17 +223,39 @@ public class PartyInfo {
 	public void setP_closedYN(char p_closedYN) {
 		this.p_closedYN = p_closedYN;
 	}
-
-
-
-	@Override
-	public String toString() {
-		return "PartyInfo [p_num=" + p_num + ", p_name=" + p_name + ", p_start_info=" + p_start_info + ", p_end_info="
-				+ p_end_info + ", p_XY=" + p_XY + ", p_time=" + p_time + ", p_time_f=" + p_time_f + ", p_capacity="
-				+ p_capacity + ", p_content=" + p_content + ", p_generate_date=" + p_generate_date + ", p_riding_km="
-				+ p_riding_km + ", p_riding_time=" + p_riding_time + ", p_start_time=" + p_start_time + ", p_end_time="
-				+ p_end_time + ", p_password=" + p_password + ", p_closedYN=" + p_closedYN + "]";
+	
+	// 날짜타입 포매팅
+	public String getP_time_f() {
+		return f.format(p_time);
 	}
+
+	public void setP_time_f(Date p_time) {
+		this.p_time_f = f.format(p_time);
+	}
+	
+	public String getP_generate_date_f() {
+		return f.format(p_generate_date);
+	}
+
+	public void setP_generate_date_f(Date p_generate_date) {
+		this.p_generate_date_f = f.format(p_generate_date);
+	}
+
+//	public String getP_start_time_f() {
+//		return f.format(p_start_time);
+//	}
+//
+//	public void setP_start_time_f(Date p_start_time) {
+//		this.p_start_time_f = f.format(p_start_time);
+//	}
+//
+//	public String getP_end_time_f() {
+//		return f.format(p_end_time);
+//	}
+//
+//	public void setP_end_time_f(Date p_end_time) {
+//		this.p_end_time_f = f.format(p_end_time);
+//	}
 
 
 }

@@ -15,6 +15,8 @@ public class RequestPartyCreate {
 	private String p_content;
 	private String p_password;
 	
+	SimpleDateFormat f = new SimpleDateFormat("yyyy.MM.dd aaa hh:mm");
+	
 	public RequestPartyCreate() {
 		super();
 	}
@@ -65,15 +67,11 @@ public class RequestPartyCreate {
 
 	
 	public String getP_time_f() {
-		return p_time_f;
+		return f.format(p_time);
 	}
 
-
-
 	public void setP_time_f(Date p_time) {
-		SimpleDateFormat f = new SimpleDateFormat("yyyy.MM.dd aaa hh:mm");
-		String p_time_f = f.format(p_time);
-		this.p_time_f = p_time_f;
+		this.p_time_f = f.format(p_time);
 	}
 
 
