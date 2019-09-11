@@ -100,6 +100,11 @@
 			    <label for="p_password">비밀번호</label>
 			    <input id="p_password" name="p_password" type="text" placeholder="비밀번호(최대16자)" class="form-control">
 			  </div>
+			  
+			  <div class="form-group">
+			    <!-- 숨겨진 u_idx -->
+			    <input id="u_idx" name="u_idx" type="text" class="form-control" value="66">
+			  </div>
 
 	      </div>
 	      <div class="modal-footer">
@@ -136,13 +141,13 @@ $('#createForm').submit(function() {
 			p_XY : $('#createPartyModal #p_XY').val(),
 			p_time : $('#createPartyModal #p_time').val(),
 			p_capacity : $('#createPartyModal #p_capacity').val(),
-			p_password : $('#createPartyModal #p_password').val()
+			p_password : $('#createPartyModal #p_password').val(),
+			u_idx : $('#createPartyModal #u_idx').val()
 		}),
 		contentType : 'application/json; charset=utf-8', //전달해줄 때 타입
-		dataType : 'text/html', //데이터타입
+		//dataType : 'json', //데이터타입
 		success : function(data) {
 			alert('성공');
-			alert(data);
 		}
 	});
 });
@@ -154,10 +159,12 @@ function list() {
 		url : path+'/party/list',
 		type : 'GET',
 		success : function(data) {
-			
+			//alert(JSON.stringify(data));
+
 			var html = '';
-			
+
 			for (var i = 0; i < data.length; i++) {
+				//alert(data[i].p_name);
 				html += '<div class="col-sm-6">\n';
 				html += '<div class="card card-style">\n';
 				html += '<div class="card-body">\n';
@@ -167,10 +174,10 @@ function list() {
 				html += '<p class="card-text">\n';
 				html += '<i class="fas fa-map-marked-alt"></i> 출발지 : '+data[i].p_start_info+'<br>\n';
 				html += '<i class="fas fa-flag-checkered"></i> 목적지 : '+data[i].p_end_info+' <br>\n';
-				html += '<i class="far fa-clock"></i> 출발 예정 시간 : '+data[i].p_time_f+'<br>\n';
+				html += '<i class="far fa-clock"></i> 모일 시간 : '+data[i].p_time_f+'<br>\n';
 				html += '</p>\n';
 				html += '<p class="card-text">'+data[i].p_content+'</p>\n';
-				html += '<a href="#" class="btn mintbtn"><i class="fas fa-info-circle"></i> 방 정보 보기</a>\n';
+				html += '<a href="#" class="btn mintbtn"><i class="fas fa-info-circle"></i>방 정보 보기</a>\n';
 				html += '<a href="#" class="btn mintbtn"><i class="fas fa-child"></i> 참여하기!!</a>\n';
 				html += '</div>\n';
 				html += '</div>\n';
@@ -179,6 +186,7 @@ function list() {
 
 			$('#partyList').html(html);
 		}
+
 	});
 }
 </script>
