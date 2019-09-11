@@ -26,12 +26,12 @@
 				<!-- Banner -->
 					<section id="banner">
 						<div class="inner">
-							<h2>Spectral</h2>
+							<h2>RUN BIKE</h2>
 							<p>Another fine responsive<br />
 							site template freebie<br />
 							crafted by <a href="http://html5up.net">HTML5 UP</a>.</p>
 							<ul class="actions special">
-								<li><a href="#" class="button primary">Activate</a></li>
+								<li><a href="#" class="button primary">시작하기</a></li>
 							</ul>
 						</div>
 					</section>

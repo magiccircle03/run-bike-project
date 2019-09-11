@@ -1,6 +1,7 @@
 package com.teamrun.runbike.user.controller;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,18 +13,17 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.teamrun.runbike.user.service.LoginService;
 
 @Controller
-@RequestMapping("user/login")
 public class LoginController {
 	
 	@Autowired
 	private LoginService loginService;
 	
-	@RequestMapping(method = RequestMethod.GET)
+	@RequestMapping(value=("user/login"), method = RequestMethod.GET)
 	public String getForm(HttpServletRequest request) {
 		return "user/loginform";
 	}
 	
-	@RequestMapping(method= RequestMethod.POST)
+	@RequestMapping(value=("user/login"), method= RequestMethod.POST)
 	@ResponseBody
 	public String login(@RequestParam("u_id")String u_id, @RequestParam("u_pw")String u_pw, HttpServletRequest request) {
 		String result = "";
@@ -47,5 +47,11 @@ public class LoginController {
 		return result;
 	}
 	
+	@RequestMapping("user/logout")
+	public String logout(HttpSession session) {
+		session.invalidate();
+		
+		return "redirect:/";
+	}
 	
 }

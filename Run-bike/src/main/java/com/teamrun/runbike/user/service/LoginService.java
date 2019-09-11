@@ -27,7 +27,9 @@ public class LoginService implements UserService {
 		UserInfo userInfo = null;
 		dao = template.getMapper(UserDao.class);
 		
+
 		userInfo = dao.selectUserById(u_id);
+		
 		
 		// 회원 아이디가 존재 && 비밀번호 일치시 세션에 값 저장.
 		if(userInfo.checkPW(u_pw) && userInfo !=null) {
@@ -37,7 +39,6 @@ public class LoginService implements UserService {
 				System.out.println("로그인 정보 : "+loginInfo);
 				request.getSession(true).setAttribute("loginInfo",loginInfo);
 				loginChk = 2;
-				System.out.println("로그인 세션"+request.getSession(false).getAttribute("loginInfo"));
 			} else {
 				// 이메일 인증 no - 세션에 이메일 정보 저장
 				loginChk = 1;

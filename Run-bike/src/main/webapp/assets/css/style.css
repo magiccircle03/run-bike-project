@@ -134,3 +134,7 @@ section#modal-register form{
 #regform button.btn-reset{
 	background-color: #f00;
 }
+
+section.loginbox{
+	display: none;
+}

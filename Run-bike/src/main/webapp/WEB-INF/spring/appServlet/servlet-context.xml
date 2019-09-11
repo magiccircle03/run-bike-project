@@ -75,16 +75,15 @@
 			</beans:props>
 		</beans:property>
 	</beans:bean>
-	<!-- 
-	<beans:bean id="AuthCheckInterceptor" class="com.teamrun.runbike.interceptor">
-		<interceptors>
-			<interceptor>
-				<mapping path="/runbike/user/"></mapping>
-			</interceptor>
-		</interceptors>
-	</beans:bean>
 	
-	-->
+	<beans:bean id="AuthCheckInterceptor" class="com.teamrun.runbike.user.interceptor.AuthCheckInterceptor" />
+	
+	<interceptors>
+		<interceptor>
+			<mapping path="/main"></mapping>
+			<beans:ref bean="AuthCheckInterceptor"/>
+		</interceptor>
+	</interceptors>
 	
 	<context:component-scan base-package="com.teamrun.runbike" />
 	

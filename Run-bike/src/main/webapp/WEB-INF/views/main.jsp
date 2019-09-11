@@ -34,7 +34,7 @@
 											<li><a href="#"><i class="far fa-laugh"></i> 스탬프투어 </a></li>
 											<li><a href="#"><i class="fas fa-crown"></i> 나의 리워드 </a></li>
 											<li><a href="#"><i class="fas fa-headset"></i> 문의하기 </a></li>
-											<li><a href="#"><i class="fas fa-headset"></i> 로그아웃 </a></li>
+											<li><a href="http://localhost:8080/runbike/user/logout"><i class="fas fa-headset"></i> 로그아웃 </a></li>
 										</ul>
 									</div>
 								</li>
