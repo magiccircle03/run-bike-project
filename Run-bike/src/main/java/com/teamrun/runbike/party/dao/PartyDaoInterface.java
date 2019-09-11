@@ -28,5 +28,8 @@ public interface PartyDaoInterface {
 	// 그 사람이 속한 파티의 번호 받아오기
 	public int getPartyNum(int u_idx);
 	
+	// 파티 정보를 가져온다
+	public PartyInfo getPartyInfoOne(int p_num);
+	
 
 }

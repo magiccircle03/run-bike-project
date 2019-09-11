@@ -19,6 +19,7 @@ import com.teamrun.runbike.party.domain.PartyInfo;
 import com.teamrun.runbike.party.domain.RequestParticipationInsert;
 import com.teamrun.runbike.party.domain.RequestPartyCreate;
 import com.teamrun.runbike.party.service.PartyCreateService;
+import com.teamrun.runbike.party.service.PartyInfoService;
 import com.teamrun.runbike.party.service.PartyJoinService;
 import com.teamrun.runbike.party.service.PartyListService;
 
@@ -36,8 +37,13 @@ public class PartyMainContoller {
 	@Autowired
 	private PartyListService listService;
 	
+	@Autowired
+	private PartyInfoService partyInfoService;
+	
+	
+	// 인덱스에서 함께하기로 갈 때 분기처리(참여한 방이 있냐없냐 따라서)
 	@RequestMapping(method = RequestMethod.GET)
-	public String getMain(HttpServletRequest request) {
+	public String getMain(HttpServletRequest request, Model model) {
 		String view = "party/partyLobby";
 		int count = 0;
 		int p_num = 0;
@@ -51,25 +57,40 @@ public class PartyMainContoller {
 		// view="";
 		
 		// 로그인 되었다는 전제
-		count = listService.hasParty(u_idx);
+		count = partyInfoService.hasParty(u_idx);
 		
 		//System.out.println("hasParty count : "+count);
 		
 		if(count>0) {
-			p_num = listService.getPartyNum(u_idx); // 그 방번호 얻어오기
-			view = "redirect:/party/room/"+p_num; // 그 방 페이지로 넘어감
+			p_num = partyInfoService.getPartyNum(u_idx); // 그 방번호 얻어오기
+
+			view = "redirect:/party/"+p_num; // 그 방 페이지로 넘어감
 		}
 		
 		return view;
 	}
 	
-	@RequestMapping(value="/room/{p_num}", method = RequestMethod.GET)
-	public String getRoom(@PathVariable int p_num, Model model) {
-		String view = "party/partyRoom";
+	// 방을 보여줌, 방 넘버를 가지고 간다
+	@RequestMapping(value="/{p_num}", method = RequestMethod.GET)
+	public String getPartyPage(@PathVariable int p_num, Model model) {
 		model.addAttribute("p_num",p_num);
+		String view = "party/partyRoom";
 		return view;
 	}
 	
+	
+	// ajax로 가져올 때 사용할 방의 정보
+	@CrossOrigin
+	@ResponseBody
+	@RequestMapping(value="/room/{p_num}", method = RequestMethod.GET)
+	public PartyInfo getPartyInfo(@PathVariable int p_num, Model model) {
+		PartyInfo partyInfo = partyInfoService.getPartyInfoOne(p_num);
+		model.addAttribute("partyInfo",partyInfo);
+		return partyInfo;
+	}
+	
+	
+	// 방 만들기
 	@CrossOrigin
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.POST)
@@ -82,6 +103,7 @@ public class PartyMainContoller {
 		return resultCnt;
 	}
 	
+	// 방 리스트
 	@CrossOrigin
 	@ResponseBody
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
@@ -89,15 +111,5 @@ public class PartyMainContoller {
 		return listService.getAllListClosedN(); // 열려있는 방만 보여주기
 	} 
 	
-	
-	@CrossOrigin
-	@ResponseBody
-	@RequestMapping(value = "/nav", method = RequestMethod.GET)
-	public String hasParty(@RequestBody String u_idx){ 
-		String result = "";
-		int resultCnt = listService.hasParty(Integer.parseInt(u_idx));
-		result+=resultCnt;
-		return result;
-	} 
 	
 }

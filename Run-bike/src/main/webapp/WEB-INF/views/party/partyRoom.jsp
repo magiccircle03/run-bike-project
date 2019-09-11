@@ -1,3 +1,4 @@
+<%@page import="com.teamrun.runbike.party.domain.PartyInfo"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
@@ -11,8 +12,21 @@
 <script src="https://kit.fontawesome.com/8653072c68.js"></script>
 </head>
 <body>
+
 <div class="container">
 여긴 ${p_num} 번 방이다^^!!!
+
+<hr>
+
+<div id="partyInfo">
+
+</div>
+
+<div id="partyMemberInfo">
+
+</div>
+
+동적인 정보를 ajax로
 
 여기엔 탭으로
 목표 경로라던가 이 방에 참여한 사람 리스트
@@ -25,6 +39,10 @@
 </div><!-- 컨테이너 끝 -->
 
 <script>
+$(document).ready(function() {
+	showPartyInfo();
+});
+
 
 </script>
 </body>

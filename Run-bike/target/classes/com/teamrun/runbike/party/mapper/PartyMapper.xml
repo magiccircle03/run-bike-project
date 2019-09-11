@@ -61,4 +61,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="getPartyNum" resultType="int">
 		select p_num from participation where u_idx=#{idx};
 	</select>
+	
+	<!-- 전체 방의 리스트 구하기 -->
+	<select id="getPartyInfoOne" resultMap="resultPartyInfo">
+		select * from party where p_num=#{num}
+	</select>
+	
+	
 </mapper>
