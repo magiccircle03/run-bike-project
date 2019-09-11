@@ -47,14 +47,17 @@ public class PartyMainContoller {
 		// LoginInfo loginInfo = session.getAttribute("loginInfo");
 		// u_idx = loginInfo.getU_idx();
 		
+		// 로그인 안 되어있으면 로그인 페이지로 보냄
+		// view="";
+		
+		// 로그인 되었다는 전제
 		count = listService.hasParty(u_idx);
 		
-		System.out.println("hasParty count : "+count);
-		// 그 방번호 얻어오기
+		//System.out.println("hasParty count : "+count);
 		
 		if(count>0) {
-			p_num = listService.getPartyNum(u_idx);
-			view = "redirect:/party/room/"+p_num;
+			p_num = listService.getPartyNum(u_idx); // 그 방번호 얻어오기
+			view = "redirect:/party/room/"+p_num; // 그 방 페이지로 넘어감
 		}
 		
 		return view;
