@@ -37,7 +37,7 @@
 					</section>
 					<section id="modal-register">
 					    <div class="inner">
-					        <h3>회원가입</h3>
+					        <h3>로그인</h3>
 					        <form id="loginForm" method="post">
 					            <div class="row gtr-uniform">
 					                <div class="col-12 col-12-xsmall">
@@ -59,6 +59,10 @@
 					            </div>
 					            <button type="submit"  class="col-4">로그인</button>
 					            <a href="">카카오로 로그인</a>
+					            <div class="not-user row">
+					            	<p class="label-reg">아직 회원이 아니신가요?</p>
+					            	<a class="col-12" href="http://localhost:8080/runbike/user/register">회원가입</a>
+					            </div>
 					        </form>
 					    </div>
                 </section>
@@ -69,7 +73,6 @@
 				$(document).ready(function(){
 					
 					$('#loginForm').submit(function(){
-						alert("보냇습당");						
 						
 						/* var formData = new FormData();
 						formData.append('u_id',$('#u_id').val());
@@ -86,22 +89,18 @@
 									location.href = 'http://localhost:8080/runbike/main';
 									
 								} else if(data=='yet'){
-									alert("아직 인증되지 않은 회원입니다.");
-									location.href='http://localhost:8080';
+									location.href='http://localhost:8080/runbike/verify/'+data;
 								} else {
 									
-									alert("아이디 혹은 비밀번호가 틀립니다.");
-									
+									alert("로그인에 실패했습니다. 아이디 혹은 비밀번호를 확인해주세요.");
 								}
-							},
-							error : function(){
-								alert("로그인에 실패했습니다.");
-								
+							
 							}
 						});
 						return false;
 					});
-						
+					
+					
 				});
 			</script>
 			<script src="assets/js/jquery.scrollex.min.js"></script>

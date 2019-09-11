@@ -59,9 +59,12 @@
                                         <label for="u_photo">사진</label>
 					                    <input type="file" name="u_photo" id="u_photo" value="" placeholder="confirm password" />
 					                </div>
+					                <div class="col-12 col-11-xsmall">
+					                	<button type="submit" class="col-6 btn-submit">회원가입</button>
+					            		<button type="reset" class="col-6 btn-reset">취소</button>
+					                </div>
 					            </div>
-					            <button type="submit" class="col-4">회원가입</button>
-					            <button type="reset" class="col-4">취소</button>
+					            
 					        </form>
 					    </div>
                 </section>
@@ -70,10 +73,8 @@
 			<script src="<c:url value='/assets/js/jquery.min.js'/>"></script>
 			<script>
 				$(document).ready(function(){
-					alert("gkdl");
 					
 					$('#regform').submit(function(){
-						alert("보냇습당");
 						var formData = new FormData();
 						var file = $('#u_photo')[0].files[0];
 						
@@ -87,7 +88,7 @@
 						$.ajax({			
 							type: 'POST',
 							enctype: 'multipart/form-data',
-							url: 'http://localhost:8080/runbike/user/register#',
+							url: 'http://localhost:8080/runbike/user/register',
 							contentType: false,
 							processData: false,
 							data : formData,

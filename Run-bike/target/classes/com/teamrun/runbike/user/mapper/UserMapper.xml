@@ -24,4 +24,8 @@
 <select id="selectUserById" resultMap="userInfoMap">
 	select * from user where u_id=#{u_id}
 </select>
+
+<update id="reChkVerify">
+	update user set u_verify=true where u_id=#{param1}
+</update>
 </mapper>

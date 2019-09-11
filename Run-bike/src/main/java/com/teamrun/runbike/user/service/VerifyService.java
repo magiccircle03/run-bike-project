@@ -5,12 +5,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.teamrun.runbike.user.dao.UserDao;
+import com.teamrun.runbike.user.domain.UserInfo;
 
 @Service("verifyService")
 public class VerifyService implements UserService {
 	
 	@Autowired
 	private SqlSessionTemplate template;
+	
 	
 	private UserDao dao;
 	
@@ -22,4 +24,6 @@ public class VerifyService implements UserService {
 		
 		return result > 0 ? "ok" : "no";
 	}
+	
+	
 }

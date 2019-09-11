@@ -19,7 +19,7 @@ public class LoginController {
 	private LoginService loginService;
 	
 	@RequestMapping(method = RequestMethod.GET)
-	public String getForm() {
+	public String getForm(HttpServletRequest request) {
 		return "user/loginform";
 	}
 	
@@ -42,7 +42,10 @@ public class LoginController {
 			result = "no";
 				
 		}
+		System.out.println("컨트롤러 세션 : "+request.getSession(false).getAttribute("loginInfo"));
+		
 		return result;
 	}
+	
 	
 }

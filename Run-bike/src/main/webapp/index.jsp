@@ -1,3 +1,4 @@
+<%@page import="com.teamrun.runbike.user.domain.LoginInfo"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE HTML>
@@ -16,7 +17,6 @@
 		<script src="https://kit.fontawesome.com/8653072c68.js"></script>
 	</head>
 	<body class="landing is-preload">
-
 		<!-- Page Wrapper -->
 			<div id="page-wrapper">
 
@@ -27,15 +27,7 @@
 							<ul>
 								<li class="special">
 									<a href="#menu" class="menuToggle"><span>Menu</span></a>
-									<div id="menu">
-										<ul>
-											<li><a href="#"><i class="fas fa-biking"></i> 혼자 라이딩 </a></li>
-											<li><a href="#"><i class="fas fa-users"></i> 같이 달리기 </a></li>
-											<li><a href="#"><i class="far fa-laugh"></i> 스탬프투어 </a></li>
-											<li><a href="#"><i class="fas fa-crown"></i> 나의 리워드 </a></li>
-											<li><a href="#"><i class="fas fa-headset"></i> 문의하기 </a></li>
-										</ul>
-									</div>
+									
 								</li>
 							</ul>
 						</nav>
@@ -49,7 +41,7 @@
 							site template freebie<br />
 							crafted by <a href="http://html5up.net">HTML5 UP</a>.</p>
 							<ul class="actions special">
-								<li><a href="#" class="button primary">Activate</a></li>
+								<li><a href="" class="button primary">시작하기</a></li>
 							</ul>
 						</div>
 						<a href="#one" class="more scrolly">Learn More</a>
@@ -172,6 +164,5 @@
 			<script src="assets/js/breakpoints.min.js"></script>
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
-
 	</body>
 </html>
