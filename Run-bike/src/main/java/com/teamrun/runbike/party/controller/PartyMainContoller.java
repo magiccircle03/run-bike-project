@@ -11,16 +11,22 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.teamrun.runbike.party.domain.PartyInfo;
+import com.teamrun.runbike.party.domain.RequestParticipationInsert;
 import com.teamrun.runbike.party.domain.RequestPartyCreate;
 import com.teamrun.runbike.party.service.PartyCreateService;
+import com.teamrun.runbike.party.service.PartyJoinService;
 import com.teamrun.runbike.party.service.PartyListService;
 
 @Controller
 @RequestMapping("/party")
 public class PartyMainContoller {
 
+	
 	@Autowired
 	private PartyCreateService createService;
+
+	@Autowired
+	private PartyJoinService joinService;
 	
 	@Autowired
 	private PartyListService listService;
@@ -33,18 +39,20 @@ public class PartyMainContoller {
 	@CrossOrigin
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.POST)
-	public String createParty(@RequestBody RequestPartyCreate createRequest) {
+	public int createParty(@RequestBody RequestPartyCreate createRequest) {
 		System.out.println(createRequest);
-		int result = createService.partyInsert(createRequest);
-		return result>0?"success":"fail";
+		int resultCnt=-1;
+		int key = createService.partyInsert(createRequest);
+		RequestParticipationInsert participationRequest = new RequestParticipationInsert(createRequest.getU_idx(), key, 'Y');
+		resultCnt = joinService.participationInsertAsMaster(participationRequest);
+		return resultCnt;
 	}
-
+	
 	@CrossOrigin
 	@ResponseBody
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
-	public List<PartyInfo> getAllList(){ 
-		return listService.getAllList();
+	public List<PartyInfo> getAllListClosedN(){ 
+		return listService.getAllListClosedN(); // 열려있는 방만 보여주기
 	} 
-	
 	
 }
