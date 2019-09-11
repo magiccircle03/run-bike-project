@@ -2,9 +2,14 @@ package com.teamrun.runbike.party.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -32,8 +37,34 @@ public class PartyMainContoller {
 	private PartyListService listService;
 	
 	@RequestMapping(method = RequestMethod.GET)
-	public String getMain() {
-		return "party/partyLobby";
+	public String getMain(HttpServletRequest request) {
+		String view = "party/partyLobby";
+		int count = 0;
+		int p_num = 0;
+		int u_idx = 72;
+		// 세션에서 u_idx 가져옴
+		// HttpSession session = request.getSession(false);
+		// LoginInfo loginInfo = session.getAttribute("loginInfo");
+		// u_idx = loginInfo.getU_idx();
+		
+		count = listService.hasParty(u_idx);
+		
+		System.out.println("hasParty count : "+count);
+		// 그 방번호 얻어오기
+		
+		if(count>0) {
+			p_num = listService.getPartyNum(u_idx);
+			view = "redirect:/party/room/"+p_num;
+		}
+		
+		return view;
+	}
+	
+	@RequestMapping(value="/room/{p_num}", method = RequestMethod.GET)
+	public String getRoom(@PathVariable int p_num, Model model) {
+		String view = "party/partyRoom";
+		model.addAttribute("p_num",p_num);
+		return view;
 	}
 	
 	@CrossOrigin
@@ -53,6 +84,17 @@ public class PartyMainContoller {
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public List<PartyInfo> getAllListClosedN(){ 
 		return listService.getAllListClosedN(); // 열려있는 방만 보여주기
+	} 
+	
+	
+	@CrossOrigin
+	@ResponseBody
+	@RequestMapping(value = "/nav", method = RequestMethod.GET)
+	public String hasParty(@RequestBody String u_idx){ 
+		String result = "";
+		int resultCnt = listService.hasParty(Integer.parseInt(u_idx));
+		result+=resultCnt;
+		return result;
 	} 
 	
 }

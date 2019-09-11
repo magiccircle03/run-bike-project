@@ -39,4 +39,16 @@ public class PartyListService {
 		return list;
 	}
 	
+	public int hasParty(int u_idx) {
+		dao = template.getMapper(PartyDaoInterface.class);
+		int resultCnt=dao.hasParty(u_idx);
+		return resultCnt;
+	}
+	
+	public int getPartyNum(int u_idx) {
+		dao = template.getMapper(PartyDaoInterface.class);
+		int resultCnt=dao.getPartyNum(u_idx);
+		return resultCnt;
+	}
+	
 }

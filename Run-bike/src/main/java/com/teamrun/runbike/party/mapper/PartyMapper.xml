@@ -44,13 +44,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- 종료되지 않은 전체 방의 리스트 구하기 -->
 	<select id="selectAllPartyListClosedN" resultMap="resultPartyInfo">
-		select * from run_bike.party where p_closedYN='N' order by p_num desc;
+		select * from party where p_closedYN='N' order by p_num desc;
 	</select>
 	
 	<!-- 종료된 전체 방의 리스트 구하기 -->
 	<select id="selectAllPartyListClosedY" resultMap="resultPartyInfo">
-		select * from run_bike.party where p_closedYN='Y' order by p_num desc;
+		select * from party where p_closedYN='Y' order by p_num desc;
 	</select>
 	
+	<!-- 소속된 방이 있는지 -->	
+	<select id="hasParty" resultType="int">
+		select count(*) from participation where u_idx=#{idx};
+	</select>
 	
+	<!-- 소속된 방의 번호를 가져온다 -->	
+	<select id="getPartyNum" resultType="int">
+		select p_num from participation where u_idx=#{idx};
+	</select>
 </mapper>
