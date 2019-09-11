@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -41,7 +41,10 @@
 </head>
 <body>
 <div class="container">
-	<div class="right"><a class="btn" data-toggle="modal" data-target="#createPartyModal">방 만들기</a></div>
+
+
+	<div id="top-nav" class="right"><a class="btn" data-toggle="modal" data-target="#createPartyModal">방 만들기</a></div>
+
 	<div id="partyListContainer">
 		<div id="partyList" class="row">
 
@@ -103,7 +106,7 @@
 			  
 			  <div class="form-group">
 			    <!-- 숨겨진 u_idx -->
-			    <input id="u_idx" name="u_idx" type="text" class="form-control" value="66">
+			    <input id="u_idx" name="u_idx" type="text" class="form-control" value="72">
 			  </div>
 
 	      </div>
@@ -148,6 +151,7 @@ $('#createForm').submit(function() {
 		//dataType : 'json', //데이터타입
 		success : function(data) {
 			alert('성공');
+			list();
 		}
 	});
 });
@@ -189,6 +193,7 @@ function list() {
 
 	});
 }
+
 </script>
 </body>
 </html>
