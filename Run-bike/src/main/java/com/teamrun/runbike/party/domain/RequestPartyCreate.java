@@ -5,6 +5,8 @@ import java.util.Date;
 
 public class RequestPartyCreate {
 
+	private String u_idx;
+	private String key;
 	private String p_name;
 	private String p_start_info;
 	private String p_end_info;
@@ -21,6 +23,29 @@ public class RequestPartyCreate {
 		super();
 	}
 	
+	
+	
+	public int getU_idx() {
+		return Integer.parseInt(u_idx);
+	}
+
+
+	public void setU_idx(String u_idx) {
+		this.u_idx = u_idx;
+	}
+
+
+
+	public String getKey() {
+		return key;
+	}
+
+
+	public void setKey(String key) {
+		this.key = key;
+	}
+
+
 	public String getP_name() {
 		return p_name;
 	}
