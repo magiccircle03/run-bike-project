@@ -18,12 +18,12 @@
 function reSend(email){
 	$.ajax({			
 		type: 'get',
-		url: 'http://localhost:8080/runbike/verify/resend?email='+email,
-
-		success : function(data){
+		url: 'resend',
+		data : {email: email},
+		success : function(){
 			alert("이메일을 보냈습니다.");
 		},
-		error: function(data){
+		error: function(){
 			alert("이메일을 보내는 데 실패했습니다. 잡시 후에 다시 이용하세요.");
 		}
 	});

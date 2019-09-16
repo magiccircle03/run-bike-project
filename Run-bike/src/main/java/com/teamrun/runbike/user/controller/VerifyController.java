@@ -35,6 +35,7 @@ public class VerifyController {
 	}
 	
 	@RequestMapping("resend")
+	@ResponseBody
 	public void resend(@RequestParam("email")String u_id) {
 		mailService.mailResend(u_id);
 	}

@@ -3,9 +3,11 @@ package com.teamrun.runbike.user.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -31,5 +33,14 @@ public class RegisterController {
 		
 		
 		return result > 0 ? "ok" : "no";
+	}
+	
+	@RequestMapping("idCheck")
+	@ResponseBody
+	public String idCheck(@RequestParam(value="u_id") String u_id) {
+		System.out.println(u_id);
+		String result = regService.idCheck(u_id);
+		
+		return result;
 	}
 }

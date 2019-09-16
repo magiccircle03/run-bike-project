@@ -42,6 +42,7 @@
 					            <div class="row gtr-uniform">
 					                <div class="col-12 col-12-xsmall">
                                         <label for="u_id">아이디(이메일)</label><input type="email" name="u_id" id="u_id" value="" placeholder="example@email.com" />
+                                        <button type="button" id="idCheck">아이디 중복 체크</button>
 					                </div>
 					                <div class="col-12 col-11-xsmall">
                                         <label for="u_pw">비밀번호</label>
@@ -73,7 +74,21 @@
 			<script src="<c:url value='/assets/js/jquery.min.js'/>"></script>
 			<script>
 				$(document).ready(function(){
+					function bdcRed(e){
+						$(e.target).css('border-color','red');
+					};
 					
+					function bdcGreen(e){
+						$(e.target).css('border-color','green');
+					}
+					$('#u_id').on('focusout',function(e){
+						if($(this).val().length > 0){
+							
+						}else{
+							$(this).parant().appendChild("필수 사항입니다.");
+							bdcRed(e);
+						}
+					})
 					$('#regform').submit(function(){
 						var formData = new FormData();
 						var file = $('#u_photo')[0].files[0];
@@ -106,6 +121,26 @@
 						});
 						return false;
 					});
+					
+					
+					$('#idCheck').click(function(){
+						$.ajax({
+							type:'GET',
+							url:'register/idCheck',
+							data : {u_id : $('#u_id').val()},
+							success: function(data){
+								if(data == 'Y'){									
+									alert("사용 가능한 아이디 입니다.");
+								} else{
+									alert("이미 존재하는 아이디 입니다.");
+								}
+							},
+							error: function(data){
+								console.log("실패쓰");
+							}
+						
+						});
+					})
 						
 				});
 			</script>
