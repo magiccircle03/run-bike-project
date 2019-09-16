@@ -1854,13 +1854,13 @@ input, select, textarea {
 			box-shadow: none;
 		}
 
-		input[type="text"]:focus,
+		/*input[type="text"]:focus,
 		input[type="password"]:focus,
 		input[type="email"]:focus,
 		select:focus,
 		textarea:focus {
 			box-shadow: 0 0 0 2px #21b2a6;
-		}
+		}*/
 
 	select {
 		background-size: 1.25em;

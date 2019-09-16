@@ -38,7 +38,7 @@
 	<beans:bean id="dataSource"
 		class="org.apache.commons.dbcp2.BasicDataSource"
 		p:driverClassName="com.mysql.jdbc.Driver"
-		p:url="jdbc:mysql://mysql-mm.c1le2zwwezgt.ap-northeast-2.rds.amazonaws.com:3306/run_bike?characterEncoding=utf8"
+		p:url="jdbc:mysql://mysql-mm.c1le2zwwezgt.ap-northeast-2.rds.amazonaws.com:3306/run_bike?characterEncoding=utf8&amp;serverTimezone=UTC"
 		p:username="runbike" p:password="runbike321!" />
 
 	<beans:bean id="jdbcTemplate"

@@ -30,20 +30,17 @@ public class LoginController {
 		System.out.println("u_id : "+u_id);
 		System.out.println("u_pw : "+u_pw);
 		int loginChk = loginService.login(u_id, u_pw, request);
-		if(u_id == "admin" && u_pw == "admin") {
-			result = "admin";
-		} else {
-			switch(loginChk) {
-			case 2: 
-				result = "ok";
-				break;
-			case 1:
-				result = "yet";
-				break;
-			case 0:
-				result = "no";
-					
-			}
+		
+		switch(loginChk) {
+		case 2: 
+			result = "ok";
+			break;
+		case 1:
+			result = "yet";
+			break;
+		case 0:
+			result = "no";
+			break;
 		}
 		
 		return result;

@@ -1,5 +1,8 @@
 package com.teamrun.runbike.user.service;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -14,11 +17,12 @@ import com.teamrun.runbike.user.domain.UserInfo;
 public class LoginService implements UserService {
 	@Autowired
 	private SqlSessionTemplate template;
+	@Autowired
+	private SaveDateService dateService;
 	
 	private UserDao dao;
 	
 	public int login(String u_id, String u_pw,HttpServletRequest request) {
-		System.out.println("request"+request);
 		// 이메일 인증 = 2
 		// 이메일 미인증 = 1
 		// 로그인 실패 = 0
@@ -36,8 +40,12 @@ public class LoginService implements UserService {
 			if(userInfo.isU_verify()) {
 				// 이메일 인증 ok - 세션에 로그인 정보 저장
 				LoginInfo loginInfo = userInfo.toLoginInfo();
-				System.out.println("로그인 정보 : "+loginInfo);
 				request.getSession(true).setAttribute("loginInfo",loginInfo);
+				
+				// 날짜 이력 저장
+				
+				
+				dateService.saveDate(userInfo.getU_idx());
 				loginChk = 2;
 			} else {
 				// 이메일 인증 no - 세션에 이메일 정보 저장
