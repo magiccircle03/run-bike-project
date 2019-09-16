@@ -37,8 +37,8 @@
 	<beans:bean id="dataSource"
 		class="org.apache.commons.dbcp2.BasicDataSource"
 		p:driverClassName="com.mysql.jdbc.Driver"
-		p:url="jdbc:mysql://mysql-manager.c964x8p7xsuk.ap-northeast-2.rds.amazonaws.com/run_bike?characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull"
-		p:username="bit" p:password="bit" />
+		p:url="jdbc:mysql://mysql-mm.c1le2zwwezgt.ap-northeast-2.rds.amazonaws.com/run_bike?characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull"
+		p:username="runbike" p:password="runbike321!" />
 
 	<beans:bean id="jdbcTemplate"
 		class="org.springframework.jdbc.core.JdbcTemplate"
