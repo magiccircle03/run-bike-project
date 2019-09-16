@@ -3,7 +3,6 @@ package com.teamrun.runbike.party.controller;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,15 +12,18 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.teamrun.runbike.party.domain.PartyInfo;
+import com.teamrun.runbike.party.domain.ReadyInfo;
 import com.teamrun.runbike.party.domain.RequestParticipationInsert;
 import com.teamrun.runbike.party.domain.RequestPartyCreate;
 import com.teamrun.runbike.party.service.PartyCreateService;
 import com.teamrun.runbike.party.service.PartyInfoService;
 import com.teamrun.runbike.party.service.PartyJoinService;
 import com.teamrun.runbike.party.service.PartyListService;
+import com.teamrun.runbike.party.service.ReadyService;
 
 @Controller
 @RequestMapping("/party")
@@ -40,6 +42,9 @@ public class PartyMainContoller {
 	@Autowired
 	private PartyInfoService partyInfoService;
 	
+	@Autowired
+	private ReadyService readyService;
+	
 	
 	// 인덱스에서 함께하기로 갈 때 분기처리(참여한 방이 있냐없냐 따라서)
 	@RequestMapping(method = RequestMethod.GET)
@@ -47,7 +52,7 @@ public class PartyMainContoller {
 		String view = "party/partyLobby";
 		int count = 0;
 		int p_num = 0;
-		int u_idx = 72;
+		int u_idx = 2;
 		// 세션에서 u_idx 가져옴
 		// HttpSession session = request.getSession(false);
 		// LoginInfo loginInfo = session.getAttribute("loginInfo");
@@ -83,9 +88,8 @@ public class PartyMainContoller {
 	@CrossOrigin
 	@ResponseBody
 	@RequestMapping(value="/room/{p_num}", method = RequestMethod.GET)
-	public PartyInfo getPartyInfo(@PathVariable int p_num, Model model) {
+	public PartyInfo getPartyInfo(@PathVariable int p_num) {
 		PartyInfo partyInfo = partyInfoService.getPartyInfoOne(p_num);
-		model.addAttribute("partyInfo",partyInfo);
 		return partyInfo;
 	}
 	
@@ -111,5 +115,15 @@ public class PartyMainContoller {
 		return listService.getAllListClosedN(); // 열려있는 방만 보여주기
 	} 
 	
+	// 준비 상태 변경
+	@CrossOrigin
+	@ResponseBody
+	@RequestMapping(value = "/ready", method = RequestMethod.POST)
+	public String setReadyY(@RequestParam("p_num") int p_num, @RequestParam("u_idx") int u_idx, @RequestParam("readyYN") String readyYN){
+		ReadyInfo readyInfo = new ReadyInfo(p_num,u_idx,readyYN.charAt(0));
+		System.out.println(readyInfo);
+		int resultCnt = readyService.updateReady(readyInfo);
+		return "dd"+resultCnt;
+	}
 	
 }

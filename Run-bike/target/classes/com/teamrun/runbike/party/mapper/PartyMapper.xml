@@ -67,5 +67,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select * from party where p_num=#{num}
 	</select>
 	
+	<!-- ready 컬럼 업데이트 -->
+	<update id="updateReady" parameterType="com.teamrun.runbike.party.domain.ReadyInfo">
+		update participation set pc_readyYN=#{readyYN} where p_num=#{p_num} and u_idx=#{u_idx}
+	</update>
 	
 </mapper>

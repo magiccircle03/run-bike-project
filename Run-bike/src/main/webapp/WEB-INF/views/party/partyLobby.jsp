@@ -106,7 +106,7 @@
 			  
 			  <div class="form-group">
 			    <!-- 숨겨진 u_idx -->
-			    <input id="u_idx" name="u_idx" type="text" class="form-control" value="72">
+			    <input id="u_idx" name="u_idx" type="text" class="form-control" value="2">
 			  </div>
 
 	      </div>
