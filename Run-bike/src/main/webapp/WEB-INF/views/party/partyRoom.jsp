@@ -38,8 +38,8 @@
 	
 	</div>
 	
+<%-- 	<a onclick="showPartyInfo(${p_num});">새로고침 <i class="fas fa-sync-alt"></i></a> --%>
 	<div id="partyMemberInfo">
-	<a onclick="showPartyInfo(${p_num});">새로고침 <i class="fas fa-sync-alt"></i></a>
 	참여한 사람 이미지 / 사람 이름 / 준비여부
 	[채팅]
 	</div>
