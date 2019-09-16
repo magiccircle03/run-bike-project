@@ -2,6 +2,8 @@ package com.teamrun.runbike.party.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.teamrun.runbike.party.domain.PartyInfo;
 import com.teamrun.runbike.party.domain.ReadyInfo;
 import com.teamrun.runbike.party.domain.RequestParticipationInsert;
@@ -22,6 +24,9 @@ public interface PartyDaoInterface {
 	
 	// 참여하기
 	public int insertParticipation(RequestParticipationInsert requestParticipationInsert);
+	
+	// 방 나가기
+	public int deleteParticipation(@Param("p_num") int p_num, @Param("u_idx") int u_idx);
 	
 	// 파티에 속해있는지 
 	public int hasParty(int u_idx);	

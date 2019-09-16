@@ -24,7 +24,11 @@
 <body>
 
 <div class="container">
-여긴 ${p_num} 번 방이다^^!!!
+<!-- 숨겨진 u_idx -->
+<input id="u_idx" name="u_idx" type="text" class="form-control" value="69">
+	
+여긴 ${p_num} 번 방이다^^!!! <br>
+<button onclick="exitParty()">나가기</button> 
 <hr>
 
 	<div id="partyInfo">
@@ -44,12 +48,13 @@
 
 <script>
 
-var p_num = ${p_num};
-var u_idx = 2; // 아이디 값 세션에서 가져오기. 
 
 $(document).ready(function() {
 	showPartyInfo();
 });
+
+var p_num = ${p_num};
+var u_idx = $('#u_idx').val();// 아이디 값 세션에서 가져오기. 
 
 var path='http://localhost:8080/runbike';
 
@@ -93,6 +98,24 @@ function setReady(readyYN) {
 
 function showParticipationUserInfo() {
 	
+}
+
+function exitParty() {
+	// 방장은 이 버튼을 못 보게 하자..
+	alert(p_num+","+u_idx);
+ 	 $.ajax({
+ 		url : path + '/party/room/'+p_num,
+ 		type : 'DELETE',
+ 		data : JSON.stringify({
+ 			u_idx : u_idx
+		}),
+		contentType : 'application/json; charset=utf-8',
+ 		success : function(data) {
+ 			//alert(data);
+ 			location.href="../party";
+ 		}
+ 		
+ 	});  
 }
 </script>
 </body>

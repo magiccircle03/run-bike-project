@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -83,7 +84,7 @@ public class PartyMainContoller {
 		return view;
 	}
 	
-	
+
 	// ajax로 가져올 때 사용할 방의 정보
 	@CrossOrigin
 	@ResponseBody
@@ -92,6 +93,16 @@ public class PartyMainContoller {
 		PartyInfo partyInfo = partyInfoService.getPartyInfoOne(p_num);
 		return partyInfo;
 	}
+
+	// 방에 속한 유저 정보
+//	@CrossOrigin
+//	@ResponseBody
+//	@RequestMapping(value="/room/{p_num}/user", method = RequestMethod.GET)
+//	public PartyInfo getPartyUserInfo(@PathVariable int p_num) {
+//		PartyUserInfo partyUserInfo = partyInfoService.getPartyUserInfo(p_num);
+//		return partyUserInfo;
+//	}
+//	
 	
 	// 방에 참여하기
 	@CrossOrigin
@@ -102,6 +113,18 @@ public class PartyMainContoller {
 		System.out.println(p_num+","+u_idx);
 		RequestParticipationInsert participationRequest = new RequestParticipationInsert(u_idx, p_num, 'N');
 		resultCnt = joinService.insertParticipation(participationRequest);
+		return resultCnt;
+	}
+	
+	// 방에서 나가기
+	@CrossOrigin
+	@ResponseBody
+	@RequestMapping(value="/room/{p_num}", method = RequestMethod.DELETE)
+	public int exitParty(@PathVariable int p_num, @RequestBody JSONObject u_idx_str) {
+		int resultCnt = 0;
+		//System.out.println(p_num+","+u_idx_str+","+u_idx_str.get("u_idx"));
+		int u_idx = Integer.parseInt((String)u_idx_str.get("u_idx"));
+		resultCnt = joinService.deleteParticipation(p_num,u_idx);
 		return resultCnt;
 	}
 	

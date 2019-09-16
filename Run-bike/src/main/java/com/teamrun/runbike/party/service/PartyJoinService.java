@@ -24,5 +24,12 @@ public class PartyJoinService {
 		resultCnt = dao.insertParticipation(requestParticipationInsert);
 		return resultCnt;
 	}
+	public int deleteParticipation(int p_num, int u_idx) {
+		int resultCnt = -1;
+		dao = template.getMapper(PartyDaoInterface.class);
+		resultCnt = dao.deleteParticipation(p_num, u_idx);
+		return resultCnt;
+	}
+	
 	
 }

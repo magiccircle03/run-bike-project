@@ -152,8 +152,9 @@ $('#createForm').submit(function() {
 		contentType : 'application/json; charset=utf-8', //전달해줄 때 타입
 		//dataType : 'json', //데이터타입
 		success : function() {
-			alert('성공');
+			//alert('성공');
 			list();
+			location.reload();
 		}
 	});
 });
@@ -206,7 +207,8 @@ function join(p_num) {
 			u_idx : u_idx
 		},
 		success : function(data) {
-			alert(data);
+			//alert(data);
+			location.reload();
 		}
 	});  
  
