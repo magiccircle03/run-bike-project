@@ -42,6 +42,9 @@
 <body>
 <div class="container">
 
+	<!-- 숨겨진 u_idx -->
+	<input id="u_idx" name="u_idx" type="text" class="form-control" value="69">
+
 
 	<div id="top-nav" class="right"><a class="btn" data-toggle="modal" data-target="#createPartyModal">방 만들기</a></div>
 
@@ -104,10 +107,7 @@
 			    <input id="p_password" name="p_password" type="text" placeholder="비밀번호(최대16자)" class="form-control">
 			  </div>
 			  
-			  <div class="form-group">
-			    <!-- 숨겨진 u_idx -->
-			    <input id="u_idx" name="u_idx" type="text" class="form-control" value="2">
-			  </div>
+
 
 	      </div>
 	      <div class="modal-footer">
@@ -129,6 +129,8 @@ $(document).ready(function() {
 	list();
 });
 
+var u_idx = $('#u_idx').val();
+
 var path='http://localhost:8080/runbike';
 
 $('#createForm').submit(function() {
@@ -145,11 +147,11 @@ $('#createForm').submit(function() {
 			p_time : $('#createPartyModal #p_time').val(),
 			p_capacity : $('#createPartyModal #p_capacity').val(),
 			p_password : $('#createPartyModal #p_password').val(),
-			u_idx : $('#createPartyModal #u_idx').val()
+			u_idx : u_idx
 		}),
 		contentType : 'application/json; charset=utf-8', //전달해줄 때 타입
 		//dataType : 'json', //데이터타입
-		success : function(data) {
+		success : function() {
 			alert('성공');
 			list();
 		}
@@ -182,7 +184,7 @@ function list() {
 				html += '</p>\n';
 				html += '<p class="card-text">'+data[i].p_content+'</p>\n';
 				html += '<a href="#" class="btn mintbtn"><i class="fas fa-info-circle"></i>방 정보 보기</a>\n';
-				html += '<a href="#" class="btn mintbtn"><i class="fas fa-child"></i> 참여하기!!</a>\n';
+				html += '<a onclick="join('+data[i].p_num+')" class="btn mintbtn"><i class="fas fa-child"></i> 참여하기!!</a>\n';
 				html += '</div>\n';
 				html += '</div>\n';
 				html += '</div>';
@@ -192,6 +194,22 @@ function list() {
 		}
 
 	});
+}
+
+function join(p_num) {
+
+	//alert(p_num+","+u_idx);	
+  	 $.ajax({
+		url : path + '/party/room/'+p_num,
+		type : 'POST',
+		data : {
+			u_idx : u_idx
+		},
+		success : function(data) {
+			alert(data);
+		}
+	});  
+ 
 }
 
 </script>

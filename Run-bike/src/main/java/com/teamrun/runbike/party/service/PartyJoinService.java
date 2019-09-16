@@ -18,13 +18,11 @@ public class PartyJoinService {
 	private SqlSessionTemplate template;
 	
 	// 참여 테이블 insert한다
-	public int participationInsertAsMaster(RequestParticipationInsert requestParticipationInsert) {
+	public int insertParticipation(RequestParticipationInsert requestParticipationInsert) {
 		int resultCnt = -1;
 		dao = template.getMapper(PartyDaoInterface.class);
 		resultCnt = dao.insertParticipation(requestParticipationInsert);
-		
 		return resultCnt;
 	}
-	
 	
 }

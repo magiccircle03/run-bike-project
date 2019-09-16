@@ -27,22 +27,18 @@
 여긴 ${p_num} 번 방이다^^!!!
 <hr>
 
-<div id="partyInfo">
-출발지: / 목적지:
-[지도엔 목표 경로]
-<input id="readyChk" type="checkbox" data-toggle="toggle" data-on="준비완료!" data-off="준비하기" data-onstyle="primary mint">
-
-</div>
-
-<div id="partyMemberInfo">
-<a onclick="showPartyInfo(${p_num});">새로고침 <i class="fas fa-sync-alt"></i></a>
-참여한 사람 이미지 / 사람 이름 / 준비여부
-[채팅]
-</div>
-
-방장이 아닌 사람에겐
-[준비하기 버튼] 만 보이고
-방장에겐 [시작하기 버튼] 도 보일거야!
+	<div id="partyInfo">
+	출발지: / 목적지:
+	[지도엔 목표 경로]
+	<input id="readyChk" type="checkbox" data-toggle="toggle" data-on="준비완료!" data-off="준비하기" data-onstyle="primary mint">
+	
+	</div>
+	
+	<div id="partyMemberInfo">
+	<a onclick="showPartyInfo(${p_num});">새로고침 <i class="fas fa-sync-alt"></i></a>
+	참여한 사람 이미지 / 사람 이름 / 준비여부
+	[채팅]
+	</div>
 
 </div><!-- 컨테이너 끝 -->
 
@@ -93,6 +89,10 @@ function setReady(readyYN) {
 			//alert(JSON.stringify(data));
 		}
 	}); 
+}
+
+function showParticipationUserInfo() {
+	
 }
 </script>
 </body>

@@ -52,7 +52,7 @@ public class PartyMainContoller {
 		String view = "party/partyLobby";
 		int count = 0;
 		int p_num = 0;
-		int u_idx = 2;
+		int u_idx = 69;
 		// 세션에서 u_idx 가져옴
 		// HttpSession session = request.getSession(false);
 		// LoginInfo loginInfo = session.getAttribute("loginInfo");
@@ -93,6 +93,17 @@ public class PartyMainContoller {
 		return partyInfo;
 	}
 	
+	// 방에 참여하기
+	@CrossOrigin
+	@ResponseBody
+	@RequestMapping(value="/room/{p_num}", method = RequestMethod.POST)
+	public int joinParty(@PathVariable int p_num, @RequestParam("u_idx") int u_idx) {
+		int resultCnt = 0;
+		System.out.println(p_num+","+u_idx);
+		RequestParticipationInsert participationRequest = new RequestParticipationInsert(u_idx, p_num, 'N');
+		resultCnt = joinService.insertParticipation(participationRequest);
+		return resultCnt;
+	}
 	
 	// 방 만들기
 	@CrossOrigin
@@ -102,8 +113,8 @@ public class PartyMainContoller {
 		System.out.println(createRequest);
 		int resultCnt=-1;
 		int key = createService.partyInsert(createRequest);
-		RequestParticipationInsert participationRequest = new RequestParticipationInsert(createRequest.getU_idx(), key, 'Y');
-		resultCnt = joinService.participationInsertAsMaster(participationRequest);
+		RequestParticipationInsert participationRequest = new RequestParticipationInsert(createRequest.getU_idx(), key, 'Y'); //방장 참여
+		resultCnt = joinService.insertParticipation(participationRequest);
 		return resultCnt;
 	}
 	
@@ -119,11 +130,11 @@ public class PartyMainContoller {
 	@CrossOrigin
 	@ResponseBody
 	@RequestMapping(value = "/ready", method = RequestMethod.POST)
-	public String setReadyY(@RequestParam("p_num") int p_num, @RequestParam("u_idx") int u_idx, @RequestParam("readyYN") String readyYN){
+	public int setReadyY(@RequestParam("p_num") int p_num, @RequestParam("u_idx") int u_idx, @RequestParam("readyYN") String readyYN){
 		ReadyInfo readyInfo = new ReadyInfo(p_num,u_idx,readyYN.charAt(0));
 		System.out.println(readyInfo);
 		int resultCnt = readyService.updateReady(readyInfo);
-		return "dd"+resultCnt;
+		return resultCnt;
 	}
 	
 }
