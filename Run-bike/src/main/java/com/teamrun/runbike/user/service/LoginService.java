@@ -41,7 +41,6 @@ public class LoginService implements UserService {
 				// 이메일 인증 ok - 세션에 로그인 정보 저장
 				LoginInfo loginInfo = userInfo.toLoginInfo();
 				request.getSession(true).setAttribute("loginInfo",loginInfo);
-				
 				// 날짜 이력 저장
 				
 				

@@ -10,9 +10,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    
-    <link rel="stylesheet" href="<c:url value='/assets/css/pricing.css'/>">
+     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">   
+    <link rel="stylesheet" href="<c:url value='/assets/css/layout.css'/>">
     <title>Hello, world!</title>
   </head>
   <body>
@@ -32,8 +31,8 @@
     <a class="pt-md-2 mx-md-3" href="#"><i class="fas fa-crown"></i>나의 리워드</a>
     <a class="pt-md-2 mx-md-3" href="#"><i class="fas fa-headset"></i>문의하기</a>
   </nav>
-  <div class="user-info text-primary mr-2"><a href="" class="">${loginInfo.u_name} 님</a></div>
-  <small><a href="" class="text-muted"><i class="fas fa-signout"></i>로그아웃</a></small>
+  <div class="user-info text-primary mr-2"><a href="user/mypage" class="">${loginInfo.u_name} 님</a></div>
+  <small><a href="user/logout" class="text-muted"><i class="fas fa-signout"></i>로그아웃</a></small>
     </div>
 </header>
 <div class="row mb-md-5">
@@ -133,33 +132,9 @@
     </div>
   </footer>
 </div>
-   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-   <script src="https://kit.fontawesome.com/8653072c68.js"></script>
+   <script src="<c:url value='/assets/js/jquery.min.js'/>"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-    <script>
-      $(document).ready(function() {
-          
-          $('#toggle-menu').click(function(){
-              $(this).toggleClass('active');
-              
-              if($(this).hasClass('active')){
-                  $('#navbar').addClass('opened');
-                  document.documentElement.style.overflow = 'hidden';
-                      document.body.scroll = "no";
-              } else {
-                  document.documentElement.style.overflow = 'scroll';
-                  $('#navbar').removeClass('opened');
-                  console.log("NO!");
-          document.body.scroll = "yes";
-                  isClosed = false;
-                  
-              }
-          });
-          
-    });
-    
-        
-    </script>
+ <script src="<c:url value='/assets/js/layout.js'/>"></script>
   </body>
 </html>
