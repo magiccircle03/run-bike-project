@@ -25,6 +25,7 @@ public class PartyInfo {
 	private String p_generate_date_f;
 //	private String p_start_time_f;
 //	private String p_end_time_f;
+
 	
 	SimpleDateFormat f = new SimpleDateFormat("yyyy.MM.dd aaa hh:mm");
 	
@@ -50,10 +51,12 @@ public class PartyInfo {
 	// 제이슨 형식으로 바꿔 반환하는 메서드
 
 	/* 게터와 세터 */
+
 	public int getP_num() {
 		return p_num;
 	}
-	
+
+
 	public void setP_num(int p_num) {
 		this.p_num = p_num;
 	}

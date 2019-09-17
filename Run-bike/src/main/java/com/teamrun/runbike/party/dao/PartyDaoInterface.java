@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.teamrun.runbike.party.domain.PartyInfo;
+import com.teamrun.runbike.party.domain.PartyUserInfo;
 import com.teamrun.runbike.party.domain.ReadyInfo;
 import com.teamrun.runbike.party.domain.RequestParticipationInsert;
 import com.teamrun.runbike.party.domain.RequestPartyCreate;
@@ -40,5 +41,10 @@ public interface PartyDaoInterface {
 	// 준비 상태 변경
 	public int updateReady(ReadyInfo readyInfo);
 	
+	// 파티에 속한 유저 정보를 가져온다
+	public List<PartyUserInfo> getPartyUserList(int p_num);
+
+	// 파티에 속한 유저의 수를 반환한다
+	public int getPartyUserCount(int p_num);
 	
 }

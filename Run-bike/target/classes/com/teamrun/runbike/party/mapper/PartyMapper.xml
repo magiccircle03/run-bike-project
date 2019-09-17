@@ -22,6 +22,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="p_closedYN" column="p_closedYN" />
 	</resultMap>
 
+	<resultMap id="resultPartyUserInfo" type="com.teamrun.runbike.party.domain.PartyUserInfo">
+		<id property="pc_num" column="pc_num" />
+		<result property="u_idx" column="u_idx" />
+		<result property="p_num" column="p_num" />
+		<result property="pc_masterYN" column="pc_masterYN" />
+		<result property="pc_finishYN" column="pc_finishYN" />
+		<result property="pc_readyYN" column="pc_readyYN" />
+		<result property="pc_endYN" column="pc_endYN" />
+		<result property="u_id" column="u_id" />
+		<result property="u_name" column="u_name" />
+		<result property="u_photo" column="u_photo" />
+	</resultMap>
+
 	<!-- 방 만들기. 좌표는 일단 더미 -->
 	<insert id="insertParty" parameterType="com.teamrun.runbike.party.domain.RequestPartyCreate" useGeneratedKeys="true" keyProperty="key">
 		insert into party (p_name, p_start_info, p_end_info, p_XY, p_time, p_capacity, p_content, p_generate_date, p_password) 
@@ -62,7 +75,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select p_num from participation where u_idx=#{idx};
 	</select>
 	
-	<!-- 전체 방의 리스트 구하기 -->
+	<!-- 파티 정보 가져오기 -->
 	<select id="getPartyInfoOne" resultMap="resultPartyInfo">
 		select * from party where p_num=#{num}
 	</select>
@@ -75,6 +88,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<delete id="deleteParticipation">
 		delete from participation where p_num=#{p_num} and u_idx=#{u_idx}
 	</delete>
+	
+	<!-- 파티에 속한 유저 리스트 -->
+	<select id="getPartyUserList" resultMap="resultPartyUserInfo">
+		select * from participation p join run_bike.user u on p.u_idx=u.u_idx where p_num=#{p_num};
+	</select>
+	
+	<!-- 파티에 속한 회원의 수를 가져온다 -->	
+	<select id="getPartyUserCount" resultType="int">
+		select count(*) from participation where p_num=#{num}; 
+	</select>
 	
 	
 </mapper>

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.teamrun.runbike.party.domain.PartyInfo;
+import com.teamrun.runbike.party.domain.PartyUserInfo;
 import com.teamrun.runbike.party.domain.ReadyInfo;
 import com.teamrun.runbike.party.domain.RequestParticipationInsert;
 import com.teamrun.runbike.party.domain.RequestPartyCreate;
@@ -94,15 +95,15 @@ public class PartyMainContoller {
 		return partyInfo;
 	}
 
-	// 방에 속한 유저 정보
-//	@CrossOrigin
-//	@ResponseBody
-//	@RequestMapping(value="/room/{p_num}/user", method = RequestMethod.GET)
-//	public PartyInfo getPartyUserInfo(@PathVariable int p_num) {
-//		PartyUserInfo partyUserInfo = partyInfoService.getPartyUserInfo(p_num);
-//		return partyUserInfo;
-//	}
-//	
+	// 방에 속한 유저 정보 - 일단 그냥 다 불러오고 나중에 정리하자
+	@CrossOrigin
+	@ResponseBody
+	@RequestMapping(value="/room/{p_num}/user", method = RequestMethod.GET)
+	public List<PartyUserInfo> getPartyUserInfo(@PathVariable int p_num) {
+		List<PartyUserInfo> partyUserList = partyInfoService.getPartyUserList(p_num);
+		return partyUserList;
+	}
+	
 	
 	// 방에 참여하기
 	@CrossOrigin
@@ -159,5 +160,15 @@ public class PartyMainContoller {
 		int resultCnt = readyService.updateReady(readyInfo);
 		return resultCnt;
 	}
+
+	// 현재 방의 참여 인원수
+	@CrossOrigin
+	@ResponseBody
+	@RequestMapping(value = "/room/{p_num}/usercount", method = RequestMethod.GET)
+	public int getPartyUserCount(@PathVariable int p_num){ 
+		int curUser=-1;
+		curUser = partyInfoService.getPartyUserCount(p_num);
+		return curUser;
+	} 
 	
 }

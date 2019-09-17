@@ -37,6 +37,9 @@
 	margin: 15px 0;
 	line-height: 35px;
 }
+.h2title{
+	font-weight: bold;
+}
 </style>
 </head>
 <body>
@@ -45,8 +48,19 @@
 	<!-- 숨겨진 u_idx -->
 	<input id="u_idx" name="u_idx" type="text" class="form-control" value="69">
 
+	<div id="top-nav">
+		<table><tr>
+		<td>	
+			<h2>현재 개설된 파티</h2>
+			<p>다른 회원과 함께 달려보세요</p> 
+		</td>
+		<td style="text-align: right; width: 5%;">
+			<a class="btn" data-toggle="modal" data-target="#createPartyModal">방 만들기</a> 
+		</td>
+		</tr>
+		</table>
+	</div>
 
-	<div id="top-nav" class="right"><a class="btn" data-toggle="modal" data-target="#createPartyModal">방 만들기</a></div>
 
 	<div id="partyListContainer">
 		<div id="partyList" class="row">
@@ -176,7 +190,7 @@ function list() {
 				html += '<div class="card card-style">\n';
 				html += '<div class="card-body">\n';
 				html += '<h5 class="card-title">\n';
-				html += data[i].p_name + '('+'현재인원'+'/'+data[i].p_capacity+')\n'
+				html += data[i].p_name + '('+getUserCount(data[i].p_num)+'/'+data[i].p_capacity+')\n'
 				html += '</h5>\n';
 				html += '<p class="card-text">\n';
 				html += '<i class="fas fa-map-marked-alt"></i> 출발지 : '+data[i].p_start_info+'<br>\n';
@@ -184,7 +198,7 @@ function list() {
 				html += '<i class="far fa-clock"></i> 모일 시간 : '+data[i].p_time_f+'<br>\n';
 				html += '</p>\n';
 				html += '<p class="card-text">'+data[i].p_content+'</p>\n';
-				html += '<a href="#" class="btn mintbtn"><i class="fas fa-info-circle"></i>방 정보 보기</a>\n';
+				html += '<a href="#" class="btn mintbtn"><i class="fas fa-info-circle"></i> 방 정보 보기</a>\n';
 				html += '<a onclick="join('+data[i].p_num+')" class="btn mintbtn"><i class="fas fa-child"></i> 참여하기!!</a>\n';
 				html += '</div>\n';
 				html += '</div>\n';
@@ -195,6 +209,20 @@ function list() {
 		}
 
 	});
+}
+
+
+function getUserCount(p_num) {
+	var cnt=-2;
+	$.ajax({
+		url : path+'/party/room/'+p_num+'/usercount',
+		type : 'GET',
+		async : false,
+		success : function(data) {
+			cnt = data;
+		}
+	});
+	return cnt;
 }
 
 function join(p_num) {
