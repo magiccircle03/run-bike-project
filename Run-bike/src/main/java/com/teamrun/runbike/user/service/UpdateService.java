@@ -38,7 +38,9 @@ public class UpdateService implements UserService {
 				userInfo.setU_photo(newFile);				
 				editInfo.getU_photo().transferTo(new File(dir, newFile));
 				
-				new File(dir, old)
+				if(oldFile != "noImg.jpg") {					
+					new File(dir, oldFile).delete();
+				}
 				
 			} catch (IllegalStateException e) {
 				e.printStackTrace();
@@ -47,9 +49,10 @@ public class UpdateService implements UserService {
 			}
 			
 		} else {
-			
+			userInfo.setU_photo(oldFile);
 		}
 		
+		result = dao.editUser(userInfo);
 		
 		
 		

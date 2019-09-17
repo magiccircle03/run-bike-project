@@ -12,5 +12,5 @@ public interface UserDao {
 	public UserInfo selectUserById(String u_id);
 	public int insertLoginDate(int u_idx);
 	public int chkLoginLog(Map<String, Object> param);
-
+	public int editUser(UserInfo userInfo);
 }

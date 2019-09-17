@@ -32,8 +32,8 @@ select count(*) as login_date from run_bike.login_log where u_idx = #{u_idx} and
 	update user set u_verify=true where u_id=#{param1} and u_code = #{param2}
 </update>
 
-<update id="updateUser" parameterType="hashmap">
-	update user set u_
+<update id="editUser">
+	update user set u_pw=#{u_pw}, u_name=#{u_name}, u_photo=#{u_photo} where u_idx=#{u_idx} 
 </update>
 
 <select id="selectUserById" resultMap="userInfoMap">

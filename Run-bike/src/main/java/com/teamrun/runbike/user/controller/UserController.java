@@ -27,9 +27,9 @@ public class UserController {
 	public int update(MultipartHttpServletRequest request, RequestEditInfo editInfo) {
 		int result = 0;
 		
-		editInfo.getOldPhoto();
 		
-		result = updateService.updateInfo(request, editInfo);
+		
+		result = updateService.updateInfo(request,editInfo.getOldFile(), editInfo);
 		
 		return result;
 	}

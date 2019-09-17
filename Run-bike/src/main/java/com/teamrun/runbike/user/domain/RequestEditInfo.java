@@ -20,7 +20,7 @@ public class RequestEditInfo {
 		this.u_name = u_name;
 		this.u_pw = u_pw;
 		this.u_photo = u_photo;
-		this.oldPhoto = oldPhoto;
+		this.oldFile = oldFile;
 	}
 	
 	public String getU_idx() {
@@ -54,17 +54,17 @@ public class RequestEditInfo {
 	public void setU_photo(MultipartFile u_photo) {
 		this.u_photo = u_photo;
 	}
-	public String getOldPhoto() {
-		return oldPhoto;
+	public String getOldFile() {
+		return oldFile;
 	}
-	public void setOldPhoto(String oldPhoto) {
-		this.oldPhoto = oldPhoto;
+	public void setOldFile(String oldFile) {
+		this.oldFile = oldFile;
 	}
 
 	@Override
 	public String toString() {
 		return "RequestEditInfo [u_idx=" + u_idx + ", u_id=" + u_id + ", u_name=" + u_name + ", u_pw=" + u_pw
-				+ ", u_photo=" + u_photo + ", oldPhoto=" + oldPhoto + "]";
+				+ ", u_photo=" + u_photo + ", oldPhoto=" + oldFile + "]";
 	}
 	
 	public UserInfo toUserInfo() {
