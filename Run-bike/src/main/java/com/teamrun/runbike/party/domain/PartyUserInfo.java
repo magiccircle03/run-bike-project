@@ -11,7 +11,9 @@ public class PartyUserInfo {
 	String u_id;
 	String u_name;
 	String u_photo;
+	
 	// 일단 이렇게만 해보고 오류나면 처리하기
+	
 	public PartyUserInfo() {
 		
 	}

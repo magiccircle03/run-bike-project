@@ -27,7 +27,7 @@ public class PartyInfo {
 //	private String p_end_time_f;
 
 	
-	SimpleDateFormat f = new SimpleDateFormat("yyyy.MM.dd aaa hh:mm");
+	SimpleDateFormat f = new SimpleDateFormat("yyyy.MM.dd aaa hh:mm E요일");
 	
 	public PartyInfo() {
 		super();

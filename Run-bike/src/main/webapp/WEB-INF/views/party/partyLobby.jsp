@@ -9,6 +9,8 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 <script src="https://kit.fontawesome.com/8653072c68.js"></script>
+<link rel="stylesheet" href="<c:url value='/assets/css/layout.css'/>">
+<script src="<c:url value='/assets/js/layout.js'/>"></script>
 <style type="text/css">
 
 .right{
@@ -43,6 +45,11 @@
 </style>
 </head>
 <body>
+
+<!-- 해더 시작 -->
+<%-- <%@ include file="/WEB-INF/views/frame/header.jsp" %> --%>
+<!-- 해더 끝 -->
+
 <div class="container">
 
 	<!-- 숨겨진 u_idx -->
@@ -136,6 +143,11 @@
 	
 	
 </div><!-- 컨테이너 끝 -->
+
+
+<!-- 푸터 시작 -->
+<%-- <%@ include file="/WEB-INF/views/frame/footer.jsp" %> --%>
+<!-- 푸터 끝 -->
 
 <script>
 
