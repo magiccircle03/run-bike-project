@@ -39,6 +39,9 @@ select count(*) as login_date from run_bike.login_log where u_idx = #{u_idx} and
 <select id="selectUserById" resultMap="userInfoMap">
 	select * from user where u_id=#{u_id}
 </select>
+<select id="selectIdxById">
+	select u_idx from user where u_id=#{u_id}
+</select>
 
 <update id="reChkVerify">
 	update user set u_verify=true where u_id=#{param1}

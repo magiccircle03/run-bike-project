@@ -62,8 +62,9 @@
   	<form id="userUpdateForm" class="form border" method="post" enctype="multipart/form-data">
   	<h5 class="font-weight-bold text-center">정보 수정</h5>
   		<div class="form-group">
-  			<label>아이디</label>
-  			<span>${loginInfo.u_id}</span>
+  			<input type="hidden" id="u_idx" name="u_idx" value="${loginInfo.u_idx}">
+  			<label>아이디 ${loginInfo.u_id}<input type="hidden" id="u_id" name="u_id" value="${loginInfo.u_id}"></label>
+  			
   		</div>
   		<div class="form-group">
   			<label>이름 <input type="text" id="u_name" name="u_name" value="${loginInfo.u_name}"></label>
@@ -75,6 +76,7 @@
   			<label>새 비밀번호 확인 <input type="password" id="u_repw"></label>
   		</div>
   		<div class="form-group">
+  			<input type="hidden" id="oldFile" name="oldFile" value="${loginInfo.u_Photo}" readonly>
   			<label>사진 <input type="file" id="u_photo" name="u_photo" value="${loginInfo.u_photo}"></label>
   		</div>
   		<div class="form-group">
@@ -141,8 +143,11 @@
     			var formData = new FormData();
     			var file = $('#u_photo')[0].files[0];
     			
+    			formData.append('u_idx',$('#u_idx').val());
+    			formData.append('u_id',$('#u_id').val())
     			formData.append('u_name',$('#u_name').val());
     			formData.append('u_pw',$('#u_pw').val());
+    			formData.append('oldFile',$('#oldFile').val());
     			if(file != undefined){
 					formData.append('u_photo',file);
 				}
