@@ -43,6 +43,12 @@
 h5{
 	font-weight: bold;
 }
+.yellow{
+	color: #FBAB00;
+}
+.gray{
+	color: #aaaaaa;
+}
 </style>
 </head>
 <body>
@@ -54,7 +60,7 @@ h5{
 <div class="container">
 
 <!-- 숨겨진 u_idx -->
-<input id="u_idx" name="u_idx" type="text" class="form-control" value="70">
+<input id="u_idx" name="u_idx" type="text" class="form-control" value="1">
 여긴 ${p_num} 번 방이다^^!!! <br>
 <button class="btn" onclick="exitPartyFn()">나가기</button> 
 <hr>
@@ -121,7 +127,7 @@ h5{
 $(document).ready(function() {
 	showPartyInfo();
 	showPartyUserList();
-	isMaster();
+	showMasterArea();
 	setReady('N');// 어디 갔다오면 처음엔 준비 안된걸로
 });
 
@@ -209,13 +215,27 @@ function showPartyUserList() {
 			$('#partyUserInfo2').html(html2);
 			
 			
+			
+			
 			html1='';
 			html1+='<table>\n';
 			for (var i = 0; i < data.length; i++) {
+				var crown=''; 
 				
+				if(data[i].pc_masterYN=='Y'){
+					crown='<i class="fas fa-crown yellow"></i> '; 
+				}else{
+ 					if(isMaster()){
+ 						crown='<a href="#" onclick="changeMaster()"><i class="fas fa-user-alt gray" style="padding-left:2px;padding-right:2px;"></i></a> '; 
+					}else{
+						crown='<i class="fas fa-user-alt gray" style="padding-left:2px;padding-right:2px;"></i> '; 
+					}
+					
+				}
+					
 				html1+='<tr>\n';
 				html1+='<td class="width30">'+data[i].u_photo+'</td>\n';
-				html1+='<td class="width30">'+data[i].u_name+'</td>\n';
+				html1+='<td class="width30">' + crown + data[i].u_name+'</td>\n';
 				html1+='<td class="width30">'+data[i].pc_readyYN+'</td>\n';
 				html1+='</tr>\n';
 				
@@ -254,6 +274,19 @@ function exitParty() {
 }
 
 // 방장이면 보이게
+function showMasterArea() {
+
+  	if (isMaster()) {
+		$('.master').css('display','block');
+	}
+	else{
+		$('.master').css('display','none');
+	}  
+	 
+}
+
+
+//방장이면 보이게
 function isMaster() {
 	var master = 0;
 	var chk = false;
@@ -269,15 +302,14 @@ function isMaster() {
 	 		}
 	 }); 
 	
-//	alert(chk);
-  	if (chk) {
-		$('.master').css('display','block');
-	}
-	else{
-		$('.master').css('display','none');
-	}  
-	 
+	return chk;
 }
+
+//방장 위임
+function changeMaster(){
+	alert('컨펌창 띄우자! 방장을 위임하시겠습니까?');
+}
+
 
 // 회원정보 계속 업데이트(준비 상태 바로 반영되게)
 var refreshReady = setInterval(function() {

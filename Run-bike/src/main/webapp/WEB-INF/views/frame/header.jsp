@@ -12,7 +12,7 @@
   <div class="navbar-toggle navbar-collapse" data-toggle="collapse" id="navbar">
   <nav class="mx-md-auto font-weight-bold my-2 my-md-0">
     <a class="pt-md-2 p-3-xs mx-md-3 active" href="#"><i class="fas fa-biking"></i>혼자 라이딩</a>
-    <a class="pt-md-2 mx-md-3" href="<c:url value='../party' />"><i class="fas fa-users"></i>같이 달리기</a>
+    <a class="pt-md-2 mx-md-3" href="<c:url value='/party' />"><i class="fas fa-users"></i>같이 달리기</a>
     <a class="pt-md-2 mx-md-3" href="#"><i class="far fa-laugh"></i>스탬프</a>
     <a class="pt-md-2 mx-md-3" href="#"><i class="fas fa-crown"></i>나의 리워드</a>
     <a class="pt-md-2 mx-md-3" href="#"><i class="fas fa-headset"></i>문의하기</a>

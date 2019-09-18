@@ -31,7 +31,7 @@
 									<div id="menu">
 										<ul>
 											<li><a href="#"><i class="fas fa-biking"></i> 혼자 라이딩 </a></li>
-											<li><a href="<c:url value='party' />"><i class="fas fa-users"></i> 같이 달리기 </a></li>
+											<li><a href="<c:url value='/party' />"><i class="fas fa-users"></i> 같이 달리기 </a></li>
 											<li><a href="#"><i class="far fa-laugh"></i> 스탬프투어 </a></li>
 											<li><a href="#"><i class="fas fa-crown"></i> 나의 리워드 </a></li>
 											<li><a href="#"><i class="fas fa-headset"></i> 문의하기 </a></li>
@@ -50,7 +50,7 @@
 							site template freebie<br />
 							crafted by <a href="http://html5up.net">HTML5 UP</a>.</p>
 							<ul class="actions special">
-								<li><a href="#" class="button primary">Activate</a></li>
+								<li><a href="" class="button primary">Activate</a></li>
 							</ul>
 						</div>
 						<a href="#one" class="more scrolly">Learn More</a>
