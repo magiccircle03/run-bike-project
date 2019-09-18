@@ -54,7 +54,7 @@ public class PartyMainContoller {
 		String view = "party/partyLobby";
 		int count = 0;
 		int p_num = 0;
-		int u_idx = 69;
+		int u_idx = 70;
 		// 세션에서 u_idx 가져옴
 		// HttpSession session = request.getSession(false);
 		// LoginInfo loginInfo = session.getAttribute("loginInfo");
@@ -102,6 +102,15 @@ public class PartyMainContoller {
 	public List<PartyUserInfo> getPartyUserInfo(@PathVariable int p_num) {
 		List<PartyUserInfo> partyUserList = partyInfoService.getPartyUserList(p_num);
 		return partyUserList;
+	}
+	
+	// 그 방의 마스터 u_idx 가져오기
+	@CrossOrigin
+	@ResponseBody
+	@RequestMapping(value="/room/{p_num}/master", method = RequestMethod.GET)
+	public int getPartyMasterIdx(@PathVariable int p_num) {
+		int masterIdx = partyInfoService.getPartyMasterIdx(p_num);
+		return masterIdx;
 	}
 	
 	

@@ -56,4 +56,12 @@ public class PartyInfoService {
 		return userCnt;
 	}
 	
+	// 해당 방의 마스터 회원 번호를 가져온다 
+	public int getPartyMasterIdx(int p_num) {
+		int idx=0;
+		dao = template.getMapper(PartyDaoInterface.class);
+		idx = dao.getPartyMasterIdx(p_num);
+		return idx;
+	}
+	
 }

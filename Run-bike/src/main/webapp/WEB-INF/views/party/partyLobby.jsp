@@ -6,11 +6,15 @@
 <meta charset="UTF-8">
 <title>같이 달리기</title>
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
-<script src="https://kit.fontawesome.com/8653072c68.js"></script>
+<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script> -->
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 <link rel="stylesheet" href="<c:url value='/assets/css/layout.css'/>">
 <script src="<c:url value='/assets/js/layout.js'/>"></script>
+
+<script src="https://kit.fontawesome.com/8653072c68.js"></script>
 <style type="text/css">
 
 .right{
@@ -30,6 +34,11 @@
 	width: 49%;
 }
 
+.mintbtn:hover{
+	background-color: #1F9E93;
+	color: #ffffff;
+}
+
 .card-style{
 	box-shadow: 5px 5px 5px #dedede;
 	padding: 20px;
@@ -42,26 +51,30 @@
 .h2title{
 	font-weight: bold;
 }
+h3{
+	color : #555555;
+	font-weight: bold;
+}
 </style>
 </head>
 <body>
 
 <!-- 해더 시작 -->
-<%-- <%@ include file="/WEB-INF/views/frame/header.jsp" %> --%>
+<%@ include file="/WEB-INF/views/frame/header.jsp" %>
 <!-- 해더 끝 -->
 
 <div class="container">
 
 	<!-- 숨겨진 u_idx -->
-	<input id="u_idx" name="u_idx" type="text" class="form-control" value="69">
+	<input id="u_idx" name="u_idx" type="text" class="form-control" value="70">
 
 	<div id="top-nav">
 		<table><tr>
 		<td>	
-			<h2>현재 개설된 파티</h2>
+			<h3>현재 개설된 파티</h3>
 			<p>다른 회원과 함께 달려보세요</p> 
 		</td>
-		<td style="text-align: right; width: 5%;">
+		<td style="text-align: right">
 			<a class="btn" data-toggle="modal" data-target="#createPartyModal">방 만들기</a> 
 		</td>
 		</tr>
@@ -83,8 +96,8 @@
 	  <div class="modal-dialog width">
 	    <div class="modal-content">
 	      <div class="modal-header">
+	      <h4 class="modal-title" id="createPartyTitle">방만들기</h4>
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	        <h4 class="modal-title" id="createPartyTitle">방만들기</h4>
 	      </div>
 	      
 		  <form id="createForm">
@@ -146,7 +159,7 @@
 
 
 <!-- 푸터 시작 -->
-<%-- <%@ include file="/WEB-INF/views/frame/footer.jsp" %> --%>
+<%@ include file="/WEB-INF/views/frame/footer.jsp" %>
 <!-- 푸터 끝 -->
 
 <script>
@@ -202,7 +215,7 @@ function list() {
 				html += '<div class="card card-style">\n';
 				html += '<div class="card-body">\n';
 				html += '<h5 class="card-title">\n';
-				html += data[i].p_name + '('+getUserCount(data[i].p_num)+'/'+data[i].p_capacity+')\n'
+				html += data[i].p_name + ' ( '+getUserCount(data[i].p_num)+' / '+data[i].p_capacity+' ) \n'
 				html += '</h5>\n';
 				html += '<p class="card-text">\n';
 				html += '<i class="fas fa-map-marked-alt"></i> 출발지 : '+data[i].p_start_info+'<br>\n';
@@ -211,7 +224,7 @@ function list() {
 				html += '</p>\n';
 				html += '<p class="card-text">'+data[i].p_content+'</p>\n';
 				html += '<a href="#" class="btn mintbtn"><i class="fas fa-info-circle"></i> 방 정보 보기</a>\n';
-				html += '<a onclick="join('+data[i].p_num+')" class="btn mintbtn"><i class="fas fa-child"></i> 참여하기!!</a>\n';
+				html += '<a href="#" onclick="join('+data[i].p_num+')" class="btn mintbtn"><i class="fas fa-child"></i> 참여하기!!</a>\n';
 				html += '</div>\n';
 				html += '</div>\n';
 				html += '</div>';
@@ -255,5 +268,7 @@ function join(p_num) {
 }
 
 </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 </body>
 </html>

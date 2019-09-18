@@ -7,35 +7,56 @@
 <meta charset="UTF-8">
 <title>같이 달리기</title>
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css"> -->
+<!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script> -->
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<link rel="stylesheet" href="<c:url value='/assets/css/layout.css'/>">
+<script src="<c:url value='/assets/js/layout.js'/>"></script>
+
 <script src="https://kit.fontawesome.com/8653072c68.js"></script>
-<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
-<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+
+<link href="//cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.4.0/css/bootstrap4-toggle.min.css" rel="stylesheet">  
+<script src="//cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.4.0/js/bootstrap4-toggle.min.js"></script>
+
 
 <style type="text/css">
 .mint{
 	background-color: #21B2A6;
 	color: #fefefe;
+	border-color: #1F9E93;
 }
-
+.mint:hover{
+	background-color: #1F9E93;
+	color: #fefefe;
+}
 .tabWidth{
 	width:33%;
 	text-align: center;
 }
-
-.width
-
+.master{
+	display: none;
+}
+.width30{
+	width: 30%;
+}
+h5{
+	font-weight: bold;
+}
 </style>
 </head>
 <body>
 
+<!-- 해더 시작 -->
+<%@ include file="/WEB-INF/views/frame/header.jsp" %>
+<!-- 해더 끝 -->
+
 <div class="container">
 
 <!-- 숨겨진 u_idx -->
-<input id="u_idx" name="u_idx" type="text" class="form-control" value="69">
+<input id="u_idx" name="u_idx" type="text" class="form-control" value="70">
 여긴 ${p_num} 번 방이다^^!!! <br>
-<button class="btn" onclick="exitParty()">나가기</button> 
+<button class="btn" onclick="exitPartyFn()">나가기</button> 
 <hr>
 
 <!-- 탭 클릭시마다 새로고침되게 하기 -->
@@ -60,13 +81,26 @@
     </div>
     
     <input id="readyChk" type="checkbox" data-toggle="toggle" data-on="준비완료!" data-off="준비하기" data-offstyle="" data-onstyle="primary mint">
-    <br>
-    <button class="btn">시작하기</button> <!-- 방장만 보이게 -->
+   	<button class="btn master" onclick="startRiding()">시작하기</button>
+    <hr>
+    <h5><i class="fas fa-child"></i> 함께 달릴 동료들</h5>
+    <div id="partyUserInfo1">
+    <!-- 참가자 사진 / 이름 / 준비여부-->
+	</div>
+	
+     <!-- 방장만 보이게 영역 -->
+	<div id="partyInfoMaster" class="master">
+	    <button class="btn" onclick="editParty()">방 정보 수정</button> 
+	    <button class="btn" onclick="deleteParty()">방 삭제</button> 
+	</div>
+    <!--  -->
+    
+    
   </div>
   
   <div class="tab-pane fade" id="curInfoTab">
    	<p>지도 정보</p>
-   	<div id="partyUserInfo">
+   	<div id="partyUserInfo2">
 	참여한 사람 이미지 / 사람 이름 / 준비여부
 	</div>
   </div>
@@ -78,13 +112,17 @@
 </div>
 
 </div><!-- 컨테이너 끝 -->
-
+<!-- 푸터 시작 -->
+<%@ include file="/WEB-INF/views/frame/footer.jsp" %>
+<!-- 푸터 끝 -->
 <script>
 
 
 $(document).ready(function() {
 	showPartyInfo();
 	showPartyUserList();
+	isMaster();
+	setReady('N');// 어디 갔다오면 처음엔 준비 안된걸로
 });
 
 var p_num = ${p_num};
@@ -131,10 +169,10 @@ function getUserCount() {
 
 $('#readyChk').change(function() {
     if($("#readyChk").is(":checked")){
-        alert("레디!");
+        //alert("레디!");
         setReady('Y');
     }else{
-        alert("레디 취소!");
+        //alert("레디 취소!");
         setReady('N');
     }
 });
@@ -151,6 +189,7 @@ function setReady(readyYN) {
 		success : function(data) {
 			//alert(data);
 			//alert(JSON.stringify(data));
+			showPartyUserList();
 		}
 	}); 
 }
@@ -163,19 +202,41 @@ function showPartyUserList() {
 		success : function(data) {
 			//alert('호');
 			//alert(JSON.stringify(data));
-			html='';
+			html2='';
 			for (var i = 0; i < data.length; i++) {
-				html+=' '+data[i].u_photo+' '+data[i].u_name+' 여기는 상태<br>';
+				html2+=' '+data[i].u_photo+' '+data[i].u_name+' 여기는 상태<br>';
 			}
-			$('#partyUserInfo').html(html);
+			$('#partyUserInfo2').html(html2);
+			
+			
+			html1='';
+			html1+='<table>\n';
+			for (var i = 0; i < data.length; i++) {
+				
+				html1+='<tr>\n';
+				html1+='<td class="width30">'+data[i].u_photo+'</td>\n';
+				html1+='<td class="width30">'+data[i].u_name+'</td>\n';
+				html1+='<td class="width30">'+data[i].pc_readyYN+'</td>\n';
+				html1+='</tr>\n';
+				
+				//html1+=' '+data[i].u_photo+' '+data[i].u_name+' '+data[i].pc_readyYN+'<br>';
+			}
+			html1+='</table>\n';
+			$('#partyUserInfo1').html(html1);
 			
 		}
 
 	});
 }
 
+function exitPartyFn() {
+	// 현재 인원수가 1이면 -> 폭파됩니다 그래도 ? y -> 파티에서 나가고, 방도 삭제
+	// 아니면 -> 방장인지 확인 -> 방장이면 안된다!
+	exitParty()
+}
+
 function exitParty() {
-	// 방장은 이 버튼을 못 보게 하자..
+	// 방장은 나가면 
 	// alert(p_num+","+u_idx);
  	 $.ajax({
  		url : path + '/party/room/'+p_num,
@@ -192,8 +253,44 @@ function exitParty() {
  	});  
 }
 
+// 방장이면 보이게
+function isMaster() {
+	var master = 0;
+	var chk = false;
+	 $.ajax({
+	 		url : path + '/party/room/'+p_num+'/master',
+	 		type : 'GET',
+			async : false,
+	 		success : function(data) {
+	 			master = parseInt(data);
+	 			//alert(master);
+	 			chk = (master==u_idx);
+	 			//alert(chk);
+	 		}
+	 }); 
+	
+//	alert(chk);
+  	if (chk) {
+		$('.master').css('display','block');
+	}
+	else{
+		$('.master').css('display','none');
+	}  
+	 
+}
 
+// 회원정보 계속 업데이트(준비 상태 바로 반영되게)
+var refreshReady = setInterval(function() {
+		showPartyUserList();
+}, 1000);
+
+
+function stopRefreshReady() {
+	clearInterval(refreshReady);
+}
 
 </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 </body>
 </html>

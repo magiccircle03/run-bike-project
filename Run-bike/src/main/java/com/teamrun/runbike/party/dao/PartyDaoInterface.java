@@ -44,7 +44,10 @@ public interface PartyDaoInterface {
 	// 파티에 속한 유저 정보를 가져온다
 	public List<PartyUserInfo> getPartyUserList(int p_num);
 
-	// 파티에 속한 유저의 수를 반환한다
+	// 파티에 속한 유저의 수를 가져온다
 	public int getPartyUserCount(int p_num);
+	
+	// 해당 파티 마스터의 idx를 가져온다 
+	public int getPartyMasterIdx(int p_num);
 	
 }

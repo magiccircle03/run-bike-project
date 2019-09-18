@@ -99,5 +99,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select count(*) from participation where p_num=#{num}; 
 	</select>
 	
-	
+	<!-- 파티의 방장 번호를 가져온다 -->	
+	<select id="getPartyMasterIdx" resultType="int">
+		select u_idx from participation where p_num=#{num} and pc_masterYN='Y';
+	</select>
+
 </mapper>
