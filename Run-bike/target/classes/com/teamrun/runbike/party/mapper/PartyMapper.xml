@@ -85,6 +85,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		update participation set pc_readyYN=#{readyYN} where p_num=#{p_num} and u_idx=#{u_idx}
 	</update>
 	
+	<!-- 방 나가기 -->
 	<delete id="deleteParticipation">
 		delete from participation where p_num=#{p_num} and u_idx=#{u_idx}
 	</delete>
@@ -113,5 +114,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<update id="setMaster">
 		update participation set pc_masterYN='Y' where p_num=#{p_num} and u_idx=#{u_idx};
 	</update>
+	
+	<delete id="deleteParty">
+		delete from party where p_num=#{num};
+	</delete>
 	
 </mapper>

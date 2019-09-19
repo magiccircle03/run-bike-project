@@ -56,5 +56,6 @@ public interface PartyDaoInterface {
 	// 넘어온 유저를 방장으로
 	public int setMaster(@Param("p_num") int p_num, @Param("u_idx") int u_idx); 
 	
-	
+	// 방을 삭제한다
+	public int deleteParty(int p_num);
 }

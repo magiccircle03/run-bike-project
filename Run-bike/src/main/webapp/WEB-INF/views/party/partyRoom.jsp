@@ -60,7 +60,7 @@ h5{
 <div class="container">
 
 <!-- 숨겨진 u_idx -->
-<input id="u_idx" name="u_idx" type="text" class="form-control" value="70">
+<input id="u_idx" name="u_idx" type="text" class="form-control" value="71">
 여긴 ${p_num} 번 방이다^^!!! <br>
 <button class="btn" onclick="exitPartyFn()">나가기</button> 
 <hr>
@@ -254,10 +254,9 @@ function exitPartyFn() {
 	if(confirm('현재 참여한 방에서 나가시겠습니까?')){
 		if(getUserCount()<2){
 			if(confirm('인원 1명이야! 너 나가면 방폭 되는데 나갈거야?')){
-				//exitParty(u_idx);
+				exitParty(u_idx);
 				// 방삭제
-				alert('나가기 기능!');
-				alert('방삭제 기능!');
+				deleteParty();
 			}
 		}else{
 			if(isMaster()){
@@ -340,6 +339,19 @@ function changeMaster(u_idx_t){
 	}
 }
 
+// 파티삭제
+function deleteParty(){
+	 $.ajax({
+		url : path + '/party/'+p_num,
+		type : 'DELETE',
+ 		contentType : 'application/json; charset=utf-8',
+ 		//dataType : 'json', //데이터타입
+		success : function() {
+			//alert('삭제성공');
+			location.href="../party";
+		}
+	 });
+}
 
 // 회원정보 계속 업데이트(준비 상태 바로 반영되게)
 var refreshReady = setInterval(function() {

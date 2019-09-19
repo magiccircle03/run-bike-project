@@ -13,7 +13,6 @@
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 <link rel="stylesheet" href="<c:url value='/assets/css/layout.css'/>">
 <script src="<c:url value='/assets/js/layout.js'/>"></script>
-
 <script src="https://kit.fontawesome.com/8653072c68.js"></script>
 <style type="text/css">
 
@@ -66,7 +65,7 @@ h3{
 <div class="container">
 
 	<!-- 숨겨진 u_idx -->
-	<input id="u_idx" name="u_idx" type="text" class="form-control" value="70">
+	<input id="u_idx" name="u_idx" type="text" class="form-control" value="71">
 
 	<div id="top-nav">
 		<table><tr>
@@ -100,7 +99,7 @@ h3{
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 	      </div>
 	      
-		  <form id="createForm">
+<!-- 		  <form id="createForm"> -->
 	      <div class="modal-body">
 	        
 	          <div class="form-group">
@@ -145,10 +144,10 @@ h3{
 
 	      </div>
 	      <div class="modal-footer">
-	        <button id="createPartyBtn" type="submit" class="btn">방 만들기</button>
+	        <button id="createPartyBtn" type="submit" class="btn" onclick="createParty()">방 만들기</button>
 	      </div>
 	      
-	     </form>
+<!-- 	     </form> -->
 	    </div>
 	  </div>
 	</div>
@@ -163,6 +162,8 @@ h3{
 <!-- 푸터 끝 -->
 
 <script>
+document.getElementById('p_time').value= new Date().toISOString().slice(0, 16);
+//$('#p_time').val(new Date().toISOString().slice(0, 16));
 
 $(document).ready(function() {
 	list();
@@ -172,7 +173,7 @@ var u_idx = $('#u_idx').val();
 
 var path='http://localhost:8080/runbike';
 
-$('#createForm').submit(function() {
+function createParty() {
 	$.ajax({
 		//url : 'http://15.164.162.21:8080/culturefork/review/post',
 		url : path+'/party',
@@ -191,12 +192,12 @@ $('#createForm').submit(function() {
 		contentType : 'application/json; charset=utf-8', //전달해줄 때 타입
 		//dataType : 'json', //데이터타입
 		success : function() {
-			//alert('성공');
-			list();
-			location.reload();
+			alert('성공');
+			//list();
+			location.href='party';
 		}
 	});
-});
+}
 
 function list() {
 	
@@ -261,7 +262,8 @@ function join(p_num) {
 		},
 		success : function(data) {
 			//alert(data);
-			location.reload();
+			//location.reload();
+			location.href='party';
 		}
 	});  
  
