@@ -50,4 +50,11 @@ public interface PartyDaoInterface {
 	// 해당 파티 마스터의 idx를 가져온다 
 	public int getPartyMasterIdx(int p_num);
 	
+	// 해당 방의 방장을 초기화
+	public int resetMaster(int p_num); 
+	
+	// 넘어온 유저를 방장으로
+	public int setMaster(@Param("p_num") int p_num, @Param("u_idx") int u_idx); 
+	
+	
 }

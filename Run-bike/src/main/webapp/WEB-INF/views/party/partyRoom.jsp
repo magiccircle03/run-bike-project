@@ -226,7 +226,7 @@ function showPartyUserList() {
 					crown='<i class="fas fa-crown yellow"></i> '; 
 				}else{
  					if(isMaster()){
- 						crown='<a href="#" onclick="changeMaster()"><i class="fas fa-user-alt gray" style="padding-left:2px;padding-right:2px;"></i></a> '; 
+ 						crown='<a href="#" onclick="changeMaster('+data[i].u_idx+')"><i class="fas fa-user-alt gray" style="padding-left:2px;padding-right:2px;"></i></a> '; 
 					}else{
 						crown='<i class="fas fa-user-alt gray" style="padding-left:2px;padding-right:2px;"></i> '; 
 					}
@@ -269,8 +269,7 @@ function exitParty() {
  			//alert(data);
  			location.href="../party";
  		}
- 		
- 	});  
+ 	});
 }
 
 // 방장이면 보이게
@@ -305,9 +304,25 @@ function isMaster() {
 	return chk;
 }
 
-//방장 위임
-function changeMaster(){
-	alert('컨펌창 띄우자! 방장을 위임하시겠습니까?');
+// 방장 위임
+// 타겟 유저의 idx를 받는다
+function changeMaster(u_idx_t){
+	if (confirm('방장을 위임하시겠습니까?')) {
+		alert('방장을 위임합니다');
+	 	 $.ajax({
+		 	url : path + '/party/room/'+p_num+'/master',
+	  		type : 'PUT',
+	  		data : JSON.stringify({
+	  			u_idx_t : u_idx_t 
+	 		}),
+	 		contentType : 'application/json; charset=utf-8',
+	  		success : function(data) {
+	  			alert(data);
+	  			showMasterArea();
+	  		}
+	  		
+	  	});
+	}
 }
 
 

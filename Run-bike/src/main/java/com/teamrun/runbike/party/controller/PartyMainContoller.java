@@ -25,6 +25,7 @@ import com.teamrun.runbike.party.service.PartyCreateService;
 import com.teamrun.runbike.party.service.PartyInfoService;
 import com.teamrun.runbike.party.service.PartyJoinService;
 import com.teamrun.runbike.party.service.PartyListService;
+import com.teamrun.runbike.party.service.PartyMasterService;
 import com.teamrun.runbike.party.service.ReadyService;
 
 @Controller
@@ -46,6 +47,9 @@ public class PartyMainContoller {
 	
 	@Autowired
 	private ReadyService readyService;
+	
+	@Autowired
+	private PartyMasterService masterService;
 	
 	
 	// 인덱스에서 함께하기로 갈 때 분기처리(참여한 방이 있냐없냐 따라서)
@@ -180,4 +184,18 @@ public class PartyMainContoller {
 		return curUser;
 	} 
 	
+	
+	// 방장 위임
+	@CrossOrigin
+	@ResponseBody
+	@RequestMapping(value="/room/{p_num}/master", method = RequestMethod.PUT)
+	public String changeMaster(@PathVariable int p_num, @RequestBody JSONObject u_idx_str) {
+		String result = "";
+		//System.out.println(u_idx_str.get("u_idx_t"));
+		//String u_idx = u_idx_str.get("u_idx_t").toString();
+		//System.out.println(u_idx);
+		int u_idx = Integer.parseInt(u_idx_str.get("u_idx_t").toString());
+		result = masterService.changeMaster(p_num,u_idx);
+		return result;
+	}
 }

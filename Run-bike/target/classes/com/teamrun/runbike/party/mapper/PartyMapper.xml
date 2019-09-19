@@ -104,4 +104,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select u_idx from participation where p_num=#{num} and pc_masterYN='Y';
 	</select>
 
+	<!-- 해당 방의 방장을 초기화 -->
+	<update id="resetMaster">
+		update participation set pc_masterYN='N' where p_num=#{num} and pc_masterYN='Y';
+	</update>
+	
+	<!-- 해당 방의 방장을 초기화 -->
+	<update id="setMaster">
+		update participation set pc_masterYN='Y' where p_num=#{p_num} and u_idx=#{u_idx};
+	</update>
+	
 </mapper>
