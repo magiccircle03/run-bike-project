@@ -60,7 +60,7 @@ h5{
 <div class="container">
 
 <!-- 숨겨진 u_idx -->
-<input id="u_idx" name="u_idx" type="text" class="form-control" value="1">
+<input id="u_idx" name="u_idx" type="text" class="form-control" value="70">
 여긴 ${p_num} 번 방이다^^!!! <br>
 <button class="btn" onclick="exitPartyFn()">나가기</button> 
 <hr>
@@ -249,20 +249,35 @@ function showPartyUserList() {
 	});
 }
 
+// 내가 파티를 나간다
 function exitPartyFn() {
-	// 현재 인원수가 1이면 -> 폭파됩니다 그래도 ? y -> 파티에서 나가고, 방도 삭제
-	// 아니면 -> 방장인지 확인 -> 방장이면 안된다!
-	exitParty()
+	if(confirm('현재 참여한 방에서 나가시겠습니까?')){
+		if(getUserCount()<2){
+			if(confirm('인원 1명이야! 너 나가면 방폭 되는데 나갈거야?')){
+				//exitParty(u_idx);
+				// 방삭제
+				alert('나가기 기능!');
+				alert('방삭제 기능!');
+			}
+		}else{
+			if(isMaster()){
+				alert('방장이 어딜나가! 나갈거면 위임해');
+			}else{
+				exitParty(u_idx); // 현재 로그인된 유저를 얌전히 보내준다
+			}
+		}
+	}
 }
+	
 
-function exitParty() {
-	// 방장은 나가면 
+// 매개변수로 전해진 유저를 참여테이블에서 delete 하는 함수
+function exitParty(idx) {
 	// alert(p_num+","+u_idx);
  	 $.ajax({
  		url : path + '/party/room/'+p_num,
  		type : 'DELETE',
  		data : JSON.stringify({
- 			u_idx : u_idx
+ 			u_idx : idx
 		}),
 		contentType : 'application/json; charset=utf-8',
  		success : function(data) {
@@ -308,7 +323,7 @@ function isMaster() {
 // 타겟 유저의 idx를 받는다
 function changeMaster(u_idx_t){
 	if (confirm('방장을 위임하시겠습니까?')) {
-		alert('방장을 위임합니다');
+		//alert('방장을 위임합니다');
 	 	 $.ajax({
 		 	url : path + '/party/room/'+p_num+'/master',
 	  		type : 'PUT',
@@ -317,7 +332,7 @@ function changeMaster(u_idx_t){
 	 		}),
 	 		contentType : 'application/json; charset=utf-8',
 	  		success : function(data) {
-	  			alert(data);
+	  			alert(data); // 방장 위임 결과를 띄워줌
 	  			showMasterArea();
 	  		}
 	  		
