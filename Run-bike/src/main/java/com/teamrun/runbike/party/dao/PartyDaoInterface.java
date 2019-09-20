@@ -58,4 +58,7 @@ public interface PartyDaoInterface {
 	
 	// 방을 삭제한다
 	public int deleteParty(int p_num);
+	
+	// 준비되지 않은 유저수 가져온다
+	public int getNotReadyUsercount(int p_num);
 }

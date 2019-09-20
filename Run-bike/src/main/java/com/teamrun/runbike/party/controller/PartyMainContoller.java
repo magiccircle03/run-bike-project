@@ -193,6 +193,15 @@ public class PartyMainContoller {
 		curUser = partyInfoService.getPartyUserCount(p_num);
 		return curUser;
 	}
+	// 준비하지 않은 사람의 수를 구해온다
+	@CrossOrigin
+	@ResponseBody
+	@RequestMapping(value = "/room/{p_num}/notReadyUsercount", method = RequestMethod.GET)
+	public int getNotReadyUsercount(@PathVariable int p_num) {
+		int curUser = -1;
+		curUser = readyService.getNotReadyUsercount(p_num);
+		return curUser;
+	}
 
 	// 방장 위임
 	@CrossOrigin

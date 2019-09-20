@@ -23,4 +23,11 @@ public class ReadyService {
 
 		return resultCnt;
 	}
+	
+	public int getNotReadyUsercount(int p_num) {
+		int resultCnt = -1;
+		dao = template.getMapper(PartyDaoInterface.class);
+		resultCnt = dao.getNotReadyUsercount(p_num);
+		return resultCnt;
+	}
 }

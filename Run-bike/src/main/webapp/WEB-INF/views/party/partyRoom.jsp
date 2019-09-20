@@ -71,6 +71,7 @@ h5{
 <input id="u_idx" name="u_idx" type="text" class="form-control" value="69">
 여긴 ${p_num} 번 방이다^^!!! <br>
 <button class="btn" onclick="exitPartyFn()">나가기</button> 
+<button onclick="isAllReady()">준비되지 않은 사람 수 </button>
 <hr>
 
 <!-- 탭 클릭시마다 새로고침되게 하기 -->
@@ -95,7 +96,7 @@ h5{
     </div>
     
     <input id="readyChk" type="checkbox" data-toggle="toggle" data-on="준비완료!" data-off="준비하기" data-offstyle="" data-onstyle="primary mint">
-   	<button class="btn master" onclick="startRiding()">시작하기</button>
+   	<button id="startBtn" class="btn master" onclick="startRiding()">시작하기</button>
     <hr>
     <h5><i class="fas fa-child"></i> 함께 달릴 동료들</h5>
     <div id="partyUserInfo1">
@@ -189,6 +190,7 @@ $('#readyChk').change(function() {
         //alert("레디 취소!");
         setReady('N');
     }
+    
 });
 
 function setReady(readyYN) {	
@@ -385,6 +387,25 @@ function stopRefreshReady() {
 	clearInterval(refreshReady);
 }
 
+function isAllReady() {
+	// 준비 N인 사람이 있으면 -> N / 준비 N인 사람 수가 0이면 -> Y 반환
+	var cnt = -2;
+	 $.ajax({
+	 		url : path + '/party/room/'+p_num+'/notReadyUsercount',
+	 		type : 'GET',
+			async : false,
+	 		success : function(data) {
+	 			cnt = parseInt(data);
+	 			//alert(cnt);
+	 		}
+	 }); 
+	 
+	 if(cnt==0){
+		 alert('모두준비되었다');
+	 }else{
+		 alert('준비되지 않은 인원 :'+cnt);
+	 }
+}
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>

@@ -119,4 +119,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		delete from party where p_num=#{num};
 	</delete>
 	
+	<!-- 준비되지 않은 유저의 수를 반환한다 -->	
+	<select id="getNotReadyUsercount" resultType="int">
+		select count(*) from run_bike.participation where p_num=#{num} and pc_readyYN='N';
+	</select>
+	
 </mapper>
