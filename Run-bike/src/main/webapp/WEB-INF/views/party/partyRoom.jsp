@@ -240,13 +240,15 @@ function showPartyUserList() {
 				var crown=''; 
 				var bold='';
 				var readyStr='';
+				//var delBtn='';
 				
 				if(data[i].pc_masterYN=='Y'){
 					crown='<i class="fas fa-crown yellow"></i> '; 
 				}else{
  					if(isMaster()){
  						crown='<a href="#" onclick="changeMaster('+data[i].u_idx+')"><i class="fas fa-user-alt gray" style="padding-left:2px;padding-right:2px;"></i></a> '; 
-					}else{
+ 						//delBtn=' <a href="#" onclick=""> <i class="fas fa-times"></i></a>';
+ 					}else{
 						crown='<i class="fas fa-user-alt gray" style="padding-left:2px;padding-right:2px;"></i> '; 
 					}
 					
@@ -266,7 +268,7 @@ function showPartyUserList() {
 				
 				html1+='<tr>\n';
 				html1+='<td class="width30">'+data[i].u_photo+'</td>\n';
-				html1+='<td class="width30 '+bold+'">' + crown + data[i].u_name+'</td>\n';
+				html1+='<td class="width30 '+bold+'">' + crown + data[i].u_name + delBtn + '</td>\n';
 				html1+='<td class="width30">'+readyStr+'</td>\n';
 				html1+='</tr>\n';
 				
