@@ -65,7 +65,7 @@ h3{
 <div class="container">
 
 	<!-- 숨겨진 u_idx -->
-	<input id="u_idx" name="u_idx" type="text" class="form-control" value="71">
+	<input id="u_idx" name="u_idx" type="text" class="form-control" value="69">
 
 	<div id="top-nav">
 		<table><tr>
@@ -162,8 +162,12 @@ h3{
 <!-- 푸터 끝 -->
 
 <script>
-document.getElementById('p_time').value= new Date().toISOString().slice(0, 16);
-//$('#p_time').val(new Date().toISOString().slice(0, 16));
+
+var timezoneOffset = new Date().getTimezoneOffset() * 60000;
+var timezoneDate = new Date(Date.now() - timezoneOffset); // 타임존을 반영한 현재 시각
+ 
+//document.getElementById('p_time').value= new Date().toISOString().slice(0, 16);
+$('#p_time').val(timezoneDate.toISOString().slice(0, 16));
 
 $(document).ready(function() {
 	list();
@@ -192,7 +196,7 @@ function createParty() {
 		contentType : 'application/json; charset=utf-8', //전달해줄 때 타입
 		//dataType : 'json', //데이터타입
 		success : function() {
-			alert('성공');
+			//alert('성공');
 			//list();
 			location.href='party';
 		}
@@ -252,7 +256,6 @@ function getUserCount(p_num) {
 }
 
 function join(p_num) {
-
 	//alert(p_num+","+u_idx);	
   	 $.ajax({
 		url : path + '/party/room/'+p_num,

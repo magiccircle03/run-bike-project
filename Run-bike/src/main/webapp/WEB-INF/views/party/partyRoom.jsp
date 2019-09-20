@@ -30,6 +30,11 @@
 	background-color: #1F9E93;
 	color: #fefefe;
 }
+.ready{
+	background-color: #21B2A6;
+	color: #fefefe;
+	font-weight: bold;
+}
 .tabWidth{
 	width:33%;
 	text-align: center;
@@ -49,6 +54,9 @@ h5{
 .gray{
 	color: #aaaaaa;
 }
+.bold{
+	font-weight: bold;
+}
 </style>
 </head>
 <body>
@@ -60,7 +68,7 @@ h5{
 <div class="container">
 
 <!-- 숨겨진 u_idx -->
-<input id="u_idx" name="u_idx" type="text" class="form-control" value="71">
+<input id="u_idx" name="u_idx" type="text" class="form-control" value="69">
 여긴 ${p_num} 번 방이다^^!!! <br>
 <button class="btn" onclick="exitPartyFn()">나가기</button> 
 <hr>
@@ -145,13 +153,13 @@ function showPartyInfo() {
 			//alert(JSON.stringify(data));
 			html = '';
 	    	html += '<h2>['+data.p_num+'번]\n';
-	    	html += ''+data.p_name+'</h1><br>\n';
+	    	html += ''+data.p_name+' ( '+getUserCount()+' / '+data.p_capacity+'명 )</h1><br>\n';
 	    	html += '출발지 : '+data.p_start_info+'<br>\n';
 	    	html += '목적지 : '+data.p_end_info+'<br>\n';
 	    	html += '좌표 : '+data.p_XY+'<br>\n';
 	    	html += '방내용 : '+data.p_content+'<br>\n';
-	    	html += '참여 인원 : '+getUserCount()+'<br>\n';
-	    	html += '방 정원 : '+data.p_capacity+'<br>\n';
+/* 	    	html += '참여 인원 : '+getUserCount()+'<br>\n';
+	    	html += '방 정원 : '+data.p_capacity+'<br>\n'; */
 	    	html += '출발예정시간 : '+data.p_time_f+'<br>\n';
 	    	html += '방 개설 시간 : '+data.p_generate_date_f+'<br>\n';
 	    	$('#partyInfo').html(html);
@@ -221,6 +229,8 @@ function showPartyUserList() {
 			html1+='<table>\n';
 			for (var i = 0; i < data.length; i++) {
 				var crown=''; 
+				var bold='';
+				var readyStr='';
 				
 				if(data[i].pc_masterYN=='Y'){
 					crown='<i class="fas fa-crown yellow"></i> '; 
@@ -232,11 +242,23 @@ function showPartyUserList() {
 					}
 					
 				}
-					
+				
+				// 자신은 굵은 글씨로 표시된다
+				if(data[i].u_idx==u_idx){
+					bold='bold';
+				}
+				
+				if(data[i].pc_readyYN=='Y'){
+					readyStr='<p class="ready">준비 완료!</p>';
+				}else{
+					readyStr='<p class="gray">방 둘러보는 중...</p>';
+				}
+				
+				
 				html1+='<tr>\n';
 				html1+='<td class="width30">'+data[i].u_photo+'</td>\n';
-				html1+='<td class="width30">' + crown + data[i].u_name+'</td>\n';
-				html1+='<td class="width30">'+data[i].pc_readyYN+'</td>\n';
+				html1+='<td class="width30 '+bold+'">' + crown + data[i].u_name+'</td>\n';
+				html1+='<td class="width30">'+readyStr+'</td>\n';
 				html1+='</tr>\n';
 				
 				//html1+=' '+data[i].u_photo+' '+data[i].u_name+' '+data[i].pc_readyYN+'<br>';

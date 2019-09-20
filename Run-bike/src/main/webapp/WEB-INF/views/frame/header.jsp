@@ -5,7 +5,7 @@
    <button class="toggle-menu-btn" id="toggle-menu">
         <span class="hamburger-bar"></span>
     </button>
-    <h5 class="logo my-0 font-weight-normal">RUNBIKE</h5>
+    <h5 class="logo my-0 font-weight-normal"><a href="<c:url value='/' />">RUNBIKE</a></h5>
       <h5 class="page-select-name font-weight-bold mt-1">
           혼자 달리기
       </h5>
