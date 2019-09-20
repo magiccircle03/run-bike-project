@@ -57,6 +57,12 @@ h5{
 .bold{
 	font-weight: bold;
 }
+
+.allReady{
+	font-weight: bold;
+	background-color: pink;
+	color: #fefefe;
+}
 </style>
 </head>
 <body>
@@ -71,7 +77,6 @@ h5{
 <input id="u_idx" name="u_idx" type="text" class="form-control" value="69">
 여긴 ${p_num} 번 방이다^^!!! <br>
 <button class="btn" onclick="exitPartyFn()">나가기</button> 
-<button onclick="isAllReady()">준비되지 않은 사람 수 </button>
 <hr>
 
 <!-- 탭 클릭시마다 새로고침되게 하기 -->
@@ -96,19 +101,24 @@ h5{
     </div>
     
     <input id="readyChk" type="checkbox" data-toggle="toggle" data-on="준비완료!" data-off="준비하기" data-offstyle="" data-onstyle="primary mint">
-   	<button id="startBtn" class="btn master" onclick="startRiding()">시작하기</button>
+
+    <!-- 방장만 보이게 영역 -->
+	<div id="partyInfoMaster" class="master">
+	   	<button id="startBtn" class="btn" onclick="startRiding()" disabled="true">시작하기</button>
+	   	<!-- 그냥 종료버튼 -->
+	   	<!-- 방장 종료버튼  -->
+	    <button class="btn" onclick="editParty()">방 정보 수정</button> 
+	    <button class="btn" onclick="deleteParty()">방 삭제</button> 
+	</div>
+    <!--  -->
+    
     <hr>
     <h5><i class="fas fa-child"></i> 함께 달릴 동료들</h5>
     <div id="partyUserInfo1">
     <!-- 참가자 사진 / 이름 / 준비여부-->
 	</div>
 	
-     <!-- 방장만 보이게 영역 -->
-	<div id="partyInfoMaster" class="master">
-	    <button class="btn" onclick="editParty()">방 정보 수정</button> 
-	    <button class="btn" onclick="deleteParty()">방 삭제</button> 
-	</div>
-    <!--  -->
+
     
     
   </div>
@@ -159,8 +169,6 @@ function showPartyInfo() {
 	    	html += '목적지 : '+data.p_end_info+'<br>\n';
 	    	html += '좌표 : '+data.p_XY+'<br>\n';
 	    	html += '방내용 : '+data.p_content+'<br>\n';
-/* 	    	html += '참여 인원 : '+getUserCount()+'<br>\n';
-	    	html += '방 정원 : '+data.p_capacity+'<br>\n'; */
 	    	html += '출발예정시간 : '+data.p_time_f+'<br>\n';
 	    	html += '방 개설 시간 : '+data.p_generate_date_f+'<br>\n';
 	    	$('#partyInfo').html(html);
@@ -190,7 +198,6 @@ $('#readyChk').change(function() {
         //alert("레디 취소!");
         setReady('N');
     }
-    
 });
 
 function setReady(readyYN) {	
@@ -380,6 +387,7 @@ function deleteParty(){
 // 회원정보 계속 업데이트(준비 상태 바로 반영되게)
 var refreshReady = setInterval(function() {
 		showPartyUserList();
+		isAllReady();
 }, 1000);
 
 
@@ -387,6 +395,7 @@ function stopRefreshReady() {
 	clearInterval(refreshReady);
 }
 
+// 이걸 따로 하지 말고 레디할때 그냥 같이 반환시켜줘도 좋겠다
 function isAllReady() {
 	// 준비 N인 사람이 있으면 -> N / 준비 N인 사람 수가 0이면 -> Y 반환
 	var cnt = -2;
@@ -401,11 +410,23 @@ function isAllReady() {
 	 }); 
 	 
 	 if(cnt==0){
-		 alert('모두준비되었다');
+		 //alert('모두준비되었다!');
+		 // startBtn에 allReady클래스 추가 
+		 
+		 $('#startBtn').attr('disabled', false);
+		 $('#startBtn').addClass('allReady');
 	 }else{
-		 alert('준비되지 않은 인원 :'+cnt);
+		 //alert('준비되지 않은 인원 :'+cnt);
+		 $('#startBtn').attr('disabled', true);
+		 $('#startBtn').removeClass('allReady');
 	 }
 }
+
+function startRiding() {
+	alert('시작');
+}
+
+
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
