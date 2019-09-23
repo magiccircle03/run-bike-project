@@ -65,7 +65,7 @@ h3{
 <div class="container">
 
 	<!-- 숨겨진 u_idx -->
-	<input id="u_idx" name="u_idx" type="text" class="form-control" value="69">
+	<input id="u_idx" name="u_idx" type="text" class="form-control" value="70">
 
 	<div id="top-nav">
 		<table><tr>

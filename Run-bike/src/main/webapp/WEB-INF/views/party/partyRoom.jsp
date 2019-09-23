@@ -63,6 +63,17 @@ h5{
 	background-color: pink;
 	color: #fefefe;
 }
+.ban{
+	text-decoration: none;
+	display : inline-block;
+	padding-left: 5px;
+}
+.ban:hover{
+	cursor: pointer;
+}
+.fa-times{
+	color: #B84A5B;
+}
 </style>
 </head>
 <body>
@@ -74,7 +85,7 @@ h5{
 <div class="container">
 
 <!-- 숨겨진 u_idx -->
-<input id="u_idx" name="u_idx" type="text" class="form-control" value="69">
+<input id="u_idx" name="u_idx" type="text" class="form-control" value="70">
 여긴 ${p_num} 번 방이다^^!!! <br>
 <button class="btn" onclick="exitPartyFn()">나가기</button> 
 <hr>
@@ -240,18 +251,19 @@ function showPartyUserList() {
 				var crown=''; 
 				var bold='';
 				var readyStr='';
-				//var delBtn='';
+				var delBtn='';
 				
 				if(data[i].pc_masterYN=='Y'){
-					crown='<i class="fas fa-crown yellow"></i> '; 
+					crown='<i class="fas fa-crown yellow"></i> ';
+					
+
 				}else{
  					if(isMaster()){
  						crown='<a href="#" onclick="changeMaster('+data[i].u_idx+')"><i class="fas fa-user-alt gray" style="padding-left:2px;padding-right:2px;"></i></a> '; 
- 						//delBtn=' <a href="#" onclick=""> <i class="fas fa-times"></i></a>';
+ 						delBtn='<a onclick="ban('+data[i].u_idx+')" class="ban"><i class="fas fa-times"></i></a>';
  					}else{
 						crown='<i class="fas fa-user-alt gray" style="padding-left:2px;padding-right:2px;"></i> '; 
 					}
-					
 				}
 				
 				// 자신은 굵은 글씨로 표시된다
@@ -426,6 +438,13 @@ function isAllReady() {
 
 function startRiding() {
 	alert('시작');
+}
+
+function ban(idx) {
+	if (confirm('해당 유저를 내보낼까요?')) {
+		exitParty(idx+"");
+		alert('내보냈습니다!');
+	}
 }
 
 

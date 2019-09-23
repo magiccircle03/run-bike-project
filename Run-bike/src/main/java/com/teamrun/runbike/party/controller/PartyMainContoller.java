@@ -60,7 +60,7 @@ public class PartyMainContoller {
 		String view = "party/partyLobby";
 		int count = 0;
 		int p_num = 0;
-		int u_idx = 69;
+		int u_idx = 70;
 		// 세션에서 u_idx 가져옴
 		// HttpSession session = request.getSession(false);
 		// LoginInfo loginInfo = session.getAttribute("loginInfo");

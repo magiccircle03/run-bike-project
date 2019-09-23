@@ -51,7 +51,7 @@
 	<beans:bean id="dataSource"
 		class="org.apache.commons.dbcp2.BasicDataSource"
 		p:driverClassName="com.mysql.jdbc.Driver"
-		p:url="jdbc:mysql://mysql-mm.c1le2zwwezgt.ap-northeast-2.rds.amazonaws.com/run_bike?characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull"
+		p:url="jdbc:mysql://runbike-project.c1le2zwwezgt.ap-northeast-2.rds.amazonaws.com/run_bike?characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull"
 		p:username="runbike" p:password="runbike321!" />
 
 	<beans:bean id="jdbcTemplate"
