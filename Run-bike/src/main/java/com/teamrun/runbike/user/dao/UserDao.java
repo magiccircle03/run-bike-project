@@ -13,4 +13,6 @@ public interface UserDao {
 	public int insertLoginDate(int u_idx);
 	public int chkLoginLog(Map<String, Object> param);
 	public int editUser(UserInfo userInfo);
+	public int chkLeave(int u_idx);
+	public boolean selectLeaveById(String u_id);
 }

@@ -1,7 +1,16 @@
 /*---------------------
   Header
 -----------------------*/
+@import url('https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap');
 
+html,body{
+	font-size: 14px;
+	font-family: 'Noto Sans KR', sans-serif;
+}
+button{
+	border: none;
+	box-shadow: none;
+}
 input[type=""]
 .header-section {
 	height: 142px;
@@ -102,8 +111,9 @@ input[type=""]
 section#modal-register{
     position: absolute;
     left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
+    top: 15%;
+    height: 80%;
+    transform: translatex(-50%);
     z-index: 500;
     background-color: #fff;
     border-radius: 8px;
@@ -113,10 +123,12 @@ section#modal-register{
 }
 @media screen and (max-width: 767px){
     section#modal-register{
-        position: static;
-        width: 100%;
+
+        width: 95%;
+        top: 0;
+        transform: translateX(-50%);
         /* height: 100vh; */
-        transform: none;
+        /*transform: none;*/
     }
 }
 
@@ -127,10 +139,17 @@ section#modal-register .inner{
 section#modal-register form{
     color: #000;
 }
-
-#regform button.btn-submit{
+section#modal-register form input[type="text"]{
+	box-shadow: none;
+}
+#regform #idCheck{
 	background-color: #555;
 }
+
+#regform button.btn-submit,#loginForm button.btn-submit{
+	background-color: #555;
+}
+
 #regform button.btn-reset{
 	background-color: #f00;
 }

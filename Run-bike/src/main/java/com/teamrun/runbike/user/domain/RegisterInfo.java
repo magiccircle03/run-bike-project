@@ -7,6 +7,7 @@ public class RegisterInfo {
 	private String u_pw;
 	private String u_name;
 	private MultipartFile u_photo;
+	
 	public String getU_id() {
 		return u_id;
 	}

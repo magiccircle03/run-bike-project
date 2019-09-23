@@ -22,7 +22,7 @@
 select count(*) as login_date from run_bike.login_log where u_idx = #{u_idx} and login_date = #{date};
 </select>
 
-<insert id="insertUser">
+<insert id="insertUser" parameterType="com.teamrun.runbike.user.domain.UserInfo">
 	insert into user (u_id, u_pw, u_name, u_photo, regdate, u_code) values(#{u_id},#{u_pw},#{u_name},#{u_photo}, #{regdate},#{u_code}) 
 </insert>
 <insert id="insertLoginDate">
@@ -32,7 +32,7 @@ select count(*) as login_date from run_bike.login_log where u_idx = #{u_idx} and
 	update user set u_verify=true where u_id=#{param1} and u_code = #{param2}
 </update>
 
-<update id="editUser">
+<update id="editUser" parameterType="com.teamrun.runbike.user.domain.UserInfo">
 	update user set u_pw=#{u_pw}, u_name=#{u_name}, u_photo=#{u_photo} where u_idx=#{u_idx} 
 </update>
 
@@ -43,7 +43,15 @@ select count(*) as login_date from run_bike.login_log where u_idx = #{u_idx} and
 	select u_idx from user where u_id=#{u_id}
 </select>
 
+<select id="selectLeaveById" resultType="boolean">
+	select u_leave from run_bike.user where u_id=#{u_id}
+</select>
+
 <update id="reChkVerify">
 	update user set u_verify=true where u_id=#{param1}
+</update>
+
+<update id="chkLeave">
+	update user set u_leave=true where u_idx=#{u_idx}
 </update>
 </mapper>

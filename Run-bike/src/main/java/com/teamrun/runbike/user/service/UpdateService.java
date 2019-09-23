@@ -23,21 +23,22 @@ public class UpdateService implements UserService {
 	private UserDao dao; 
 	
 	public int updateInfo(MultipartHttpServletRequest request, String oldFile, RequestEditInfo editInfo) {
+		System.out.println(editInfo.toString());
+		System.out.println(oldFile);
 		
 		dao = template.getMapper(UserDao.class);
 		int result = 0;
 		
 		UserInfo userInfo = editInfo.toUserInfo();
+		userInfo.toString();
 		
 		if(editInfo.getU_photo()!=null && !editInfo.getU_photo().isEmpty() && editInfo.getU_photo().getSize() > 0) {
-			
 			String newFile = editInfo.getU_photo().getOriginalFilename();
 			String dir = request.getSession().getServletContext().getRealPath("/uploadfile/userphoto");
 			
 			try {
 				userInfo.setU_photo(newFile);				
 				editInfo.getU_photo().transferTo(new File(dir, newFile));
-				
 				if(oldFile != "noImg.jpg") {					
 					new File(dir, oldFile).delete();
 				}
@@ -54,7 +55,11 @@ public class UpdateService implements UserService {
 		
 		result = dao.editUser(userInfo);
 		
-		
+		if(result >0) {
+			LoginInfo loginInfo = userInfo.toLoginInfo();
+			request.getSession(false).removeAttribute("loginInfo");
+			request.getSession(false).setAttribute("loginInfo", loginInfo);
+		}
 		
 		return result;
 	}

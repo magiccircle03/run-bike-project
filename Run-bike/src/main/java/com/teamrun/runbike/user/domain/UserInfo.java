@@ -35,9 +35,7 @@ public class UserInfo {
 	}
 	
 	
-	
 	public UserInfo(int u_idx, String u_id, String u_pw, String u_name) {
-		super();
 		this.u_idx = u_idx;
 		this.u_id = u_id;
 		this.u_pw = u_pw;

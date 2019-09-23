@@ -13,10 +13,15 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="<c:url value='/assets/css/main.css'/>" />
-		<link rel="stylesheet" href="<c:url value='/assets/css/style.css'/>" />
+		<link rel="stylesheet" href="<c:url value='/assets/css/style.css'/>" />	
+		<script async defer src="https://connect.facebook.net/en_US/sdk.js"></script>
+		
 	</head>
 	<body class="landing is-preload">
-
+	<script>
+				
+			</script>
+		
 		<!-- Page Wrapper -->
 			<div id="page-wrapper">
 
@@ -40,10 +45,10 @@
 					        <h3>로그인</h3>
 					        <form id="loginForm" method="post">
 					            <div class="row gtr-uniform">
-					                <div class="col-12 col-12-xsmall">
+					                <div class="col-12 col-12-small">
                                         <label for="u_id">아이디(이메일)</label><input type="email" name="u_id" id="u_id" value="" placeholder="example@email.com" />
 					                </div>
-					                <div class="col-12 col-11-xsmall">
+					                <div class="col-12 col-12-small">
                                         <label for="u_pw">비밀번호</label>
 					                    <input type="password" name="u_pw" id="u_pw" value="" placeholder="password" />
 					                </div>
@@ -55,10 +60,12 @@
 					                    <input type="checkbox" name="rememberid" id="rememberid" />
 					                    <label for="rememberid">아이디 기억하기</label>
 					                </div> 
-					                
+					                <button type="submit" class="btn btn-secondary btn-submit" class="col-12">로그인</button>
+								     <a id="facebook-login-btn" class="col-12" href="#">
+								        <img src="/images/sns/facebook.PNG">
+								    </a>
+								</div>
 					            </div>
-					            <button type="submit"  class="col-4">로그인</button>
-					            <a href="">카카오로 로그인</a>
 					            <div class="not-user row">
 					            	<p class="label-reg">아직 회원이 아니신가요?</p>
 					            	<a class="col-12" href="http://localhost:8080/runbike/user/register">회원가입</a>
@@ -69,8 +76,10 @@
 			</div>
 			
 			<script src="<c:url value='/assets/js/jquery.min.js'/>"></script>
+			
 			<script>
 				$(document).ready(function(){
+					  
 					
 					$('#loginForm').submit(function(){
 						
@@ -86,10 +95,11 @@
 								console.log(data);
 								if(data=='ok'){
 									alert("환영합니다.");
-									location.href = 'http://localhost:8080/runbike/main';
-									
+									location.href = 'http://localhost:8080/runbike/main';									
 								} else if(data=='yet'){
 									location.href='http://localhost:8080/runbike/verify/'+data;
+								} else if(data == 'leave'){
+									alert("이미 탈퇴한 회원입니다.");
 								} else {
 									
 									alert("로그인에 실패했습니다. 아이디 혹은 비밀번호를 확인해주세요.");
@@ -103,12 +113,12 @@
 					
 				});
 			</script>
-			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<!-- <script src="assets/js/jquery.scrollex.min.js"></script>
 			<script src="assets/js/jquery.scrolly.min.js"></script>
 			<script src="assets/js/browser.min.js"></script>
 			<script src="assets/js/breakpoints.min.js"></script>
 			<script src="assets/js/util.js"></script>
-			<script src="assets/js/main.js"></script>
+			<script src="assets/js/main.js"></script> -->
 
 	</body>
 </html>

@@ -13,17 +13,18 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.teamrun.runbike.user.service.LoginService;
 
 @Controller
+@RequestMapping("user")
 public class LoginController {
 	
 	@Autowired
 	private LoginService loginService;
 	
-	@RequestMapping(value=("user/login"), method = RequestMethod.GET)
+	@RequestMapping(value=("login"), method = RequestMethod.GET)
 	public String getForm(HttpServletRequest request) {
 		return "user/loginform";
 	}
 	
-	@RequestMapping(value=("user/login"), method= RequestMethod.POST)
+	@RequestMapping(value=("login"), method= RequestMethod.POST)
 	@ResponseBody
 	public String login(@RequestParam("u_id")String u_id, @RequestParam("u_pw")String u_pw, HttpServletRequest request) {
 		String result = "";
@@ -32,6 +33,12 @@ public class LoginController {
 		int loginChk = loginService.login(u_id, u_pw, request);
 		
 		switch(loginChk) {
+		case 4:
+			result = "admin";
+			break;
+		case 3:
+			result = "leave";
+			break;
 		case 2: 
 			result = "ok";
 			break;
@@ -45,8 +52,12 @@ public class LoginController {
 		
 		return result;
 	}
-	
-	@RequestMapping("user/logout")
+	@RequestMapping("login/kakao")
+	public String loginWithKakao(@RequestParam("code")String code) {
+		System.out.println(code);
+		return "";
+	}
+	@RequestMapping("logout")
 	public String logout(HttpSession session) {
 		session.invalidate();
 		

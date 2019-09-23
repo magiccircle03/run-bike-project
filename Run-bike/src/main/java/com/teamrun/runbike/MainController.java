@@ -1,4 +1,4 @@
-package com.teamrun.runbike.user.controller;
+package com.teamrun.runbike;
 
 import java.text.DateFormat;
 import java.util.Date;

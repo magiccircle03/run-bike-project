@@ -31,13 +31,13 @@
     <a class="pt-md-2 mx-md-3" href="#"><i class="fas fa-crown"></i>나의 리워드</a>
     <a class="pt-md-2 mx-md-3" href="#"><i class="fas fa-headset"></i>문의하기</a>
   </nav>
-  <div class="user-info text-primary mr-2"><a href="user/mypage" class="">${loginInfo.u_name} 님</a></div>
+  <div class="user-info text-primary mr-2"><a href="mypage" class="">${loginInfo.u_name} 님</a></div>
   <small><a href="logout" class="text-muted"><i class="fas fa-signout"></i>로그아웃</a></small>
     </div>
 </header>
 <div class="row mb-md-5">
-    <div class="list-group list-group-horizontal col-md-4 col-sm-12 mx-auto text-center" id="list-tab" role="tablist">
-          <a class="list-group-item list-group-item-action active" id="list-home-list" data-toggle="list" href="user/mypage" role="tab" aria-controls="">내 정보</a>
+    <div class="list-group list-group-horizontal col-md-4 col-sm-12 mx-auto text-center" role="tablist">
+          <a class="list-group-item  list-group-item-action active" id="list-home-list" data-toggle="list" href="#footer" role="tab" aria-controls="">내 정보</a>
           <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list" href="user/record" role="tab" aria-controls="">나의 기록</a>
     </div>
 </div>
@@ -55,7 +55,7 @@
   	</div>
   	<div class="col-2">
   		<button id="updateBtn" class="btn btn-primary" >정보 수정</button>
-  		<button id="deleteBtn" class="btn btn-danger">회원 탈퇴</button>
+  		<button id="deleteBtn" class="btn btn-danger" data-target="#deleteChkPw" data-toggle="modal">회원 탈퇴</button>
   	</div>
   </div>
   <div id="modalUpdate" style="display: none">
@@ -76,7 +76,7 @@
   			<label>새 비밀번호 확인 <input type="password" id="u_repw"></label>
   		</div>
   		<div class="form-group">
-  			<input type="hidden" id="oldFile" name="oldFile" value="${loginInfo.u_Photo}" readonly>
+  			<input type="hidden" id="oldFile" name="oldFile" value="${loginInfo.u_photo}" readonly>
   			<label>사진 <input type="file" id="u_photo" name="u_photo" value="${loginInfo.u_photo}"></label>
   		</div>
   		<div class="form-group">
@@ -85,8 +85,32 @@
   		</div>
   	</form>
   </div>
-
-  <footer class="pt-4 my-md-5 pt-md-5 border-top">
+<div class="modal fade" id="deleteChkPw" tabindex="-1" role="dialog" aria-labelledby="deleteUserLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteUserLabel">탈퇴하기</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="deleteForm" method="post">
+          <div class="form-group">
+            <label for="delete_u_pw" class="col-form-label">현재 비밀번호를 입력해주세요.</label>
+            <input type="password" class="form-control" id="delete_u_pw" name="delete_u_pw">
+          </div>
+          
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+	        <button type="submit" class="btn btn-danger">탈퇴</button>
+	      </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+  <footer id="footer" class="pt-4 my-md-5 pt-md-5 border-top">
     <div class="row">
       <div class="col-12 col-md">
         <img class="mb-2" src="{{ site.baseurl }}/docs/{{ site.docs_version }}/assets/brand/bootstrap-solid.svg" alt="" width="24" height="24">
@@ -162,6 +186,7 @@
     				success: function(data){
     					if(data==1){
     						alert("정보가 수정되었습니다");
+    						location.reload();
     					} else {
     						alert("정보 수정에 실패하였습니다.");
     					}
@@ -184,6 +209,32 @@
     			console.log(opened);
     		});
     		
+    		$('#deleteForm').on('submit',function(){
+    			
+    			$.ajax({
+    				type: 'post',
+    				url: '/runbike/user/delete',
+    				data: {'delete_u_pw': $('#delete_u_pw').val()},
+    				success: function(data){
+    					if(data==1){
+	    					if(confirm("정말로 탈퇴하시겠습니까?")){
+	    						alert("탈퇴를 완료했습니다.");
+	    						location.href="/runbike";
+	    					} else{
+	    						alert("탈퇴를 취소했습니다");
+	    					}
+    					} else{
+    						alert("비밀번호를 다시 확인하세요.");
+    					}
+    				},
+    				error: function(data){
+    					console.log("안ㅠ됨");
+    				}
+    			});
+    			
+    			return false;
+    			
+    		});
     		
     	});
     </script>
