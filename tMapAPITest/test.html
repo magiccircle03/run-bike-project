@@ -35,7 +35,7 @@
     </textarea>
     
     <button class="btn" onclick="getRoute()">경로 선택</button>
-    <button onclick="tojsonXY()">제이슨</button>
+<!--    <button onclick="tojsonXY()">제이슨</button>-->
     
     <div id="map_div">
     </div>
@@ -305,17 +305,12 @@
                 async: false,
                 data: {
                     //출발지 위경도 좌표입니다.
-                   // startX: "126.977022",
                     startX: xy.startX,
                     startY: xy.startY,
                     //목적지 위경도 좌표입니다.
                     endX: xy.endX,
                     endY: xy.endY,
-                    //경유지의 좌표입니다.
-                    //passList: "126.987319,37.565778",
-                    //출발지, 경유지, 목적지 좌표계 유형을 지정합니다.
-                    //reqCoordType: "WGS84GEO",// EPSG3857 로 넣어보자
-                    reqCoordType: "EPSG3857",// EPSG3857 로 넣어보자
+                    reqCoordType: "EPSG3857",
                     resCoordType: "EPSG3857",
                     //각도입니다.
                     //출발지 명칭입니다.
@@ -325,6 +320,7 @@
                 },
                 //데이터 로드가 성공적으로 완료되었을 때 발생하는 함수입니다.
                 success: function(response) {
+                    
                     prtcl = response;
 
                     // 결과 출력
@@ -369,27 +365,19 @@
                     map.addLayer(routeLayer); //맵에 레이어 추가
 
                     map.zoomToExtent(routeLayer.getDataExtent()); //map의 zoom을 routeLayer의 영역에 맞게 변경합니다.
+                    
+                    alert('루트 불러오기 성공');
+                    
                 },
                 //요청 실패시 콘솔창에서 에러 내용을 확인할 수 있습니다.
                 error: function(request, status, error) {
                     console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+                    alert('루트 불러오기 실패');
+                    
                 }
             });
         }
         
-        function tojsonXY(){
-/*
-            xy.startName = $('#startQuery').val();
-            xy.startX = $('#startX').val();
-            xy.startY = $('#startY').val();
-            
-            xy.endName = $('#endQuery').val();
-            xy.endX = $('#endX').val();
-            xy.endY = $('#endY').val();*/
-            
-            var data = JSON.stringify(xy);
-            alert(data);
-            
-        }
+
     </script>
 </body></html>	

@@ -115,6 +115,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		update participation set pc_masterYN='Y' where p_num=#{p_num} and u_idx=#{u_idx};
 	</update>
 	
+	<!-- 방을 삭제한다 -->
 	<delete id="deleteParty">
 		delete from party where p_num=#{num};
 	</delete>
