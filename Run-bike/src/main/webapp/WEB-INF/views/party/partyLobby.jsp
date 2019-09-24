@@ -127,12 +127,10 @@ h3{
 				<div id="map_div">
 			    </div>
 			    <p id="result"></p>
-			    <input id="p_riding_km" type="number">
-			    <input id="p_riding_time" type="number">
-    
-
-			  	
-			  	<textarea id="p_XY" name="p_XY" class="form-control"></textarea>
+			    
+			    <input id="p_riding_km" type="number" style="display: none;" readonly="readonly">
+			    <input id="p_riding_time" type="number" style="display: none;" readonly="readonly">
+			  	<textarea id="p_XY" name="p_XY" class="form-control" style="display: none;" readonly="readonly"></textarea>
 			  	
 			  </div>
 
