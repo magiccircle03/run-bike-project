@@ -18,8 +18,8 @@
 
 <body onload="initTmap()">
 
-    <input id="startQuery" type="text" value="서울숲" required><button onclick="searchPoi('S')" class="btn">출발지 검색 </button>
-    <input id="endQuery" type="text" value="반포대교" required><button onclick="searchPoi('E')" class="btn">도착지 검색</button>
+    <input id="p_start_info" type="text" value="서울숲" required><button onclick="searchPoi('S')" class="btn">출발지 검색 </button>
+    <input id="p_end_info" type="text" value="반포대교" required><button onclick="searchPoi('E')" class="btn">도착지 검색</button>
     
     <br>
 <!--    출발지x
@@ -31,7 +31,7 @@
     <input id="endX" type="text">
     도착지y
     <input id="endY" type="text">-->
-    <textarea id="xy">
+    <textarea id="p_XY" name="p_XY">
     </textarea>
     
     <button class="btn" onclick="getRoute()">경로 선택</button>
@@ -40,6 +40,8 @@
     <div id="map_div">
     </div>
     <p id="result"></p>
+    <input id="p_riding_km" type="text">
+    <input id="p_riding_time" type="text">
 
     <script type="text/javascript">
         var markerLayer = null;
@@ -71,19 +73,19 @@
             // 2. POI 통합 검색 API 요청
             var query;
             if (se == 'S') {
-                query = $('#startQuery').val();
+                query = $('#p_start_info').val();
             } else if (se == 'E') {
-                query = $('#endQuery').val();
+                query = $('#p_end_info').val();
             }
-            /*var startQuery=$('#startQuery').val();
-            var endQuery=$('#endQuery').val();*/
+            /*var p_start_info=$('#p_start_info').val();
+            var p_end_info=$('#p_end_info').val();*/
 
 
-            /*if(!startQuery){
-                startQuery='서울시';
+            /*if(!p_start_info){
+                p_start_info='서울시';
             }*/
 
-            //alert(startQuery);
+            //alert(p_start_info);
             $.ajax({
                 method: "GET",
                 url: "https://apis.openapi.sk.com/tmap/pois?version=1&format=xml&callback=result", // POI 통합검색 api 요청 url입니다.
@@ -250,7 +252,7 @@
             
  /*           $('#startX').val(lon);
             $('#startY').val(lat);*/
-            $('#startQuery').val(nameNaddress);
+            $('#p_start_info').val(nameNaddress);
             
         }
 
@@ -287,7 +289,7 @@
             
 /*            $('#endX').val(lon);
             $('#endY').val(lat);*/
-            $('#endQuery').val(nameNaddress);
+            $('#p_end_info').val(nameNaddress);
         }
 
 
@@ -296,7 +298,7 @@
             headers["appKey"] = "6d5877dc-c348-457f-a25d-46b11bcd07a9"; //실행을 위한 키 입니다. 발급받으신 AppKey(appKey)를 입력하세요.
             
             var data = JSON.stringify(xy);
-            $('#xy').val(data);
+            $('#p_XY').val(data);
             
             $.ajax({
                 method: "POST",
@@ -330,10 +332,16 @@
                         $xml = $(xmlDoc),
                         $intRate = $xml.find("Document");
 
+                    var distanceM = $intRate[0].getElementsByTagName("tmap:totalDistance")[0].childNodes[0].nodeValue;
+                    var distanceKm = ($intRate[0].getElementsByTagName("tmap:totalDistance")[0].childNodes[0].nodeValue / 1000).toFixed(1);
+                    
                     var tDistance = "총 거리 : " + ($intRate[0].getElementsByTagName("tmap:totalDistance")[0].childNodes[0].nodeValue / 1000).toFixed(1) + "km,";
                     var tTime = " 총 시간 : " + ($intRate[0].getElementsByTagName("tmap:totalTime")[0].childNodes[0].nodeValue / 60).toFixed(0) + "분";
 
                     $("#result").text(tDistance + tTime);
+                    $("#p_riding_km").val(distanceKm);
+                    $("#p_riding_time").val((distanceKm/16)*60);
+                    
 
                     prtcl = new Tmap.Format.KML({
                         extractStyles: true,

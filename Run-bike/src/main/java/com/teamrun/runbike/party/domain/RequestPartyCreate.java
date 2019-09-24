@@ -16,6 +16,9 @@ public class RequestPartyCreate {
 	private int p_capacity;
 	private String p_content;
 	private String p_password;
+
+	private double p_riding_km;
+	private double p_riding_time;
 	
 	SimpleDateFormat f = new SimpleDateFormat("yyyy.MM.dd aaa hh:mm");
 	
@@ -25,6 +28,32 @@ public class RequestPartyCreate {
 	
 	
 	
+	public double getP_riding_km() {
+		return p_riding_km;
+	}
+
+
+	public void setP_riding_km(double p_riding_km) {
+		this.p_riding_km = p_riding_km;
+	}
+
+
+
+
+	public double getP_riding_time() {
+		return p_riding_time;
+	}
+
+
+
+
+	public void setP_riding_time(double p_riding_time) {
+		this.p_riding_time = p_riding_time;
+	}
+
+
+
+
 	public int getU_idx() {
 		return Integer.parseInt(u_idx);
 	}
@@ -125,14 +154,12 @@ public class RequestPartyCreate {
 		this.p_password = p_password;
 	}
 
-
-
 	@Override
 	public String toString() {
-		return "RequestPartyCreate [p_name=" + p_name + ", p_start_info=" + p_start_info + ", p_end_info=" + p_end_info
-				+ ", p_XY=" + p_XY + ", p_time=" + p_time + ", p_time_f=" + p_time_f + ", p_capacity=" + p_capacity
-				+ ", p_content=" + p_content + ", p_password=" + p_password + "]";
+		return "RequestPartyCreate [u_idx=" + u_idx + ", p_name=" + p_name + ", p_start_info=" + p_start_info
+				+ ", p_end_info=" + p_end_info + ", p_XY=" + p_XY + ", p_time=" + p_time + ", p_time_f=" + p_time_f
+				+ ", p_capacity=" + p_capacity + ", p_content=" + p_content + ", p_password=" + p_password
+				+ ", p_riding_km=" + p_riding_km + ", p_riding_time=" + p_riding_time + "]";
 	}
-
 
 }

@@ -37,9 +37,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<!-- 방 만들기. 좌표는 일단 더미 -->
 	<insert id="insertParty" parameterType="com.teamrun.runbike.party.domain.RequestPartyCreate" useGeneratedKeys="true" keyProperty="key">
-		insert into party (p_name, p_start_info, p_end_info, p_XY, p_time, p_capacity, p_content, p_generate_date, p_password) 
+		insert into party (p_name, p_start_info, p_end_info, p_XY, p_time, p_capacity, p_content, p_generate_date, p_password, p_riding_km, p_riding_time) 
 		  values
-		(#{p_name},#{p_start_info},#{p_end_info},#{p_XY},#{p_time},#{p_capacity},#{p_content},default,#{p_password})
+		(#{p_name},#{p_start_info},#{p_end_info},#{p_XY},#{p_time},#{p_capacity},#{p_content},default,#{p_password},#{p_riding_km},#{p_riding_time})
 	</insert>
 	
 	<!-- 참여하기-->
