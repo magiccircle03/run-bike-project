@@ -84,14 +84,23 @@ public class PartyMainContoller {
 	}
 
 	// 방을 보여줌, 방 넘버를 가지고 간다
+//	@RequestMapping(value = "/{p_num}", method = RequestMethod.GET)
+//	public String getPartyPage(@PathVariable int p_num, Model model) {
+//		model.addAttribute("p_num", p_num);
+//		String view = "party/partyRoom";
+//		return view;
+//	}
+
+	// 방을 보여줌, 방 넘버를 가지고 간다
 	@RequestMapping(value = "/{p_num}", method = RequestMethod.GET)
 	public String getPartyPage(@PathVariable int p_num, Model model) {
-		model.addAttribute("p_num", p_num);
-		String view = "party/partyRoom";
-		return view;
+		PartyInfo partyInfo = partyInfoService.getPartyInfoOne(p_num);
+		model.addAttribute("partyInfo", partyInfo);
+		return "party/partyRoom";
 	}
-
-	// ajax로 가져올 때 사용할 방의 정보
+	
+	
+	// ajax로 가져올 때 사용할 방의 정보 // 이건 이제 수정에 써먹기
 	@CrossOrigin
 	@ResponseBody
 	@RequestMapping(value = "/room/{p_num}", method = RequestMethod.GET)

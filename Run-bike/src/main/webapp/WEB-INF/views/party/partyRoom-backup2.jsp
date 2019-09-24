@@ -5,8 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<!-- 지도, 모델 -->
-<title>같이 달리기</title>
+<title>같이 달리기-지도를 넣은 버전 백업, 모델 넣기 전</title>
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <!-- tmap api -->
 <script src="https://apis.openapi.sk.com/tmap/js?version=1&format=javascript&appKey=6d5877dc-c348-457f-a25d-46b11bcd07a9"></script>
@@ -26,7 +25,6 @@
 	background-color: #21B2A6;
 	color: #fefefe;
 	border-color: #1F9E93;
-	font-weight: bold;
 }
 .mint:hover{
 	background-color: #1F9E93;
@@ -76,10 +74,6 @@ h5{
 .fa-times{
 	color: #B84A5B;
 }
-.marginTop{
-	margin-top: 20px;
-	margin-bottom: 20px;
-}
 </style>
 </head>
 <body>
@@ -93,8 +87,6 @@ h5{
 <!-- 숨겨진 u_idx -->
 <input id="u_idx" name="u_idx" type="text" class="form-control" value="2">
 <button class="btn" onclick="exitPartyFn()">나가기</button> 
-<button class="btn" onclick="getCurrentPos()">현재위치</button> 
-
 <hr>
 
 <!-- 탭 클릭시마다 새로고침되게 하기 -->
@@ -116,20 +108,13 @@ h5{
   <div class="tab-pane fade show active" id="partyInfoTab">
   
     <div id="partyInfo">
-    
-    	    <h2 class="marginTop"> [${partyInfo.p_num}] ${partyInfo.p_name}</h2> 
-    	    <div id="map_div"> </div>
-    	    ${partyInfo.p_start_info} /  ${partyInfo.p_end_info}  
-    	    <br>
-	    	${partyInfo.p_content}
-	    	<br>
-	    	출발 예정 시각 : ${partyInfo.p_time_f}
-	    	<br>
-	    	
     </div>
     
+    <div id="map_div">
+	</div>
     
-    <input id="readyChk" type="checkbox" data-toggle="toggle" data-on="준비완료!" data-off="준비하기" data-onstyle="primary mint">
+    
+    <input id="readyChk" type="checkbox" data-toggle="toggle" data-on="준비완료!" data-off="준비하기" data-offstyle="" data-onstyle="primary mint">
 
     <!-- 방장만 보이게 영역 -->
 	<div id="partyInfoMaster" class="master">
@@ -137,12 +122,12 @@ h5{
 	   	<!-- 그냥 종료버튼 -->
 	   	<!-- 방장 종료버튼  -->
 	    <button class="btn" onclick="editParty()">방 정보 수정</button> 
-	    <button class="btn" onclick="deletePartyBtn()">방 삭제</button> 
+	    <button class="btn" onclick="deleteParty()">방 삭제</button> 
 	</div>
     <!--  -->
     
     <hr>
-    <h5><i class="fas fa-child"></i> 함께 달릴 동료들 (<p id="capa" style="display: inline"></p> / ${partyInfo.p_capacity} )</h5>
+    <h5><i class="fas fa-child"></i> 함께 달릴 동료들</h5>
     <div id="partyUserInfo1">
     <!-- 참가자 사진 / 이름 / 준비여부-->
 	</div>
@@ -171,23 +156,22 @@ h5{
 <!-- 푸터 끝 -->
 <script>
 
-var xy=${partyInfo.p_XY};
 
 $(document).ready(function() {
-	initTmap(xy);
+	showPartyInfo();
 	showPartyUserList();
 	showMasterArea();
 	setReady('N');// 어디 갔다오면 처음엔 준비 안된걸로
 	
 });
 
-var p_num = ${partyInfo.p_num};
+var p_num = ${p_num};
 var u_idx = $('#u_idx').val();// 아이디 값 세션에서 가져오기. 
 
 
 var path='http://localhost:8080/runbike';
 
-/* function showPartyInfo() {
+function showPartyInfo() {
 	//alert(p_num);
 	$.ajax({
 		url : path + '/party/room/' + p_num,
@@ -217,15 +201,8 @@ var path='http://localhost:8080/runbike';
 	    	$('#partyInfo').html(html);
 		}
 	});
-} */
-
-function getCurrentPos() {
-	navigator.geolocation.getCurrentPosition(function(pos) {
-	    var latitude = pos.coords.latitude;
-	    var longitude = pos.coords.longitude;
-	    alert("내 현재 위치는 : " + latitude + ", "+ longitude);
-	});
 }
+
 
 function getUserCount() {
 	var cnt=-2;
@@ -327,7 +304,6 @@ function showPartyUserList() {
 			}
 			html1+='</table>\n';
 			$('#partyUserInfo1').html(html1);
-			$('#capa').html(" "+getUserCount());
 			
 		}
 
@@ -424,12 +400,6 @@ function changeMaster(u_idx_t){
 	}
 }
 
-function deletePartyBtn(){
-	if (confirm('방을 삭제하시면 복구할 수 없습니다. \n방을 폭파하시겠습니까?')) {
-		deleteParty();
-	}
-}
-
 // 파티삭제
 function deleteParty(){
 	 $.ajax({
@@ -448,7 +418,6 @@ function deleteParty(){
 var refreshReady = setInterval(function() {
 		showPartyUserList();
 		isAllReady();
-		
 }, 1000);
 
 
@@ -503,7 +472,7 @@ function initTmap(xy) {
     map = new Tmap.Map({
         div: 'map_div', // map을 표시해줄 div
         width: "100%", // map의 width 설정
-        height: "450px", // map의 height 설정
+        height: "400px", // map의 height 설정
     });
     map.setCenter(new Tmap.LonLat("126.986072", "37.570028").transform("EPSG:4326", "EPSG:3857"), 15); //설정한 좌표를 "EPSG:3857"로 좌표변환한 좌표값으로 즁심점을 설정합니다.						
 	
