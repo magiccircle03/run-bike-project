@@ -222,6 +222,12 @@ var path='http://localhost:8080/runbike';
 	});
 } */
 
+function editParty() {
+	if (confirm('방 정보를수정할까요?')) {
+		location.href = '../party/'+p_num+'/edit';
+	}
+}
+
 function getCurrentPos() {
 	navigator.geolocation.getCurrentPosition(function(pos) {
 	    var latitude = pos.coords.latitude;

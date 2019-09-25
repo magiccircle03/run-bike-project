@@ -98,16 +98,26 @@ public class PartyMainContoller {
 		model.addAttribute("partyInfo", partyInfo);
 		return "party/partyRoom";
 	}
-	
-	
-	// ajax로 가져올 때 사용할 방의 정보 // 이건 이제 수정에 써먹기
-	@CrossOrigin
-	@ResponseBody
-	@RequestMapping(value = "/room/{p_num}", method = RequestMethod.GET)
-	public PartyInfo getPartyInfo(@PathVariable int p_num) {
+
+	// 수정 페이지로 가기
+	@RequestMapping(value = "/{p_num}/edit", method = RequestMethod.GET)
+	public String editParty(@PathVariable int p_num, Model model) {
 		PartyInfo partyInfo = partyInfoService.getPartyInfoOne(p_num);
-		return partyInfo;
+		model.addAttribute("partyInfo", partyInfo);
+		return "party/edit";
 	}
+	
+	/*
+	 * // ajax로 가져올 때 사용할 방의 정보 // 이건 이제 수정에 써먹기
+	 * 
+	 * @CrossOrigin
+	 * 
+	 * @ResponseBody
+	 * 
+	 * @RequestMapping(value = "/room/{p_num}", method = RequestMethod.GET) public
+	 * PartyInfo getPartyInfo(@PathVariable int p_num) { PartyInfo partyInfo =
+	 * partyInfoService.getPartyInfoOne(p_num); return partyInfo; }
+	 */
 
 	// 방을 삭제한다
 	@RequestMapping(value = "/{p_num}", method = RequestMethod.DELETE)
