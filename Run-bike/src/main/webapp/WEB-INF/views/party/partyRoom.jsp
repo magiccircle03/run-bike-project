@@ -98,7 +98,7 @@ h5{
 <hr>
 
 <!-- 탭 클릭시마다 새로고침되게 하기 -->
-<ul class="nav nav-tabs">
+<ul class="nav nav-pills nav-justified">
   <li class="nav-item tabWidth">
     <a class="nav-link active" data-toggle="tab" href="#partyInfoTab">방정보</a>
   </li>
@@ -119,12 +119,15 @@ h5{
     
     	    <h2 class="marginTop"> [${partyInfo.p_num}] ${partyInfo.p_name}</h2> 
     	    <div id="map_div"> </div>
-    	    ${partyInfo.p_start_info} /  ${partyInfo.p_end_info}  
+    	    <i class="fas fa-map-marked-alt"></i> <i class="fas fa-map-marker-alt"></i> ${partyInfo.p_start_info} / <i class="fas fa-flag-checkered"></i> <i class="fab fa-font-awesome-flag"></i> ${partyInfo.p_end_info}  
     	    <br>
 	    	${partyInfo.p_content}
 	    	<br>
 	    	출발 예정 시각 : ${partyInfo.p_time_f}
 	    	<br>
+	    	총 거리 : ${partyInfo.p_riding_km} km , 예상 소요 시간 : ${partyInfo.p_riding_time} 분
+	    	
+	    	
 	    	
     </div>
     
@@ -336,7 +339,7 @@ function showPartyUserList() {
 
 // 내가 파티를 나간다
 function exitPartyFn() {
-	if(confirm('현재 참여한 방에서 나가시겠습니까?')){
+/* 	if(confirm('현재 참여한 방에서 나가시겠습니까?')){
 		if(getUserCount()<2){
 			if(confirm('인원 1명이야! 너 나가면 방폭 되는데 나갈거야?')){
 				exitParty(u_idx);
@@ -350,7 +353,26 @@ function exitPartyFn() {
 				exitParty(u_idx); // 현재 로그인된 유저를 얌전히 보내준다
 			}
 		}
+	} */
+	
+	
+	if(isMaster()){
+		if(getUserCount()<2){
+			if(confirm('인원 1명이야! 너 나가면 방폭 되는데 나갈거야?')){
+				exitParty(u_idx);
+				// 방삭제
+				deleteParty();
+			}
+		}else{
+			alert('방장은 나갈 수 없습니다! 나가고 싶다면, 방장을 위임해주세요');
+		}
+	}else{
+		if(confirm('현재 참여한 방에서 나가시겠습니까?')){
+			exitParty(u_idx); // 현재 로그인된 유저를 얌전히 보내준다
+		}
 	}
+	
+	
 }
 	
 
