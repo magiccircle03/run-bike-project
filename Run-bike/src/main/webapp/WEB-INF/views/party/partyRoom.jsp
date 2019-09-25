@@ -119,7 +119,7 @@ h5{
     
     	    <h2 class="marginTop"> [${partyInfo.p_num}] ${partyInfo.p_name}</h2> 
     	    <div id="map_div"> </div>
-    	    <i class="fas fa-map-marked-alt"></i> <i class="fas fa-map-marker-alt"></i> ${partyInfo.p_start_info} / <i class="fas fa-flag-checkered"></i> <i class="fab fa-font-awesome-flag"></i> ${partyInfo.p_end_info}  
+    	    <i class="fab fa-font-awesome-flag"></i> ${partyInfo.p_start_info} / <i class="fas fa-flag-checkered"></i> ${partyInfo.p_end_info}  
     	    <br>
 	    	${partyInfo.p_content}
 	    	<br>
