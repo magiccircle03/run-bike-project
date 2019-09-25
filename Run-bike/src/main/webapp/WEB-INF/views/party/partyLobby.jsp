@@ -64,7 +64,7 @@ h3{
 
 </style>
 </head>
-<body>
+<body onload="initTmap()">
 
 <!-- 해더 시작 -->
 <%@ include file="/WEB-INF/views/frame/header.jsp" %>
@@ -73,7 +73,7 @@ h3{
 <div class="container">
 
 	<!-- 숨겨진 u_idx -->
-	<input id="u_idx" name="u_idx" type="text" class="form-control" value="2">
+	<input id="u_idx" name="u_idx" type="text" class="form-control" value="69">
 
 	<div id="top-nav">
 		<table><tr>
@@ -82,7 +82,7 @@ h3{
 			<p>다른 회원과 함께 달려보세요</p> 
 		</td>
 		<td style="text-align: right">
-			<a onclick="initTmap()" class="btn" data-toggle="modal" data-target="#createPartyModal">방 만들기</a> 
+			<a class="btn" data-toggle="modal" data-target="#createPartyModal">방 만들기</a> 
 		</td>
 		</tr>
 		</table>
@@ -360,7 +360,7 @@ h3{
         }
 
         function selectStart(lon, lat, nameNaddress) {
-            alert(lon + ',' + lat + ',' + nameNaddress);
+            //alert(lon + ',' + lat + ',' + nameNaddress);
 
             // 2. 기존 마커, 팝업 제거
 
@@ -398,17 +398,14 @@ h3{
         }
 
         function selectEnd(lon, lat, nameNaddress) {
-            alert(lon + ',' + lat + ',' + nameNaddress);
+//            alert(lon + ',' + lat + ',' + nameNaddress);
 
             // 2. 기존 마커, 팝업 제거
             if (markerLayer != null) {
                 markerLayer.clearMarkers();
                 map.removeAllPopup();
             }
-/*            if (routeLayer != null) {
-                routeLayer.clearMarkers();
-                map.removeAllPopup();
-            }*/
+
             if (markerEndLayer != null) {
                 markerEndLayer.clearMarkers();
                 map.removeAllPopup();
@@ -547,7 +544,7 @@ var path='http://localhost:8080/runbike';
 
 function createParty() {
 	$.ajax({
-		//url : 'http://15.164.162.21:8080/culturefork/review/post',
+
 		url : path+'/party',
 		type : 'POST',
 		data : JSON.stringify({

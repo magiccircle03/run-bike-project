@@ -91,7 +91,7 @@ h5{
 <div class="container">
 
 <!-- 숨겨진 u_idx -->
-<input id="u_idx" name="u_idx" type="text" class="form-control" value="2">
+<input id="u_idx" name="u_idx" type="text" class="form-control" value="69">
 <button class="btn" onclick="exitPartyFn()">나가기</button> 
 <button class="btn" onclick="getCurrentPos()">현재위치</button> 
 

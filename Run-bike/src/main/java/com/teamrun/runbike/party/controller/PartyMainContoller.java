@@ -1,5 +1,6 @@
 package com.teamrun.runbike.party.controller;
 
+import java.io.Console;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,8 +22,10 @@ import com.teamrun.runbike.party.domain.PartyUserInfo;
 import com.teamrun.runbike.party.domain.ReadyInfo;
 import com.teamrun.runbike.party.domain.RequestParticipationInsert;
 import com.teamrun.runbike.party.domain.RequestPartyCreate;
+import com.teamrun.runbike.party.domain.RequestPartyEdit;
 import com.teamrun.runbike.party.service.PartyCreateService;
 import com.teamrun.runbike.party.service.PartyDeleteService;
+import com.teamrun.runbike.party.service.PartyEditService;
 import com.teamrun.runbike.party.service.PartyInfoService;
 import com.teamrun.runbike.party.service.PartyJoinService;
 import com.teamrun.runbike.party.service.PartyListService;
@@ -54,13 +57,16 @@ public class PartyMainContoller {
 	@Autowired
 	private PartyDeleteService deleteService;
 
+	@Autowired
+	private PartyEditService editService;
+
 	// 인덱스에서 함께하기로 갈 때 분기처리(참여한 방이 있냐없냐 따라서)
 	@RequestMapping(method = RequestMethod.GET)
 	public String getMain(HttpServletRequest request, Model model) {
 		String view = "party/partyLobby";
 		int count = 0;
 		int p_num = 0;
-		int u_idx = 2;
+		int u_idx = 69;
 		// 세션에서 u_idx 가져옴
 		// HttpSession session = request.getSession(false);
 		// LoginInfo loginInfo = session.getAttribute("loginInfo");
@@ -101,12 +107,27 @@ public class PartyMainContoller {
 
 	// 수정 페이지로 가기
 	@RequestMapping(value = "/{p_num}/edit", method = RequestMethod.GET)
-	public String editParty(@PathVariable int p_num, Model model) {
+	public String getEditPartyForm(@PathVariable int p_num, Model model) {
 		PartyInfo partyInfo = partyInfoService.getPartyInfoOne(p_num);
 		model.addAttribute("partyInfo", partyInfo);
 		return "party/edit";
 	}
-	
+
+	// 수정 완료
+	@CrossOrigin
+	@ResponseBody
+	@RequestMapping(value = "/{p_num}/edit", method = RequestMethod.POST)
+	public int editParty(@PathVariable int p_num, @RequestBody RequestPartyEdit editRequest) {
+		System.out.println("컨트롤러 들어옴");
+		int resultCnt = 0;
+
+		editRequest.setP_num(p_num);
+		System.out.println(editRequest);
+		resultCnt = editService.editParty(editRequest);
+
+		return resultCnt;
+	}
+
 	/*
 	 * // ajax로 가져올 때 사용할 방의 정보 // 이건 이제 수정에 써먹기
 	 * 
@@ -178,7 +199,8 @@ public class PartyMainContoller {
 		System.out.println(createRequest);
 		int resultCnt = -1;
 		int key = createService.partyInsert(createRequest);
-		RequestParticipationInsert participationRequest = new RequestParticipationInsert(createRequest.getU_idx(), key, 'Y'); // 방장 참여
+		RequestParticipationInsert participationRequest = new RequestParticipationInsert(createRequest.getU_idx(), key,
+				'Y'); // 방장 참여
 		resultCnt = joinService.insertParticipation(participationRequest);
 		return resultCnt;
 	}
@@ -212,6 +234,7 @@ public class PartyMainContoller {
 		curUser = partyInfoService.getPartyUserCount(p_num);
 		return curUser;
 	}
+
 	// 준비하지 않은 사람의 수를 구해온다
 	@CrossOrigin
 	@ResponseBody

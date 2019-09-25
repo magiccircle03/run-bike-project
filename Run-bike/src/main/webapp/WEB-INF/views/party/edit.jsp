@@ -58,9 +58,6 @@ h5{
 
 <div class="container">
 
-<!-- 숨겨진 u_idx -->
-<input id="u_idx" name="u_idx" type="text" class="form-control" value="2">
-<hr>
 
 <!-- 탭 클릭시마다 새로고침되게 하기 -->
 <ul class="nav nav-pills nav-justified">
@@ -82,7 +79,10 @@ h5{
   
     <div id="partyInfo">
     		<h3>방 정보 수정하기</h3>
+<%--     		<form method="post" action="<c:url value='/party/${partyInfo.p_num}/edit'/>"> --%>
+<!-- 			<form id="editForm"> -->
     		<div class="form-group">
+     			<input id="p_num" name="p_num" type="hidden" class="form-control" value="${partyInfo.p_num}">
     	  		<input id="p_name" name="p_name" type="text" onclick="select()" value="${partyInfo.p_name}" class="form-control marginTop" required="required">
     	    </div>
     	    <div id="map_div"> </div>
@@ -90,8 +90,13 @@ h5{
     	    <div class="form-group">
     	    	<i class="fab fa-font-awesome-flag"></i> <input id="p_start_info" name="p_start_info" type="text" onclick="select()" value="${partyInfo.p_start_info}" class="form-control" style="display: inline-block; width:35%" required><button onclick="searchPoi('S')" class="btn" style="width:7%">검색</button>
    				<i class="fas fa-flag-checkered"></i> <input id="p_end_info" name="p_end_info" type="text" onclick="select()" value="${partyInfo.p_end_info}" class="form-control" style="display: inline-block; width:35%" required><button onclick="searchPoi('E')" class="btn" style="width:7%">검색</button>
-			  	<button class="btn" onclick="getRoute()">경로 선택</button>
+			  	<button class="btn" onclick="getRouteNew()">경로 선택</button>
 			    <p id="result"></p>
+			    
+			    <input id="p_riding_km" type="number" style="display: none;" readonly="readonly">
+			    <input id="p_riding_time" type="number" style="display: none;" readonly="readonly">
+			  	<textarea id="p_XY" name="p_XY" class="form-control" style="display: none;" readonly="readonly" value="${partyInfo.p_XY}"></textarea>
+			  	
     	    </div>
     	
     	    <div class="form-group">
@@ -100,7 +105,7 @@ h5{
     	    
  				<div class="form-group">
 			    <label for="p_time">출발 예정 시간</label>
-			    <input id="p_time" name="p_time" type="datetime-local" value="${partyInfo.p_time_f}" class="form-control" required="required">
+			    <input id="p_time" name="p_time" type="datetime-local" value="${partyInfo.p_time}" class="form-control" required="required">
 			  </div>
 			  
 			  <div class="form-group">
@@ -112,12 +117,17 @@ h5{
 			    <label for="p_password">비밀번호</label>
 			    <input id="p_password" name="p_password" type="text" value="${partyInfo.p_password}" class="form-control">
 			  </div>
+			  
 	    	<br>
+	    	
+<!-- 	    	<input type="submit" value="수정하기" class="btn"> -->
+			<button onclick="editParty()">수정하기</button>
+	    	
+<!-- 	    	</form> -->
     </div>
 
   </div><!-- /partyInfoTab -->
  
-  
 </div>
 
 </div><!-- 컨테이너 끝 -->
@@ -125,27 +135,69 @@ h5{
 <%@ include file="/WEB-INF/views/frame/footer.jsp" %>
 <!-- 푸터 끝 -->
 <script>
-function select() {
-	$(this).select();
-}
-/* $("#p_start_info").on("click", function(){
-    $(this).select();
-}); */
-
-var xy=${partyInfo.p_XY};
-
-$(document).ready(function() {
-	initTmap(xy);
-});
-
 var p_num = ${partyInfo.p_num};
-var u_idx = $('#u_idx').val();// 아이디 값 세션에서 가져오기. 
-
+var p_capacity_old = ${partyInfo.p_capacity};
+// 일단 현재시각을 넣어놓는다! 나중에 바꾸려면 바꾸기
+var timezoneOffset = new Date().getTimezoneOffset() * 60000;
+var timezoneDate = new Date(Date.now() - timezoneOffset); // 타임존을 반영한 현재 시각
+ 
+//document.getElementById('p_time').value= new Date().toISOString().slice(0, 16);
+$('#p_time').val(timezoneDate.toISOString().slice(0, 16));
 
 var path='http://localhost:8080/runbike';
 
+function editParty(){
+	
+	if($('#p_capacity').val() < p_capacity_old){
+		alert('인원수는 늘리기만 가능합니다');
+	}else{
+		$.ajax({
+			url : path+'/party/'+p_num+'/edit',
+			type : 'POST',
+			data : JSON.stringify({
+				p_num : $('#p_num').val(),
+				p_name : $('#p_name').val(),
+				p_content : $('#p_content').val(),
+				p_start_info : $('#p_start_info').val(),
+				p_end_info : $('#p_end_info').val(),
+				p_XY : $('#p_XY').val(),
+				p_time : $('#p_time').val(),
+				p_capacity : $('#p_capacity').val(),
+				p_password : $('#p_password').val(),
+				p_riding_km : $('#p_riding_km').val(),
+				p_riding_time : $('#p_riding_time').val(),
+			}),
+			contentType : 'application/json; charset=utf-8', //전달해줄 때 타입
+			success : function() {
+				alert('수정되었습니다!');
+				location.href='../../party';
+			}
+		});
+	}
+	
+}
 
-function initTmap(xy) {
+
+function select() {
+	$(this).select();
+}
+
+var xy_orgn = ${partyInfo.p_XY};
+var markerLayer = null;
+var markerStartLayer = null;
+var markerEndLayer = null;
+var routeLayer = null;
+var xy_new = new Object();
+
+$(document).ready(function() {
+	initTmap(xy_orgn);
+});
+
+var p_num = ${partyInfo.p_num};
+
+var path='http://localhost:8080/runbike';
+
+function initTmap(xy_orgn) {
 	
     // map 생성
     // Tmap.map을 이용하여, 지도가 들어갈 div, 넓이, 높이를 설정합니다.								
@@ -156,12 +208,250 @@ function initTmap(xy) {
     });
     map.setCenter(new Tmap.LonLat("126.986072", "37.570028").transform("EPSG:4326", "EPSG:3857"), 15); //설정한 좌표를 "EPSG:3857"로 좌표변환한 좌표값으로 즁심점을 설정합니다.						
 	
-    getRoute(xy);
+    getRoute(xy_orgn);
 }
 
+function getRouteNew() {
+	getRoute(xy_new);
+}
+function searchPoi(se) {
+    
+    if (routeLayer != null) {
+        map.removeLayer(routeLayer);
+        map.removeAllPopup();
+        routeLayer=null;
+    }
+
+    // 2. POI 통합 검색 API 요청
+    var query;
+    if (se == 'S') {
+        query = $('#p_start_info').val();
+    } else if (se == 'E') {
+        query = $('#p_end_info').val();
+    }
+    /*var p_start_info=$('#p_start_info').val();
+    var p_end_info=$('#p_end_info').val();*/
+
+
+    /*if(!p_start_info){
+        p_start_info='서울시';
+    }*/
+
+    //alert(p_start_info);
+    $.ajax({
+        method: "GET",
+        url: "https://apis.openapi.sk.com/tmap/pois?version=1&format=xml&callback=result", // POI 통합검색 api 요청 url입니다.
+        async: false,
+        data: {
+            "searchKeyword": query, //검색 키워드
+            "resCoordType": "EPSG3857", //응답 좌표계 유형
+            "appKey": "6d5877dc-c348-457f-a25d-46b11bcd07a9", // 실행을 위한 키입니다. 발급받으신 AppKey(appKey)를 입력하세요.
+            "count": 10 //페이지당 출력되는 개수를 지정
+        },
+        //데이터 로드가 성공적으로 완료되었을 때 발생하는 함수입니다.
+        success: function(response) {
+            prtcl = response;
+
+            // 2. 기존 마커, 팝업 제거
+            if (markerLayer != null) {
+                markerLayer.clearMarkers();
+                map.removeAllPopup();
+            }
+
+            // 3. POI 마커 표시
+            markerLayer = new Tmap.Layer.Markers(); //마커 레이어 생성
+            map.addLayer(markerLayer); //map에 마커 레이어 추가
+            var size = new Tmap.Size(24, 38); //아이콘 크기 설정
+            var offset = new Tmap.Pixel(-(size.w / 2), -(size.h)); //아이콘 중심점 설정
+            var maker;
+            var popup;
+            var prtclString = new XMLSerializer().serializeToString(prtcl); //xml to String	
+            xmlDoc = $.parseXML(prtclString),
+                $xml = $(xmlDoc),
+                $intRate = $xml.find("poi");
+            var innerHtml = "";
+            $intRate.each(function(index, element) {
+                var name = element.getElementsByTagName("name")[0].childNodes[0].nodeValue;
+                var id = element.getElementsByTagName("id")[0].childNodes[0].nodeValue;
+                /*	   	var content ="<div style=' position: relative; border-bottom: 1px solid #dcdcdc; line-height: 18px; padding: 0 35px 2px 0;'>"+
+                					    "<div style='font-size: 12px; line-height: 15px;'>"+name+
+                            
+                					    "</div>"+
+                            
+                					 "</div>";
+                	   	innerHtml+="<div>"+
+                	   					"<img src='http://tmapapis.sktelecom.com/upload/tmap/marker/pin_b_m_"+index+".png' style='vertical-align:middle;' />"+
+                	   					"<span>"+name+"<button type='button' name='sendBtn' onClick='poiDetail("+id+");'>상세보기</button></span>"+
+                	   				"</div>";*/
+                var lon = element.getElementsByTagName("noorLon")[0].childNodes[0].nodeValue;
+                var lat = element.getElementsByTagName("noorLat")[0].childNodes[0].nodeValue;
+
+                var icon = new Tmap.Icon('http://tmapapis.sktelecom.com/upload/tmap/marker/pin_b_m_' + index + '.png', size, offset); //마커 아이콘 설정
+                var lonlat = new Tmap.LonLat(lon, lat); //좌표설정 
+                marker = new Tmap.Marker(lonlat, icon); //마커생성
+                markerLayer.addMarker(marker); //마커레이어에 마커 추가
+
+                /*			popup = new Tmap.Popup("p1", lonlat, new Tmap.Size(120, 50), content, false);//마우스 오버 팝업
+                			popup.autoSize = true;//Contents 내용에 맞게 Popup창의 크기를 재조정할지 여부를 결정
+                		    map.addPopup(popup);//map에 popup추가
+                		    popup.hide();//마커에 마우스가 오버되기 전까진 popup을 숨김*/
+                //마커 이벤트등록
+                marker.events.register("click", popup, onOverMarker);
+                //마커에 마우스가 오버되었을 때 발생하는 이벤트 함수입니다.
+                function onOverMarker(evt) {
+                    //this.show(); //마커에 마우스가 오버되었을 때 팝업이 보입니다. 
+                    map.removeAllPopup();
+                    poiDetail(id, se);
+                }
+                /*		    //마커 이벤트등록
+                		    marker.events.register("mouseout", popup, onOutMarker);
+                		    //마커에 마우스가 아웃되었을 때 발생하는 함수입니다.
+                		    function onOutMarker(evt) {
+                		      this.hide(); //마커에 마우스가 없을땐 팝업이 숨겨집니다.
+                		    }*/
+            });
+
+            //$("#searchResult").html(innerHtml);
+            map.zoomToExtent(markerLayer.getDataExtent()); //마커레이어의 영역에 맞게 map을 zoom합니다.
+        },
+        //요청 실패시 콘솔창에서 에러 내용을 확인할 수 있습니다.
+        error: function(request, status, error) {
+            console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+        }
+    });
+}
+
+// POI 상세 정보 API
+function poiDetail(poiId, se) {
+    $.ajax({
+        method: "GET",
+        //POI 상세정보 api 요청 url입니다.
+        //resCoordType:응답 좌표계 유형
+        //appKey:실행을 위한 키입니다. 발급받으신 AppKey(appKey)를 입력하세요.
+        url: "	https://apis.openapi.sk.com/tmap/pois/" + poiId + "?version=1&resCoordType=EPSG3857&format=xml&callback=result&appKey=6d5877dc-c348-457f-a25d-46b11bcd07a9",
+        async: false,
+        //데이터 로드가 성공적으로 완료되었을 때 발생하는 함수입니다.
+        success: function(response) {
+            prtcl = response;
+
+            var prtclString = new XMLSerializer().serializeToString(prtcl); //xml to String	
+            xmlDoc = $.parseXML(prtclString),
+                $xml = $(xmlDoc),
+                $intRate = $xml.find("poiDetailInfo");
+            var lon = $intRate[0].getElementsByTagName("lon")[0].childNodes[0].nodeValue;
+            var lat = $intRate[0].getElementsByTagName("lat")[0].childNodes[0].nodeValue;
+            var name = $intRate[0].getElementsByTagName("name")[0].childNodes[0].nodeValue;
+            var address = $intRate[0].getElementsByTagName("address")[0].childNodes[0].nodeValue;
+            var nameNaddress = name + "(" + address + ")";
+            var selectBtn = '';
+            
+            if (se == 'S') {
+                selectBtn = "<button class='btn selectBtn' onclick='selectStart(" + lon + "," + lat + ",\"" + nameNaddress + "\")'>출발지로 선택</button>";
+            } else if (se == 'E') {
+                selectBtn = "<button class='btn selectBtn' onclick='selectEnd(" + lon + "," + lat + ",\"" + nameNaddress + "\")'>도착지로 선택</button>";
+            }
+
+            var content = "<div style=' position: relative; border-bottom: 1px solid #dcdcdc; line-height: 18px; padding: 0 35px 2px 0;'>" +
+                "<div style='font-size: 14px; line-height: 15px;'>" +
+                "<p class='poptxt'>" + name + "\n" + "( " + address + " )</p>" +
+                selectBtn +
+                "</div>" +
+                "</div>"; 
+
+/*                         var content = "<div style=' position: relative; border-bottom: 1px solid #dcdcdc; line-height: 18px; padding: 0 35px 2px 0;'>" +
+                    "<div style='font-size: 14px; line-height: 15px;'>" +
+                    "<p class='poptxt'>" + name + "\n" + "( " + address + " )</p>" +
+                    "<button class='btn selectBtn' onclick='selectStart(" + lon + "," + lat + ",\"" + nameNaddress + "\")'>출발지로 선택</button>" +
+                    "<button class='btn selectBtn' onclick='selectEnd(" + lon + "," + lat + ",\"" + nameNaddress + "\")'>도착지로 선택</button>" +
+                    "</div>" +
+                    "</div>"; */
+                
+            var popup = new Tmap.Popup("lablePopup", new Tmap.LonLat(lon, lat), new Tmap.Size(100, 20), content, true); //popup 생성
+            popup.autoSize = true; //Contents 내용에 맞게 Popup창의 크기를 재조정할지 여부를 결정
+            map.addPopup(popup); //map에 popup추가
+        },
+        //요청 실패시 콘솔창에서 에러 내용을 확인할 수 있습니다.
+        error: function(request, status, error) {
+            console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+        }
+    });
+
+
+}
+
+function selectStart(lon, lat, nameNaddress) {
+  //  alert(lon + ',' + lat + ',' + nameNaddress);
+
+    // 2. 기존 마커, 팝업 제거
+
+    if (markerLayer != null) {
+        markerLayer.clearMarkers();
+        map.removeAllPopup();
+    }
+
+    if (markerStartLayer != null) {
+        markerStartLayer.clearMarkers();
+        map.removeAllPopup();
+    }
+
+
+    // 시작
+    markerStartLayer = new Tmap.Layer.Markers("start"); //마커 레이어 생성
+    map.addLayer(markerStartLayer); //map에 마커 레이어 추가
+
+    var size = new Tmap.Size(24, 38); //아이콘 크기 설정
+    var offset = new Tmap.Pixel(-(size.w / 2), -size.h); //아이콘 중심점 설정
+    var icon = new Tmap.IconHtml('<img src=http://tmapapis.sktelecom.com/upload/tmap/marker/pin_r_m_s.png />', size, offset); //마커 아이콘 설정
+    //var marker_s = new Tmap.Marker(new Tmap.LonLat("126.986072", "37.570028").transform("EPSG:4326", "EPSG:3857"), icon); //설정한 좌표를 "EPSG:3857"로 좌표변환한 좌표값으로 설정합니다.
+    var marker_s = new Tmap.Marker(new Tmap.LonLat(lon, lat), icon);
+    markerStartLayer.addMarker(marker_s); //마커 레이어에 마커 추가
+    
+    xy_new.startName = nameNaddress;
+    xy_new.startX = lon;
+    xy_new.startY = lat;
+    
+/*           $('#startX').val(lon);
+    $('#startY').val(lat);*/
+    $('#p_start_info').val(nameNaddress);
+    
+}
+
+function selectEnd(lon, lat, nameNaddress) {
+   // alert(lon + ',' + lat + ',' + nameNaddress);
+
+    // 2. 기존 마커, 팝업 제거
+    if (markerLayer != null) {
+        markerLayer.clearMarkers();
+        map.removeAllPopup();
+    }
+
+    if (markerEndLayer != null) {
+        markerEndLayer.clearMarkers();
+        map.removeAllPopup();
+    }
+
+    // 도착
+    markerEndLayer = new Tmap.Layer.Markers("end"); //마커 레이어 생성
+    map.addLayer(markerEndLayer); //map에 마커 레이어 추가
+
+    var size = new Tmap.Size(24, 38); //아이콘 크기 설정
+    var offset = new Tmap.Pixel(-(size.w / 2), -size.h); //아이콘 중심점 설정
+    var icon = new Tmap.IconHtml('<img src=http://tmapapis.sktelecom.com/upload/tmap/marker/pin_r_m_e.png />', size, offset); //마커 아이콘 설정
+    var marker_e = new Tmap.Marker(new Tmap.LonLat(lon, lat), icon);
+    markerEndLayer.addMarker(marker_e); //마커 레이어에 마커 추가
+    
+    xy_new.endName = nameNaddress;
+    xy_new.endX = lon;
+    xy_new.endY = lat;
+    
+/*            $('#endX').val(lon);
+    $('#endY').val(lat);*/
+    $('#p_end_info').val(nameNaddress);
+}
 
 function getRoute(xy) {
-	
+    var data = JSON.stringify(xy);
+    $('#p_XY').val(data);
     // 시작 마커 표시
     markerStartLayer = new Tmap.Layer.Markers("start"); //마커 레이어 생성
     map.addLayer(markerStartLayer); //map에 마커 레이어 추가

@@ -125,4 +125,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select count(*) from run_bike.participation where p_num=#{num} and pc_readyYN='N';
 	</select>
 	
+	<!--  방 수정 -->
+	<update id="editParty" parameterType="com.teamrun.runbike.party.domain.RequestPartyEdit">
+		update party set p_name=#{p_name}, p_start_info=#{p_start_info}, p_end_info=#{p_end_info}, p_XY=#{p_XY}, p_time=#{p_time}, p_capacity=#{p_capacity}, p_content=#{p_content}, p_password=#{p_password}, p_riding_km=#{p_riding_km}, p_riding_time=#{p_riding_time} 
+		where p_num=#{p_num};
+	</update>
+	
 </mapper>
