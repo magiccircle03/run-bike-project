@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.weovercome.mapper.MemberMapper">
+	
+	<!-- select 결과 메핑을 위한 resultMap 설정 -->
+	<resultMap id="resultMemberInfo"
+		type="com.weovercome.domain.MemberInfo">
+		<id property="idx" column="idx" />
+		<result property="uId" column="uid" />
+		<result property="uPW" column="upw" />
+		<result property="uName" column="uname" />
+		<result property="uPhoto" column="uphoto" />
+		<result property="regDate" column="date" />
+		<result property="verify" column="verify" />
+		<result property="code" column="code" />
+	</resultMap>
+	
+	<!-- 회원로그인  -->
+	<select id="selectMemberById" resultMap="resultMemberInfo">
+		
+		select * from member where uid = #{uId}
+	
+	</select>
+	
+</mapper>
