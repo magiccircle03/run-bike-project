@@ -223,7 +223,7 @@ var path='http://localhost:8080/runbike';
 } */
 
 function editParty() {
-	if (confirm('방 정보를수정할까요?')) {
+	if (confirm('방 정보를 수정할까요?')) {
 		location.href = '../party/'+p_num+'/edit';
 	}
 }

@@ -82,17 +82,37 @@ h5{
   
     <div id="partyInfo">
     		<h3>방 정보 수정하기</h3>
-    		<div class="form-group ">
-    	  		<input id="p_name" name="p_name" type="text" value="${partyInfo.p_name}" class="form-control marginTop" required="required">
+    		<div class="form-group">
+    	  		<input id="p_name" name="p_name" type="text" onclick="select()" value="${partyInfo.p_name}" class="form-control marginTop" required="required">
     	    </div>
     	    <div id="map_div"> </div>
-    	    <i class="fab fa-font-awesome-flag"></i> ${partyInfo.p_start_info} / <i class="fas fa-flag-checkered"></i> ${partyInfo.p_end_info}  
-    	    <br>
-	    	${partyInfo.p_content}
+    	    
+    	    <div class="form-group">
+    	    	<i class="fab fa-font-awesome-flag"></i> <input id="p_start_info" name="p_start_info" type="text" onclick="select()" value="${partyInfo.p_start_info}" class="form-control" style="display: inline-block; width:35%" required><button onclick="searchPoi('S')" class="btn" style="width:7%">검색</button>
+   				<i class="fas fa-flag-checkered"></i> <input id="p_end_info" name="p_end_info" type="text" onclick="select()" value="${partyInfo.p_end_info}" class="form-control" style="display: inline-block; width:35%" required><button onclick="searchPoi('E')" class="btn" style="width:7%">검색</button>
+			  	<button class="btn" onclick="getRoute()">경로 선택</button>
+			    <p id="result"></p>
+    	    </div>
+    	
+    	    <div class="form-group">
+    	  		<input id="p_content" name="p_content" type="text" onclick="select()" value="${partyInfo.p_content}" class="form-control marginTop" required="required">
+    	    </div>
+    	    
+ 				<div class="form-group">
+			    <label for="p_time">출발 예정 시간</label>
+			    <input id="p_time" name="p_time" type="datetime-local" value="${partyInfo.p_time_f}" class="form-control" required="required">
+			  </div>
+			  
+			  <div class="form-group">
+			    <label for="p_capacity">최대 인원</label>
+			    <input id="p_capacity" name="p_capacity" type="number" value="${partyInfo.p_capacity}" class="form-control" required="required">
+			  </div>
+			  
+			  <div class="form-group">
+			    <label for="p_password">비밀번호</label>
+			    <input id="p_password" name="p_password" type="text" value="${partyInfo.p_password}" class="form-control">
+			  </div>
 	    	<br>
-	    	출발 예정 시각 : ${partyInfo.p_time_f}
-	    	<br>
-	    	총 거리 : ${partyInfo.p_riding_km} km , 예상 소요 시간 : ${partyInfo.p_riding_time} 분
     </div>
 
   </div><!-- /partyInfoTab -->
@@ -105,6 +125,12 @@ h5{
 <%@ include file="/WEB-INF/views/frame/footer.jsp" %>
 <!-- 푸터 끝 -->
 <script>
+function select() {
+	$(this).select();
+}
+/* $("#p_start_info").on("click", function(){
+    $(this).select();
+}); */
 
 var xy=${partyInfo.p_XY};
 
@@ -243,6 +269,8 @@ function getRoute(xy) {
         }
     });
 }
+
+
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
