@@ -70,8 +70,12 @@ public class LoginService implements UserService {
 				if(userInfo.isU_verify()) {
 					LoginInfo loginInfo = userInfo.toLoginInfo();
 					request.getSession(true).setAttribute("loginInfo",loginInfo);
+					if(userInfo.getU_name() == "admin") {
+						loginChk = 4;
+					} else {
+						loginChk = 2;
+					}
 					dateService.saveDate(userInfo.getU_idx());
-					loginChk = 2;
 				} else {
 					loginChk = 1;
 					request.getSession(true).setAttribute("email",userInfo.getU_id());

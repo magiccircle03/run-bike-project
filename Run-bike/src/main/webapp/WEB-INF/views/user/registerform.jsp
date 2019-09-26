@@ -15,7 +15,10 @@
 		<link rel="stylesheet" href="<c:url value='/assets/css/main.css'/>" />
 		<link rel="stylesheet" href="<c:url value='/assets/css/style.css'/>" />
 		<style>
-			
+			input[type="checkbox"] + label,
+		input[type="radio"] + label, input, select, label{
+				color: #000;
+			}
 		</style>
 	</head>
 	<body class="landing is-preload">
@@ -73,8 +76,8 @@
 					                    <input type="file" name="u_photo" id="u_photo" placeholder="confirm password" />
 					                </div>
 					                <div class="col-12 col-11-xsmall">
-					                	<button type="submit" class="col-6 btn-submit">회원가입</button>
-					            		<button type="reset" class="col-6 btn-reset">취소</button>
+					                	<button type="submit" class="col-6 btn-submit" style="width: 49%">회원가입</button>
+					            		<button type="reset" id="btnReset" class="col-6 btn-reset" style="width: 49%">취소</button>
 					                </div>
 					            </div>
 					            
@@ -283,7 +286,9 @@
 					
 
 
-
+					$('#btnReset').on('click',function(){
+						location.href="http://localhost:8080/runbike/";
+					})
 					
 					
 

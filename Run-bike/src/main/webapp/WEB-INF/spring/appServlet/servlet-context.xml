@@ -96,8 +96,9 @@
    
    <interceptors>
       <interceptor>
-         <mapping path="/main"></mapping>
          <mapping path="/user/**"></mapping>
+         <mapping path="/record/**"></mapping>
+         <mapping path="/party/**"></mapping>
          <exclude-mapping path="/user/register" />
          <exclude-mapping path="/user/login/**" />
          <beans:ref bean="AuthCheckInterceptor"/>
