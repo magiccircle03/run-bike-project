@@ -73,7 +73,7 @@ h3{
 <div class="container">
 
 	<!-- 숨겨진 u_idx -->
-	<input id="u_idx" name="u_idx" type="text" class="form-control" value="${loginInfo.u_idx}">
+	<input id="u_idx" name="u_idx" type="hidden" class="form-control" value="${loginInfo.u_idx}">
 
 	<div id="top-nav">
 		<table><tr>
@@ -532,42 +532,49 @@ var timezoneOffset = new Date().getTimezoneOffset() * 60000;
 var timezoneDate = new Date(Date.now() - timezoneOffset); // 타임존을 반영한 현재 시각
  
 //document.getElementById('p_time').value= new Date().toISOString().slice(0, 16);
-$('#p_time').val(timezoneDate.toISOString().slice(0, 16));
+$('#createPartyModal #p_time').val(timezoneDate.toISOString().slice(0, 16));
 
 $(document).ready(function() {
 	list();
 });
 
 var u_idx = $('#u_idx').val();
-
 var path='http://localhost:8080/runbike';
 
-function createParty() {
-	$.ajax({
 
-		url : path+'/party',
-		type : 'POST',
-		data : JSON.stringify({
-			p_name : $('#createPartyModal #p_name').val(),
-			p_content : $('#createPartyModal #p_content').val(),
-			p_start_info : $('#createPartyModal #p_start_info').val(),
-			p_end_info : $('#createPartyModal #p_end_info').val(),
-			p_XY : $('#createPartyModal #p_XY').val(),
-			p_time : $('#createPartyModal #p_time').val(),
-			p_capacity : $('#createPartyModal #p_capacity').val(),
-			p_password : $('#createPartyModal #p_password').val(),
-			p_riding_km : $('#createPartyModal #p_riding_km').val(),
-			p_riding_time : $('#createPartyModal #p_riding_time').val(),
-			u_idx : u_idx
-		}),
-		contentType : 'application/json; charset=utf-8', //전달해줄 때 타입
-		//dataType : 'json', //데이터타입
-		success : function() {
-			//alert('성공');
-			//list();
-			location.href='party';
-		}
-	});
+function createParty() {
+	var chk = false;
+	if ($('#createPartyModal #p_XY').val().length<1) {
+		alert('경로를 선택해주세요');
+	}else if ($('#createPartyModal #p_capacity').val() == null || $('#createPartyModal #p_capacity').val()<2){
+		alert('최대 인원은 2명부터 가능합니다!');
+	}else{
+		chk = true;
+	}
+	
+	if(chk == true){
+	 	$.ajax({
+			url : path+'/party',
+			type : 'POST',
+			data : JSON.stringify({
+				p_name : $('#createPartyModal #p_name').val(),
+				p_content : $('#createPartyModal #p_content').val(),
+				p_start_info : $('#createPartyModal #p_start_info').val(),
+				p_end_info : $('#createPartyModal #p_end_info').val(),
+				p_XY : $('#createPartyModal #p_XY').val(),
+				p_time : $('#createPartyModal #p_time').val(),
+				p_capacity : $('#createPartyModal #p_capacity').val(),
+				p_password : $('#createPartyModal #p_password').val(),
+				p_riding_km : $('#createPartyModal #p_riding_km').val(),
+				p_riding_time : $('#createPartyModal #p_riding_time').val(),
+				u_idx : u_idx
+			}),
+			contentType : 'application/json; charset=utf-8', //전달해줄 때 타입
+			success : function() {
+				location.href='party';
+			}
+		}); 
+	}
 }
 
 function list() {
