@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.teamrun.runbike.mycourse.dao.MyCourseDao">
+
+	<!-- Result Mapping 설정 -->
+	<resultMap id="myCourse"
+		type="com.teamrun.runbike.mycourse.domain.MyCourse">
+		<id property="mc_idx" column="mc_idx" />
+		<result property="u_idx" column="u_idx" />
+		<result property="mc_descript" column="mc_descript" />
+		<result property="mc_name" column="mc_name" />
+		<result property="mc_startPoint_lon" column="mc_startPoint_lon" />
+		<result property="mc_startPoint_lat" column="mc_startPoint_lat" />
+		<result property="mc_endPoint_lon" column="mc_endPoint_lon" />
+		<result property="mc_endPoint_lat" column="mc_endPoint_lat" />
+		<result property="mc_distance" column="mc_distance" />
+		<result property="mc_time" column="mc_time" />
+	</resultMap>
+
+	<!-- Create  -->
+	<insert id="insertMyCourse"
+		parameterType="com.teamrun.runbike.mycourse.domain.MyCourse">	
+		insert into my_course (u_idx, mc_descript, mc_name, mc_startPoint_lon, mc_startPoint_lat, mc_endPoint_lon, mc_endPoint_lat, mc_distance, mc_time) values (#{u_idx}, #{mc_descript}, #{mc_name}, #{mc_startPoint_lon}, #{mc_startPoint_lat}, #{mc_endPoint_lon}, #{mc_endPoint_lat}, #{mc_distance}, #{mc_time})
+	</insert>
+	
+	<!-- Read : 전체 목록  -->
+	<select id="selectMyCourseList" resultMap="myCourse">
+		select * from my_course where u_idx=#{u_idx} order by mc_idx ASC
+	</select>
+	
+	<!--페이지로 나눠서 페이지에 해당되는 자료들 불러오게 하기  -->
+	<select id="selectMyCourseByPage" parameterType="map" resultMap="myCourse">
+		select * from my_course where u_idx=#{u_idx} limit #{index}, #{CNT_LIST}
+	</select>
+	
+	<select id="getTotalCount" resultType="int">
+		select count(*) from my_course where u_idx=#{u_idx}
+	</select>
+	
+	<!-- Update  -->
+	<update id="changeMyCourse" parameterType="com.teamrun.runbike.mycourse.domain.MyCourse">
+		update my_course set mc_name=#{mc_name}, mc_descript=#{mc_descript} where mc_idx=#{mc_idx}
+	</update>
+	
+	<!-- Delete  -->
+	<delete id="deleteMyCourse">
+		delete from my_course where mc_idx = #{mc_idx}
+	</delete>
+	
+</mapper>

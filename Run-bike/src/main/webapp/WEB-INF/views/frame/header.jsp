@@ -17,7 +17,7 @@
     <a class="pt-md-2 mx-md-3" href="#"><i class="fas fa-crown"></i>나의 리워드</a>
     <a class="pt-md-2 mx-md-3" href="#"><i class="fas fa-headset"></i>문의하기</a>
   </nav>
-  <div class="user-info text-primary mr-2"><a href="user/mypage" class="">${loginInfo.u_name} 님</a></div>
+  <div class="user-info text-primary mr-2"><a href="<c:url value='/user/mypage' />" class="">${loginInfo.u_name} 님</a></div>
   <small><a href="user/logout" class="text-muted"><i class="fas fa-signout"></i>로그아웃</a></small>
     </div>
 </header>

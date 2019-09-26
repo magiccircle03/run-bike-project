@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.teamrun.runbike.record.dao.RecordDao;
 import com.teamrun.runbike.record.domain.Record;
 import com.teamrun.runbike.record.domain.RegRecord;
+import com.teamrun.runbike.user.domain.LoginInfo;
 
 @Service("insertRecordService")
 public class InsertRecordService {
@@ -24,7 +25,12 @@ public class InsertRecordService {
 		
 		Record record = regRecord.toRecord();
 		
-		record.setU_idx(71);
+		//세션에서 로그인 정보 받아오기
+		LoginInfo loginInfo = (LoginInfo)request.getSession(false).getAttribute("loginInfo");
+		
+		int u_idx = loginInfo.getU_idx();
+		
+		record.setU_idx(u_idx);
 		
 		int rCnt = dao.insertRecord(record);
 		

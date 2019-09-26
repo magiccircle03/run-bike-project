@@ -217,7 +217,7 @@
 	    });
 	    
         var path = 'http://localhost:8080/runbike';
-        var u_idx = 71;
+        var u_idx = ${loginInfo.u_idx};
         
       //전역변수
         var map;
