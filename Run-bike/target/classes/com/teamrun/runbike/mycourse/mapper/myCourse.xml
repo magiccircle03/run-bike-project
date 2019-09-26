@@ -32,6 +32,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select * from my_course where u_idx=#{u_idx} order by mc_idx ASC
 	</select>
 	
+	<!--페이지로 나눠서 페이지에 해당되는 자료들 불러오게 하기  -->
+	<select id="selectMyCourseByPage" parameterType="map" resultMap="myCourse">
+		select * from my_course where u_idx=#{u_idx} limit #{index}, #{CNT_LIST}
+	</select>
+	
+	<select id="getTotalCount" resultType="int">
+		select count(*) from my_course where u_idx=#{u_idx}
+	</select>
+	
 	<!-- Update  -->
 	<update id="changeMyCourse" parameterType="com.teamrun.runbike.mycourse.domain.MyCourse">
 		update my_course set mc_name=#{mc_name}, mc_descript=#{mc_descript} where mc_idx=#{mc_idx}

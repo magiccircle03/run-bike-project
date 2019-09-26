@@ -64,6 +64,11 @@
 	margin: 15px 0;
 	line-height: 35px;
 }
+
+.pages{
+	width: 100px;
+	margin: 0 auto;
+}
 </style>
 
 </head>
@@ -95,11 +100,19 @@
 			<div id="myCourseListContainer">
 	            <!-- myCourseList 시작 -->
 	            <div id="myCourseList" class="row"></div>
+
+			<div class="pages">
+			    <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+	            	<div id="pagingBox" class="btn-group mr-2" role="group" aria-label="First group">
+	            	</div>
+	           	</div>
+			</div>
+	            <br>
 	            <input type="button" id="regModal" class="btn btn-primary btn-lg btn-block" data-toggle="modal" data-target="#regMyCourseModal" onclick="chkMapExist()" value="나의 코스 등록">	
-	            <!-- myCourseList 끝 -->
-	            <p id="pageArea"></p>
-	        </div>
-	</div>
+	            <!-- myCourseList 끝 -->				
+			</div>
+	   </div>
+
     <!-- 컨테이너 끝 -->
      <!-- 나의 코스 등록 시 모달 실행-->
     <!-- Modal 시작-->
@@ -243,10 +256,33 @@
             map.addLayer(markerEndPointLayer);
         };
 
-
-        function list() {
+		function getTotalPage(){
+			$.ajax({
+				url: path + '/myCourse/totalPage/' + u_idx,
+				type: 'GET',
+				success: function(data){
+					
+					var totalPage = data;
+					
+					var html = '';				
+					
+					for(var i = 1; i <= data; i++){
+						html += '<button type="button" class="btn btn-secondary" onclick="list('+ i +')">';
+						html += i;
+						html += '</button>';
+					}
+					
+					$('#pagingBox').html(html);
+				}				
+			});
+			
+			
+		}
+		
+        function list(currentPageNumber) {
+        	    	
             $.ajax({
-                url: path + '/myCourse/' + u_idx,
+                url: path + '/myCourse/' + currentPageNumber,
                 type: 'GET',
                 success: function(data) {
 
@@ -948,7 +984,8 @@
         //Map 시작!!!!!!!!!!!
         $(document).ready(function() {
             initTmap();
-            list();
+            list(1);            
+            getTotalPage();
             
 	        //모달값 초기화
 	        $('#regMyCourseModal').on('hidden.bs.modal', function (e) {

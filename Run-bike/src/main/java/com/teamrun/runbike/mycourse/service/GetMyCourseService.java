@@ -9,8 +9,6 @@ import org.springframework.stereotype.Service;
 import com.teamrun.runbike.mycourse.dao.MyCourseDao;
 import com.teamrun.runbike.mycourse.domain.MyCourse;
 
-
-
 @Service("getMyCourseService")
 public class GetMyCourseService {
 

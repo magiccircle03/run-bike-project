@@ -19,7 +19,9 @@ import com.teamrun.runbike.mycourse.domain.MyCourse;
 import com.teamrun.runbike.mycourse.domain.RegMyCourse;
 import com.teamrun.runbike.mycourse.service.ChangeMyCourseService;
 import com.teamrun.runbike.mycourse.service.DeleteMyCourseService;
+import com.teamrun.runbike.mycourse.service.GetMyCourseListService;
 import com.teamrun.runbike.mycourse.service.GetMyCourseService;
+import com.teamrun.runbike.mycourse.service.GetTotalPageService;
 import com.teamrun.runbike.mycourse.service.InsertMyCourseService;
 
 @Controller
@@ -28,9 +30,16 @@ public class MyCourseController {
 
 	@Autowired
 	private InsertMyCourseService insertService;
-
+	
+	/*
+	 * @Autowired private GetMyCourseService getService;
+	 */
+	 	
 	@Autowired
-	private GetMyCourseService getService;
+	private GetTotalPageService totalPageService;
+	
+	@Autowired
+	private GetMyCourseListService listService;
 	
 	@Autowired
 	private ChangeMyCourseService changeService;
@@ -50,19 +59,54 @@ public class MyCourseController {
 		return new ResponseEntity<String>(cnt > 0 ? "success" : "fail", HttpStatus.OK);
 	}
 
-	// Read
+	
+	  // Read 
+	  @CrossOrigin
+	  @ResponseBody
+	  @RequestMapping(value = "/{currentPageNumber}", method = RequestMethod.GET) public
+	  ResponseEntity<List<MyCourse>> selectMyCourseList(@PathVariable("currentPageNumber") int currentPageNumber) {
+	  
+	  List<MyCourse> myCourseList = listService.getListData(currentPageNumber);
+	  
+	  ResponseEntity<List<MyCourse>> entity = new
+	  ResponseEntity<List<MyCourse>>(myCourseList, HttpStatus.OK);
+	  
+	  return entity;
+	  }
+	 
+	
+	/*
+	 * // Read
+	 * 
+	 * @CrossOrigin
+	 * 
+	 * @ResponseBody
+	 * 
+	 * @RequestMapping(value = "/{currentPageNumber}", method = RequestMethod.GET)
+	 * public ResponseEntity<ListMyCourse>
+	 * selectMyCourseList(@PathVariable("currentPageNumber") int currentPageNumber)
+	 * {
+	 * 
+	 * ListMyCourse myCourseList = listService.getListData(currentPageNumber);
+	 * 
+	 * ResponseEntity<ListMyCourse> entity = new
+	 * ResponseEntity<ListMyCourse>(myCourseList, HttpStatus.OK);
+	 * 
+	 * return entity; }
+	 */
+
 	@CrossOrigin
 	@ResponseBody
-	@RequestMapping(value = "/{u_idx}", method = RequestMethod.GET)
-	public ResponseEntity<List<MyCourse>> selectMyCourseList(@PathVariable("u_idx") int u_idx) {
-
-		List<MyCourse> myCourseList = getService.selectMyCourseList(u_idx);
-
-		ResponseEntity<List<MyCourse>> entity = new ResponseEntity<List<MyCourse>>(myCourseList, HttpStatus.OK);
-
-		return entity;
+	@RequestMapping(value = "/totalPage/{u_idx}", method = RequestMethod.GET)
+	public ResponseEntity<Integer> getTotalPage(@PathVariable("u_idx") int u_idx){
+		
+		int totalPage = totalPageService.getTotalPage(u_idx);
+		
+		ResponseEntity<Integer> entity = new ResponseEntity<Integer>(totalPage, HttpStatus.OK);
+		
+		return entity;	
 	}
-
+	
 	// Update
 	@CrossOrigin
 	@RequestMapping(method = RequestMethod.PUT)
