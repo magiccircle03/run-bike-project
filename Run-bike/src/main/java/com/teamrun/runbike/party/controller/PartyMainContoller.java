@@ -1,9 +1,9 @@
 package com.teamrun.runbike.party.controller;
 
-import java.io.Console;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +31,7 @@ import com.teamrun.runbike.party.service.PartyJoinService;
 import com.teamrun.runbike.party.service.PartyListService;
 import com.teamrun.runbike.party.service.PartyMasterService;
 import com.teamrun.runbike.party.service.ReadyService;
+import com.teamrun.runbike.user.domain.LoginInfo;
 
 @Controller
 @RequestMapping("/party")
@@ -63,28 +64,40 @@ public class PartyMainContoller {
 	// 인덱스에서 함께하기로 갈 때 분기처리(참여한 방이 있냐없냐 따라서)
 	@RequestMapping(method = RequestMethod.GET)
 	public String getMain(HttpServletRequest request, Model model) {
+		System.out.println("컨트롤러");
 		String view = "party/partyLobby";
 		int count = 0;
 		int p_num = 0;
-		int u_idx = 69;
+		int u_idx = 0;
+		
+		System.out.println("세션에서 가져오기 전");
 		// 세션에서 u_idx 가져옴
-		// HttpSession session = request.getSession(false);
-		// LoginInfo loginInfo = session.getAttribute("loginInfo");
-		// u_idx = loginInfo.getU_idx();
+		HttpSession session = request.getSession(false);
+		
+		/*
+		 * if(session==null) { // 로그인 안 되어있을리가 없지만 그래도 한 번 더 체크해줬다.
+		 * System.out.println("세션 널이다"); view = "redirect:/"; }else {
+		 */
+			LoginInfo loginInfo = (LoginInfo) session.getAttribute("loginInfo");
+			u_idx = loginInfo.getU_idx();
+		
+			System.out.println("세션에서 가져온 후 ");
 
-		// 로그인 안 되어있으면 로그인 페이지로 보냄
-		// view="";
+			System.out.println("파티 로그인 세션 확인 >>"+loginInfo);
+			System.out.println("파티 u_idx >>"+u_idx);
+			
 
-		// 로그인 되었다는 전제
-		count = partyInfoService.hasParty(u_idx);
+			// 로그인 되었다는 전제
+			count = partyInfoService.hasParty(u_idx);
 
-		// System.out.println("hasParty count : "+count);
+			// System.out.println("hasParty count : "+count);
 
-		if (count > 0) {
-			p_num = partyInfoService.getPartyNum(u_idx); // 그 방번호 얻어오기
+			if (count > 0) {
+				p_num = partyInfoService.getPartyNum(u_idx); // 그 방번호 얻어오기
 
-			view = "redirect:/party/" + p_num; // 그 방 페이지로 넘어감
-		}
+				view = "redirect:/party/" + p_num; // 그 방 페이지로 넘어감
+			}
+		/* } */
 
 		return view;
 	}
