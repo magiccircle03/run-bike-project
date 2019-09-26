@@ -27,7 +27,10 @@
 				background-color: initial;
 				max-width: none;
 			}
-			
+			input[type="checkbox"] + label,
+		input[type="radio"] + label, input, select, label{
+				color: #000;
+			}
 			input[type=""]
 			.header-section {
 				height: 142px;

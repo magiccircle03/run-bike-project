@@ -33,12 +33,8 @@ public class LoginController {
 		int loginChk = 0;
 		
 		
-		if(u_id.equals("admin") && u_pw.equals("admin")) {
-			loginChk = 4;
-			
-		} else {
-			loginChk = loginService.login(u_id, u_pw, request);
-		}
+		
+		loginChk = loginService.login(u_id, u_pw, request);
 		
 		switch(loginChk) {
 		case 4:
