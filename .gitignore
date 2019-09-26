@@ -139,3 +139,12 @@ $RECYCLE.BIN/
 # End of https://www.gitignore.io/api/web,java,windows,eclipse
 
 Run-bike/.settings/
+
+# Directories #
+/build/
+/bin/
+.idea
+classes/
+*/target
+*/target/
+target/
