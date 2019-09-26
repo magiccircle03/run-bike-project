@@ -19,6 +19,8 @@
 	<resources mapping="/images/**" location="/images/" />
 	<resources mapping="/uploadfile/**" location="/uploadfile/" />
 
+
+   
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
 	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<beans:property name="prefix" value="/WEB-INF/views/" />
@@ -37,7 +39,7 @@
 	<beans:bean id="dataSource"
 		class="org.apache.commons.dbcp2.BasicDataSource"
 		p:driverClassName="com.mysql.jdbc.Driver"
-		p:url="jdbc:mysql://mysql-mm.c1le2zwwezgt.ap-northeast-2.rds.amazonaws.com/run_bike?characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull"
+		p:url="jdbc:mysql://runbike-project.c1le2zwwezgt.ap-northeast-2.rds.amazonaws.com/run_bike?characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull"
 		p:username="runbike" p:password="runbike321!" />
 
 	<beans:bean id="jdbcTemplate"
@@ -75,7 +77,35 @@
 		</beans:property>
 	</beans:bean>
 	
-	
+	<beans:bean id="mailSender"
+	      class="org.springframework.mail.javamail.JavaMailSenderImpl">
+	      <beans:property name="host" value="smtp.gmail.com" />
+	      <beans:property name="port" value="587" /><!-- 465 or 25 -->
+	      <beans:property name="username" value="orongeee@gmail.com" />
+	      <beans:property name="password" value="gntzlzl333" />
+	      <beans:property name="defaultEncoding" value="utf-8" />
+	      <beans:property name="javaMailProperties">
+	         <beans:props>
+	            <beans:prop key="mail.transport.protocol">smtp</beans:prop>
+	            <beans:prop key="mail.smtp.auth">true</beans:prop>
+	            <beans:prop key="mail.smtp.starttls.enable">true</beans:prop>
+	            <beans:prop key="mail.debug">true</beans:prop>
+	         </beans:props>
+	      </beans:property>
+	 </beans:bean>
+ 
+   	<beans:bean id="AuthCheckInterceptor" class="com.teamrun.runbike.user.interceptor.AuthCheckInterceptor" />
+   
+   <interceptors>
+      <interceptor>
+         <mapping path="/main"></mapping>
+         <mapping path="/user/**"></mapping>
+         <exclude-mapping path="/user/register" />
+         <exclude-mapping path="/user/login/**" />
+         <beans:ref bean="AuthCheckInterceptor"/>
+      </interceptor>
+   </interceptors>
+   
 	<context:component-scan base-package="com.teamrun.runbike" />
 	
 	
