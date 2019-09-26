@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.teamrun.runbike.badge.dao.BadgeDao">
+
+	<!-- Result Mapping 설정 -->
+	<resultMap id="badge"
+		type="com.teamrun.runbike.badge.domain.Badge">
+		<id property="b_num" column="b_num" />
+		<result property="b_name" column="b_name" />
+		<result property="b_photo" column="b_photo" />
+		<result property="bc_photo" column="bc_photo" />
+	</resultMap>
+
+<!-- select 1: 첫방문 시 뱃지 -->
+<!-- select 2: 연속 다섯번 방문-->
+<!-- select 3: 혼자 라이딩 총 km 수가 10km 이상-->
+<!-- select 4: 같이 라이딩 총 km 수가 10km 이상 -->
+<!-- select 5: 라이딩 타임이 1시간 이상 -->
+<!-- select 6: 얻은 스탬프가 5개 이상-->
+<!-- select 7: 방장한 횟수가 1번 이상-->
+</mapper>
