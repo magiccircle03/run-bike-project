@@ -3,7 +3,6 @@ package com.teamrun.runbike.user.dao;
 import java.util.List;
 import java.util.Map;
 
-import com.teamrun.runbike.user.domain.LoginLogInfo;
 import com.teamrun.runbike.user.domain.UserInfo;
 
 public interface UserDao {
@@ -15,4 +14,7 @@ public interface UserDao {
 	public int editUser(UserInfo userInfo);
 	public int chkLeave(int u_idx);
 	public boolean selectLeaveById(String u_id);
+	public String chkMaster(int u_idx);
+	public Map<String, Object> getRecord(int u_idx);
+	public List<Map<String, Object>> getRecentRecord(int u_idx);
 }

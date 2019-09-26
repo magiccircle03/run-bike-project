@@ -29,34 +29,57 @@ public class LoginService implements UserService {
 		
 		int loginChk = 0;
 		UserInfo userInfo = null;
+		boolean isLeave = false;
 		dao = template.getMapper(UserDao.class);
 		
-		boolean isLeave = dao.selectLeaveById(u_id);		
-		System.out.println("isLeave : "+isLeave);
 		
 		// 탈퇴한 회원인 지 아닌 지 확인 - 탈퇴 : 1 / 탈퇴 ㄴㄴ: 0
-		if(isLeave) {
-			loginChk = 3;
-		} else {
-			userInfo = dao.selectUserById(u_id);
-			
-			// 회원 아이디가 존재 && 비밀번호 일치시 세션에 값 저장.
-			if(userInfo.checkPW(u_pw) && userInfo !=null) {
+//		if(isLeave) {
+//			loginChk = 3;
+//		} else {
+//			userInfo = dao.selectUserById(u_id);
+//			
+//			// 회원 아이디가 존재 && 비밀번호 일치시 세션에 값 저장.
+//			if(userInfo.checkPW(u_pw) && userInfo !=null) {
+//				if(userInfo.isU_verify()) {
+//					// 이메일 인증 ok - 세션에 로그인 정보 저장
+//					LoginInfo loginInfo = userInfo.toLoginInfo();
+//					request.getSession(true).setAttribute("loginInfo",loginInfo);
+//					// 날짜 이력 저장
+//					
+//					
+//					dateService.saveDate(userInfo.getU_idx());
+//					loginChk = 2;
+//				} else {
+//					// 이메일 인증 no - 세션에 이메일 정보 저장
+//					loginChk = 1;
+//					request.getSession(true).setAttribute("email",userInfo.getU_id());
+//				}			
+//			} else {
+//				loginChk = 0;
+//			}
+//		}
+		userInfo = dao.selectUserById(u_id);
+		System.out.println("userInfo : "+userInfo);
+		
+		if(userInfo !=null && userInfo.checkPW(u_pw)) {
+			isLeave = dao.selectLeaveById(u_id);	
+			if(isLeave) {
+				loginChk=3;
+			} else {
 				if(userInfo.isU_verify()) {
-					// 이메일 인증 ok - 세션에 로그인 정보 저장
 					LoginInfo loginInfo = userInfo.toLoginInfo();
 					request.getSession(true).setAttribute("loginInfo",loginInfo);
-					// 날짜 이력 저장
-					
-					
 					dateService.saveDate(userInfo.getU_idx());
 					loginChk = 2;
 				} else {
-					// 이메일 인증 no - 세션에 이메일 정보 저장
 					loginChk = 1;
 					request.getSession(true).setAttribute("email",userInfo.getU_id());
-				}			
+				}
 			} 
+			
+		} else {
+			loginChk = 0;
 		}
 		
 

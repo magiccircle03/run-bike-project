@@ -43,10 +43,27 @@ select count(*) as login_date from run_bike.login_log where u_idx = #{u_idx} and
 	select u_idx from user where u_id=#{u_id}
 </select>
 
+<select id="chkMaster" resultType="String">
+	select pc_masterYn from run_bike.user, run_bike.participation where user.u_idx = participation.u_idx and user.u_idx = #{u_idx};
+</select>
 <select id="selectLeaveById" resultType="boolean">
 	select u_leave from run_bike.user where u_id=#{u_id}
 </select>
 
+<select id="getRecord" resultType="map">
+	select count(r_idx) as total_count, sum(r_riding_time) as total_time,round(sum(r_riding_km),2) as total_KM,round(avg(r_riding_km),2) as avg_KM, round(avg(r_riding_time),2) as avg_time
+	from run_bike.user u
+	inner join run_bike.record r
+	where u.u_idx = r.u_idx and u.u_idx = #{u_idx}
+</select>
+<select id="getRecentRecord" resultType="map">
+	select r_idx, r_finish, date_format(r_riding_date,'%Y-%m-%d') as r_riding_date, r_riding_km, r_riding_time 
+	from run_bike.record 
+	inner join run_bike.user
+	on user.u_idx = #{u_idx}
+	order by r_riding_date desc
+	limit 0,5
+</select>
 <update id="reChkVerify">
 	update user set u_verify=true where u_id=#{param1}
 </update>
@@ -54,4 +71,5 @@ select count(*) as login_date from run_bike.login_log where u_idx = #{u_idx} and
 <update id="chkLeave">
 	update user set u_leave=true where u_idx=#{u_idx}
 </update>
+
 </mapper>

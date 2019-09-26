@@ -112,20 +112,23 @@ section#modal-register{
     position: absolute;
     left: 50%;
     top: 15%;
-    height: 80%;
     transform: translatex(-50%);
     z-index: 500;
     background-color: #fff;
     border-radius: 8px;
 }
-#modal-register h3{
+
+section#modal-register button{
+	max-width: 100%;
+}
+#modal-register h2{
     text-align: center;
+    margin-bottom: 30px;
 }
 @media screen and (max-width: 767px){
     section#modal-register{
 
         width: 95%;
-        top: 0;
         transform: translateX(-50%);
         /* height: 100vh; */
         /*transform: none;*/
@@ -144,6 +147,7 @@ section#modal-register form input[type="text"]{
 }
 #regform #idCheck{
 	background-color: #555;
+	
 }
 
 #regform button.btn-submit,#loginForm button.btn-submit{

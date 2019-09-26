@@ -83,7 +83,7 @@
 			<mapping path="/main"></mapping>
 			<mapping path="/user/**"></mapping>
 			<exclude-mapping path="/user/register" />
-			<exclude-mapping path="/user/login" />
+			<exclude-mapping path="/user/login/**" />
 			<beans:ref bean="AuthCheckInterceptor"/>
 		</interceptor>
 	</interceptors>

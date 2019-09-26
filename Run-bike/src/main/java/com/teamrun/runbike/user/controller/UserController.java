@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -41,17 +42,27 @@ public class UserController {
 		return result;
 	}
 	
-	@RequestMapping("/delete")
+	@RequestMapping(value="chkMaster/{u_idx}")
+	@ResponseBody
+	public String chkMaster(@PathVariable("u_idx") int u_idx) {
+		String chk = "";
+		chk = deleteService.chkMaster(u_idx);
+		System.out.println("chk : "+chk);
+		return chk;
+	}
+	
+	
+	@RequestMapping("/delete/")
 	public String delete() {
 		return "mypage";
 	}
 	
-	@RequestMapping(value="/delete", method= {RequestMethod.GET,RequestMethod.POST})
+	@RequestMapping(value="/delete/{u_idx}", method= {RequestMethod.GET,RequestMethod.POST})
 	@ResponseBody
-	public int delete(HttpServletRequest request, @RequestParam("delete_u_pw")String pw) {
+	public int delete(@PathVariable("u_idx") int u_idx, HttpServletRequest request, @RequestParam("delete_u_pw")String pw) {
 		int result = 0;
 		
-		result = deleteService.userDelete(request, pw);
+		result = deleteService.userDelete(request,u_idx, pw);
 		
 		return result;
 	}

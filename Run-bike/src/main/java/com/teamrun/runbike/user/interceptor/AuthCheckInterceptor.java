@@ -14,7 +14,6 @@ public class AuthCheckInterceptor extends HandlerInterceptorAdapter {
 		HttpSession session = request.getSession(false);
 		System.out.println("세션? "+session.getAttribute("loginInfo"));
 		if(session!=null && session.getAttribute("loginInfo")!=null) {
-			System.out.println("인터셉터 동작 ㄴㄴ?");
 			return true;
 		}
 		

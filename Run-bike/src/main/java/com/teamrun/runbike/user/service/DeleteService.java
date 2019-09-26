@@ -17,7 +17,7 @@ public class DeleteService {
 	
 	private UserDao dao;
 	
-	public int userDelete(HttpServletRequest request, String pw) {
+	public int userDelete(HttpServletRequest request,int u_idx, String pw) {
 		int result = 0;
 		dao = template.getMapper(UserDao.class);
 		
@@ -25,10 +25,18 @@ public class DeleteService {
 		UserInfo userInfo = dao.selectUserById(loginInfo.getU_id());
 		
 		if(userInfo !=null && userInfo.checkPW(pw)) {
-			result = dao.chkLeave(userInfo.getU_idx());
+			result = dao.chkLeave(u_idx);
 			request.getSession(false).invalidate();
 		}
 				
+		return result;
+	}
+	
+	public String chkMaster(int u_idx) {
+		String result = "";
+		
+		dao = template.getMapper(UserDao.class);
+		result = dao.chkMaster(u_idx);
 		return result;
 	}
 }

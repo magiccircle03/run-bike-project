@@ -29,9 +29,16 @@
 							<h2>RUNBIKE</h2>
 							<p>Another fine responsive<br />
 							site template freebie<br />
-							crafted by <a href="http://html5up.net">HTML5 UP</a>.</p>
+							crafted by <a href="">HTML5 UP</a></p>
 							<ul class="actions special">
-								<li><a href="http://localhost:8080/runbike/user/login" class="button primary">시작하기</a></li>
+							<c:choose>
+								<c:when test="${loginInfo ne null}">
+									<li><a href="http://localhost:8080/runbike/main" class="button primary">시작하기</a></li>
+								</c:when>
+								<c:otherwise>
+									<li><a href="http://localhost:8080/runbike/user/login" class="button primary">시작하기</a></li>
+								</c:otherwise>
+							</c:choose>
 							</ul>
 						</div>
 					</section>
