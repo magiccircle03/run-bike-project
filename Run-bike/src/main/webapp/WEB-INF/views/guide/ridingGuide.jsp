@@ -121,7 +121,7 @@
 		</div>
 		<div class="contents">
 			<div class="contentsName"> 이 달의 라이딩 영상</div>
-			<div class="contentsDescribe"> ${loginInfo.u_id}님을 위한 이 달의 라이딩 영상</div>
+			<div class="contentsDescribe"> ${loginInfo.u_name}님을 위한 이 달의 라이딩 영상</div>
 			<iframe class="d-block w-100" width="560" height="315"
 				src="https://www.youtube.com/embed/p2xBsiNca7c" frameborder="0"
 				allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
