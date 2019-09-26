@@ -107,7 +107,7 @@ h3{
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 	      </div>
 	      
-<!-- 		  <form id="createForm"> -->
+		  <form id="createForm">
 	      <div class="modal-body">
 	          <div class="form-group">
 			    <label for="p_name">방 제목</label>
@@ -157,10 +157,10 @@ h3{
 
 	      </div>
 	      <div class="modal-footer">
-	        <button id="createPartyBtn" type="submit" class="btn" onclick="createParty()">방 만들기</button>
+	        <input type="submit" class="btn" value="방 만들기">
 	      </div>
 	      
-<!-- 	     </form> -->
+ 	     </form> 
 	    </div>
 	  </div>
 	</div>
@@ -542,7 +542,8 @@ var u_idx = $('#u_idx').val();
 var path='http://localhost:8080/runbike';
 
 
-function createParty() {
+$('#createForm').submit(function() {
+	
 	var chk = false;
 	if ($('#createPartyModal #p_XY').val().length<1) {
 		alert('경로를 선택해주세요');
@@ -575,7 +576,9 @@ function createParty() {
 			}
 		}); 
 	}
-}
+	return false;
+});
+
 
 function list() {
 	
