@@ -30,7 +30,7 @@
 									<a href="#menu" class="menuToggle"><span>Menu</span></a>
 									<div id="menu">
 										<ul>
-											<li><a href="#"><i class="fas fa-biking"></i> 혼자 라이딩 </a></li>
+											<li><a href="record/startRide"><i class="fas fa-biking"></i> 혼자 라이딩 </a></li>
 											<li><a href="<c:url value='/party' />"><i class="fas fa-users"></i> 같이 달리기 </a></li>
 											<li><a href="#"><i class="far fa-laugh"></i> 스탬프투어 </a></li>
 											<li><a href="#"><i class="fas fa-crown"></i> 나의 리워드 </a></li>
