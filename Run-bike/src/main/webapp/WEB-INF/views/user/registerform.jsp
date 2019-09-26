@@ -14,6 +14,9 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="<c:url value='/assets/css/main.css'/>" />
 		<link rel="stylesheet" href="<c:url value='/assets/css/style.css'/>" />
+		<style>
+			
+		</style>
 	</head>
 	<body class="landing is-preload">
 

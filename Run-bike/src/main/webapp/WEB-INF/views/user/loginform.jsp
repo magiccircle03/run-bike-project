@@ -133,6 +133,7 @@
 			    z-index: 500;
 			    background-color: #fff;
 			    border-radius: 8px;
+			    color: #000;
 			}
 			
 			section#modal-register button{
@@ -290,7 +291,7 @@
 									console.log(data);
 									if(data=='ok'){
 										alert("환영합니다.");
-										location.href = 'http://localhost:8080/runbike/main';									
+										location.href = 'http://localhost:8080/runbike/record/startRide';									
 									} else if(data=='yet'){
 										location.href='http://localhost:8080/runbike/verify/'+data;
 									} else if(data == 'leave'){
