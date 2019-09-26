@@ -130,6 +130,7 @@
 						var u_id = $('#u_id').val();
 						if($('#u_id').val() != "" && $('#u_id').val() != undefined || $('#u_id').val().length>0){
 							console.log("id 들어옴");
+							console.log(u_id);
 							$.ajax({
 								type:'GET',
 								url:'http://localhost:8080/runbike/user/register/idCheck?u_id='+u_id,
@@ -246,14 +247,33 @@
 								}
 							});
 							
-						} else if(!idChkBox.is(':checked')){
-								alert("아이디 중복체크 여부를 확인해주세요.");
-							} else if(!pwChkBox.is(':checked')){
-								alert("비밀번호를 확인해주세요.")
-							} else if(!repwChkBox.is(':checked')){
-								alert("비밀번호가 일치하지 않습니다.")
-							} else if(!nameChkBox.is(':checked')){
-								alert("이름을 확인해주세요");
+						} else{
+							if(!idChkBox.is(':checked')){
+								$('#u_id').css('border','1px solid red');
+								$('#idChkMsg').html('이메일 주소를 다시 확인하세요.');
+								$('#idChkMsg').css('color','red');
+								idChkBox.prop('checked',false);
+							}
+							if(!pwChkBox.is(':checked')){
+								$('#u_pw').css('border','1px solid red');
+								$('#pwChkMsg').html('비밀번호를 다시 확인하세요.');
+								$('#pwChkMsg').css('color','red');
+								pwChkBox.prop('checked',false);
+							}
+							
+							if(!repwChkBox.is(':checked')){
+								$('#u_repw').css('border','1px solid red');
+								$('#repwChkMsg').html('비밀번호가 일치하지 않습니다.');
+								$('#repwChkMsg').css('color','red');
+								repwChkBox.prop('checked',false);
+							}
+							
+							if(!nameChkBox.is(':checked')){
+								$('#u_name').css('border','1px solid red');
+								$('#nameChkMsg').html('이름을 확인해주세요.');
+								$('#nameChkMsg').css('color','red');
+								nameChkBox.prop('checked',false);
+							}
 						}
 						return false;
 					});

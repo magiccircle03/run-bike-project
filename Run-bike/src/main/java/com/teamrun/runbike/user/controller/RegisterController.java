@@ -42,8 +42,9 @@ public class RegisterController {
 	@RequestMapping("idCheck")
 	@ResponseBody
 	public String idCheck(@RequestParam(value="u_id") String u_id) {
+		System.out.println(u_id);
 		String result = regService.idCheck(u_id);
-		
+		System.out.println("result : "+result);
 		return result;
 	}
 }
