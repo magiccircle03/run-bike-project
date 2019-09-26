@@ -5,11 +5,10 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<!-- 지도, 모델 -->
-<title>같이 달리기</title>
+<title>같이 달리기-지도 넣기 전</title>
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-<!-- tmap api -->
-<script src="https://apis.openapi.sk.com/tmap/js?version=1&format=javascript&appKey=6d5877dc-c348-457f-a25d-46b11bcd07a9"></script>
+<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css"> -->
+<!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script> -->
 <!-- Bootstrap CSS -->
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 <link rel="stylesheet" href="<c:url value='/assets/css/layout.css'/>">
@@ -26,7 +25,6 @@
 	background-color: #21B2A6;
 	color: #fefefe;
 	border-color: #1F9E93;
-	font-weight: bold;
 }
 .mint:hover{
 	background-color: #1F9E93;
@@ -76,10 +74,6 @@ h5{
 .fa-times{
 	color: #B84A5B;
 }
-.marginTop{
-	margin-top: 20px;
-	margin-bottom: 20px;
-}
 </style>
 </head>
 <body>
@@ -91,16 +85,15 @@ h5{
 <div class="container">
 
 <!-- 숨겨진 u_idx -->
-<input id="u_idx" name="u_idx" type="text" class="form-control" value="69">
+<input id="u_idx" name="u_idx" type="text" class="form-control" value="70">
+여긴 ${p_num} 번 방이다^^!!! <br>
 <button class="btn" onclick="exitPartyFn()">나가기</button> 
-<button class="btn" onclick="getCurrentPos()">현재위치</button> 
-
 <hr>
 
 <!-- 탭 클릭시마다 새로고침되게 하기 -->
-<ul class="nav nav-pills nav-justified">
+<ul class="nav nav-tabs">
   <li class="nav-item tabWidth">
-    <a class="nav-link active" data-toggle="tab" href="#partyInfoTab">방정보</a>
+    <a class="nav-link active" data-toggle="tab" href="#partyInfoTab" onclick="showPartyInfo()">방정보</a>
   </li>
   <li class="nav-item tabWidth">
     <a class="nav-link" data-toggle="tab" href="#curInfoTab">현재정보</a>
@@ -116,23 +109,9 @@ h5{
   <div class="tab-pane fade show active" id="partyInfoTab">
   
     <div id="partyInfo">
-    
-    	    <h2 class="marginTop"> [${partyInfo.p_num}] ${partyInfo.p_name}</h2> 
-    	    <div id="map_div"> </div>
-    	    <i class="fab fa-font-awesome-flag"></i> ${partyInfo.p_start_info} / <i class="fas fa-flag-checkered"></i> ${partyInfo.p_end_info}  
-    	    <br>
-	    	${partyInfo.p_content}
-	    	<br>
-	    	출발 예정 시각 : ${partyInfo.p_time_f}
-	    	<br>
-	    	총 거리 : ${partyInfo.p_riding_km} km , 예상 소요 시간 : ${partyInfo.p_riding_time} 분
-	    	
-	    	
-	    	
     </div>
     
-    
-    <input id="readyChk" type="checkbox" data-toggle="toggle" data-on="준비완료!" data-off="준비하기" data-onstyle="primary mint">
+    <input id="readyChk" type="checkbox" data-toggle="toggle" data-on="준비완료!" data-off="준비하기" data-offstyle="" data-onstyle="primary mint">
 
     <!-- 방장만 보이게 영역 -->
 	<div id="partyInfoMaster" class="master">
@@ -140,12 +119,12 @@ h5{
 	   	<!-- 그냥 종료버튼 -->
 	   	<!-- 방장 종료버튼  -->
 	    <button class="btn" onclick="editParty()">방 정보 수정</button> 
-	    <button class="btn" onclick="deletePartyBtn()">방 삭제</button> 
+	    <button class="btn" onclick="deleteParty()">방 삭제</button> 
 	</div>
     <!--  -->
     
     <hr>
-    <h5><i class="fas fa-child"></i> 함께 달릴 동료들 (<p id="capa" style="display: inline"></p> / ${partyInfo.p_capacity} )</h5>
+    <h5><i class="fas fa-child"></i> 함께 달릴 동료들</h5>
     <div id="partyUserInfo1">
     <!-- 참가자 사진 / 이름 / 준비여부-->
 	</div>
@@ -174,67 +153,40 @@ h5{
 <!-- 푸터 끝 -->
 <script>
 
-var xy=${partyInfo.p_XY};
 
 $(document).ready(function() {
-	initTmap(xy);
+	showPartyInfo();
 	showPartyUserList();
 	showMasterArea();
 	setReady('N');// 어디 갔다오면 처음엔 준비 안된걸로
-	
 });
 
-var p_num = ${partyInfo.p_num};
+var p_num = ${p_num};
 var u_idx = $('#u_idx').val();// 아이디 값 세션에서 가져오기. 
-
 
 var path='http://localhost:8080/runbike';
 
-/* function showPartyInfo() {
+function showPartyInfo() {
 	//alert(p_num);
 	$.ajax({
 		url : path + '/party/room/' + p_num,
 		type : 'GET',
 		success : function(data) {
 			//alert(JSON.stringify(data));
-			var xy = new Object(); //좌표를 담는 json객체
 			html = '';
 	    	html += '<h2>['+data.p_num+'번]\n';
 	    	html += ''+data.p_name+' ( '+getUserCount()+' / '+data.p_capacity+'명 )</h1><br>\n';
 	    	html += '출발지 : '+data.p_start_info+'<br>\n';
 	    	html += '목적지 : '+data.p_end_info+'<br>\n';
-	    	//html += '좌표 : '+data.p_XY+'<br>\n';
+	    	html += '좌표 : '+data.p_XY+'<br>\n';
 	    	html += '방내용 : '+data.p_content+'<br>\n';
 	    	html += '출발예정시간 : '+data.p_time_f+'<br>\n';
 	    	html += '방 개설 시간 : '+data.p_generate_date_f+'<br>\n';
-	    	
-	    	xy.startX = JSON.parse(data.p_XY).startX;
-            xy.startY = JSON.parse(data.p_XY).startY;
-            xy.endX = JSON.parse(data.p_XY).endX;
-            xy.endY = JSON.parse(data.p_XY).endY;
-        	
-            initTmap(xy);
-            //alert(JSON.stringify(xy));
-            //alert(xy);
-            
 	    	$('#partyInfo').html(html);
 		}
 	});
-} */
-
-function editParty() {
-	if (confirm('방 정보를 수정할까요?')) {
-		location.href = '../party/'+p_num+'/edit';
-	}
 }
 
-function getCurrentPos() {
-	navigator.geolocation.getCurrentPosition(function(pos) {
-	    var latitude = pos.coords.latitude;
-	    var longitude = pos.coords.longitude;
-	    alert("내 현재 위치는 : " + latitude + ", "+ longitude);
-	});
-}
 
 function getUserCount() {
 	var cnt=-2;
@@ -336,7 +288,6 @@ function showPartyUserList() {
 			}
 			html1+='</table>\n';
 			$('#partyUserInfo1').html(html1);
-			$('#capa').html(" "+getUserCount());
 			
 		}
 
@@ -345,7 +296,7 @@ function showPartyUserList() {
 
 // 내가 파티를 나간다
 function exitPartyFn() {
-/* 	if(confirm('현재 참여한 방에서 나가시겠습니까?')){
+	if(confirm('현재 참여한 방에서 나가시겠습니까?')){
 		if(getUserCount()<2){
 			if(confirm('인원 1명이야! 너 나가면 방폭 되는데 나갈거야?')){
 				exitParty(u_idx);
@@ -359,26 +310,7 @@ function exitPartyFn() {
 				exitParty(u_idx); // 현재 로그인된 유저를 얌전히 보내준다
 			}
 		}
-	} */
-	
-	
-	if(isMaster()){
-		if(getUserCount()<2){
-			if(confirm('인원 1명이야! 너 나가면 방폭 되는데 나갈거야?')){
-				exitParty(u_idx);
-				// 방삭제
-				deleteParty();
-			}
-		}else{
-			alert('방장은 나갈 수 없습니다! 나가고 싶다면, 방장을 위임해주세요');
-		}
-	}else{
-		if(confirm('현재 참여한 방에서 나가시겠습니까?')){
-			exitParty(u_idx); // 현재 로그인된 유저를 얌전히 보내준다
-		}
 	}
-	
-	
 }
 	
 
@@ -452,12 +384,6 @@ function changeMaster(u_idx_t){
 	}
 }
 
-function deletePartyBtn(){
-	if (confirm('방을 삭제하시면 복구할 수 없습니다. \n방을 폭파하시겠습니까?')) {
-		deleteParty();
-	}
-}
-
 // 파티삭제
 function deleteParty(){
 	 $.ajax({
@@ -476,7 +402,6 @@ function deleteParty(){
 var refreshReady = setInterval(function() {
 		showPartyUserList();
 		isAllReady();
-		
 }, 1000);
 
 
@@ -523,136 +448,6 @@ function ban(idx) {
 }
 
 
-
-function initTmap(xy) {
-	
-    // map 생성
-    // Tmap.map을 이용하여, 지도가 들어갈 div, 넓이, 높이를 설정합니다.								
-    map = new Tmap.Map({
-        div: 'map_div', // map을 표시해줄 div
-        width: "100%", // map의 width 설정
-        height: "450px", // map의 height 설정
-    });
-    map.setCenter(new Tmap.LonLat("126.986072", "37.570028").transform("EPSG:4326", "EPSG:3857"), 15); //설정한 좌표를 "EPSG:3857"로 좌표변환한 좌표값으로 즁심점을 설정합니다.						
-	
-    getRoute(xy);
-}
-
-
-function getRoute(xy) {
-	
-    // 시작 마커 표시
-    markerStartLayer = new Tmap.Layer.Markers("start"); //마커 레이어 생성
-    map.addLayer(markerStartLayer); //map에 마커 레이어 추가
-
-    var size = new Tmap.Size(24, 38); //아이콘 크기 설정
-    var offset = new Tmap.Pixel(-(size.w / 2), -size.h); //아이콘 중심점 설정
-    var icon = new Tmap.IconHtml('<img src=http://tmapapis.sktelecom.com/upload/tmap/marker/pin_r_m_s.png />', size, offset); //마커 아이콘 설정
-    //var marker_s = new Tmap.Marker(new Tmap.LonLat("126.986072", "37.570028").transform("EPSG:4326", "EPSG:3857"), icon); //설정한 좌표를 "EPSG:3857"로 좌표변환한 좌표값으로 설정합니다.
-    var marker_s = new Tmap.Marker(new Tmap.LonLat(xy.startX, xy.startY), icon);
-    markerStartLayer.addMarker(marker_s); //마커 레이어에 마커 추가
-    
-    // 도착 마커 표시
-    markerEndLayer = new Tmap.Layer.Markers("end"); //마커 레이어 생성
-    map.addLayer(markerEndLayer); //map에 마커 레이어 추가
-
-    var size = new Tmap.Size(24, 38); //아이콘 크기 설정
-    var offset = new Tmap.Pixel(-(size.w / 2), -size.h); //아이콘 중심점 설정
-    var icon = new Tmap.IconHtml('<img src=http://tmapapis.sktelecom.com/upload/tmap/marker/pin_r_m_e.png />', size, offset); //마커 아이콘 설정
-    var marker_e = new Tmap.Marker(new Tmap.LonLat(xy.endX, xy.endY), icon);
-    markerEndLayer.addMarker(marker_e); //마커 레이어에 마커 추가
-    
-    
-    var headers = {};
-    headers["appKey"] = "6d5877dc-c348-457f-a25d-46b11bcd07a9"; //실행을 위한 키 입니다. 발급받으신 AppKey(appKey)를 입력하세요.
-
-    $.ajax({
-        method: "POST",
-        headers: headers,
-        url: "https://apis.openapi.sk.com/tmap/routes/pedestrian?version=1&format=xml", //보행자 경로안내 api 요청 url입니다.
-        async: false,
-        data: {
-            //출발지 위경도 좌표입니다.
-            startX: xy.startX,
-            startY: xy.startY,
-            //목적지 위경도 좌표입니다.
-            endX: xy.endX,
-            endY: xy.endY,
-            reqCoordType: "EPSG3857",
-            resCoordType: "EPSG3857",
-            //각도입니다.
-            //출발지 명칭입니다.
-            startName: "출발지",
-            //목적지 명칭입니다.
-            endName: "도착지"
-        },
-        //데이터 로드가 성공적으로 완료되었을 때 발생하는 함수입니다.
-        success: function(response) {
-            
-            prtcl = response;
-
-            // 결과 출력
-            var innerHtml = "";
-            var prtclString = new XMLSerializer().serializeToString(prtcl); //xml to String	
-            xmlDoc = $.parseXML(prtclString),
-                $xml = $(xmlDoc),
-                $intRate = $xml.find("Document");
-
-            var distanceM = $intRate[0].getElementsByTagName("tmap:totalDistance")[0].childNodes[0].nodeValue;
-            var distanceKm = ($intRate[0].getElementsByTagName("tmap:totalDistance")[0].childNodes[0].nodeValue / 1000).toFixed(1);
-            var ridingTimeMin = ((distanceKm/16)*60).toFixed(1);
-            var tDistance = "총 거리 : " + distanceKm + "km,";
-            var tTime = " 예상 시간 : 약 " + ridingTimeMin + "분";
-
-            $("#result").text(tDistance + tTime);
-            $("#p_riding_km").val(distanceKm);
-            $("#p_riding_time").val(ridingTimeMin);
-            
-
-            prtcl = new Tmap.Format.KML({
-                extractStyles: true,
-                extractAttributes: true
-            }).read(prtcl); //데이터(prtcl)를 읽고, 벡터 도형(feature) 목록을 리턴합니다.
-            routeLayer = new Tmap.Layer.Vector("route"); // 백터 레이어 생성
-            //표준 데이터 포맷인 KML을 Read/Write 하는 클래스 입니다.
-            //벡터 도형(Feature)이 추가되기 직전에 이벤트가 발생합니다.
-            routeLayer.events.register("beforefeatureadded", routeLayer, onBeforeFeatureAdded);
-
-            function onBeforeFeatureAdded(e) {
-                var style = {};
-                switch (e.feature.attributes.styleUrl) {
-                    case "#pointStyle":
-                        style.externalGraphic = "http://topopen.tmap.co.kr/imgs/point.png"; //렌더링 포인트에 사용될 외부 이미지 파일의 url입니다.
-                        style.graphicHeight = 16; //외부 이미지 파일의 크기 설정을 위한 픽셀 높이입니다.
-                        style.graphicOpacity = 1; //외부 이미지 파일의 투명도 (0-1)입니다.
-                        style.graphicWidth = 16; //외부 이미지 파일의 크기 설정을 위한 픽셀 폭입니다.
-                        break;
-                    default:
-                        style.strokeColor = "#ff0000"; //stroke에 적용될 16진수 color
-                        style.strokeOpacity = "1"; //stroke의 투명도(0~1)
-                        style.strokeWidth = "5"; //stroke의 넓이(pixel 단위)
-                };
-                e.feature.style = style;
-            }
-
-            routeLayer.addFeatures(prtcl); //레이어에 도형을 등록합니다.
-            map.addLayer(routeLayer); //맵에 레이어 추가
-
-            map.zoomToExtent(routeLayer.getDataExtent()); //map의 zoom을 routeLayer의 영역에 맞게 변경합니다.
-
-            
-        },
-        //요청 실패시 콘솔창에서 에러 내용을 확인할 수 있습니다.
-        error: function(request, status, error) {
-            console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
-        }
-    });
-}
-
-history.pushState(null, null, location.href);
-window.onpopstate = function () {
-    history.go(1);
-};
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
