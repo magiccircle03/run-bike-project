@@ -241,6 +241,10 @@
 					                    <input type="password" name="u_pw" id="u_pw" value="" placeholder="password" />
 					                </div>
 					                <div class="col-4 col-12-small">
+					                    <input type="checkbox" name="chkid" id="chkid" />					                    
+					                    <label for="chkid">아이디 저장</label>
+					                </div>
+					                <div class="col-4 col-12-small">
 					                    <input type="checkbox" name="rememberid" id="rememberid" />
 					                    <label for="rememberid">아이디 기억하기</label>
 					                </div> 
@@ -266,7 +270,7 @@
 				var naver_id_login = new naver_id_login("bGcr_qQ18WcY_tp0AIjX", "http://localhost:8080/runbike/user/login");
 			  	var state = naver_id_login.getUniqState();
 			  	
-			  	naver_id_login.setButton("white", 2,40);
+			  	naver_id_login.setButton("green",3, 50);
 			  	naver_id_login.setDomain("http://localhost:8080/runbike/user/login");
 			  	naver_id_login.setState(state);
 			  	naver_id_login.init_naver_id_login();

@@ -17,23 +17,49 @@ callback 처리중입니다. 이 페이지에서는 callback을 처리하고 바
 
 	<!-- (2) LoginWithNaverId Javscript 설정 정보 및 초기화 -->
 	<script>
-	// 접근 토큰 값 출력
-		var naver_id_login = new naver_id_login("bGcr_qQ18WcY_tp0AIjX", "http://localhost:8080/runbike/user/login/");
-	  	var state = naver_id_login.getUniqState();
-	  	naver_id_login.setButton("white", 2,40);
-	  	naver_id_login.setDomain("http://localhost:8080/runbike/user/login");
-	  	naver_id_login.setState(state);
-	  	naver_id_login.setPopup();
-	  	naver_id_login.init_naver_id_login();
-	
+	var naverLogin = new naver.LoginWithNaverId(
+			{
+				clientId: "bGcr_qQ18WcY_tp0AIjX",
+				callbackUrl: "http://localhost:8080/runbike/user/login/naver",
+				isPopup: true,
+				callbackHandle: true
+				/* callback 페이지가 분리되었을 경우에 callback 페이지에서는 callback처리를 해줄수 있도록 설정합니다. */
+			}
+		);
+
+		/* (3) 네아로 로그인 정보를 초기화하기 위하여 init을 호출 */
+		naverLogin.init();
 		
-	  alert(naver_id_login.oauthParams.access_token);
-	  // 네이버 사용자 프로필 조회
-	  naver_id_login.get_naver_userprofile("naverSignInCallback()");
-	  // 네이버 사용자 프로필 조회 이후 프로필 정보를 처리할 callback function
-	  function naverSignInCallback() {
-	    alert(naver_id_login.getProfileData('email'));
-	  }
+		/* (4) Callback의 처리. 정상적으로 Callback 처리가 완료될 경우 main page로 redirect(또는 Popup close) */
+		window.addEventListener('load', function () {
+			naverLogin.getLoginStatus(function (status) {
+				if (status) {
+					/* (5) 필수적으로 받아야하는 프로필 정보가 있다면 callback처리 시점에 체크 */
+					var email = naverLogin.user.getEmail();
+					var name = naverLogin.user.getName();
+					
+					$.ajax({
+						type:'GET',
+						url:'http://localhost:8080/runbike/user/register/idCheck?u_id='+email,
+						success: function(data){
+							console.log(data);
+							if(data == 'Y'){									
+								alert("사용 가능한 아이디 입니다.");
+							} else if(data == 'N') {
+								alert("이미 존재하거나 탈퇴한 아이디 입니다.");
+							}
+						},
+						error: function(data){
+							console.log("실패쓰");
+						}
+					
+					});
+					window.location.replace("http://" + window.location.hostname + ( (location.port==""||location.port==undefined)?"":":" + location.port) + "/runbike/record/startRide");
+				} else {
+					console.log("callback 처리에 실패하였습니다.");
+				}
+			});
+		});
 	</script>
 </body>
 </html>

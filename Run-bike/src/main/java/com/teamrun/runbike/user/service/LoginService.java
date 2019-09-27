@@ -74,11 +74,15 @@ public class LoginService implements UserService {
 		
 		userInfo = regInfo.toUserInfo();
 		int result = dao.insertUser(userInfo);
+		System.out.println("sns : "+sns);
 		int sns = dao.updateIsSns(userInfo.getU_idx());
+		System.out.println(userInfo.toString());
+		
 		
 		System.out.println(sns);
 		
 		dao.chkVerify(userInfo.getU_id(), userInfo.getU_code());
+		dateService.saveDate(userInfo.getU_idx());
 		
 		LoginInfo loginInfo = userInfo.toLoginInfo();
 		
