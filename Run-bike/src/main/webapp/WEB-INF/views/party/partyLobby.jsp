@@ -121,9 +121,9 @@ h3{
 			  
 			  <div class="form-group">
 			  	<label>목표 경로</label><br>
-	   			<input id="p_start_info" name="p_start_info" type="text" placeholder="시작지" class="form-control" style="display: inline-block; width:40%" required><button onclick="searchPoi('S')" class="btn" style="width:9%">검색</button>
-   				<input id="p_end_info" name="p_end_info" type="text" placeholder="도착지" class="form-control" style="display: inline-block; width:40%" required><button onclick="searchPoi('E')" class="btn" style="width:9%">검색</button>
-			  	<button class="btn" onclick="getRoute()">경로 선택</button>
+	   			<input id="p_start_info" name="p_start_info" type="text" placeholder="시작지" class="form-control" style="display: inline-block; width:40%" required><button type="button" onclick="searchPoi('S')" class="btn" style="width:9%">검색</button>
+   				<input id="p_end_info" name="p_end_info" type="text" placeholder="도착지" class="form-control" style="display: inline-block; width:40%" required><button type="button" onclick="searchPoi('E')" class="btn" style="width:9%">검색</button>
+			  	<button type="button" class="btn" onclick="getRoute()">경로 선택</button>
 				<div id="map_div">
 			    </div>
 			    <p id="result"></p>
@@ -186,8 +186,8 @@ h3{
             // Tmap.map을 이용하여, 지도가 들어갈 div, 넓이, 높이를 설정합니다.								
             map = new Tmap.Map({
                 div: 'map_div', // map을 표시해줄 div
-                width: "100%", // map의 width 설정
-                //width: "766px", // 일단은 고정
+                //width: "100%", // map의 width 설정
+                width: "766px", // 일단은 고정
                 height: "400px", // map의 height 설정
             });
             map.setCenter(new Tmap.LonLat("126.986072", "37.570028").transform("EPSG:4326", "EPSG:3857"), 15); //설정한 좌표를 "EPSG:3857"로 좌표변환한 좌표값으로 즁심점을 설정합니다.						
@@ -513,13 +513,13 @@ h3{
 
                     map.zoomToExtent(routeLayer.getDataExtent()); //map의 zoom을 routeLayer의 영역에 맞게 변경합니다.
                     
-                    alert('루트 불러오기 성공');
+                    //alert('루트 불러오기 성공');
                     
                 },
                 //요청 실패시 콘솔창에서 에러 내용을 확인할 수 있습니다.
                 error: function(request, status, error) {
                     console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
-                    alert('루트 불러오기 실패');
+                    //alert('루트 불러오기 실패');
                     
                 }
             });
