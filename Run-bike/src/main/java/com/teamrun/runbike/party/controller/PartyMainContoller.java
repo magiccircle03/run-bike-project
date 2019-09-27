@@ -106,6 +106,18 @@ public class PartyMainContoller {
 		return "party/partyRoomIng";
 	}
 	
+	// 라이딩 시작하여 시작시간 업데이트하기 // 왠지는 몰라도
+	@CrossOrigin
+	@ResponseBody
+	@RequestMapping(value = "/{p_num}/start", method = RequestMethod.GET)
+	public int startParty(@PathVariable int p_num) {
+		System.out.println("start 컨트롤러 들어옴");
+		int resultCnt = partyInfoService.updatePartyStartTime(p_num);
+		System.out.println("start 컨트롤러 resultCnt"+resultCnt);
+		return resultCnt;
+	}
+	
+	
 	// 수정 페이지로 가기
 	@RequestMapping(value = "/{p_num}/edit", method = RequestMethod.GET)
 	public String getEditPartyForm(@PathVariable int p_num, Model model) {
@@ -128,7 +140,7 @@ public class PartyMainContoller {
 
 		return resultCnt;
 	}
-
+	
 	// 방을 삭제한다
 	@RequestMapping(value = "/{p_num}", method = RequestMethod.DELETE)
 	@ResponseBody

@@ -122,21 +122,24 @@ h5{
     	    <br>
     </div>
     
-    
-  <!--   <input id="readyChk" type="checkbox" data-toggle="toggle" data-on="준비완료!" data-off="준비하기" data-onstyle="primary mint">
- -->
-    <!-- 방장만 보이게 영역 -->
-	<div id="partyInfoMaster" class="master">
-	   	<button id="startBtn" class="btn" onclick="startRiding()" disabled="true">시작하기</button>
-	   	<!-- 그냥 종료버튼 -->
-	   	<!-- 방장 종료버튼  -->
-	    <button class="btn" onclick="editParty()">방 정보 수정</button> 
-	    <button class="btn" onclick="deletePartyBtn()">방 삭제</button> 
-	</div>
-    <!--  -->
+
+    <!-- 시작 후에만 보이는 영역 -->
+    <div id="afterStartArea" class="afterStart">
+ 
+    	<!-- 원래는 장소를 체크해서 가까우면 완주 아니면 그냥 종료로 간다. -->
+    	<button id="endBtn" class="btn" onclick="endRiding()">종료하기</button>
+    	
+    	<!-- 방장만 보이게 영역 -->
+		<div class="master">
+		   	<button id="endBtnMaster" class="btn" onclick="endRidingMaster()" disabled="true">전체 라이딩 종료하기!</button>
+		</div>
+		<!-- /방장만 보이게 영역 -->
+    	
+    </div>
+    <!-- /시작 후에만 보이는 영역 -->
     
     <hr>
-    <h5><i class="fas fa-child"></i> 함께 달릴 동료들 (<p id="capa" style="display: inline"></p> / ${partyInfo.p_capacity} )</h5>
+    <h5><i class="fas fa-child"></i> 함께 달리는 동료들 (<p id="capa" style="display: inline"></p> / ${partyInfo.p_capacity} )</h5>
     <div id="partyUserInfo1">
     <!-- 참가자 사진 / 이름 / 준비여부-->
 	</div>

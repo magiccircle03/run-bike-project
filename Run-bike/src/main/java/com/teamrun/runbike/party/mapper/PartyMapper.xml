@@ -131,4 +131,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		where p_num=#{p_num};
 	</update>
 	
+	<!-- 시작 시간 업데이트 -->
+	<update id="updatePartyStartTime">
+		update party set p_start_time=current_timestamp() where p_num=#{p_num};
+	</update>
+	
 </mapper>

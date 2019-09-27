@@ -19,6 +19,16 @@ public class PartyInfoService {
 	@Inject
 	private SqlSessionTemplate template;
 	
+	// 시작 시간 설정
+	public int updatePartyStartTime(int p_num) {
+		System.out.println("start 서비스 들어옴");
+		dao = template.getMapper(PartyDaoInterface.class);
+		int resultCnt = dao.updatePartyStartTime(p_num);
+		System.out.println("start 서비스 resultCnt"+resultCnt);
+		return resultCnt;
+	}
+	
+	
 	// 현재 회원이 속한 파티가 있는지 확인한다
 	public int hasParty(int u_idx) {
 		dao = template.getMapper(PartyDaoInterface.class);

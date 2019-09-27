@@ -65,4 +65,7 @@ public interface PartyDaoInterface {
 	
 	// 방 수정
 	public int editParty(RequestPartyEdit requestPartyEdit);
+	
+	// 시작시간 업데이트 
+	public int updatePartyStartTime(int p_num);
 }
