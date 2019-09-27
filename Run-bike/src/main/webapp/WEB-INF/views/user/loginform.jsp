@@ -241,10 +241,6 @@
 					                    <input type="password" name="u_pw" id="u_pw" value="" placeholder="password" />
 					                </div>
 					                <div class="col-4 col-12-small">
-					                    <input type="checkbox" name="chkid" id="chkid" />					                    
-					                    <label for="chkid">아이디 저장</label>
-					                </div>
-					                <div class="col-4 col-12-small">
 					                    <input type="checkbox" name="rememberid" id="rememberid" />
 					                    <label for="rememberid">아이디 기억하기</label>
 					                </div> 
@@ -266,17 +262,74 @@
 			
 			<script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js" charset="utf-8"></script>
 			<script type="text/javascript">
-				var naver_id_login = new naver_id_login("bGcr_qQ18WcY_tp0AIjX", "http://localhost:8080/runbike/user/login/naver");
+			
+				var naver_id_login = new naver_id_login("bGcr_qQ18WcY_tp0AIjX", "http://localhost:8080/runbike/user/login");
 			  	var state = naver_id_login.getUniqState();
+			  	
 			  	naver_id_login.setButton("white", 2,40);
-			  	naver_id_login.setDomain("http://localhost:8080/runbike/user/login/");
+			  	naver_id_login.setDomain("http://localhost:8080/runbike/user/login");
 			  	naver_id_login.setState(state);
-			  	naver_id_login.setPopup();
 			  	naver_id_login.init_naver_id_login();
+			  	
+			  	
+			    // 네이버 사용자 프로필 조회
+			    naver_id_login.get_naver_userprofile("naverSignInCallback()");
+			    
+			    
+			    // 네이버 사용자 프로필 조회 이후 프로필 정보를 처리할 callback function
+			    function naverSignInCallback() {
+			    	var email = naver_id_login.getProfileData('email');
+			    	var name = naver_id_login.getProfileData('name');
+			    	var image = naver_id_login.getProfileData('profile_image');
+			    	
+			    	$.ajax({
+			    		type:'GET',
+						url:'http://localhost:8080/runbike/user/register/idCheck?u_id='+email,
+						success: function(data){
+							console.log(data);
+							// 기존 아이디가 없을 경우 회원가입
+							if(data == 'Y'){			
+								$.ajax({
+									type:'POST',
+									url: 'http://localhost:8080/runbike/user/login/naver',
+									data: {u_id: email, u_pw: "naverPassword123",u_name: name},
+									success: function(data){
+										if(data == 'Y'){
+											console.log(data);
+											location.href = 'http://localhost:8080/runbike/record/startRide';
+										} 
+									},
+									error: function(data){
+										console.log("실패");
+									}
+								});
+							// 기존 아이디가 있을 경우 로그인
+							} else if(data == 'N') {
+								$.ajax({			
+									type: 'POST',
+									data: {u_id: email, u_pw: "naverPassword123"},
+									url: 'http://localhost:8080/runbike/user/login',
+									success : function(data){
+										console.log(data);
+										if(data=='ok'){
+											location.href = 'http://localhost:8080/runbike/record/startRide';									
+										} else {
+											alert("로그인에 실패했습니다. 아이디 혹은 비밀번호를 확인해주세요.");
+										}
+									}
+								});
+							}
+						},
+						error: function(data){
+							console.log("실패쓰");
+						}
+			    	})
+			    }
 			</script>
 			
 			<script>
 				$(document).ready(function(){
+					
 					
 					
 					$('#loginForm').submit(function(){

@@ -12,7 +12,6 @@ public class AuthCheckInterceptor extends HandlerInterceptorAdapter {
 	
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response,Object handler) throws IOException {
 		HttpSession session = request.getSession(false);
-		System.out.println("세션? "+session.getAttribute("loginInfo"));
 		if(session!=null && session.getAttribute("loginInfo")!=null) {
 			return true;
 		}

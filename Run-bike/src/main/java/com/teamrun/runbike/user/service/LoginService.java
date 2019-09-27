@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.teamrun.runbike.user.dao.UserDao;
 import com.teamrun.runbike.user.domain.LoginInfo;
+import com.teamrun.runbike.user.domain.RegisterInfo;
 import com.teamrun.runbike.user.domain.UserInfo;
 
 @Service("loginService")
@@ -23,6 +24,8 @@ public class LoginService implements UserService {
 	private UserDao dao;
 	
 	public int login(String u_id, String u_pw,HttpServletRequest request) {
+		// 관리 = 4
+		// 탈퇴 = 3
 		// 이메일 인증 = 2
 		// 이메일 미인증 = 1
 		// 로그인 실패 = 0
@@ -33,32 +36,6 @@ public class LoginService implements UserService {
 		dao = template.getMapper(UserDao.class);
 		
 		
-		// 탈퇴한 회원인 지 아닌 지 확인 - 탈퇴 : 1 / 탈퇴 ㄴㄴ: 0
-//		if(isLeave) {
-//			loginChk = 3;
-//		} else {
-//			userInfo = dao.selectUserById(u_id);
-//			
-//			// 회원 아이디가 존재 && 비밀번호 일치시 세션에 값 저장.
-//			if(userInfo.checkPW(u_pw) && userInfo !=null) {
-//				if(userInfo.isU_verify()) {
-//					// 이메일 인증 ok - 세션에 로그인 정보 저장
-//					LoginInfo loginInfo = userInfo.toLoginInfo();
-//					request.getSession(true).setAttribute("loginInfo",loginInfo);
-//					// 날짜 이력 저장
-//					
-//					
-//					dateService.saveDate(userInfo.getU_idx());
-//					loginChk = 2;
-//				} else {
-//					// 이메일 인증 no - 세션에 이메일 정보 저장
-//					loginChk = 1;
-//					request.getSession(true).setAttribute("email",userInfo.getU_id());
-//				}			
-//			} else {
-//				loginChk = 0;
-//			}
-//		}
 		userInfo = dao.selectUserById(u_id);
 		System.out.println("userInfo : "+userInfo);
 		
@@ -88,5 +65,25 @@ public class LoginService implements UserService {
 		
 
 		return loginChk;
+	}
+	
+	public String loginWithNaver(RegisterInfo regInfo, HttpServletRequest request) {
+		UserInfo userInfo = null;
+		
+		dao = template.getMapper(UserDao.class);
+		
+		userInfo = regInfo.toUserInfo();
+		int result = dao.insertUser(userInfo);
+		int sns = dao.updateIsSns(userInfo.getU_idx());
+		
+		System.out.println(sns);
+		
+		dao.chkVerify(userInfo.getU_id(), userInfo.getU_code());
+		
+		LoginInfo loginInfo = userInfo.toLoginInfo();
+		
+		request.getSession(false).setAttribute("loginInfo", loginInfo);
+		
+		return result >0 ? "Y":"N";
 	}
 }

@@ -18,10 +18,10 @@ callback 처리중입니다. 이 페이지에서는 callback을 처리하고 바
 	<!-- (2) LoginWithNaverId Javscript 설정 정보 및 초기화 -->
 	<script>
 	// 접근 토큰 값 출력
-		var naver_id_login = new naver_id_login("bGcr_qQ18WcY_tp0AIjX", "http://localhost:8080/runbike/user/login/naver");
+		var naver_id_login = new naver_id_login("bGcr_qQ18WcY_tp0AIjX", "http://localhost:8080/runbike/user/login/");
 	  	var state = naver_id_login.getUniqState();
 	  	naver_id_login.setButton("white", 2,40);
-	  	naver_id_login.setDomain("http://localhost:8080/runbike/user/login/");
+	  	naver_id_login.setDomain("http://localhost:8080/runbike/user/login");
 	  	naver_id_login.setState(state);
 	  	naver_id_login.setPopup();
 	  	naver_id_login.init_naver_id_login();

@@ -62,6 +62,7 @@ public class RegisterService implements UserService{
 		
 		return result;
 	}
+	
 	public String idCheck(String u_id) {
 		System.out.println(u_id);
 		dao = template.getMapper(UserDao.class);

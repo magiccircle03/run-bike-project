@@ -17,4 +17,5 @@ public interface UserDao {
 	public String chkMaster(int u_idx);
 	public Map<String, Object> getRecord(int u_idx);
 	public List<Map<String, Object>> getRecentRecord(int u_idx);
+	public int updateIsSns(int u_idx);
 }

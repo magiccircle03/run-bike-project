@@ -71,5 +71,7 @@ select count(*) as login_date from run_bike.login_log where u_idx = #{u_idx} and
 <update id="chkLeave">
 	update user set u_leave=true where u_idx=#{u_idx}
 </update>
-
+<update id="updateIsSns">
+	update user set u_sns=true where u_idx=#{u_idx}
+</update>
 </mapper>
