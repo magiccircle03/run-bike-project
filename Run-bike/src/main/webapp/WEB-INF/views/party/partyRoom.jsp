@@ -364,7 +364,7 @@ function exitPartyFn() {
 	
 	if(isMaster()){
 		if(getUserCount()<2){
-			if(confirm('인원 1명이야! 너 나가면 방폭 되는데 나갈거야?')){
+			if(confirm('인원이 1명일 때 나가면 방이 삭제됩니다. 방에서 나가시겠습니까?')){
 				exitParty(u_idx);
 				// 방삭제
 				deleteParty();
@@ -377,7 +377,6 @@ function exitPartyFn() {
 			exitParty(u_idx); // 현재 로그인된 유저를 얌전히 보내준다
 		}
 	}
-	
 	
 }
 	
