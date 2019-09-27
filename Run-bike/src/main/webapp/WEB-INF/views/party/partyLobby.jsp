@@ -590,14 +590,17 @@ function list() {
 			//alert(JSON.stringify(data));
 
 			var html = '';
-
 			for (var i = 0; i < data.length; i++) {
 				//alert(data[i].p_name);
+				var lock='';
+				if(data[i].p_password.length>0){
+					lock = '<i class="fas fa-lock"></i>';
+				}
 				html += '<div class="col-sm-6">\n';
 				html += '<div class="card card-style">\n';
 				html += '<div class="card-body">\n';
 				html += '<h5 class="card-title">\n';
-				html += data[i].p_name + ' ( '+getUserCount(data[i].p_num)+' / '+data[i].p_capacity+' ) \n'
+				html += data[i].p_name + ' ( '+getUserCount(data[i].p_num)+' / '+data[i].p_capacity+' ) '+lock+'\n'
 				html += '</h5>\n';
 				html += '<p class="card-text">\n';
 				html += '<i class="fas fa-map-marked-alt"></i> 출발지 : '+data[i].p_start_info+'<br>\n';
@@ -606,7 +609,7 @@ function list() {
 				html += '</p>\n';
 				html += '<p class="card-text">'+data[i].p_content+'</p>\n';
 				html += '<a href="#" class="btn mintbtn"><i class="fas fa-info-circle"></i> 방 정보 보기</a>\n';
-				html += '<a href="#" onclick="join('+data[i].p_num+')" class="btn mintbtn"><i class="fas fa-child"></i> 참여하기!!</a>\n';
+				html += '<a href="#" onclick="joinchk('+data[i].p_num+','+data[i].p_password+','+getUserCount(data[i].p_num)+','+data[i].p_capacity+')" class="btn mintbtn"><i class="fas fa-child"></i> 참여하기!!</a>\n';
 				html += '</div>\n';
 				html += '</div>\n';
 				html += '</div>';
@@ -630,6 +633,34 @@ function getUserCount(p_num) {
 		}
 	});
 	return cnt;
+}
+
+function joinchk(p_num, p_password, cur_capacity, p_capacity) {
+	var chkPass = false;
+	var chkCapa = false;
+	
+	if (cur_capacity<p_capacity){
+		chkCapa = true;
+		
+		if (typeof p_password == "undefined" || p_password == null || p_password == ""){
+			chkPass = true;
+			//join(p_num);
+		}else if(p_password == prompt('암호가 있는 방입니다. 비밀번호를 입력해주세요!')){
+			chkPass = true;
+			//join(p_num);
+		}else{
+			alert('비밀번호가 틀렸습니다');
+		}
+		
+	}else {
+		alert('인원이 모두 찼습니다!');
+	}
+	
+	
+	if (chkPass&&chkCapa){
+		join(p_num);
+	}
+	
 }
 
 function join(p_num) {

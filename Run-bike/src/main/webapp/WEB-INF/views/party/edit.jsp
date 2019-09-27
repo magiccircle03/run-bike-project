@@ -121,7 +121,7 @@ h5{
 	    	<br>
 	    	
 <!-- 	    	<input type="submit" value="수정하기" class="btn"> -->
-			<button onclick="editParty()">수정하기</button>
+			<button class="btn" onclick="editParty()">수정하기</button>
 	    	
 <!-- 	    	</form> -->
     </div>

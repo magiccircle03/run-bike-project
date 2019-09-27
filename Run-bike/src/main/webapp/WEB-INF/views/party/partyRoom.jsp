@@ -91,11 +91,11 @@ h5{
 <div class="container">
 
 <!-- 숨겨진 u_idx -->
+<!-- <hr> -->
 <input id="u_idx" name="u_idx" type="hidden" class="form-control" value="${loginInfo.u_idx}">
 <button class="btn" onclick="exitPartyFn()">나가기</button> 
 <button class="btn" onclick="getCurrentPos()">현재위치</button> 
 
-<hr>
 
 <!-- 탭 클릭시마다 새로고침되게 하기 -->
 <ul class="nav nav-pills nav-justified">
