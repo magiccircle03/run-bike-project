@@ -187,6 +187,7 @@ h3{
             map = new Tmap.Map({
                 div: 'map_div', // map을 표시해줄 div
                 width: "100%", // map의 width 설정
+                //width: "766px", // 일단은 고정
                 height: "400px", // map의 height 설정
             });
             map.setCenter(new Tmap.LonLat("126.986072", "37.570028").transform("EPSG:4326", "EPSG:3857"), 15); //설정한 좌표를 "EPSG:3857"로 좌표변환한 좌표값으로 즁심점을 설정합니다.						
@@ -609,7 +610,7 @@ function list() {
 				html += '</p>\n';
 				html += '<p class="card-text">'+data[i].p_content+'</p>\n';
 				html += '<a href="#" class="btn mintbtn"><i class="fas fa-info-circle"></i> 방 정보 보기</a>\n';
-				html += '<a href="#" onclick="joinchk('+data[i].p_num+','+data[i].p_password+','+getUserCount(data[i].p_num)+','+data[i].p_capacity+')" class="btn mintbtn"><i class="fas fa-child"></i> 참여하기!!</a>\n';
+				html += '<a href="#" onclick="joinchk('+data[i].p_num+','+getUserCount(data[i].p_num)+','+data[i].p_capacity+','+data[i].p_password+')" class="btn mintbtn"><i class="fas fa-child"></i> 참여하기!!</a>\n';
 				html += '</div>\n';
 				html += '</div>\n';
 				html += '</div>';
@@ -635,7 +636,7 @@ function getUserCount(p_num) {
 	return cnt;
 }
 
-function joinchk(p_num, p_password, cur_capacity, p_capacity) {
+function joinchk(p_num, cur_capacity, p_capacity, p_password) {
 	var chkPass = false;
 	var chkCapa = false;
 	
@@ -644,12 +645,15 @@ function joinchk(p_num, p_password, cur_capacity, p_capacity) {
 		
 		if (typeof p_password == "undefined" || p_password == null || p_password == ""){
 			chkPass = true;
-			//join(p_num);
-		}else if(p_password == prompt('암호가 있는 방입니다. 비밀번호를 입력해주세요!')){
-			chkPass = true;
-			//join(p_num);
-		}else{
-			alert('비밀번호가 틀렸습니다');
+		}else {
+			var input_pw = prompt('암호가 있는 방입니다. 비밀번호를 입력해주세요!');
+			if(p_password == input_pw){
+				chkPass = true;
+			}else if(typeof input_pw == "undefined" || input_pw == null || input_pw == "") {
+				alert('취소하였습니다.');
+			}else{
+				alert('비밀번호가 틀렸습니다');
+			}
 		}
 		
 	}else {
