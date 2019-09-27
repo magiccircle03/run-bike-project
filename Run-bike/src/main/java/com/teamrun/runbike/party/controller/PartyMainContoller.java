@@ -96,12 +96,22 @@ public class PartyMainContoller {
 		return "party/partyRoom";
 	}
 
+	// 진행중인 파티의 현재 정보 페이지로 가기
+	@RequestMapping(value = "/{p_num}/ing", method = RequestMethod.GET)
+	public String getPartyIngPage(@PathVariable int p_num, Model model) {
+		PartyInfo partyInfo = partyInfoService.getPartyInfoOne(p_num);
+		//PartyUserInfo partyUserInfo = partyInfoService.get
+		model.addAttribute("partyInfo", partyInfo);
+		
+		return "party/partyRoomIng";
+	}
+	
 	// 수정 페이지로 가기
 	@RequestMapping(value = "/{p_num}/edit", method = RequestMethod.GET)
 	public String getEditPartyForm(@PathVariable int p_num, Model model) {
 		PartyInfo partyInfo = partyInfoService.getPartyInfoOne(p_num);
 		model.addAttribute("partyInfo", partyInfo);
-		return "party/edit";
+		return "party/partyEdit";
 	}
 
 	// 수정 완료

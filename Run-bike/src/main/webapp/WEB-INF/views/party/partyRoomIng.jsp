@@ -99,17 +99,16 @@ h5{
 <!-- 같이하기 내비게이션 -->
 <ul class="nav nav-pills nav-justified">
   <li class="nav-item tabWidth">
-    <a class="nav-link active" href="<c:url value='/party' />">방정보</a>
+    <a class="nav-link" href="<c:url value='/party' />">방정보</a>
   </li>
   <li class="nav-item tabWidth">
-    <a class="nav-link" href="<c:url value='/party/${partyInfo.p_num}/ing' />">현재정보</a>
+    <a class="nav-link active" href="<c:url value='/party/${partyInfo.p_num}/ing' />">현재정보</a>
   </li>
   <li class="nav-item tabWidth">
     <a class="nav-link" href="<c:url value='/party/${partyInfo.p_num}/chat' />">채팅</a>
   </li>
 </ul>
 
-<hr>
 
 <div class="tab-content">
   
@@ -117,23 +116,15 @@ h5{
   
     <div id="partyInfo">
     
-    	    <h2 class="marginTop"> [${partyInfo.p_num}] ${partyInfo.p_name}</h2> 
+    	    <h2 class="marginTop"> [${partyInfo.p_num}] ${partyInfo.p_name} 달리는 중...!</h2> 
     	    <div id="map_div"> </div>
     	    <i class="fab fa-font-awesome-flag"></i> ${partyInfo.p_start_info} / <i class="fas fa-flag-checkered"></i> ${partyInfo.p_end_info}  
     	    <br>
-	    	${partyInfo.p_content}
-	    	<br>
-	    	출발 예정 시각 : ${partyInfo.p_time_f}
-	    	<br>
-	    	총 거리 : ${partyInfo.p_riding_km} km , 예상 소요 시간 : ${partyInfo.p_riding_time} 분
-	    	
-	    	
-	    	
     </div>
     
     
-    <input id="readyChk" type="checkbox" data-toggle="toggle" data-on="준비완료!" data-off="준비하기" data-onstyle="primary mint">
-
+  <!--   <input id="readyChk" type="checkbox" data-toggle="toggle" data-on="준비완료!" data-off="준비하기" data-onstyle="primary mint">
+ -->
     <!-- 방장만 보이게 영역 -->
 	<div id="partyInfoMaster" class="master">
 	   	<button id="startBtn" class="btn" onclick="startRiding()" disabled="true">시작하기</button>
@@ -150,12 +141,8 @@ h5{
     <!-- 참가자 사진 / 이름 / 준비여부-->
 	</div>
 	
-
-    
-    
   </div>
-  
-  
+
 </div>
 
 </div><!-- 컨테이너 끝 -->
@@ -180,43 +167,6 @@ var u_idx = $('#u_idx').val();// 아이디 값 세션에서 가져오기.
 
 var path='http://localhost:8080/runbike';
 
-/* function showPartyInfo() {
-	//alert(p_num);
-	$.ajax({
-		url : path + '/party/room/' + p_num,
-		type : 'GET',
-		success : function(data) {
-			//alert(JSON.stringify(data));
-			var xy = new Object(); //좌표를 담는 json객체
-			html = '';
-	    	html += '<h2>['+data.p_num+'번]\n';
-	    	html += ''+data.p_name+' ( '+getUserCount()+' / '+data.p_capacity+'명 )</h1><br>\n';
-	    	html += '출발지 : '+data.p_start_info+'<br>\n';
-	    	html += '목적지 : '+data.p_end_info+'<br>\n';
-	    	//html += '좌표 : '+data.p_XY+'<br>\n';
-	    	html += '방내용 : '+data.p_content+'<br>\n';
-	    	html += '출발예정시간 : '+data.p_time_f+'<br>\n';
-	    	html += '방 개설 시간 : '+data.p_generate_date_f+'<br>\n';
-	    	
-	    	xy.startX = JSON.parse(data.p_XY).startX;
-            xy.startY = JSON.parse(data.p_XY).startY;
-            xy.endX = JSON.parse(data.p_XY).endX;
-            xy.endY = JSON.parse(data.p_XY).endY;
-        	
-            initTmap(xy);
-            //alert(JSON.stringify(xy));
-            //alert(xy);
-            
-	    	$('#partyInfo').html(html);
-		}
-	});
-} */
-
-function editParty() {
-	if (confirm('방 정보를 수정할까요?')) {
-		location.href = '../party/'+p_num+'/edit';
-	}
-}
 
 function getCurrentPos() {
 	navigator.geolocation.getCurrentPosition(function(pos) {
@@ -239,32 +189,6 @@ function getUserCount() {
 	return cnt;
 }
 
-$('#readyChk').change(function() {
-    if($("#readyChk").is(":checked")){
-        //alert("레디!");
-        setReady('Y');
-    }else{
-        //alert("레디 취소!");
-        setReady('N');
-    }
-});
-
-function setReady(readyYN) {	
- 	$.ajax({
-		url : path + '/party/ready',
-		type : 'POST',
-		data : {
-			p_num : p_num,
-			u_idx : u_idx,
-			readyYN : readyYN
-		},
-		success : function(data) {
-			//alert(data);
-			//alert(JSON.stringify(data));
-			showPartyUserList();
-		}
-	}); 
-}
 
 function showPartyUserList() {
 	//alert('야');
@@ -312,7 +236,7 @@ function showPartyUserList() {
 				if(data[i].pc_readyYN=='Y'){
 					readyStr='<p class="ready">준비 완료!</p>';
 				}else{
-					readyStr='<p class="gray">방 둘러보는 중...</p>';
+					readyStr='<p class="gray">열심히 달리는 중...</p>';
 				}
 				
 				
@@ -335,22 +259,7 @@ function showPartyUserList() {
 
 // 내가 파티를 나간다
 function exitPartyFn() {
-/* 	if(confirm('현재 참여한 방에서 나가시겠습니까?')){
-		if(getUserCount()<2){
-			if(confirm('인원 1명이야! 너 나가면 방폭 되는데 나갈거야?')){
-				exitParty(u_idx);
-				// 방삭제
-				deleteParty();
-			}
-		}else{
-			if(isMaster()){
-				alert('방장이 어딜나가! 나갈거면 위임해');
-			}else{
-				exitParty(u_idx); // 현재 로그인된 유저를 얌전히 보내준다
-			}
-		}
-	} */
-	
+
 	
 	if(isMaster()){
 		if(getUserCount()<2){
