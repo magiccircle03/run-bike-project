@@ -44,6 +44,9 @@
 .master{
 	display: none;
 }
+.dispalyNone{
+	display: none;
+}
 .width30{
 	width: 30%;
 }
@@ -62,7 +65,7 @@ h5{
 
 .allReady{
 	font-weight: bold;
-	background-color: pink;
+	background-color: #FD5314;
 	color: #fefefe;
 }
 .ban{
@@ -79,6 +82,22 @@ h5{
 .marginTop{
 	margin-top: 20px;
 	margin-bottom: 20px;
+}
+.StartP{
+	display : inline;
+	color: red;
+}
+.red{
+	color: #FD5314;
+}
+.blue{
+	color: #007BFF;
+}
+.font-size-18{
+	font-size: 18px;
+}
+.gray{
+	color: #555555;
 }
 </style>
 </head>
@@ -115,20 +134,19 @@ h5{
   
   <div class="tab-pane fade show active" id="partyInfoTab">
   
-    <div id="partyInfo">
-    
-    	    <h2 class="marginTop"> [${partyInfo.p_num}] ${partyInfo.p_name}</h2> 
-    	    <div id="map_div"> </div>
-    	    <i class="fab fa-font-awesome-flag"></i> ${partyInfo.p_start_info} / <i class="fas fa-flag-checkered"></i> ${partyInfo.p_end_info}  
+    <div id="partyInfo" class="font-size-18">
+    	    <h2 id="partyTitle" class="marginTop"> [${partyInfo.p_num}] ${partyInfo.p_name}</h2> 
+    	    <h4 style="padding:20px 0;"><i class="fas fa-biking blue"></i>&nbsp; 우리의 목표 경로 <i class="fas fa-fire red"></i></h4>
+    	    <div id="map_div"></div>
+    	    <div class="row">
+	    	    <div class="col-md-6"><i class="fab fa-font-awesome-flag gray"></i> 출발지 : ${partyInfo.p_start_info}</div>
+	    	    <div class="col-md-6"><i class="fas fa-flag-checkered gray"></i> 도착지 : ${partyInfo.p_end_info}</div>
+    	    </div>
     	    <br>
-	    	${partyInfo.p_content}
-	    	<br>
-	    	출발 예정 시각 : ${partyInfo.p_time_f}
-	    	<br>
-	    	총 거리 : ${partyInfo.p_riding_km} km , 예상 소요 시간 : ${partyInfo.p_riding_time} 분
-	    	
-	    	
-	    	
+    	    <div class="row"><div class="col-md-12">${partyInfo.p_content}</div></div>
+    	    <div class="row"><div class="col-md-12">출발 예정 시각 : ${partyInfo.p_time_f}</div></div>
+	    	<p>총 거리 : ${partyInfo.p_riding_km} km , 예상 소요 시간 : ${partyInfo.p_riding_time} 분</p>
+
     </div>
     
     <!-- 시작 전에만 보이는 영역 -->
@@ -173,6 +191,7 @@ var xy=${partyInfo.p_XY};
 
 $(document).ready(function() {
 	initTmap(xy);
+	chkIsStarted();
 	showPartyUserList();
 	showMasterArea();
 	setReady('N');// 어디 갔다오면 처음엔 준비 안된걸로
@@ -185,37 +204,22 @@ var u_idx = $('#u_idx').val();// 아이디 값 세션에서 가져오기.
 
 var path='http://localhost:8080/runbike';
 
-/* function showPartyInfo() {
+function chkIsStarted() {
 	//alert(p_num);
 	$.ajax({
 		url : path + '/party/room/' + p_num,
 		type : 'GET',
 		success : function(data) {
-			//alert(JSON.stringify(data));
-			var xy = new Object(); //좌표를 담는 json객체
-			html = '';
-	    	html += '<h2>['+data.p_num+'번]\n';
-	    	html += ''+data.p_name+' ( '+getUserCount()+' / '+data.p_capacity+'명 )</h1><br>\n';
-	    	html += '출발지 : '+data.p_start_info+'<br>\n';
-	    	html += '목적지 : '+data.p_end_info+'<br>\n';
-	    	//html += '좌표 : '+data.p_XY+'<br>\n';
-	    	html += '방내용 : '+data.p_content+'<br>\n';
-	    	html += '출발예정시간 : '+data.p_time_f+'<br>\n';
-	    	html += '방 개설 시간 : '+data.p_generate_date_f+'<br>\n';
-	    	
-	    	xy.startX = JSON.parse(data.p_XY).startX;
-            xy.startY = JSON.parse(data.p_XY).startY;
-            xy.endX = JSON.parse(data.p_XY).endX;
-            xy.endY = JSON.parse(data.p_XY).endY;
-        	
-            initTmap(xy);
-            //alert(JSON.stringify(xy));
-            //alert(xy);
-            
-	    	$('#partyInfo').html(html);
+			//alert("시작시간"+data.p_start_time);
+			//alert(data.p_start_time!=null);
+			if(data.p_start_time!=null){
+				$('#beforeStartArea').addClass( 'dispalyNone' );
+				$('#partyTitle').append( '<p class="StartP"> [ 라이딩 진행중 ]</p>' );
+				
+			}
 		}
 	});
-} */
+} 
 
 function editParty() {
 	if (confirm('방 정보를 수정할까요?')) {
@@ -512,7 +516,7 @@ function startRiding() {
 	  		type : 'get',
 	 		success : function() {
 	 			alert('성공');
-	 			alert(data);
+	 			location.href="./"+p_num+"/ing";
 	 		}
 	 }); 
 }
