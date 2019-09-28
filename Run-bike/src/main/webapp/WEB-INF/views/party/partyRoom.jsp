@@ -118,7 +118,7 @@ h5{
 <!-- 같이하기 내비게이션 -->
 <ul class="nav nav-pills nav-justified">
   <li class="nav-item tabWidth">
-    <a class="nav-link active" href="<c:url value='/party' />">방정보</a>
+    <a class="nav-link active" href="<c:url value='/party/${partyInfo.p_num}' />">방정보</a>
   </li>
   <li class="nav-item tabWidth">
     <a class="nav-link" href="<c:url value='/party/${partyInfo.p_num}/ing' />">현재정보</a>
@@ -136,7 +136,7 @@ h5{
   
     <div id="partyInfo" class="font-size-18">
     	    <h2 id="partyTitle" class="marginTop"> [${partyInfo.p_num}] ${partyInfo.p_name}</h2> 
-    	    <h4 style="padding:20px 0;"><i class="fas fa-biking blue"></i>&nbsp; 우리의 목표 경로 <i class="fas fa-fire red"></i></h4>
+    	    <h4 style="padding:20px 0;"><i class="fas fa-fire red"></i>&nbsp; 우리의 목표 경로</h4>
     	    <div id="map_div"></div>
     	    <div class="row">
 	    	    <div class="col-md-6"><i class="fab fa-font-awesome-flag gray"></i> 출발지 : ${partyInfo.p_start_info}</div>

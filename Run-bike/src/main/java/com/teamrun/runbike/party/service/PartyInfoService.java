@@ -48,6 +48,8 @@ public class PartyInfoService {
 		dao = template.getMapper(PartyDaoInterface.class);
 		PartyInfo partyInfo = new PartyInfo();
 		partyInfo = dao.getPartyInfoOne(p_num);
+		partyInfo.setP_start_info_short(partyInfo.getP_start_info());
+		partyInfo.setP_end_info_short(partyInfo.getP_end_info());
 		return partyInfo;
 	}
 	

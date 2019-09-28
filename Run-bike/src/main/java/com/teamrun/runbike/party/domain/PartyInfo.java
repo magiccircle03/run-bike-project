@@ -20,6 +20,10 @@ public class PartyInfo {
 	private String p_password;
 	private char p_closedYN;
 	
+	//
+	private String p_start_info_short;
+	private String p_end_info_short;
+	
 	// 날짜타입 출력 쉽게 포맷팅한 변수들
 	private String p_time_f;
 	private String p_generate_date_f;
@@ -46,11 +50,33 @@ public class PartyInfo {
 		this.p_content = p_content;
 		this.p_generate_date = new Date();
 		this.p_password = p_password;
+		
 	}
 	
 	// 제이슨 형식으로 바꿔 반환하는 메서드
 
 	/* 게터와 세터 */
+	
+
+
+	public String getP_start_info_short() {
+		return p_start_info_short;
+	}
+
+	public String getP_end_info_short() {
+		return p_end_info_short;
+	}
+
+	
+	public void setP_start_info_short(String p_start_info) {
+		String[] array = p_start_info.split("\\(");
+		this.p_start_info_short = array[0];
+	}
+
+	public void setP_end_info_short(String p_end_info) {
+		String[] array = p_end_info.split("\\(");
+		this.p_end_info_short = array[0];
+	}
 
 	public int getP_num() {
 		return p_num;

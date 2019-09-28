@@ -81,8 +81,14 @@ public class PartyMainContoller {
 
 		if (count > 0) {
 			p_num = partyInfoService.getPartyNum(u_idx); // 그 방번호 얻어오기
-
-			view = "redirect:/party/" + p_num; // 그 방 페이지로 넘어감
+			
+			PartyInfo partyInfo = partyInfoService.getPartyInfoOne(p_num);
+			System.out.println("시작 시간 > "+partyInfo.getP_start_time());
+			if(partyInfo.getP_start_time() != null) {
+				view = "redirect:/party/" + p_num + "/ing";
+			}else {
+				view = "redirect:/party/" + p_num; // 그 방 페이지로 넘어감
+			}
 		}
 
 		return view;
@@ -110,6 +116,7 @@ public class PartyMainContoller {
 	public String getPartyIngPage(@PathVariable int p_num, Model model) {
 		PartyInfo partyInfo = partyInfoService.getPartyInfoOne(p_num);
 		// PartyUserInfo partyUserInfo = partyInfoService.get
+
 		model.addAttribute("partyInfo", partyInfo);
 
 		return "party/partyRoomIng";
