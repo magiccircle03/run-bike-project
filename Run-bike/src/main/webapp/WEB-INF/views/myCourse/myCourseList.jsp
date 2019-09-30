@@ -78,7 +78,7 @@
 	<!-- 해더 시작 -->
 	<%@ include file="/WEB-INF/views/frame/header.jsp"%>
 	<!-- 해더 끝 -->
-
+	<input type="text" id="u_idx" value="${loginInfo.u_idx}" style="display: none;"/>
 	<div class="row mb-md-5" >
 		<div class="list-group list-group-horizontal col-md-4 col-sm-12 mx-auto text-center" id="myList" role="tablist">
 			<a class="list-group-item list-group-item-action" id="startRiding" data-toggle="list" href="#" role="tab">바로 시작</a> 
@@ -217,7 +217,7 @@
 	    });
 	    
         var path = 'http://localhost:8080/runbike';
-        var u_idx = 71;
+        var u_idx = $('#u_idx').val();
         
       //전역변수
         var map;

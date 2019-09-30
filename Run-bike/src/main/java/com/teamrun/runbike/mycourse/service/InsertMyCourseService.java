@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.teamrun.runbike.mycourse.dao.MyCourseDao;
 import com.teamrun.runbike.mycourse.domain.MyCourse;
 import com.teamrun.runbike.mycourse.domain.RegMyCourse;
+import com.teamrun.runbike.user.domain.LoginInfo;
 
 @Service("insertmyCourseService")
 public class InsertMyCourseService {
@@ -24,7 +25,12 @@ public class InsertMyCourseService {
 		
 		MyCourse myCourse = regMyCourse.toMyCourse();
 		
-		myCourse.setU_idx(71);
+		LoginInfo loginInfo = (LoginInfo)request.getSession(false).getAttribute("loginInfo");
+		int u_idx = loginInfo.getU_idx();
+		
+		System.out.println("::::::::::::::::::::::::::::::::u_idx=" + u_idx);
+		
+		myCourse.setU_idx(u_idx);
 		
 		System.out.println(myCourse);
 		
