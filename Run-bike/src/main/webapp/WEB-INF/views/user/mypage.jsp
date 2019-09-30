@@ -49,11 +49,6 @@
 	.none-record-status{
 		padding: 50px 10px
 	}
-	#record-wrapper h4{
-		margin: 20px 0;
-	}
-	
-	
 	.none-record-status a{
 		display: inline-block;
 		padding: 10px;
@@ -66,35 +61,41 @@
 		font-weight: bold;
 		
 	}	
+	
+	#record-wrapper h4{
+		margin: 20px 0;
+	}
+	
+	
 	#record-wrapper .row .card{
 		border: none;
 		text-align: center;
 	}
-	#record-status strong{
+	#user-record strong{
 		font-family: 'Anton', sans-serif;
 		font-size: 50px;
 		height: 200px;
 		line-height: 200px;
 	}
-	#record-status .card:first-child strong{
+	#user-record .card:first-child strong{
 		font-size: 60px;
 		
 	}
 	
-	#record-status strong span{
+	#user-record strong span{
 		padding-left: 15px;
 		font-size: 35px;
 	}
-	#record-status .card p{
+	#user-record .card p{
 		font-family: 'Exo', sans-serif;
 	}
 	
 	@media screen (max-width: 767px){
-		#record-status strong{
+		#user-record strong{
 			font-size: 40px;
 		}
 		
-		#record-status strong span{
+		#user-record strong span{
 			padding-left: 5px;
 			font-size: 20px;
 		}
@@ -249,7 +250,7 @@
 							<div class="col-sm-12 col-md-6 col-lg-3"><div class="card card-record-view"><strong id="avgTime"><span>분</span></strong><p>라이딩 평균 시간</p></div></div> 
 							
 							<div class="row col-12 gtr-uniform">
-								<h4 class="col-12">최근 기록</h4>
+								<h4 class="col-12"><i class="fas fa-history"></i> 최근 기록</h4>
 								<table id="recent-record" class="table">
 									
 								</table>
