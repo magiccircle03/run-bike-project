@@ -24,17 +24,21 @@ public class UserRecordService {
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		Map<String, Object> listMap = new HashMap<String, Object>();
-		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+		List<Map<String, Object>> recentList = new ArrayList<Map<String, Object>>();
+		List<Map<String, Object>> partyList = new ArrayList<Map<String, Object>>();
 		
 		
 		
 		map = dao.getRecord(u_idx);
-		list = dao.getRecentRecord(u_idx);
+		recentList = dao.getRecentRecord(u_idx);
+		partyList = dao.getpartyRecord(u_idx);
 		
 		listMap.put("userRecord", map);
-		listMap.put("recentRecord", list);
+		listMap.put("recentRecord", recentList);
+		listMap.put("partyRecord", partyList);
 		
-		System.out.println("service : "+list);
+		System.out.println("service : "+recentList);
+		System.out.println("service : "+partyList);
 		return listMap;
 	}
 }

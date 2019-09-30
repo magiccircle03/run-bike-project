@@ -64,6 +64,14 @@ select count(*) as login_date from run_bike.login_log where u_idx = #{u_idx} and
 	order by r_riding_date desc
 	limit 0,5
 </select>
+
+<select id="getpartyRecord" resultType="map">
+	select count(*) as cnt ,p.p_name, p.p_start_info, p.p_end_info, date_format(p.p_time,'%Y-%m-%d') as p_time, p.p_riding_km, pc.pc_finishYN
+from run_bike.participation pc
+	left outer join run_bike.user u on pc.u_idx = u.u_idx
+    left outer join run_bike.party p on pc.p_num = p.p_num
+where pc.u_idx = #{u_idx}
+</select>
 <update id="reChkVerify">
 	update user set u_verify=true where u_id=#{param1}
 </update>

@@ -312,7 +312,6 @@
 									data: {u_id: email, u_pw: "naverPassword123",u_name: name, image: image},
 									success: function(data){
 										if(data == 'Y'){
-											alert("환영합니다");
 											location.href = 'http://localhost:8080/runbike/record/startRide';
 										} 
 									},
@@ -363,7 +362,6 @@
 								success : function(data){
 									console.log(data);
 									if(data=='ok'){
-										alert("환영합니다.");
 										location.href = 'http://localhost:8080/runbike/record/startRide';									
 									} else if(data=='yet'){
 										location.href='http://localhost:8080/runbike/verify/'+data;
