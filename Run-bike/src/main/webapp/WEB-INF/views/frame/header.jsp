@@ -20,7 +20,6 @@
     <a class="pt-md-2 mx-md-3" href="#"><i class="far fa-laugh"></i>스탬프</a>
     <a class="pt-md-2 mx-md-3" href="#"><i class="fas fa-crown"></i>나의 리워드</a>
     <a class="pt-md-2 mx-md-3" href="<c:url value='/qnaboard' />"><i class="fas fa-headset"></i>문의하기</a>
-    <a class="pt-md-2 mx-md-3" href="<c:url value='/qnaboard/test' />"><i class="fas fa-headset"></i>test문의하기</a>
     <c:choose>
     	<c:when test="${loginInfo.u_id == 'admin'}">
     		<a class="pt-md-2 mx-md-3" href="<c:url value='/adminpage/managelist' />"><i class="fas fa-headset"></i>관리자 페이지</a>
