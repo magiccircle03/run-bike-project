@@ -109,6 +109,11 @@ h5{
 .readyChk{
 	width: 100%;
 }
+.partyUserImg{
+	width: 40px;
+	height: 40px;
+	
+}
 </style>
 </head>
 <body>
@@ -179,7 +184,7 @@ h5{
 	    <div id="partyUserInfo1">
 	    <!-- 참가자 사진 / 이름 / 준비여부-->
 		</div>
-	
+<%-- 		<img src="${pageContext.request.contextPath}/uploadfile/userphoto/noImg.jpg"> --%>
     </div>
     <!-- /시작 전에만 보이는 영역 -->
     <!-- ======================================= -->
@@ -339,7 +344,8 @@ function showPartyUserList() {
 				
 				
 				html1+='<tr>\n';
-				html1+='<td class="width30">'+data[i].u_photo+'</td>\n';
+				//html1+='<td class="width30">'+data[i].u_photo+'</td>\n';
+				html1+='<td class="width30"><img class="partyUserImg" src="${pageContext.request.contextPath}/uploadfile/userphoto/'+data[i].u_photo+'"></td>\n';
 				html1+='<td class="width30 '+bold+'">' + crown + data[i].u_name + delBtn + '</td>\n';
 				html1+='<td class="width30">'+readyStr+'</td>\n';
 				html1+='</tr>\n';
