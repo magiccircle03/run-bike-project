@@ -67,14 +67,18 @@ public class LoginService implements UserService {
 		return loginChk;
 	}
 	
-	public String loginWithNaver(RegisterInfo regInfo, HttpServletRequest request) {
+	public String loginWithNaver(RegisterInfo regInfo, HttpServletRequest request, String image) {
 		UserInfo userInfo = null;
+		if(image == null) {
+			image = "noImg.jpg";
+		}
+		
 		
 		dao = template.getMapper(UserDao.class);
 		
 		userInfo = regInfo.toUserInfo();
+		userInfo.setU_photo(image);
 		int result = dao.insertUser(userInfo);
-		System.out.println("sns : "+sns);
 		int sns = dao.updateIsSns(userInfo.getU_idx());
 		System.out.println(userInfo.toString());
 		

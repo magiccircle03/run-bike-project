@@ -183,13 +183,30 @@
 			.not-user a{
 				display: block;
 				text-align: center;
+				padding: 1em;
+				font-size: 16px;
+				letter-spacing: 2px;
+				color: #fff;
+				border-radius: 5px;
 				background-color: #ccc;
 			}
 			.submit-wrapper{
 				margin: 20px 0;
 			}
+			#naver_id_login{
+				margin-top: 12px;
+			}
+			#naver_id_login::before{
+				display: inline-block;
+				float: left;
+				content:'네이버로 간편 로그인 하세요.';
+				font-size: 14px;
+				
+			}
 			
-			
+			#naver_id_login a{
+				float: right;
+			}
 			@media screen and (max-width: 767px){
 			    section#modal-register{			
 			        width: 80%;
@@ -240,11 +257,7 @@
                                         <label for="u_pw">비밀번호</label>
 					                    <input type="password" name="u_pw" id="u_pw" value="" placeholder="password" />
 					                </div>
-					                <div class="col-4 col-12-small">
-					                    <input type="checkbox" name="chkid" id="chkid" />					                    
-					                    <label for="chkid">아이디 저장</label>
-					                </div>
-					                <div class="col-4 col-12-small">
+					                <div class="col-12 col-12-small">
 					                    <input type="checkbox" name="rememberid" id="rememberid" />
 					                    <label for="rememberid">아이디 기억하기</label>
 					                </div> 
@@ -254,8 +267,8 @@
 					                </div>
 					            </div>
 					            <div class="not-user">
-					            	<p class="label-reg">아직 회원이 아니신가요?</p>
-					            	<a class="" href="http://localhost:8080/runbike/user/register">회원가입</a>
+					            	<p class="label-reg" style="text-decoration: underline">아직 회원이 아니신가요?</p>
+					            	<a class="btn btn-reg" href="http://localhost:8080/runbike/user/register">회원가입</a>
 					            </div>
 					        </form>
 					    </div>
@@ -270,7 +283,7 @@
 				var naver_id_login = new naver_id_login("bGcr_qQ18WcY_tp0AIjX", "http://localhost:8080/runbike/user/login");
 			  	var state = naver_id_login.getUniqState();
 			  	
-			  	naver_id_login.setButton("green",3, 50);
+			  	naver_id_login.setButton("green",2, 45);
 			  	naver_id_login.setDomain("http://localhost:8080/runbike/user/login");
 			  	naver_id_login.setState(state);
 			  	naver_id_login.init_naver_id_login();
@@ -296,10 +309,10 @@
 								$.ajax({
 									type:'POST',
 									url: 'http://localhost:8080/runbike/user/login/naver',
-									data: {u_id: email, u_pw: "naverPassword123",u_name: name},
+									data: {u_id: email, u_pw: "naverPassword123",u_name: name, image: image},
 									success: function(data){
 										if(data == 'Y'){
-											console.log(data);
+											alert("환영합니다");
 											location.href = 'http://localhost:8080/runbike/record/startRide';
 										} 
 									},
@@ -357,7 +370,7 @@
 									} else if(data == 'leave'){
 										alert("이미 탈퇴한 회원입니다.");
 									} else if(data =='admin'){
-										alert("관리자 로그인");	
+										//location.href='http://localhost:8080/runbike/verify/'+data;
 									} else {
 										alert("로그인에 실패했습니다. 아이디 혹은 비밀번호를 확인해주세요.");
 									}

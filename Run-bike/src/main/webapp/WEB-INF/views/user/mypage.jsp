@@ -2,6 +2,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
 <!doctype html>
 <html lang="en">
 <head>
@@ -129,8 +130,16 @@
 			<hr>
 			<div>
 				<div class="img-wrapper text-center">
-					<img
+					<c:choose>
+					<c:when test = "${fn : contains(loginInfo.u_id, '@naver.com')}">
+						<img
+						src="${loginInfo.u_photo}" align="center" width="auto" height="200px">
+					</c:when>
+					<c:otherwise>
+						<img
 						src="<c:url value='/uploadfile/userphoto/${loginInfo.u_photo}'/>" align="center" width="auto" height="200px">
+					</c:otherwise>
+					</c:choose>
 				</div>
 				<div class="row-profile-name text-center pt-4 gtr-uniform">
 					<strong>${loginInfo.u_name} 님</strong>
@@ -231,7 +240,7 @@
 				<div id="none-record-status">
 					<h3 class="font-weight-bold mx-auto mt-3 text-center">아직 기록이 없습니다.</h3>
 					<p class="text-center">새롭게 달려보는 건 어떠세요?</p>
-					<a href="" class="">라이딩 시작!</a>
+					<a href="<c:url value='/record/startRide'/>" class="">라이딩 시작!</a>
 				</div>
 				<div id="record-status">
 					<p>회원님이 활동한 기록입니다.</p>
@@ -397,7 +406,7 @@
     		
     		// 회원 정보 업데이트 기능
     		$('#userUpdateForm').on('submit',function(){
-    			if($('#u_name').val()!= "" && $('#u_pw').val != "" && $('#u_repw').val() != $('#u_pw').val()){
+    			if($('#u_name').val()!= "" && $('#u_pw').val != "" && $('#u_repw').val() == $('#u_pw').val()){
 	    			var formData = new FormData();
 	    			var file = $('#u_photo')[0].files[0];
 	    			
@@ -406,6 +415,7 @@
 	    			formData.append('u_name',$('#u_name').val());
 	    			formData.append('u_pw',$('#u_pw').val());
 	    			formData.append('oldFile',$('#oldFile').val());
+	    			console.log(formData);
 	    			if(file != undefined){
 						formData.append('u_photo',file);
 					}
@@ -418,6 +428,7 @@
 	    				contentType: false,
 	    				processData : false,
 	    				success: function(data){
+	    					console.log(data);
 	    					if(data==1){
 	    						alert("정보가 수정되었습니다");
 	    						location.reload();
@@ -428,9 +439,10 @@
 	    			});
     			} else{
     				
-    			}   			
+    			}   
     			return false;
     		});
+    		
     		
     		
     		
@@ -449,7 +461,7 @@
         		    				success: function(data){
         		    					if(data==1){
         			    					alert("탈퇴를 완료했습니다.");
-        			    					location.href="/runbike/main";
+        			    					location.href="/runbike/";
         		    					} else{
         		    						alert("비밀번호를 다시 확인하세요.");
         		    					}
@@ -468,6 +480,10 @@
     				}
     			});
     			return false;
+    		});
+    		
+    		$('.modal').on('hidden.bs.modal', function(){
+    		    $(this).find('form')[0].reset();
     		});
     		
     	});

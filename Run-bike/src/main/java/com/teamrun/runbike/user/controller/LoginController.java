@@ -64,9 +64,9 @@ public class LoginController {
 	 @RequestMapping(value=("login/naver"), method= {RequestMethod.GET,
 	 RequestMethod.POST})
 	 @ResponseBody 
-	 public String loginWithNaver(RegisterInfo regInfo, HttpServletRequest request, String photo) { 
+	 public String loginWithNaver(RegisterInfo regInfo, HttpServletRequest request, String image) { 
 		 System.out.println(regInfo);
-		 String result = loginService.loginWithNaver(regInfo, request);
+		 String result = loginService.loginWithNaver(regInfo, request, image);
 	 
 		 return result; 
 	 
