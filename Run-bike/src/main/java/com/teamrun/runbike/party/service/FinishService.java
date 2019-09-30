@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import com.teamrun.runbike.party.dao.PartyDaoInterface;
 import com.teamrun.runbike.party.domain.FinishInfo;
-import com.teamrun.runbike.party.domain.ReadyInfo;
 @Service
 public class FinishService {
 	
@@ -25,12 +24,28 @@ public class FinishService {
 		return resultCnt;
 	}
 	
+	// 해당 유저가 끝났는지 
 	public int isEnd(int u_idx, int p_num) {
 		int result=-1;
 		dao = template.getMapper(PartyDaoInterface.class);
 		result = dao.isEnd(u_idx, p_num);
-		System.out.println(">>끝났는지 :"+result);
 		return result;
+	}
+	
+	// 아직 종료하지 않은 유저의 수를 구해온다 
+	public int getNotEndUsercount(int p_num) {
+		int resultCnt = -1;
+		dao = template.getMapper(PartyDaoInterface.class);
+		resultCnt = dao.getNotEndUsercount(p_num);
+		return resultCnt;
+	}
+	
+	// 해당 파티를 종료한다
+	public int endParty(int p_num) {
+		int resultCnt = -1;
+		dao = template.getMapper(PartyDaoInterface.class);
+		resultCnt = dao.endParty(p_num);
+		return resultCnt;
 	}
 	
 }

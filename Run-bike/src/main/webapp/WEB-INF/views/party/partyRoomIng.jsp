@@ -63,9 +63,9 @@ h5{
 	font-weight: bold;
 }
 
-.allReady{
+.allEnd{
 	font-weight: bold;
-	background-color: #FD5314;
+	background-color: #007BFF;
 	color: #fefefe;
 }
 .ban{
@@ -210,7 +210,7 @@ var path='http://localhost:8080/runbike';
 // 개인이 라이딩을 종료하는 함수
 function endRidingOne(){
 	var chk = confirm('현재위치 = 도착지 반경 500m?'); //완주여부 체크. 일단은 이렇게 받자
-	getCurrentPos(); // 검사해서 이 위치가 도착지 좌표 반경 몇 m 이내면, 완주여주 Y / 아니면 N 
+	getCurrentPos(); // 검사해서 이 위치가 도착지 좌표 반경 몇 m 이내면, 완주여주 Y / 아니면 N //중도 포기하겠냐고 물어봄
 	if(chk){
 		updateEnd('Y'); // 완주여부 Y, end여부 Y로 업데이트
 	}else{
@@ -233,6 +233,55 @@ function updateEnd(finishYN) {
 		}
 	}); 
 }
+
+function endRidingMaster(){
+	if(confirm('라이딩을 종료하고 파티를 해산할까요?')){
+		// 종료시간과 사용가능한 방 여부 업데이트하기
+		$.ajax({
+	 		url : path + '/party/room/'+p_num,
+	  		type : 'PUT',
+	  		data : JSON.stringify({
+	  			p_num : p_num 
+	 		}),
+	 		contentType : 'application/json; charset=utf-8',
+	 		success : function() {
+	 			endRidingGreet();
+	 		}
+	 	}); 
+		
+	}
+}
+
+// 종료인사와 보내주기
+function endRidingGreet() {
+	alert('종료합니다! 수고하셨습니다!');
+	location.href="../../party";
+}
+
+
+function isAllEnd(){
+	var cnt = -2;
+	$.ajax({
+	 		url : path + '/party/room/'+p_num+'/notEndUsercount',
+	 		type : 'GET',
+			async : false,
+	 		success : function(data) {
+	 			cnt = parseInt(data);
+	 		}
+	 }); 
+	 
+	 if(cnt==0){
+		 //alert('모두 종료!');
+		 $('#endBtnMaster').attr('disabled', false);
+		 $('#endBtnMaster').addClass('allEnd');
+	 }/* else{
+		 //alert('아직 종료하지 않은 사람 있음!');
+		 $('#endBtnMaster').attr('disabled', true);
+		 $('#endBtnMaster').removeClass('allEnd');
+	 } */
+}
+
+
 
 
 function chkIsStarted() {
@@ -322,7 +371,7 @@ function showPartyUserList() {
 					if(data[i].pc_finishYN=='Y'){
 						readyStr='<p class="">[★ 완주★] 라이딩 종료!</p>';
 					}else{
-						readyStr='<p class="">라이딩 종료!</p>';
+						readyStr='<p class="">중도 포기</p>';
 					}
 				}else{
 					readyStr='<p class="">열심히 달리는 중...</p>';
@@ -491,6 +540,7 @@ function deleteParty(){
 var refreshReady = setInterval(function() {
 		showPartyUserList();
 		showCurrentPos();
+		isAllEnd();
 }, 1000);
 
 function startRiding() {
@@ -522,10 +572,11 @@ function initTmap(xy) {
         width: "100%", // map의 width 설정
         height: "500px", // map의 height 설정
     });
+
     map.setCenter(new Tmap.LonLat("126.986072", "37.570028").transform("EPSG:4326", "EPSG:3857"), 15); //설정한 좌표를 "EPSG:3857"로 좌표변환한 좌표값으로 즁심점을 설정합니다.						
 	
     getRoute(xy);
-   
+
 }
 
 function showCurrentPos(){

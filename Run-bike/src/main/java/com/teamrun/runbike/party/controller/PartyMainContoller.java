@@ -288,6 +288,16 @@ public class PartyMainContoller {
 		curUser = readyService.getNotReadyUsercount(p_num);
 		return curUser;
 	}
+	
+	// 끝나지 않은 사람 수를 구해온다
+	@CrossOrigin
+	@ResponseBody
+	@RequestMapping(value = "/room/{p_num}/notEndUsercount", method = RequestMethod.GET)
+	public int getNotEndUsercount(@PathVariable int p_num) {
+		int curUser = -1;
+		curUser = finishService.getNotEndUsercount(p_num);
+		return curUser;
+	}
 
 	// 방장 위임
 	@CrossOrigin
@@ -299,4 +309,16 @@ public class PartyMainContoller {
 		result = masterService.changeMaster(p_num, u_idx);
 		return result;
 	}
+
+	// 방 종료
+	@CrossOrigin
+	@ResponseBody
+	@RequestMapping(value = "/room/{p_num}", method = RequestMethod.PUT)
+	public int endParty(@RequestBody JSONObject p_num_str) {
+		int result = -1;
+		int p_num = Integer.parseInt(p_num_str.get("p_num").toString());
+		result = finishService.endParty(p_num);
+		return result;
+	}
+	
 }

@@ -70,9 +70,16 @@ public interface PartyDaoInterface {
 	// 준비되지 않은 유저수 가져온다
 	public int getNotReadyUsercount(int p_num);
 	
+	// 종료되지 않은 유저수 가져온다
+	public int getNotEndUsercount(int p_num);
+	
 	// 방 수정
 	public int editParty(RequestPartyEdit requestPartyEdit);
 	
 	// 시작시간 업데이트 
 	public int updatePartyStartTime(int p_num);
+	
+	// 파티 종료
+	public int endParty(int p_num);
+	
 }
