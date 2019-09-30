@@ -69,6 +69,16 @@
 	width: 100px;
 	margin: 0 auto;
 }
+
+.none-record-status{  
+   padding: 50px 10px;
+   margin: auto;
+   ;
+}
+
+h3{
+	font-weight: bold;
+}
 </style>
 
 </head>
@@ -192,7 +202,7 @@
                     <button type="button" class="btn btn-primary" data-dismiss="modal">취소</button>
                     <button type="button" class="btn btn-primary" onclick="changeMyCourse()">코스 수정</button>
                 </div>
-            </div>
+	        </div>
         </div>
     </div>
     <!-- Modal 끝-->
@@ -285,9 +295,15 @@
                 url: path + '/myCourse/' + currentPageNumber,
                 type: 'GET',
                 success: function(data) {
-
+	
                     var html = '';
-
+                    
+					if(data==""){
+						html += '<div class="none-record-status">\n';
+		                html += '<h3><i class="fas fa-exclamation-triangle"> 아직 등록된 나의 코스가 없습니다.</i></h3>';
+		                html += '</div>';
+					} else{
+						
                     for (var i = 0; i < data.length; i++) {
 
                         var mc_idx = data[i].mc_idx;
@@ -302,7 +318,6 @@
 
                         var startPoint = reverseGeo(mc_startPoint_lon, mc_startPoint_lat);
                         var endPoint = reverseGeo(mc_endPoint_lon, mc_endPoint_lat);
-
                         html += '<div class="col-sm-6">\n';
                         html += '<a href="#" style="text-decoration:none" onclick="showRoute(' + mc_startPoint_lon + ',' + mc_startPoint_lat + ',' + mc_endPoint_lon + ',' + mc_endPoint_lat + ')">\n';
                         html += '<div class="card-style" id="card">\n';
@@ -334,7 +349,8 @@
                         html += '</div>\n';
                         html += '</a>\n'
                         html += '</div>';
-                    }
+                    	}
+					}
                     $('#myCourseList').html(html);
                 }
             });

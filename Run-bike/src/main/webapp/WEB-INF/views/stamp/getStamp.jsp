@@ -43,11 +43,35 @@
 	<!-- 컨테이너 시작 -->
 	<div class="container">
 			
-			<h4 class="font-weight-bold pt-5 mb-4"><i class="fas fa-map-marked-alt"> 스탬프 투어</i></h4>
-			<div class="page-info-text text-dark">스탬프를 투어를 떠나자!</div>
-			<hr>
+		<h4 class="font-weight-bold pt-5 mb-4"><i class="fas fa-map-marked-alt"> 스탬프 투어</i></h4>
+		<div class="page-info-text text-dark">스탬프를 투어를 떠나자!</div>
+		<hr>
+			
+		<div id="map_div"></div>
+		
+		<br>
+		
+		<button type="button" class="btn btn-primary btn-lg btn-block" >스탬프 얻기!</button>
+
 	</div>
 	
+	<script>
+	 function initTmap() {
+         //map 생성
+         //Tmap.map을 이용하여, 지도가 들어갈 div, 넓이, 높이를 설정합니다.
+         map = new Tmap.Map({
+             div: 'map_div',
+             width: '100%',
+             height: '400px',
+             animation: false
+         }); 
+         
+	 }
+	 
+	 $(document).ready(function() {
+         initTmap();
+	 });
+	</script>
 	<!-- 푸터 시작 -->
 	<%@ include file="/WEB-INF/views/frame/footer.jsp"%>
 	<!-- 푸터 끝 -->
