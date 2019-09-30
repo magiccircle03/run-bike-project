@@ -36,6 +36,7 @@ public class GetMyCourseListService {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("index", index);
 		params.put("CNT_LIST", CNT_LIST);
+		
 		//★추후에 Server쪽 Session으로 받아오기
 		//세션에서 로그인 정보 받아오기
 		LoginInfo loginInfo = (LoginInfo)request.getSession(false).getAttribute("loginInfo");
