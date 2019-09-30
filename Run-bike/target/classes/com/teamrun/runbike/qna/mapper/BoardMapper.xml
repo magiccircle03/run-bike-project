@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- namepsace 는 필수 속성이다. : dao 식별하기위한 이름 -->
+<mapper namespace="com.teamrun.runbike.qna.dao.BoardDaoInterface">
+
+		<!-- 문의글 -->
+		<resultMap id="messageResultmap" type="com.teamrun.runbike.qna.domain.Message" >
+		
+			<!-- <id property="u_idx" column="u_idx" /> -->
+			<id property="q_num" column="q_num" />
+			<result property="q_title" column="q_title"/>
+			<!-- <result property="q_num" column="q_num"/> -->
+			<result property="u_idx" column="u_idx"/>
+			<result property="q_content" column="q_content"/>
+			<result property="q_writer" column="q_writer"/>
+			<result property="regdate" column="regdate"/>
+		<!-- 	<result property="pnum" column="pnum"/> -->
+
+		</resultMap>
+		
+		<!-- 답글 -->		
+		<resultMap id="ReplyResultmap" type="com.teamrun.runbike.qna.domain.Reply" >
+			<id property="rp_num" column="rp_num" />
+			<result property="q_num" column="q_num"/>
+			<result property="rp_title" column="rp_title"/>
+			<result property="rp_text" column="rp_text"/>
+			<result property="rp_writer" column="rp_writer"/>
+			<result property="rp_regdate" column="rp_regdate"/>
+			<result property="u_idx" column="u_idx"/>
+		</resultMap>
+		
+		
+		
+		<!-- 문의글 작성 --> <!-- useGeneratedKeys="true" keyProperty="q_num" 추가함 -->
+		<!-- <insert id="insertBoard" parameterType="com.teamrun.runbike.qna.domain.Message" useGeneratedKeys="true" keyProperty="q_num"> -->
+		<insert id="insertBoard" parameterType="com.teamrun.runbike.qna.domain.Message">	
+				insert into board(u_idx, q_title, q_content, q_writer) values (#{u_idx}, #{q_title},#{q_content}, #{q_writer})
+		</insert>
+		
+		<!-- 답변글 작성 -->
+<!-- 		<insert id="replywrite" parameterType="com.teamrun.runbike.qna.domain.Reply">
+				insert into reply(q_num, rp_title, rp_text,rp_writer) values (#{q_num}, #{rp_title},#{rp_text}, #{rp_writer})
+		</insert> -->
+		<insert id="replywrite" parameterType="com.teamrun.runbike.qna.domain.Reply">
+				insert into reply(u_idx,rp_title, rp_text,rp_writer,q_num) values (#{u_idx},#{rp_title},#{rp_text}, #{rp_writer},#{q_num})
+		</insert>
+
+
+		
+		
+		
+		 <!-- 문의글 전체 출력 -->
+		<select id="selectAllList" resultMap="messageResultmap" >
+			select * from board order by q_num
+		</select>
+		<!-- 해당글의 답변글전체 출력 -->
+		 <select id="selectReplyListAll" resultMap="ReplyResultmap" parameterType="map">
+			select * from run_bike.reply, run_bike.board where run_bike.board.q_num = run_bike.reply.q_num and run_bike.board.q_num = #{q_num}
+		</select>
+
+
+	
+	
+			<!-- 상세보기 :  글 번호로 해당 게시글 찾아오기 -->
+		<select id="detail" resultMap="messageResultmap">
+			select * from board where q_num = #{q_num}
+		</select>
+	
+	
+			
+		<!-- 문의글을 수정할 메세지 글번호로 찾기 -->
+		<select id="selectMessageByNum" resultMap="messageResultmap">
+			select * from board where q_num=#{q_num}
+		</select>
+		
+		
+		<!-- 문의글 수정 -->
+		<select id="boardUpdate" parameterType="com.teamrun.runbike.qna.domain.Message">
+		update board set q_title=#{q_title}, q_content=#{q_content}, q_writer=#{q_writer} where q_num=#{q_num}
+		</select>
+		
+
+
+		
+		
+		<!-- 문의글 삭제 -->
+		<delete id="boardDelete">		
+			delete from board where q_num=#{q_num}
+		</delete>
+		
+		
+		<!-- 답변글 삭제 -->
+		<delete id="replyDelete">
+			delete from reply where rp_num=#{rp_num}
+		</delete>
+	
+				 
+				 <!-- 회원 리스트의 개수 : 검색을 위해 동적쿼리 적용 -->
+			 <select id="selectTotalCount" resultType="int" parameterType="com.teamrun.runbike.qna.domain.SearchParam">
+			 	select count(*) from board
+			 	<where>
+			 		<if test="stype != null">
+				<if test="stype == 'both'">
+					q_title LIKE CONCAT('%', #{keyword}, '%')
+					or q_writer LIKE CONCAT('%', #{keyword}, '%')
+				</if>
+				<if test="stype == 'title'">
+					q_title LIKE CONCAT('%', #{keyword}, '%')
+				</if>
+				<if test="stype == 'writer'">
+					q_writer LIKE CONCAT('%', #{keyword}, '%')
+				</if>
+
+			</if>
+
+			 	</where>
+			 </select>
+		
+		
+		
+		
+		
+		
+	<!-- 게시판 리스트 : 검색을 위해 동적쿼리 적용 -->
+	
+	<select id="selectList" parameterType="map"
+		resultMap="messageResultmap">
+		
+		SELECT * FROM board
+		
+		<where>
+		
+			<if test="search != null">
+				<if test="search.stype == 'both'">
+					<include refid="whereId"/>
+					<include refid="whereName"/>
+					q_title LIKE CONCAT('%', #{search.keyword}, '%')
+					 or q_writer LIKE CONCAT('%', #{search.keyword}, '%')
+				</if>
+				<if test="search.stype == 'title'">				
+					<include refid="whereId"/>
+					q_title LIKE CONCAT('%', #{search.keyword}, '%')
+				</if>
+				<if test="search.stype == 'writer'">
+					<include refid="whereName"/>
+					q_writer LIKE CONCAT('%', #{search.keyword}, '%')
+				</if>
+			</if>
+			
+		</where>
+
+		limit #{index}, #{count}
+	</select>
+	
+	
+	
+		
+	<sql id="whereId">
+		or q_title LIKE CONCAT('%', #{search.keyword}, '%')
+	</sql>
+		
+	<sql id="whereName">
+		or q_writer LIKE CONCAT('%', #{search.keyword}, '%')
+	</sql>
+
+			
+			
+			
+	<!--=============== 방명록 페이징================ -->
+<!-- 
+	<select id="selectCount" resultType="int">
+		select count(*) from board
+	</select>		
+		
+		
+	<select id="selectList"
+			parameterType="map"
+			resultMap="messageResultmap" >
+	
+		<![CDATA[
+		select q_num, q_title, q_writer, q_content from
+		( 
+		select rownum rnum, q_num, q_title, q_writer, q_content from ( 
+		select * from board m order by m.q_num desc  )
+		where rownum <= #{endRow}
+		) where rnum >= #{firstRow}
+		]]>
+		
+		
+	</select> -->
+		
+		
+		
+		
+		
+		
+		
+
+	
+	
+		
+		<!-- 글 번호가 현재번호와 같으면 그룹번호=현재글번호 -->
+		<!-- <update id="numsameupdate">
+			update board set q_num_group=#{q_num} where q_num=#{q_num}
+		</update>
+	 -->
+	
+	
+	
+		<!-- q_num_group : 글의 그룹번호(원글번호) / step : 정렬 값 / depth : 들여쓰기 -->
+		<!-- step > #{step} : step이 최근글이면  -->
+		<!-- <update id="replyUpdate">   
+			update board set step = step+1 where q_num = #{q_num} and step > #{step}
+		</update>
+		 -->
+		
+		
+		<!-- 상세보기 -> 답글입력 -->
+		
+		<!--  답글폼에 해당 글번호의 정보가져오기 -->
+		<!-- <select id="replyselectbyqnum">
+			select * from board where q_num=#{q_num}
+		</select> -->
+		
+		<!-- 현재 글정보와 원글의 번호가 같으면 답변등록 -->
+		<!-- <insert id="replyInsert" parameterType="com.teamrun.runbike.qna.domain.Message">
+			insert into board(u_idx, q_title, q_content, q_writer) values (#{u_idx}, #{q_title},#{q_content}, #{q_writer}) where q_num=#{q_num}
+		</insert>
+		 -->
+		
+		
+		
+		
+		
+		<!-- 상세보기 -> 답글입력 -->
+		
+		<!--  해당 글번호의 정보가져오기 -->
+		<!-- <select id="replyselectbyqnum">
+			select * from board where q_num=#{q_num}
+		</select>
+		 -->
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		<!-- 답글입력 -->
+	<!-- 	
+	<insert id="replyInsert" parameterType="com.teamrun.runbike.qna.domain.Message">
+				insert into board(q_num, u_idx, q_title, q_content, q_writer,group,step,depth)
+				 		values (#{group}, #{u_idx}, #{q_title}, #{q_content},#{q_writer},#{q_num},#{step}+1,#{depth}+1)
+	</insert>
+	 -->
+		
+		<!-- 답글 이거아닌가? 해당 원글 번호가 맞으면 답글등록을 한다.-->
+	<!-- 	<insert id="replyInsert" parameterType="com.teamrun.runbike.qna.domain.Message">
+				insert into board(u_idx, q_title, q_content, q_writer,group,step) values (#{u_idx}, #{q_title},#{q_content}, #{q_writer},#{q_num},#{step}+1) where q_num_group=#{q_num_group}
+		</insert> -->
+		
+		<!-- 등록전 또는 등록후에 전체문의글 출력할때 정렬시키면 된다. -->
+		<!-- 
+		<select id="selectAllList" resultMap="messageResultmap" >
+			select * from board order by q_num_group DESC, step ASC
+		</select>
+		 -->
+	
+
+	
+	
+	
+ 	<!-- 게시글전체출력 -->
+	<!-- <select id="getAllList" resultType="com.teamrun.runbike.qna.domain.Message">
+	<![CDATA[ : sql 내부에 연산자 있을 경우 사용
+		 <![CDATA[ select q_num, q_title, q_content, q_writer, regdate from board
+		 			where q_num > 0
+		 			order by q_num desc, regdate desc
+		  ]]>  
+
+ 	</select>
+ 	 -->
+
+ 	
+
+	
+	
+</mapper>
