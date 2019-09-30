@@ -134,7 +134,7 @@ h5{
 <!-- <hr> -->
 <input id="u_idx" name="u_idx" type="hidden" class="form-control" value="${loginInfo.u_idx}">
 <button class="btn" onclick="exitPartyFn()">나가기</button> 
-<button class="btn" onclick="getCurrentPos()">현재위치</button> 
+<button class="btn" onclick="showCurrentPos()">현재위치</button> 
 
 <!-- 같이하기 내비게이션 -->
 <ul class="nav nav-pills nav-justified">
@@ -198,6 +198,7 @@ $(document).ready(function() {
 	showPartyUserList();
 	showMasterArea();
 	showEndArea();
+	showCurrentPos();
 });
 
 var p_num = ${partyInfo.p_num};
@@ -489,41 +490,8 @@ function deleteParty(){
 // 회원정보 계속 업데이트(준비 상태 바로 반영되게)
 var refreshReady = setInterval(function() {
 		showPartyUserList();
-		isAllReady();
-		
+		showCurrentPos();
 }, 1000);
-
-
-function stopRefreshReady() {
-	clearInterval(refreshReady);
-}
-
-// 이걸 따로 하지 말고 레디할때 그냥 같이 반환시켜줘도 좋겠다
-function isAllReady() {
-	// 준비 N인 사람이 있으면 -> N / 준비 N인 사람 수가 0이면 -> Y 반환
-	var cnt = -2;
-	 $.ajax({
-	 		url : path + '/party/room/'+p_num+'/notReadyUsercount',
-	 		type : 'GET',
-			async : false,
-	 		success : function(data) {
-	 			cnt = parseInt(data);
-	 			//alert(cnt);
-	 		}
-	 }); 
-	 
-	 if(cnt==0){
-		 //alert('모두준비되었다!');
-		 // startBtn에 allReady클래스 추가 
-		 
-		 $('#startBtn').attr('disabled', false);
-		 $('#startBtn').addClass('allReady');
-	 }else{
-		 //alert('준비되지 않은 인원 :'+cnt);
-		 $('#startBtn').attr('disabled', true);
-		 $('#startBtn').removeClass('allReady');
-	 }
-}
 
 function startRiding() {
 	alert('시작');
@@ -545,7 +513,6 @@ function ban(idx) {
 }
 
 
-
 function initTmap(xy) {
 	
     // map 생성
@@ -558,6 +525,26 @@ function initTmap(xy) {
     map.setCenter(new Tmap.LonLat("126.986072", "37.570028").transform("EPSG:4326", "EPSG:3857"), 15); //설정한 좌표를 "EPSG:3857"로 좌표변환한 좌표값으로 즁심점을 설정합니다.						
 	
     getRoute(xy);
+   
+}
+
+function showCurrentPos(){
+	navigator.geolocation.getCurrentPosition(function(pos) {
+	    var latitude = pos.coords.latitude;
+	    var longitude = pos.coords.longitude;
+	    
+		markerLayer = new Tmap.Layer.Markers();//마커 레이어 생성
+		map.addLayer(markerLayer);//map에 마커 레이어 추가
+		   
+		var lonlat = new Tmap.LonLat(longitude, latitude).transform("EPSG:4326", "EPSG:3857");//좌표 설정
+		var size = new Tmap.Size(24, 38);//아이콘 크기 설정
+		var offset = new Tmap.Pixel(-(size.w / 2), -(size.h));//아이콘 중심점 설정
+		var icon = new Tmap.Icon('http://tmapapis.sktelecom.com/upload/tmap/marker/pin_b_m_a.png',size, offset);//마커 아이콘 설정
+		
+		marker = new Tmap.Marker(lonlat, icon);//마커 생성
+		markerLayer.addMarker(marker);//레이어에 마커 추가
+		
+	});
 }
 
 
