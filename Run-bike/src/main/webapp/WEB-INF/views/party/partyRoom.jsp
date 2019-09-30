@@ -145,8 +145,7 @@ h5{
   <div class="tab-pane fade show active" id="partyInfoTab">
   
     <div id="partyInfo" class="font-size-18">
-    	    <h2 id="partyTitle" class="marginTop"> [${partyInfo.p_num}] ${partyInfo.p_name} <p id="startStat" class="StartP"></p></h2>
-    	    <%-- <div class="row marginTop"><div id="partyTitle">[${partyInfo.p_num}] ${partyInfo.p_name} </div><div id="startStat" class="StartP"></div></div> --%>
+    	    <h3 id="partyTitle" class="marginTop"> [${partyInfo.p_num}] ${partyInfo.p_name} <p id="startStat" class="StartP"></p></h3>
     	    <h4 style="padding:20px 0;"><i class="fas fa-fire red"></i>&nbsp; 우리의 목표 경로</h4>
     	    <div id="map_div"></div>
     	    <div class="row">
@@ -307,7 +306,7 @@ function showPartyUserList() {
 			
 			
 			html1='';
-			html1+='<table>\n';
+			html1+='<table style="width:100%;">\n';
 			for (var i = 0; i < data.length; i++) {
 				var crown=''; 
 				var bold='';

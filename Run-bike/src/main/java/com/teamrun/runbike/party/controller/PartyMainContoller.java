@@ -17,12 +17,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.teamrun.runbike.party.domain.FinishInfo;
 import com.teamrun.runbike.party.domain.PartyInfo;
 import com.teamrun.runbike.party.domain.PartyUserInfo;
 import com.teamrun.runbike.party.domain.ReadyInfo;
 import com.teamrun.runbike.party.domain.RequestParticipationInsert;
 import com.teamrun.runbike.party.domain.RequestPartyCreate;
 import com.teamrun.runbike.party.domain.RequestPartyEdit;
+import com.teamrun.runbike.party.service.FinishService;
 import com.teamrun.runbike.party.service.PartyCreateService;
 import com.teamrun.runbike.party.service.PartyDeleteService;
 import com.teamrun.runbike.party.service.PartyEditService;
@@ -51,6 +53,9 @@ public class PartyMainContoller {
 
 	@Autowired
 	private ReadyService readyService;
+	
+	@Autowired
+	private FinishService finishService;
 
 	@Autowired
 	private PartyMasterService masterService;
@@ -76,10 +81,10 @@ public class PartyMainContoller {
 		LoginInfo loginInfo = (LoginInfo) session.getAttribute("loginInfo");
 		u_idx = loginInfo.getU_idx();
 
-		// 로그인 되었다는 전제
+		// 로그인 되었다는 전제로, 유저가 속한, 닫히지 않은 파티의 수를 구한다
 		count = partyInfoService.hasParty(u_idx);
 
-		if (count > 0) {
+		if (count > 0) { // 그러한 파티가 있다면 
 			p_num = partyInfoService.getPartyNum(u_idx); // 그 방번호 얻어오기
 			
 			PartyInfo partyInfo = partyInfoService.getPartyInfoOne(p_num);
@@ -194,7 +199,17 @@ public class PartyMainContoller {
 		resultCnt = joinService.insertParticipation(participationRequest);
 		return resultCnt;
 	}
-
+	
+	// 해당회원 끝났는지
+	@CrossOrigin
+	@ResponseBody
+	@RequestMapping(value = "/room/isEnd", method = RequestMethod.GET)
+	public char isEnd(@RequestParam("u_idx") int u_idx, @RequestParam("p_num") int p_num) {
+		int resultCnt=-1;
+		resultCnt = finishService.isEnd(u_idx, p_num);
+		return resultCnt==1?'Y':'N';
+	}
+	
 	// 방에서 나가기
 	@CrossOrigin
 	@ResponseBody
@@ -232,6 +247,17 @@ public class PartyMainContoller {
 	// 준비 상태 변경
 	@CrossOrigin
 	@ResponseBody
+	@RequestMapping(value = "/{p_num}/finishOne", method = RequestMethod.POST)
+	public int setFinishEnd(@PathVariable("p_num") int p_num, @RequestParam("u_idx") int u_idx,
+			@RequestParam("finishYN") String finishYN) {
+		FinishInfo finishInfo = new FinishInfo(p_num, u_idx, finishYN.charAt(0));
+		int resultCnt = finishService.updateFinish(finishInfo);
+		return resultCnt;
+	}
+	
+	// 개인 종료
+	@CrossOrigin
+	@ResponseBody
 	@RequestMapping(value = "/ready", method = RequestMethod.POST)
 	public int setReadyY(@RequestParam("p_num") int p_num, @RequestParam("u_idx") int u_idx,
 			@RequestParam("readyYN") String readyYN) {
@@ -240,6 +266,8 @@ public class PartyMainContoller {
 		int resultCnt = readyService.updateReady(readyInfo);
 		return resultCnt;
 	}
+	
+	
 
 	// 현재 방의 참여 인원수
 	@CrossOrigin

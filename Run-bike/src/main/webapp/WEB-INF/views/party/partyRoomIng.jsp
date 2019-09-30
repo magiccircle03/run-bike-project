@@ -99,6 +99,27 @@ h5{
 .gray{
 	color: #555555;
 }
+
+#divArea{
+	height: 500px;
+}
+
+#partyUserInfoIng{
+	background-color : rgba(0,50,100,.5);
+	color : #fefefe;
+	position: relative;
+	z-index:999;
+	bottom:0px;
+	top:-70px;  
+}
+
+.lightgray{
+	color : #bcbcbc;
+}
+#map_div{
+	bottom: 0px;
+	position: relative;
+}
 </style>
 </head>
 <body>
@@ -134,36 +155,32 @@ h5{
   
   <div class="tab-pane fade show active" id="partyInfoTab">
   
-    <div id="partyInfo" class="font-size-18">
-    	    <h2 id="partyTitle" class="marginTop"> [${partyInfo.p_num}] ${partyInfo.p_name}</h2> 
+    <div id="partyInfo">
+    	    <h3 id="partyTitle" class="marginTop"> [${partyInfo.p_num}] ${partyInfo.p_name} <p id="startStat" class="StartP"></p></h3>
     	    <h4 style="padding:20px 0;"><i class="fas fa-biking blue"></i>&nbsp; 우리가 달리고 있는 길 : ${partyInfo.p_start_info_short} ~ ${partyInfo.p_end_info_short}</h4>
-    	    <div id="map_div"></div>
-    	    <br>
-<%--     	    <div class="row"><div class="col-md-12">${partyInfo.p_content}</div></div>
-    	    <div class="row"><div class="col-md-12">출발 예정 시각 : ${partyInfo.p_time_f}</div></div>
-	    	<p>총 거리 : ${partyInfo.p_riding_km} km , 예상 소요 시간 : ${partyInfo.p_riding_time} 분</p>
- --%>
+    	    <div id="divArea">
+	    	    <div id="map_div">
+	    	    </div>
+	    	    <div id="partyUserInfoIng">
+		  	 	<!-- 참가자 사진 / 이름 / 상태-->
+				</div>
+			</div>
     </div>
-    
-<!-- 시작 후에만 보이는 영역 -->
-    <div id="afterStartArea" class="afterStart">
- 
-    	<!-- 원래는 장소를 체크해서 가까우면 완주 아니면 그냥 종료로 간다. -->
-    	<button id="endBtn" class="btn" onclick="endRiding()">종료하기</button>
+
+		
+		<hr>
+     
+     	<div id="endArea" style="display:none;">
+	    	<!-- 원래는 장소를 체크해서 가까우면 완주 아니면 그냥 종료로 간다. -->
+	    	<button id="endBtn" class="btn" onclick="endRidingOne()">종료하기</button>
+    	</div>
     	
     	<!-- 방장만 보이게 영역 -->
 		<div class="master">
 		   	<button id="endBtnMaster" class="btn" onclick="endRidingMaster()" disabled="true">전체 라이딩 종료하기!</button>
 		</div>
 		<!-- /방장만 보이게 영역 -->
-    	
-    </div>
-<!-- /시작 후에만 보이는 영역 -->
-    
-    
-    
-  </div>
-  
+
   
 </div>
 
@@ -180,8 +197,7 @@ $(document).ready(function() {
 	chkIsStarted();
 	showPartyUserList();
 	showMasterArea();
-	setReady('N');// 어디 갔다오면 처음엔 준비 안된걸로
-	
+	showEndArea();
 });
 
 var p_num = ${partyInfo.p_num};
@@ -189,6 +205,34 @@ var u_idx = $('#u_idx').val();// 아이디 값 세션에서 가져오기.
 
 
 var path='http://localhost:8080/runbike';
+
+// 개인이 라이딩을 종료하는 함수
+function endRidingOne(){
+	var chk = confirm('현재위치 = 도착지 반경 500m?'); //완주여부 체크. 일단은 이렇게 받자
+	getCurrentPos(); // 검사해서 이 위치가 도착지 좌표 반경 몇 m 이내면, 완주여주 Y / 아니면 N 
+	if(chk){
+		updateEnd('Y'); // 완주여부 Y, end여부 Y로 업데이트
+	}else{
+		updateEnd('N'); // 완주여부 N, end여부 Y로 업데이트
+	}
+	alert('라이딩을 종료하였습니다!');
+	$('#endArea').css('display','none');
+}
+
+function updateEnd(finishYN) {
+ 	$.ajax({
+		url : path + '/party/'+p_num+'/finishOne',
+		type : 'POST',
+		data : {
+			u_idx : u_idx,
+			finishYN : finishYN
+		},
+		success : function(data) {
+			showPartyUserList();
+		}
+	}); 
+}
+
 
 function chkIsStarted() {
 	//alert(p_num);
@@ -200,18 +244,15 @@ function chkIsStarted() {
 			//alert(data.p_start_time!=null);
 			if(data.p_start_time!=null){
 				$('#beforeStartArea').addClass( 'dispalyNone' );
-				$('#partyTitle').append( '<p class="StartP"> [ 라이딩 진행중 ]</p>' );
-				
+/* 				$('#partyTitle').append( '<p class="StartP"> [ 라이딩 진행중 ]</p>' ); */
+				$('#startStat').html(' [ 라이딩 진행중 ]');
+			}else{
+				$('#beforeStartArea').addClass( 'dispalyBlock' );
+				$('#startStat').html(' [ 대기중 ]');
 			}
 		}
 	});
 } 
-
-function editParty() {
-	if (confirm('방 정보를 수정할까요?')) {
-		location.href = '../party/'+p_num+'/edit';
-	}
-}
 
 function getCurrentPos() {
 	navigator.geolocation.getCurrentPosition(function(pos) {
@@ -244,42 +285,15 @@ $('#readyChk').change(function() {
     }
 });
 
-function setReady(readyYN) {	
- 	$.ajax({
-		url : path + '/party/ready',
-		type : 'POST',
-		data : {
-			p_num : p_num,
-			u_idx : u_idx,
-			readyYN : readyYN
-		},
-		success : function(data) {
-			//alert(data);
-			//alert(JSON.stringify(data));
-			showPartyUserList();
-		}
-	}); 
-}
 
 function showPartyUserList() {
-	//alert('야');
 	$.ajax({
 		url : path+'/party/room/'+p_num+'/user',
 		type : 'GET',
 		success : function(data) {
-			//alert('호');
-			//alert(JSON.stringify(data));
-			html2='';
-			for (var i = 0; i < data.length; i++) {
-				html2+=' '+data[i].u_photo+' '+data[i].u_name+' 여기는 상태<br>';
-			}
-			$('#partyUserInfo2').html(html2);
-			
-			
-			
 			
 			html1='';
-			html1+='<table>\n';
+			html1+='<table style="width:100%;">\n';
 			for (var i = 0; i < data.length; i++) {
 				var crown=''; 
 				var bold='';
@@ -289,13 +303,12 @@ function showPartyUserList() {
 				if(data[i].pc_masterYN=='Y'){
 					crown='<i class="fas fa-crown yellow"></i> ';
 					
-
 				}else{
  					if(isMaster()){
- 						crown='<a href="#" onclick="changeMaster('+data[i].u_idx+')"><i class="fas fa-user-alt gray" style="padding-left:2px;padding-right:2px;"></i></a> '; 
+ 						crown='<a href="#" onclick="changeMaster('+data[i].u_idx+')"><i class="fas fa-user-alt lightgray" style="padding-left:2px;padding-right:2px;"></i></a> '; 
  						delBtn='<a onclick="ban('+data[i].u_idx+')" class="ban"><i class="fas fa-times"></i></a>';
  					}else{
-						crown='<i class="fas fa-user-alt gray" style="padding-left:2px;padding-right:2px;"></i> '; 
+						crown='<i class="fas fa-user-alt lightgray" style="padding-left:2px;padding-right:2px;"></i> '; 
 					}
 				}
 				
@@ -304,10 +317,14 @@ function showPartyUserList() {
 					bold='bold';
 				}
 				
-				if(data[i].pc_readyYN=='Y'){
-					readyStr='<p class="ready">준비 완료!</p>';
+				if(data[i].pc_endYN=='Y'){
+					if(data[i].pc_finishYN=='Y'){
+						readyStr='<p class="">[★ 완주★] 라이딩 종료!</p>';
+					}else{
+						readyStr='<p class="">라이딩 종료!</p>';
+					}
 				}else{
-					readyStr='<p class="gray">방 둘러보는 중...</p>';
+					readyStr='<p class="">열심히 달리는 중...</p>';
 				}
 				
 				
@@ -317,11 +334,9 @@ function showPartyUserList() {
 				html1+='<td class="width30">'+readyStr+'</td>\n';
 				html1+='</tr>\n';
 				
-				//html1+=' '+data[i].u_photo+' '+data[i].u_name+' '+data[i].pc_readyYN+'<br>';
 			}
 			html1+='</table>\n';
-			$('#partyUserInfo1').html(html1);
-			$('#capa').html(" "+getUserCount());
+			$('#partyUserInfoIng').html(html1);
 			
 		}
 
@@ -330,23 +345,7 @@ function showPartyUserList() {
 
 // 내가 파티를 나간다
 function exitPartyFn() {
-/* 	if(confirm('현재 참여한 방에서 나가시겠습니까?')){
-		if(getUserCount()<2){
-			if(confirm('인원 1명이야! 너 나가면 방폭 되는데 나갈거야?')){
-				exitParty(u_idx);
-				// 방삭제
-				deleteParty();
-			}
-		}else{
-			if(isMaster()){
-				alert('방장이 어딜나가! 나갈거면 위임해');
-			}else{
-				exitParty(u_idx); // 현재 로그인된 유저를 얌전히 보내준다
-			}
-		}
-	} */
-	
-	
+
 	if(isMaster()){
 		if(getUserCount()<2){
 			if(confirm('인원이 1명일 때 나가면 방이 삭제됩니다. 방에서 나가시겠습니까?')){
@@ -394,7 +393,38 @@ function showMasterArea() {
 	}  
 	 
 }
+// 종료전과 후 다른 처리를 해준다
+function showEndArea() {
 
+  	if (isEnd()) {
+		$('#endArea').css('display','none');
+	}
+	else{
+		$('#endArea').css('display','block');
+	}  
+	 
+}
+
+function isEnd() {
+	var chk = false;
+	 $.ajax({
+	 		url : path + '/party/room/isEnd',
+	 		type : 'GET',
+			async : false,
+			data : {
+				u_idx : u_idx,
+				p_num : p_num
+			},
+	 		success : function(data) {
+	 			//alert(data);
+				if(data=='Y'){
+					chk=true;
+				}
+	 		}
+	 }); 
+	
+	return chk;
+}
 
 //방장이면 보이게
 function isMaster() {
@@ -523,7 +553,7 @@ function initTmap(xy) {
     map = new Tmap.Map({
         div: 'map_div', // map을 표시해줄 div
         width: "100%", // map의 width 설정
-        height: "450px", // map의 height 설정
+        height: "500px", // map의 height 설정
     });
     map.setCenter(new Tmap.LonLat("126.986072", "37.570028").transform("EPSG:4326", "EPSG:3857"), 15); //설정한 좌표를 "EPSG:3857"로 좌표변환한 좌표값으로 즁심점을 설정합니다.						
 	
