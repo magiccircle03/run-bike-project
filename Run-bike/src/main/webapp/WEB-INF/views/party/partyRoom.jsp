@@ -47,6 +47,9 @@
 .dispalyNone{
 	display: none;
 }
+.dispalyBlock{
+	display: block;
+}
 .width30{
 	width: 30%;
 }
@@ -99,6 +102,13 @@ h5{
 .gray{
 	color: #555555;
 }
+.h2{
+	font-size: 1.5em;
+
+}
+.readyChk{
+	width: 100%;
+}
 </style>
 </head>
 <body>
@@ -135,7 +145,8 @@ h5{
   <div class="tab-pane fade show active" id="partyInfoTab">
   
     <div id="partyInfo" class="font-size-18">
-    	    <h2 id="partyTitle" class="marginTop"> [${partyInfo.p_num}] ${partyInfo.p_name}</h2> 
+    	    <h2 id="partyTitle" class="marginTop"> [${partyInfo.p_num}] ${partyInfo.p_name} <p id="startStat" class="StartP"></p></h2>
+    	    <%-- <div class="row marginTop"><div id="partyTitle">[${partyInfo.p_num}] ${partyInfo.p_name} </div><div id="startStat" class="StartP"></div></div> --%>
     	    <h4 style="padding:20px 0;"><i class="fas fa-fire red"></i>&nbsp; 우리의 목표 경로</h4>
     	    <div id="map_div"></div>
     	    <div class="row">
@@ -150,9 +161,9 @@ h5{
     </div>
     
     <!-- 시작 전에만 보이는 영역 -->
-    <div id="beforeStartArea" class="beforeStart">
+    <div id="beforeStartArea">
     
-	    <input id="readyChk" type="checkbox" data-toggle="toggle" data-on="준비완료!" data-off="준비하기" data-onstyle="primary mint">
+	    <input id="readyChk" class="readyChk" type="checkbox" data-toggle="toggle" data-on="준비완료!" data-off="준비하기" data-onstyle="primary mint">
 	
 	    <!-- 방장만 보이게 영역 -->
 		<div id="partyInfoMaster" class="master">
@@ -214,8 +225,11 @@ function chkIsStarted() {
 			//alert(data.p_start_time!=null);
 			if(data.p_start_time!=null){
 				$('#beforeStartArea').addClass( 'dispalyNone' );
-				$('#partyTitle').append( '<p class="StartP"> [ 라이딩 진행중 ]</p>' );
-				
+/* 				$('#partyTitle').append( '<p class="StartP"> [ 라이딩 진행중 ]</p>' ); */
+				$('#startStat').html(' [ 라이딩 진행중 ]');
+			}else{
+				$('#beforeStartArea').addClass( 'dispalyBlock' );
+				$('#startStat').html(' [ 대기중 ]');
 			}
 		}
 	});

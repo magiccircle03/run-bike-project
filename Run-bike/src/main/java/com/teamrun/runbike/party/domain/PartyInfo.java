@@ -27,8 +27,8 @@ public class PartyInfo {
 	// 날짜타입 출력 쉽게 포맷팅한 변수들
 	private String p_time_f;
 	private String p_generate_date_f;
-//	private String p_start_time_f;
-//	private String p_end_time_f;
+	private String p_start_time_f;
+	private String p_end_time_f;
 
 	
 	SimpleDateFormat f = new SimpleDateFormat("yyyy.MM.dd aaa hh:mm E요일");
@@ -270,21 +270,33 @@ public class PartyInfo {
 		this.p_generate_date_f = f.format(p_generate_date);
 	}
 
-//	public String getP_start_time_f() {
-//		return f.format(p_start_time);
-//	}
-//
-//	public void setP_start_time_f(Date p_start_time) {
-//		this.p_start_time_f = f.format(p_start_time);
-//	}
-//
-//	public String getP_end_time_f() {
-//		return f.format(p_end_time);
-//	}
-//
-//	public void setP_end_time_f(Date p_end_time) {
-//		this.p_end_time_f = f.format(p_end_time);
-//	}
+	public String getP_start_time_f() {
+		String result = null;
+		if(p_start_time!=null) {
+			result =f.format(p_start_time);
+		}
+		return result;
+	}
+
+	public void setP_start_time_f(Date p_start_time) {
+		if(p_start_time!=null) {
+			this.p_start_time_f = f.format(p_start_time);
+		}
+	}
+
+	public String getP_end_time_f() {
+		String result = null;
+		if(p_end_time!=null) {
+			result =f.format(p_end_time);
+		}
+		return result;
+	}
+
+	public void setP_end_time_f(Date p_end_time) {
+		if(p_end_time!=null) {
+			this.p_end_time_f = f.format(p_end_time);
+		}
+	}
 
 
 }
