@@ -157,7 +157,7 @@ function del(u_idx){
          
                 if(data=='SUCCESS'){
                     alert('삭제가 완료되었습니다');
-                    //location.href= 'http://localhost:8080/runbike/adminpage/managelist';
+                   // location.href= 'http://localhost:8080/runbike/adminpage/managelist';
                     location.href= '../../adminpage/managelist';
                 }          
             }
