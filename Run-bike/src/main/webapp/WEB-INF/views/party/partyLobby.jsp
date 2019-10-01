@@ -785,12 +785,7 @@ function list() {
 			for (var i = 0; i < data.length; i++) {
 				var lock='';
 				var jsonObj = JSON.parse(data[i].p_XY);
-//				var parsedXY = new Object();
-// 				parsedXY.startX = jsonObj['startX'];
-// 				parsedXY.startY = jsonObj['startY'];
-// 				parsedXY.endX = jsonObj['endX'];
-// 				parsedXY.endY = jsonObj['endY'];
-				
+
 				var startX = jsonObj['startX'];
 				var startY = jsonObj['startY'];
 				var endX = jsonObj['endX'];
@@ -811,12 +806,10 @@ function list() {
 				html += '<i class="far fa-clock"></i> 모일 시간 : '+data[i].p_time_f+'<br>\n';
 				html += '</p>\n';
 				html += '<p class="card-text">'+data[i].p_content+'</p>\n';
-
-				html += '<i class="far fa-clock"></i> xy_ex : '+jsonObj['startX']+'<br>\n';
 				
 				html += '<a href="#" class="btn mintbtn" data-toggle="modal" data-target="#partyDetailModal" onclick="viewDetail('+startX+','+startY+','+endX+','+endY+')"><i class="fas fa-info-circle"></i> 방 정보 보기</a>\n';
-				
-				
+	
+				// 오브젝트타입으론 넘어가지 않아 고생함
 				//html += '<a href="#" class="btn mintbtn" data-toggle="modal" data-target="#partyDetailModal" onclick="viewDetail(\''+data[i].p_XY+'\')"><i class="fas fa-info-circle"></i> 방 정보 보기</a>\n';
 				//html += '<a href="#" class="btn mintbtn" data-toggle="modal" data-target="#partyDetailModal" onclick="viewDetail('+jsonXY+')"><i class="fas fa-info-circle"></i> 방 정보 보기</a>\n';
 				//html += '<a href="#" class="btn mintbtn" data-toggle="modal" data-target="#partyDetailModal" onclick="viewDetail('+stringXY+')"><i class="fas fa-info-circle"></i> 방 정보 보기</a>\n';
