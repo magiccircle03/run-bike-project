@@ -20,7 +20,7 @@ callback 처리중입니다. 이 페이지에서는 callback을 처리하고 바
 	var naverLogin = new naver.LoginWithNaverId(
 			{
 				clientId: "bGcr_qQ18WcY_tp0AIjX",
-				callbackUrl: "http://localhost:8080/runbike/user/login/naver",
+				callbackUrl: "http://15.164.162.21/runbike/user/login/naver",
 				isPopup: true,
 				callbackHandle: true
 				/* callback 페이지가 분리되었을 경우에 callback 페이지에서는 callback처리를 해줄수 있도록 설정합니다. */
@@ -40,7 +40,7 @@ callback 처리중입니다. 이 페이지에서는 callback을 처리하고 바
 					
 					$.ajax({
 						type:'GET',
-						url:'http://localhost:8080/runbike/user/register/idCheck?u_id='+email,
+						url:'http://15.164.162.21/runbike/user/register/idCheck?u_id='+email,
 						success: function(data){
 							console.log(data);
 							if(data == 'Y'){									

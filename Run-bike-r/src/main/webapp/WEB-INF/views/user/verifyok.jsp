@@ -8,6 +8,6 @@
 </head>
 <body>
 	<h1>이메일 인증이 완료되었습니다.</h1>
-	<a href="http://localhost:8080/runbike/user/login">로그인</a>
+	<a href="http://15.164.162.21/runbike/user/login">로그인</a>
 </body>
 </html>
