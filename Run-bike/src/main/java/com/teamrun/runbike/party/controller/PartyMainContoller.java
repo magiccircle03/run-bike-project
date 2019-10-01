@@ -129,6 +129,8 @@ public class PartyMainContoller {
 	// 진행중인 파티의 채팅 페이지로 가기
 	@RequestMapping(value = "/{p_num}/chat", method = RequestMethod.GET)
 	public String getPartyChatPage(@PathVariable int p_num, Model model) {
+		PartyInfo partyInfo = partyInfoService.getPartyInfoOne(p_num);
+		model.addAttribute("partyInfo", partyInfo);
 		return "party/partyChat";
 	}
 

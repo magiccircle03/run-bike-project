@@ -152,11 +152,13 @@ h5{
   <li class="nav-item tabWidth">
     <a class="nav-link" href="<c:url value='/party/${partyInfo.p_num}' />">방정보</a>
   </li>
+  
   <li class="nav-item tabWidth">
-    <a class="nav-link active" href="<c:url value='/party/${partyInfo.p_num}/ing' />">현재정보</a>
+    <a id="curInfoA" class="nav-link active" href="<c:url value='./ing' />">현재정보</a>
   </li>
+  
   <li class="nav-item tabWidth">
-    <a class="nav-link" href="<c:url value='/party/${partyInfo.p_num}/chat' />">채팅</a>
+    <a class="nav-link" href="<c:url value='./chat' />">채팅</a>
   </li>
 </ul>
 
@@ -215,9 +217,6 @@ $(document).ready(function() {
 var p_num = ${partyInfo.p_num};
 var u_idx = $('#u_idx').val();// 아이디 값 세션에서 가져오기. 
 
-
-var path='http://localhost:8080/runbike';
-
 // 개인이 라이딩을 종료하는 함수
 function endRidingOne(){
 	var chk = confirm('현재위치 = 도착지 반경 500m?'); //완주여부 체크. 일단은 이렇게 받자
@@ -233,7 +232,7 @@ function endRidingOne(){
 
 function updateEnd(finishYN) {
  	$.ajax({
-		url : path + '/party/'+p_num+'/finishOne',
+		url : '../../party/'+p_num+'/finishOne',
 		type : 'POST',
 		data : {
 			u_idx : u_idx,
@@ -249,7 +248,7 @@ function endRidingMaster(){
 	if(confirm('라이딩을 종료하고 파티를 해산할까요?')){
 		// 종료시간과 사용가능한 방 여부 업데이트하기
 		$.ajax({
-	 		url : path + '/party/room/'+p_num,
+	 		url : '../../party/room/'+p_num,
 	  		type : 'PUT',
 	  		data : JSON.stringify({
 	  			p_num : p_num 
@@ -273,7 +272,7 @@ function endRidingGreet() {
 function isAllEnd(){
 	var cnt = -2;
 	$.ajax({
-	 		url : path + '/party/room/'+p_num+'/notEndUsercount',
+	 		url : '../../party/room/'+p_num+'/notEndUsercount',
 	 		type : 'GET',
 			async : false,
 	 		success : function(data) {
@@ -298,7 +297,7 @@ function isAllEnd(){
 function chkIsStarted() {
 	//alert(p_num);
 	$.ajax({
-		url : path + '/party/room/' + p_num,
+		url : '../../party/room/' + p_num,
 		type : 'GET',
 		success : function(data) {
 			//alert("시작시간"+data.p_start_time);
@@ -329,7 +328,7 @@ function getCurrentPos() {
 function getUserCount() {
 	var cnt=-2;
 	$.ajax({
-		url : path+'/party/room/'+p_num+'/usercount',
+		url : '../../party/room/'+p_num+'/usercount',
 		type : 'GET',
 		async : false,
 		success : function(data) {
@@ -352,7 +351,7 @@ $('#readyChk').change(function() {
 
 function showPartyUserList() {
 	$.ajax({
-		url : path+'/party/room/'+p_num+'/user',
+		url : '../../party/room/'+p_num+'/user',
 		type : 'GET',
 		success : function(data) {
 			
@@ -433,7 +432,7 @@ function exitPartyFn() {
 function exitParty(idx) {
 	// alert(p_num+","+u_idx);
  	 $.ajax({
- 		url : path + '/party/room/'+p_num,
+ 		url : '../../party/room/'+p_num,
  		type : 'DELETE',
  		data : JSON.stringify({
  			u_idx : idx
@@ -472,7 +471,7 @@ function showEndArea() {
 function isEnd() {
 	var chk = false;
 	 $.ajax({
-	 		url : path + '/party/room/isEnd',
+	 		url : '../../party/room/isEnd',
 	 		type : 'GET',
 			async : false,
 			data : {
@@ -495,7 +494,7 @@ function isMaster() {
 	var master = 0;
 	var chk = false;
 	 $.ajax({
-	 		url : path + '/party/room/'+p_num+'/master',
+	 		url : '../../party/room/'+p_num+'/master',
 	 		type : 'GET',
 			async : false,
 	 		success : function(data) {
@@ -515,7 +514,7 @@ function changeMaster(u_idx_t){
 	if (confirm('방장을 위임하시겠습니까?')) {
 		//alert('방장을 위임합니다');
 	 	 $.ajax({
-		 	url : path + '/party/room/'+p_num+'/master',
+		 	url : '../../party/room/'+p_num+'/master',
 	  		type : 'PUT',
 	  		data : JSON.stringify({
 	  			u_idx_t : u_idx_t 
@@ -539,7 +538,7 @@ function deletePartyBtn(){
 /* // 파티삭제
 function deleteParty(){
 	 $.ajax({
-		url : path + '/party/'+p_num,
+		url : '../../party/'+p_num,
 		type : 'DELETE',
  		contentType : 'application/json; charset=utf-8',
  		//dataType : 'json', //데이터타입
@@ -560,7 +559,7 @@ var refreshReady = setInterval(function() {
 function startRiding() {
 	alert('시작');
 	 $.ajax({
-	 		url : path + '/party/'+p_num+'/start',
+	 		url : '../../party/'+p_num+'/start',
 	  		type : 'get',
 	 		success : function() {
 	 			alert('성공');

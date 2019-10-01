@@ -110,7 +110,7 @@
 		 myPointLayer.clearMarkers(); 
 		 
          //*****************현재 나의 위치를 얻어오기***************************
-         if (navigator.geolocation) {
+         if ("geolocation" in navigator) {
         	 
              // GeoLocation을 이용해서 접속 위치를 얻어옵니다
              navigator.geolocation.getCurrentPosition(function(position) {

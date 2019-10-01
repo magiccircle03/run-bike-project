@@ -144,15 +144,13 @@ var timezoneDate = new Date(Date.now() - timezoneOffset); // 타임존을 반영
 //document.getElementById('p_time').value= new Date().toISOString().slice(0, 16);
 $('#p_time').val(timezoneDate.toISOString().slice(0, 16));
 
-var path='http://localhost:8080/runbike';
-
 function editParty(){
 	
 	if($('#p_capacity').val() < p_capacity_old){
 		alert('인원수는 늘리기만 가능합니다');
 	}else{
 		$.ajax({
-			url : path+'/party/'+p_num+'/edit',
+			url : '../../party/'+p_num+'/edit',
 			type : 'POST',
 			data : JSON.stringify({
 				p_num : $('#p_num').val(),
@@ -194,8 +192,6 @@ $(document).ready(function() {
 });
 
 var p_num = ${partyInfo.p_num};
-
-var path='http://localhost:8080/runbike';
 
 function initTmap(xy_orgn) {
 	

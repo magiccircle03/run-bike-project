@@ -41,17 +41,24 @@
 <!-- 숨겨진 u_idx -->
 <!-- <hr> -->
 <input id="u_idx" name="u_idx" type="hidden" class="form-control" value="${loginInfo.u_idx}">
+<input id="p_num" name="p_num" type="hidden" class="form-control" value="${partyInfo.p_num}">
+
+
 
 <!-- 같이하기 내비게이션 -->
 <ul class="nav nav-pills nav-justified">
+
   <li class="nav-item tabWidth">
-    <a class="nav-link" href="<c:url value='/party/${partyInfo.p_num}' />">방정보</a>
+  <a class="nav-link" href="<c:url value='/party/${partyInfo.p_num}' />">방정보</a>
+    <!-- http://localhost:8080/runbike/party/69 이런식으로 들어가야하는데 69/ 하고 들어가서 일단 이렇게 해뒀다. 방번호 받아오면 제대로 가능할듯 -->
   </li>
+  
   <li class="nav-item tabWidth">
-    <a id="curInfoA" class="nav-link" href="<c:url value='/party/${partyInfo.p_num}/ing' />">현재정보</a>
+    <a id="curInfoA" class="nav-link" href="<c:url value='./ing' />">현재정보</a>
   </li>
+  
   <li class="nav-item tabWidth">
-    <a class="nav-link active" href="<c:url value='/party/${partyInfo.p_num}/chat' />">채팅</a>
+    <a class="nav-link active" href="<c:url value='./chat' />">채팅</a>
   </li>
 </ul>
 
@@ -70,6 +77,35 @@
 <%@ include file="/WEB-INF/views/frame/footer.jsp" %>
 <!-- 푸터 끝 -->
 
+<script type="text/javascript">
+var p_num = $('#p_num').val();
+
+$(document).ready(function() {
+	isStarted = chkIsStarted();
+	// 시작되지 않았을 때 현재정보 페이지로 가는 걸 막는다
+	$("#curInfoA").on("click",function(event){
+		if(!isStarted){
+			event.preventDefault();
+			alert('라이딩이 시작되면 볼 수 있습니다!');
+		}
+     });	
+	
+});
+
+function chkIsStarted() {
+	//alert(p_num);
+	var chk;
+	$.ajax({
+		url : '../../party/room/' + p_num,
+		type : 'GET',
+		async : false,
+		success : function(data) {
+			chk=(data.p_start_time!=null);
+		}
+	});
+	return chk;
+} 
+</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 </body>
