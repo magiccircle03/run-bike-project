@@ -99,6 +99,15 @@ h5{
 .gray{
 	color: #555555;
 }
+.black{
+	background-color: #333333;
+	color: #fefefe;
+}
+.black:hover{
+	background-color: #555555;
+	color: #fefefe;
+	font-weight: bold;
+}
 
 #divArea{
 	height: 500px;
@@ -119,6 +128,9 @@ h5{
 #map_div{
 	bottom: 0px;
 	position: relative;
+}
+.width100{
+	width: 100%;
 }
 </style>
 </head>
@@ -171,12 +183,12 @@ h5{
      
      	<div id="endArea" style="display:none;">
 	    	<!-- 원래는 장소를 체크해서 가까우면 완주 아니면 그냥 종료로 간다. -->
-	    	<button id="endBtn" class="btn" onclick="endRidingOne()">종료하기</button>
+	    	<button id="endBtn" class="btn width100 black" onclick="endRidingOne()">종료하기</button>
     	</div>
     	
     	<!-- 방장만 보이게 영역 -->
 		<div class="master">
-		   	<button id="endBtnMaster" class="btn" onclick="endRidingMaster()" disabled="true">전체 라이딩 종료하기!</button>
+		   	<button id="endBtnMaster" class="btn width100" onclick="endRidingMaster()" disabled="true">전체 라이딩 종료하기!</button>
 		</div>
 		<!-- /방장만 보이게 영역 -->
 

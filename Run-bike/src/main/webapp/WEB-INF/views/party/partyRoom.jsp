@@ -68,7 +68,7 @@ h5{
 
 .allReady{
 	font-weight: bold;
-	background-color: #FD5314;
+	background-color: #007BFF;
 	color: #fefefe;
 }
 .ban{
@@ -159,9 +159,12 @@ h5{
 	    	    <div class="col-md-6"><i class="fas fa-flag-checkered gray"></i> 도착지 : ${partyInfo.p_end_info}</div>
     	    </div>
     	    <br>
-    	    <div class="row"><div class="col-md-12">${partyInfo.p_content}</div></div>
     	    <div class="row"><div class="col-md-12">출발 예정 시각 : ${partyInfo.p_time_f}</div></div>
-	    	<p>총 거리 : ${partyInfo.p_riding_km} km , 예상 소요 시간 : ${partyInfo.p_riding_time} 분</p>
+<%-- 	    	<p>총 거리 : ${partyInfo.p_riding_km} km , 예상 소요 시간 : ${partyInfo.p_riding_time} 분</p> --%>
+	    	<div class="row"><div class="col-md-12">예상 소요 시간 : ${partyInfo.p_riding_time} 분</div></div>
+	    	<div class="row"><div class="col-md-12">총 거리 : ${partyInfo.p_riding_km} km</div></div>
+	    	<div class="row"><div class="col-md-12">${partyInfo.p_content}</div></div>
+	    		    	
 
     </div>
     
