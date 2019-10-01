@@ -39,34 +39,6 @@ public class BoardListController {
 			return list;
 			
 		}
-
-		
-		@RequestMapping("/list")
-		public String pageList(Model model,@RequestParam(value = "p", defaultValue = "1") int pageNumber,
-											@RequestParam(value = "stype", required = false) String stype,
-											@RequestParam(value = "keyword", required = false) String keyword
-				) {
-						
-			SearchParam searchParam = null; 
-			
-			if(	stype!=null && keyword!=null && !stype.isEmpty() && !keyword.isEmpty()) {
-				searchParam = new SearchParam();
-				searchParam.setStype(stype);
-				searchParam.setKeyword(keyword);
-			}
-			
-			ListViewBoardData pagelistdata = boardlistService.getListData(pageNumber,searchParam);
-			
-			model.addAttribute("pageviewData", pagelistdata);
-			
-			return "qnaboard/list";
-			
-		}
-		
-
-		
-		
-		
 		
 		
 		

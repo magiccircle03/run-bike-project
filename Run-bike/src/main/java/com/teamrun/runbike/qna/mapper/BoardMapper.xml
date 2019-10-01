@@ -102,18 +102,14 @@
 			 	select count(*) from board
 			 	<where>
 			 		<if test="stype != null">
-				<if test="stype == 'both'">
-					q_title LIKE CONCAT('%', #{keyword}, '%')
-					or q_writer LIKE CONCAT('%', #{keyword}, '%')
-				</if>
-				<if test="stype == 'title'">
-					q_title LIKE CONCAT('%', #{keyword}, '%')
-				</if>
-				<if test="stype == 'writer'">
-					q_writer LIKE CONCAT('%', #{keyword}, '%')
-				</if>
+						<if test="stype == 'q_title'">
+							q_title LIKE CONCAT('%', #{keyword}, '%')
+						</if>
+						<if test="stype == 'q_writer'">
+							q_writer LIKE CONCAT('%', #{keyword}, '%')
+						</if>
 
-			</if>
+					</if>
 
 			 	</where>
 			 </select>
@@ -133,18 +129,10 @@
 		<where>
 		
 			<if test="search != null">
-				<if test="search.stype == 'both'">
-					<include refid="whereId"/>
-					<include refid="whereName"/>
-					q_title LIKE CONCAT('%', #{search.keyword}, '%')
-					 or q_writer LIKE CONCAT('%', #{search.keyword}, '%')
-				</if>
-				<if test="search.stype == 'title'">				
-					<include refid="whereId"/>
+				<if test="search.stype == 'q_title'">				
 					q_title LIKE CONCAT('%', #{search.keyword}, '%')
 				</if>
-				<if test="search.stype == 'writer'">
-					<include refid="whereName"/>
+				<if test="search.stype == 'q_writer'">
 					q_writer LIKE CONCAT('%', #{search.keyword}, '%')
 				</if>
 			</if>
@@ -154,47 +142,8 @@
 		limit #{index}, #{count}
 	</select>
 	
-	
-	
-		
-	<sql id="whereId">
-		or q_title LIKE CONCAT('%', #{search.keyword}, '%')
-	</sql>
-		
-	<sql id="whereName">
-		or q_writer LIKE CONCAT('%', #{search.keyword}, '%')
-	</sql>
+			
 
-			
-			
-			
-	<!--=============== 방명록 페이징================ -->
-<!-- 
-	<select id="selectCount" resultType="int">
-		select count(*) from board
-	</select>		
-		
-		
-	<select id="selectList"
-			parameterType="map"
-			resultMap="messageResultmap" >
-	
-		<![CDATA[
-		select q_num, q_title, q_writer, q_content from
-		( 
-		select rownum rnum, q_num, q_title, q_writer, q_content from ( 
-		select * from board m order by m.q_num desc  )
-		where rownum <= #{endRow}
-		) where rnum >= #{firstRow}
-		]]>
-		
-		
-	</select> -->
-		
-		
-		
-		
-		
 		
 		
 

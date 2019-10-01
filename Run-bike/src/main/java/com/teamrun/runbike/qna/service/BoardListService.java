@@ -16,7 +16,7 @@ import com.teamrun.runbike.qna.domain.SearchParam;
 
 
 @Service("boardlistService")
-public class BoardListService {
+public class BoardListService implements BoardService{
 	
 	// 자동 메퍼 이용해 생성할 dao
 	private BoardDaoInterface dao; 
@@ -28,16 +28,17 @@ public class BoardListService {
 	final int MESSAGE_COUNT_PER_PAGE = 5;
 	
 	
-	public ListViewBoardData getListData(int currentPageNumber, SearchParam searchParam) {
+	public ListViewBoardData getListData(int pgNum, SearchParam searchParam) {
 		
 		// dao 생성
 		dao = template.getMapper(BoardDaoInterface.class);
 		
 		ListViewBoardData pagelistdata = new ListViewBoardData();
 		
+		       
 		
 		//현재 페이지 번호
-		pagelistdata.setCurrentPageNumber(currentPageNumber);
+		pagelistdata.setCurrentPageNumber(pgNum);
 		
 		//전체 게시물 개수
 		int totalCnt = dao.selectTotalCount(searchParam);
@@ -52,9 +53,9 @@ public class BoardListService {
 		}
 		pagelistdata.setPageTotalCount(totalPageCnt);
 		
-		int index = (currentPageNumber-1)*MESSAGE_COUNT_PER_PAGE;
+		int index = (pgNum-1)*MESSAGE_COUNT_PER_PAGE;
 		
-		List<Message> boardList = null;
+		List<Message> boardList = null;  
 		
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("search", searchParam);
@@ -63,23 +64,19 @@ public class BoardListService {
 		
 		//memberList = dao.selectList(index, MEMBER_CNT_List);
 		boardList = dao.selectList(params);
+		
 		System.out.println("사이즈 : : : : " + totalCnt);
 		System.out.println("리스트 사이즈 : : : : " + boardList.size());
 		
-		pagelistdata.setBoardList(boardList);
-		for(Message m : boardList) {
-			System.out.println(m);
-		}
+
 		
-		// 1 -> 9-0 =9, 2 -> 9-3=6
+		pagelistdata.setBoardList(boardList);
 		int no = totalCnt - index;
+		
 		pagelistdata.setNo(no);
 		
-		pagelistdata.setTotalCount(totalCnt);
-		
+		return pagelistdata;
 
-	
-	return pagelistdata;
 	
 }
 		

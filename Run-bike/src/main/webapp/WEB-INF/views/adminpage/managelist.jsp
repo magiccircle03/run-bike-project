@@ -70,7 +70,7 @@
 
 <!-- 컨텐츠 시작 -->
 <div id="contents">
-	<h3>회원 리스트</h3>
+	<h1>회원 리스트</h1>
 	<hr>
 	<table>
 		<tr bgcolor="#81BEF7">
@@ -128,7 +128,15 @@
 	</c:if>
 	
 </div>
-<!-- 컨텐츠 끝 -->
+
+
+
+<!-- 푸터 시작 -->
+<%@ include file="/WEB-INF/views/frame/footer.jsp" %>
+<!-- 푸터 끝 -->
+
+
+
 
 
 

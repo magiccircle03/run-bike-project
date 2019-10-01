@@ -16,11 +16,9 @@ public interface AdminDao {
 		public List<UserInfo> selectAllListAdmin();
 		
 		
-		// 이전 dao에서는 검색 처리를 위한 여러개의 메서드가 필요.	
-		// 게시물의 개수 : 동적 쿼리로 검색의 결과 까지 처리
+		//회원행 총 갯수
 		public int selectTotalCount(SearchParam searchParam);
-		// 게시물의 LIST :  동적 쿼리로 검색의 결과 까지 처리
-		//public List<MemberInfo> selectList(int index, int count);
+		//회원 총 리스트(페이징)
 		public List<UserInfo> selectList(Map<String, Object> params);
 		
 	

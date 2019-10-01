@@ -62,8 +62,6 @@
 	         
 	     
 	          <input type="hidden" name="q_num" id="q_num" value="1">
-	         <!-- <input type="hidden" name="step" id="step" value="0">
-	         <input type="hidden" name="depth" id="depth" value="0"> -->
 	          <label>작성자</label>
 	           <input type="text" name="q_writer" id="q_writer" class="form-control" placeholder="작성자를 입력하세요" />
 	          </div>
@@ -106,11 +104,7 @@
 
 
          $(document).ready(function() {
-		
-         
 
-
-              
         });
        
         

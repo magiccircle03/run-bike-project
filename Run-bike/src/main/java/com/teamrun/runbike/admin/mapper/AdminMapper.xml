@@ -26,7 +26,7 @@
 		</select>
 		
 		
-		<!-- 회원 삭제 - 관리자 -->    <!-- user 테이블의 외래키까지 지워지게 on delete cascade (문의글까지 지워지도록) -->
+		<!-- 회원 삭제 - 관리자 -->
 		<delete id="memberDeleteAdmin">		
 			delete from user where u_idx=#{u_idx}
 		</delete>
@@ -57,11 +57,8 @@
 
 
 	<!-- 회원 리스트 : 검색을 위해 동적쿼리 적용 -->
-	
 	<select id="selectList" parameterType="map" resultMap="userInfoMap">
-		
 		SELECT * FROM user
-		
 		<where>
 		
 			<if test="search != null">
@@ -77,14 +74,11 @@
 				</if>
 			</if>
 			
-		</where>
-		
+		</where>	
 		limit #{index}, #{count}
 	</select>
-	
-	
-	
-		
+
+
 	<sql id="whereId">
 		or u_id LIKE CONCAT('%', #{search.keyword}, '%')
 	</sql>

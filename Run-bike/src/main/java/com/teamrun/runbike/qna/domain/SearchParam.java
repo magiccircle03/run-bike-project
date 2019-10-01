@@ -7,6 +7,15 @@ public class SearchParam {
 	private String stype;
 	private String keyword;
 	
+	
+	public SearchParam() {}
+	
+	
+	public SearchParam(String stype, String keyword) {
+		super();
+		this.stype = stype;
+		this.keyword = keyword;
+	}
 	public String getStype() {
 		return stype;
 	}

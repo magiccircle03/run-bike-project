@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.teamrun.runbike.qna.domain.Reply;
 import com.teamrun.runbike.qna.domain.ReplyRequest;
-import com.teamrun.runbike.qna.domain.RequestMemberEdit;
 import com.teamrun.runbike.qna.service.ReplyDeleteService;
 import com.teamrun.runbike.qna.service.ReplyListService;
 import com.teamrun.runbike.qna.service.ReplyWriteService;

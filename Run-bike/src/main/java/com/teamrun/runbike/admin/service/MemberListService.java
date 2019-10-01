@@ -50,7 +50,6 @@ public class MemberListService {
 		
 		
 		// 구간 검색을 위한 index
-		// 1 -> 0 , 2 -> 3, 3 -> 6, 4 -> 9
 		int index = (currentPageNumber-1)*MEMBER_ADMIN_List;
 		
 		
@@ -63,7 +62,7 @@ public class MemberListService {
 		params.put("index", index);
 		params.put("count", MEMBER_ADMIN_List);
 		
-		//memberList = dao.selectList(index, MEMBER_CNT_List);
+
 		memberList = dao.selectList(params);
 		System.out.println("사이즈 : : : : " + totalCnt);
 		System.out.println("리스트 사이즈 : : : : " + memberList.size());
@@ -73,7 +72,7 @@ public class MemberListService {
 			System.out.println(m);
 		}
 		
-		// 1 -> 9-0 =9, 2 -> 9-3=6
+
 		int no = totalCnt - index;
 		listData.setNo(no);
 		

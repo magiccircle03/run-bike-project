@@ -12,9 +12,6 @@ import com.teamrun.runbike.admin.dao.AdminDao;
 @Service("MemberDeleteService")
 public class MemberDeleteService {
 
-	
-	
-	
 	private AdminDao dao;
 
 	@Inject
@@ -23,9 +20,8 @@ public class MemberDeleteService {
 
 	public int memberDeleteAdmin(int u_idx) {
 		
-
 		dao = template.getMapper(AdminDao.class);
-		
+
 		return dao.memberDeleteAdmin(u_idx);
 	}
 
