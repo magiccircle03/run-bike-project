@@ -139,7 +139,7 @@
 							console.log(u_id);
 							$.ajax({
 								type:'GET',
-								url:'http://localhost:8080/runbike/user/register/idCheck?u_id='+u_id,
+								url:'http://15.164.162.21/runbike/user/register/idCheck?u_id='+u_id,
 								success: function(data){
 									console.log(data);
 									if(data == 'Y'){									
@@ -237,7 +237,7 @@
 							$.ajax({			
 								type: 'POST',
 								enctype: 'multipart/form-data',
-								url: 'http://localhost:8080/runbike/user/register',
+								url: 'http://15.164.162.21/runbike/user/register',
 								contentType: false,
 								processData: false,
 								data : formData,
@@ -245,7 +245,7 @@
 									console.log(data);
 									if(data=='ok'){
 										alert("회원가입이 완료되었습니다. 이메일 인증 후 이용하시기 바랍니다.");
-										location.href = 'http://localhost:8080/runbike/';
+										location.href = 'http://15.164.162.21/runbike/';
 										
 									} else {
 										alert("회원가입에 실패했습니다. 관리자에게 문의하세요.");
@@ -289,7 +289,7 @@
 
 
 					$('#btnReset').on('click',function(){
-						location.href="http://localhost:8080/runbike/";
+						location.href="http://15.164.162.21/runbike/";
 					})
 					
 					

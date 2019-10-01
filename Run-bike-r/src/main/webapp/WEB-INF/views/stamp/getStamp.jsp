@@ -84,7 +84,7 @@
 	 var map, myPointLayer, markerLayer, vector_layer;
 	 var myLocation = new Object();
 	 var stampLocation = new Object();
-	 var path = 'http://localhost:8080/runbike';
+	 var path = 'http://15.164.162.21/runbike';
 	 
 	 function initTmap() {
          //map 생성

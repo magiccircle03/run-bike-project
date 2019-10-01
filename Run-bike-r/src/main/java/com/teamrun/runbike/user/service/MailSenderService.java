@@ -32,7 +32,7 @@ public class MailSenderService implements UserService {
 		
 		try {
 			message.setSubject("[RUN BIKE] 이메일 계정을 인증해주세요. ("+u_id+")","utf-8");
-			String html = "<h1>회원가입을 축하드립니다.</h1><p>안녕하세요. "+u_name+" 님. <br> 이메일 계정을 인증 받으시려면 아래 링크를 클릭해주세요.</p><a href='http://localhost:8080/runbike/verify?id="+u_id+"&code="+u_code+"'>이메일 인증하기</a>";
+			String html = "<h1>회원가입을 축하드립니다.</h1><p>안녕하세요. "+u_name+" 님. <br> 이메일 계정을 인증 받으시려면 아래 링크를 클릭해주세요.</p><a href='http://15.164.162.21/runbike/verify?id="+u_id+"&code="+u_code+"'>이메일 인증하기</a>";
 			message.setText(html, "utf-8", "html");
 			message.setFrom(new InternetAddress("j35147@naver.com"));
 			message.addRecipient(RecipientType.TO, new InternetAddress(u_id," 고객님","utf-8"));
@@ -61,7 +61,7 @@ public class MailSenderService implements UserService {
 		
 		try {
 			message.setSubject("[RUN BIKE] 이메일 계정을 인증해주세요. ("+u_id+")","utf-8");
-			String html = "<h1>이메일 재인증</h1><p>안녕하세요. "+userInfo.getU_name()+" 님. <br> 이메일 계정을 인증 받으시려면 아래 링크를 클릭해주세요.</p><a href='http://localhost:8080/runbike/verify?id="+u_id+"&code="+userInfo.getU_code()+"'>이메일 인증하기</a>";
+			String html = "<h1>이메일 재인증</h1><p>안녕하세요. "+userInfo.getU_name()+" 님. <br> 이메일 계정을 인증 받으시려면 아래 링크를 클릭해주세요.</p><a href='http://15.164.162.21/runbike/verify?id="+u_id+"&code="+userInfo.getU_code()+"'>이메일 인증하기</a>";
 			message.setText(html, "utf-8", "html");
 			message.setFrom(new InternetAddress("j35147@naver.com"));
 			message.addRecipient(RecipientType.TO, new InternetAddress(u_id," 고객님","utf-8"));
