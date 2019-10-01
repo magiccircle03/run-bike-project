@@ -22,6 +22,9 @@
 
 
 <style type="text/css">
+body{
+	color : #333333;
+}
 .mint{
 	background-color: #21B2A6;
 	color: #fefefe;
@@ -175,25 +178,28 @@ h5{
     <div id="beforeStartArea">
     
 	    <input id="readyChk" class="readyChk" type="checkbox" data-toggle="toggle" data-on="준비완료!" data-off="준비하기" data-onstyle="primary mint" data-width="100%">
-	
-	    <!-- 방장만 보이게 영역 -->
-		<div id="partyInfoMaster" class="master">
-		   	<button id="startBtn" type="button" class="btn width100" onclick="startRiding()" disabled="true">시작하기</button>
-		    <button class="btn" onclick="editParty()">방 정보 수정</button> 
-		    <button class="btn" onclick="deletePartyBtn()">방 삭제</button> 
-		</div>
-		<!-- /방장만 보이게 영역 -->
-	   
+
+		<!-- 방장만 보이는 시작버튼 -->
+		<button id="startBtn" type="button" class="btn width100 master" onclick="startRiding()" disabled="true">시작하기</button>
+
 	    <hr>
 	    <h5><i class="fas fa-child"></i> 함께 달릴 동료들 (<p id="capa" style="display: inline"></p> / ${partyInfo.p_capacity} )</h5>
 	    <div id="partyUserInfo1">
 	    <!-- 참가자 사진 / 이름 / 준비여부-->
 		</div>
-<%-- 		<img src="${pageContext.request.contextPath}/uploadfile/userphoto/noImg.jpg"> --%>
+		
+		<hr>
+		  
+		<!-- 방장만 보이게 영역 -->
+		<div id="partyInfoMaster" class="master">
+		    <button class="btn" onclick="editParty()">방 정보 수정</button> 
+		    <button class="btn" onclick="deletePartyBtn()">방 삭제</button> 
+		</div>
+		<!-- /방장만 보이게 영역 -->
     </div>
     <!-- /시작 전에만 보이는 영역 -->
     <!-- ======================================= -->
-    			<button class="btn" onclick="exitPartyFn()">나가기</button> 
+    <button class="btn" onclick="exitPartyFn()">나가기</button> 
     
     
   </div>

@@ -22,6 +22,9 @@
 
 
 <style type="text/css">
+body{
+	color : #333333;
+}
 .mint{
 	background-color: #21B2A6;
 	color: #fefefe;
