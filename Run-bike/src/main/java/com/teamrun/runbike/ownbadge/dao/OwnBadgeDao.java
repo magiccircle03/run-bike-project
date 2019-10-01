@@ -3,6 +3,7 @@ package com.teamrun.runbike.ownbadge.dao;
 import java.util.List;
 
 import com.teamrun.runbike.ownbadge.domain.Badge;
+import com.teamrun.runbike.ownbadge.domain.MyBadge;
 
 public interface OwnBadgeDao {
 
@@ -13,7 +14,7 @@ public interface OwnBadgeDao {
 	public List<Badge> selectAllBadge();
 	
 	//나의 뱃지 소환
-	public List<List<Badge>> selectMyBadge(int u_idx);
+	public List<MyBadge> selectMyBadge(int u_idx);
 	
 	//연속로그인 확인
 	public int consecutiveLogin(int u_idx);

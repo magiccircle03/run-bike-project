@@ -15,6 +15,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="cb_photo" column="cb_photo" />
 	</resultMap>
 	
+	<resultMap id="myBadge"
+		type="com.teamrun.runbike.ownbadge.domain.MyBadge">
+		<id property="b_num" column="b_num" />
+		<result property="b_name" column="b_name" />
+		<result property="b_photo" column="b_photo" />
+		<result property="cb_photo" column="cb_photo" />
+		<result property="serial" column="serial" />
+	</resultMap>
+	
 	<!-- insert  -->
 	<insert id="insertMyBadge">
 		insert into own_badge (b_num, u_idx) values (#{param1}, #{param2})
@@ -26,9 +35,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			select * from badge
 		</select>
 		
-		<!-- 회원이 가지고 있는 stamp 불러오기  -->
-		<select id="selectMyBadge" resultMap="badge">
-			select badge.b_num, badge.b_name, badge.b_photo, badge.cb_photo from run_bike.badge badge inner join run_bike.own_badge myBadge on badge.b_num = myBadge.b_num where myBadge.u_idx=#{u_idx};
+		<!-- 회원이 가지고 있는 stamp 불러오기  -->	
+		<select id="selectMyBadge" resultMap="myBadge">
+			select distinct(badge.b_num), badge.b_name, badge.b_photo, badge.cb_photo,
+			@serial := if(badge.b_num=myBadge.b_num, 1, 0) as serial
+			from run_bike.badge badge left join run_bike.own_badge myBadge on badge.b_num = myBadge.b_num;
 		</select>
 		
 		<!-- 뱃지 소유 여부 확인 -->
