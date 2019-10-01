@@ -33,6 +33,18 @@
 	crossorigin="anonymous"></script>
 
 <title>나의 스탬프 보기</title>
+
+<style type="text/css">
+
+.row{
+	text-align: center;
+}
+
+p{
+	margin: 10px;
+}
+</style>
+
 </head>
 <body>
 	<!-- 해더 시작 -->
@@ -48,19 +60,55 @@
 	
 	<!-- 컨테이너 시작 -->
 	<div class="container">
-			<h4 class="font-weight-bold pt-5 mb-4"><i class="fas fa-map-marked-alt"> 나의 스탬프</i></h4>
-			<div class="page-info-text text-dark">내가 모은 스탬프를 볼 수 있습니다.</div>
-			<hr>		
+		<h4 class="font-weight-bold pt-5 mb-4"><i class="fas fa-stamp"> 나의 스탬프</i></h4>
+		<div class="page-info-text text-dark">내가 모은 스탬프를 볼 수 있습니다.</div>
+		<hr>		
+	
+	
+		<div class="row">
+			<c:forEach var="stamp" items="${stampList}" varStatus="status">
+				<c:choose>
+					<c:when test="${empty myStampList}">
+						<div class="col" id="stampArea">
+						<img alt="stamp" src="<c:url value='/uploadfile/cs_stampPhoto/${stamp.cs_photo}'/>" style="width: 150px; height: 147px;">
+						<p id="stampName">${stamp.s_name}</p>
+						</div>
+					</c:when>
+					
+					<c:when test="${!empty myStampList}">
+						<c:forEach var="mystamp" items="${myStampList}" varStatus="status">		
+							<c:choose>	
+								<c:when test="${stamp.s_name eq mystamp.s_name}">
+									<div class="col" id="stampArea">
+									<img alt="stamp" src="<c:url value='/uploadfile/color_stampPhoto/${mystamp.s_photo}'/>" style="width: 150px; height: 147px;">
+									<p id="stampName">${mystamp.s_name}</p>
+									</div>
+								</c:when>
+								<c:when test="${stamp.s_name ne mystamp.s_name}">
+									<div class="col" id="stampArea">
+									<img alt="stamp" src="<c:url value='/uploadfile/cs_stampPhoto/${stamp.cs_photo}'/>" style="width: 150px; height: 147px;">
+									<p id="stampName">${stamp.s_name}</p>
+									</div>
+								</c:when>						 
+							</c:choose>					
+						</c:forEach>
+					</c:when>
+				</c:choose>			
+			</c:forEach>
+		</div>
 	</div>
 	
 	<script>
+	
 	$('#myBadge').on('click', function(){
     	location.href="<c:url value='/badge/user' />";
     });
     
     $('#myStamp').on('click', function(){
     	location.href="<c:url value='/stamp/user' />"
-    });
+    });  
+   
+    
 	</script>
 	<!-- 푸터 시작 -->
 	<%@ include file="/WEB-INF/views/frame/footer.jsp"%>

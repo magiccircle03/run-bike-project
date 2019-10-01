@@ -44,8 +44,8 @@
 	</div>
 	
 	<!-- 컨테이너 시작 -->
-	<div class="container">			
-			<h4 class="font-weight-bold pt-5 mb-4"><i class="fas fa-map-marked-alt"> 나의 뱃지</i></h4>
+	<div class="container">
+			<h4 class="font-weight-bold pt-5 mb-4"><i class="fas fa-trophy"> 나의 뱃지</i></h4>
 			<div class="page-info-text text-dark">내가 모은 뱃지를 볼 수 있습니다.</div>
 			<hr>		
 	</div>

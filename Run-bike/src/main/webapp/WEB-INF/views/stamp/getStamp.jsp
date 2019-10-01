@@ -43,11 +43,84 @@
 	<!-- 컨테이너 시작 -->
 	<div class="container">
 			
-			<h4 class="font-weight-bold pt-5 mb-4"><i class="fas fa-map-marked-alt"> 스탬프 투어</i></h4>
-			<div class="page-info-text text-dark">스탬프를 투어를 떠나자!</div>
-			<hr>
+		<h4 class="font-weight-bold pt-5 mb-4"><i class="fas fa-map-marked-alt"> 스탬프 투어</i></h4>
+		<div class="page-info-text text-dark">스탬프를 투어를 떠나자!</div>
+		<hr>
+			
+		<div id="map_div"></div>
+		
+		<br>
+		<div class="row">
+			<c:forEach var="stamp" items="${stampList}" varStatus="status">	
+				<div class="col">
+					${stamp.s_name} <br>
+					${stamp.s_point_lon} <br>
+					${stamp.s_point_lat}
+				</div>
+			</c:forEach>
+		</div>
+		
+		<button type="button" class="btn btn-primary btn-lg btn-block" >스탬프 얻기!</button>
+
 	</div>
 	
+	<script>
+	
+	 var map, myPointLayer;
+	 
+	 function initTmap() {
+         //map 생성
+         //Tmap.map을 이용하여, 지도가 들어갈 div, 넓이, 높이를 설정합니다.
+         map = new Tmap.Map({
+             div: 'map_div',
+             width: '100%',
+             height: '400px',
+             animation: false
+         });
+         
+         myPointLayer = new Tmap.Layer.Markers();        
+         map.addLayer(myPointLayer);
+	 }
+	 
+	 function getMyPoint() {
+
+		 myPointLayer.clearMarkers();
+
+         //*****************현재 나의 위치를 얻어오기***************************
+         if (navigator.geolocation) {
+        	 
+             // GeoLocation을 이용해서 접속 위치를 얻어옵니다
+             navigator.geolocation.getCurrentPosition(function(position) {
+            	 
+                 // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
+                 var lat = position.coords.latitude;
+                 var lon = position.coords.longitude;
+                 var PR_3857 = new Tmap.Projection("EPSG:3857"); // Google Mercator 좌표계인 EPSG:3857
+                 var PR_4326 = new Tmap.Projection("EPSG:4326"); // WGS84 GEO 좌표계인 EPSG:4326        
+                 var lonlat = new Tmap.LonLat(lon, lat).transform(PR_4326, PR_3857);
+
+                 var size = new Tmap.Size(24, 38);
+                 var offset = new Tmap.Pixel(-(size.w / 2), -(size.h));
+                 var icon = new Tmap.IconHtml('<img src=http://tmapapis.sktelecom.com/upload/tmap/marker/pin_b_m_a.png />', size, offset);
+                 var marker = new Tmap.Marker(lonlat, icon);
+                 myPointLayer.addMarker(marker);
+
+                 map.setCenter(lonlat); // geolocation으로 얻어온 좌표로 지도의 중심을 설정합니다.
+
+                 var myPoint = new Tmap.LonLat(lon, lat).transform(PR_4326, PR_3857);
+                 
+                 //*****나의 위치를 direct에 저장합니다.               
+             });
+         }
+     }
+
+	 
+	 $(document).ready(function() {
+         initTmap();
+         getMyPoint();
+	 });
+	 
+	</script>
 	<!-- 푸터 시작 -->
 	<%@ include file="/WEB-INF/views/frame/footer.jsp"%>
 	<!-- 푸터 끝 -->
