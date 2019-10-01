@@ -14,7 +14,7 @@ import com.teamrun.runbike.ownbadge.domain.Badge;
 import com.teamrun.runbike.user.domain.LoginInfo;
 
 @Service("ownBadgeService")
-public class OwnBadgeService {
+public class GetOwnBadgeService {
 
 	@Autowired
 	private SqlSessionTemplate template;

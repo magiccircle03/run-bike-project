@@ -5,7 +5,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>같이 달리기-지도를 넣은 버전 백업, 모델 넣기 전</title>
+<!-- 지도, 모델 -->
+<title>같이 달리기</title>
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <!-- tmap api -->
 <script src="https://apis.openapi.sk.com/tmap/js?version=1&format=javascript&appKey=6d5877dc-c348-457f-a25d-46b11bcd07a9"></script>
@@ -25,6 +26,7 @@
 	background-color: #21B2A6;
 	color: #fefefe;
 	border-color: #1F9E93;
+	font-weight: bold;
 }
 .mint:hover{
 	background-color: #1F9E93;
@@ -40,6 +42,9 @@
 	text-align: center;
 }
 .master{
+	display: none;
+}
+.dispalyNone{
 	display: none;
 }
 .width30{
@@ -58,9 +63,9 @@ h5{
 	font-weight: bold;
 }
 
-.allReady{
+.allEnd{
 	font-weight: bold;
-	background-color: pink;
+	background-color: #007BFF;
 	color: #fefefe;
 }
 .ban{
@@ -74,6 +79,59 @@ h5{
 .fa-times{
 	color: #B84A5B;
 }
+.marginTop{
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+.StartP{
+	display : inline;
+	color: red;
+}
+.red{
+	color: #FD5314;
+}
+.blue{
+	color: #007BFF;
+}
+.font-size-18{
+	font-size: 18px;
+}
+.gray{
+	color: #555555;
+}
+.black{
+	background-color: #333333;
+	color: #fefefe;
+}
+.black:hover{
+	background-color: #555555;
+	color: #fefefe;
+	font-weight: bold;
+}
+
+#divArea{
+	height: 500px;
+}
+
+#partyUserInfoIng{
+	background-color : rgba(0,50,100,.5);
+	color : #fefefe;
+	position: relative;
+	z-index:999;
+	bottom:0px;
+	top:-70px;  
+}
+
+.lightgray{
+	color : #bcbcbc;
+}
+#map_div{
+	bottom: 0px;
+	position: relative;
+}
+.width100{
+	width: 100%;
+}
 </style>
 </head>
 <body>
@@ -85,68 +143,55 @@ h5{
 <div class="container">
 
 <!-- 숨겨진 u_idx -->
-<input id="u_idx" name="u_idx" type="text" class="form-control" value="2">
-<button class="btn" onclick="exitPartyFn()">나가기</button> 
-<hr>
+<!-- <hr> -->
+<input id="u_idx" name="u_idx" type="hidden" class="form-control" value="${loginInfo.u_idx}">
+<!-- <button class="btn" onclick="getCurrentPos()">현재위치</button>  -->
 
-<!-- 탭 클릭시마다 새로고침되게 하기 -->
-<ul class="nav nav-tabs">
+<!-- 같이하기 내비게이션 -->
+<ul class="nav nav-pills nav-justified">
   <li class="nav-item tabWidth">
-    <a class="nav-link active" data-toggle="tab" href="#partyInfoTab">방정보</a>
+    <a class="nav-link" href="<c:url value='/party/${partyInfo.p_num}' />">방정보</a>
   </li>
   <li class="nav-item tabWidth">
-    <a class="nav-link" data-toggle="tab" href="#curInfoTab">현재정보</a>
+    <a class="nav-link active" href="<c:url value='/party/${partyInfo.p_num}/ing' />">현재정보</a>
   </li>
   <li class="nav-item tabWidth">
-    <a class="nav-link" data-toggle="tab" href="#chatTab">채팅</a>
+    <a class="nav-link" href="<c:url value='/party/${partyInfo.p_num}/chat' />">채팅</a>
   </li>
 </ul>
 
+<hr>
 
 <div class="tab-content">
   
   <div class="tab-pane fade show active" id="partyInfoTab">
   
     <div id="partyInfo">
+    	    <h3 id="partyTitle" class="marginTop"> [${partyInfo.p_num}] ${partyInfo.p_name} <p id="startStat" class="StartP"></p></h3>
+    	    <h4 style="padding:20px 0;"><i class="fas fa-biking blue"></i>&nbsp; 우리가 달리고 있는 길 : ${partyInfo.p_start_info_short} ~ ${partyInfo.p_end_info_short}</h4>
+    	    <div id="divArea">
+	    	    <div id="map_div">
+	    	    </div>
+	    	    <div id="partyUserInfoIng">
+		  	 	<!-- 참가자 사진 / 이름 / 상태-->
+				</div>
+			</div>
     </div>
-    
-    <div id="map_div">
-	</div>
-    
-    
-    <input id="readyChk" type="checkbox" data-toggle="toggle" data-on="준비완료!" data-off="준비하기" data-offstyle="" data-onstyle="primary mint">
 
-    <!-- 방장만 보이게 영역 -->
-	<div id="partyInfoMaster" class="master">
-	   	<button id="startBtn" class="btn" onclick="startRiding()" disabled="true">시작하기</button>
-	   	<!-- 그냥 종료버튼 -->
-	   	<!-- 방장 종료버튼  -->
-	    <button class="btn" onclick="editParty()">방 정보 수정</button> 
-	    <button class="btn" onclick="deleteParty()">방 삭제</button> 
-	</div>
-    <!--  -->
-    
-    <hr>
-    <h5><i class="fas fa-child"></i> 함께 달릴 동료들</h5>
-    <div id="partyUserInfo1">
-    <!-- 참가자 사진 / 이름 / 준비여부-->
-	</div>
-	
+		
+		<hr>
+     
+     	<div id="endArea" style="display:none;">
+	    	<!-- 원래는 장소를 체크해서 가까우면 완주 아니면 그냥 종료로 간다. -->
+	    	<button id="endBtn" class="btn width100 black" onclick="endRidingOne()">종료하기</button>
+    	</div>
+    	
+    	<!-- 방장만 보이게 영역 -->
+		<div class="master">
+		   	<button id="endBtnMaster" class="btn width100" onclick="endRidingMaster()" disabled="true">전체 라이딩 종료하기!</button>
+		</div>
+		<!-- /방장만 보이게 영역 -->
 
-    
-    
-  </div>
-  
-  <div class="tab-pane fade" id="curInfoTab">
-   	<p>지도 정보</p>
-   	<div id="partyUserInfo2">
-	참여한 사람 이미지 / 사람 이름 / 준비여부
-	</div>
-  </div>
-  
-  <div class="tab-pane fade" id="chatTab">
-    <p>채팅공간</p>
-  </div>
   
 </div>
 
@@ -156,53 +201,130 @@ h5{
 <!-- 푸터 끝 -->
 <script>
 
+var xy=${partyInfo.p_XY};
 
 $(document).ready(function() {
-	showPartyInfo();
+	initTmap(xy);
+	chkIsStarted();
 	showPartyUserList();
 	showMasterArea();
-	setReady('N');// 어디 갔다오면 처음엔 준비 안된걸로
-	
+	showEndArea();
+	showCurrentPos();
 });
 
-var p_num = ${p_num};
+var p_num = ${partyInfo.p_num};
 var u_idx = $('#u_idx').val();// 아이디 값 세션에서 가져오기. 
 
 
 var path='http://localhost:8080/runbike';
 
-function showPartyInfo() {
+// 개인이 라이딩을 종료하는 함수
+function endRidingOne(){
+	var chk = confirm('현재위치 = 도착지 반경 500m?'); //완주여부 체크. 일단은 이렇게 받자
+	//getCurrentPos(); // 검사해서 이 위치가 도착지 좌표 반경 몇 m 이내면, 완주여주 Y / 아니면 N //중도 포기하겠냐고 물어봄
+	if(chk){
+		updateEnd('Y'); // 완주여부 Y, end여부 Y로 업데이트
+	}else{
+		updateEnd('N'); // 완주여부 N, end여부 Y로 업데이트
+	}
+	alert('라이딩을 종료하였습니다!');
+	$('#endArea').css('display','none');
+}
+
+function updateEnd(finishYN) {
+ 	$.ajax({
+		url : path + '/party/'+p_num+'/finishOne',
+		type : 'POST',
+		data : {
+			u_idx : u_idx,
+			finishYN : finishYN
+		},
+		success : function(data) {
+			showPartyUserList();
+		}
+	}); 
+}
+
+function endRidingMaster(){
+	if(confirm('라이딩을 종료하고 파티를 해산할까요?')){
+		// 종료시간과 사용가능한 방 여부 업데이트하기
+		$.ajax({
+	 		url : path + '/party/room/'+p_num,
+	  		type : 'PUT',
+	  		data : JSON.stringify({
+	  			p_num : p_num 
+	 		}),
+	 		contentType : 'application/json; charset=utf-8',
+	 		success : function() {
+	 			endRidingGreet();
+	 		}
+	 	}); 
+		
+	}
+}
+
+// 종료인사와 보내주기
+function endRidingGreet() {
+	alert('종료합니다! 수고하셨습니다!');
+	location.href="../../party";
+}
+
+
+function isAllEnd(){
+	var cnt = -2;
+	$.ajax({
+	 		url : path + '/party/room/'+p_num+'/notEndUsercount',
+	 		type : 'GET',
+			async : false,
+	 		success : function(data) {
+	 			cnt = parseInt(data);
+	 		}
+	 }); 
+	 
+	 if(cnt==0){
+		 //alert('모두 종료!');
+		 $('#endBtnMaster').attr('disabled', false);
+		 $('#endBtnMaster').addClass('allEnd');
+	 }/* else{
+		 //alert('아직 종료하지 않은 사람 있음!');
+		 $('#endBtnMaster').attr('disabled', true);
+		 $('#endBtnMaster').removeClass('allEnd');
+	 } */
+}
+
+
+
+
+function chkIsStarted() {
 	//alert(p_num);
 	$.ajax({
 		url : path + '/party/room/' + p_num,
 		type : 'GET',
 		success : function(data) {
-			//alert(JSON.stringify(data));
-			var xy = new Object(); //좌표를 담는 json객체
-			html = '';
-	    	html += '<h2>['+data.p_num+'번]\n';
-	    	html += ''+data.p_name+' ( '+getUserCount()+' / '+data.p_capacity+'명 )</h1><br>\n';
-	    	html += '출발지 : '+data.p_start_info+'<br>\n';
-	    	html += '목적지 : '+data.p_end_info+'<br>\n';
-	    	//html += '좌표 : '+data.p_XY+'<br>\n';
-	    	html += '방내용 : '+data.p_content+'<br>\n';
-	    	html += '출발예정시간 : '+data.p_time_f+'<br>\n';
-	    	html += '방 개설 시간 : '+data.p_generate_date_f+'<br>\n';
-	    	
-	    	xy.startX = JSON.parse(data.p_XY).startX;
-            xy.startY = JSON.parse(data.p_XY).startY;
-            xy.endX = JSON.parse(data.p_XY).endX;
-            xy.endY = JSON.parse(data.p_XY).endY;
-        	
-            initTmap(xy);
-            //alert(JSON.stringify(xy));
-            //alert(xy);
-            
-	    	$('#partyInfo').html(html);
+			//alert("시작시간"+data.p_start_time);
+			//alert(data.p_start_time!=null);
+			if(data.p_start_time!=null){
+				$('#beforeStartArea').addClass( 'dispalyNone' );
+/* 				$('#partyTitle').append( '<p class="StartP"> [ 라이딩 진행중 ]</p>' ); */
+				$('#startStat').html(' [ 라이딩 진행중 ]');
+			}else{
+				$('#beforeStartArea').addClass( 'dispalyBlock' );
+				$('#startStat').html(' [ 대기중 ]');
+			}
 		}
 	});
-}
+} 
 
+function getCurrentPos() {
+	navigator.geolocation.getCurrentPosition(function(pos) {
+	    var latitude = pos.coords.latitude;
+	    var longitude = pos.coords.longitude;
+//	    alert("내 현재 위치는 : " + latitude + ", "+ longitude);
+	    var lonlat = new Tmap.LonLat(longitude, latitude).transform("EPSG:4326", "EPSG:3857");//좌표 설정
+	   //map.setCenter(lonlat, 15); 
+	    map.setCenter(lonlat, 17); 
+	});
+}
 
 function getUserCount() {
 	var cnt=-2;
@@ -227,42 +349,15 @@ $('#readyChk').change(function() {
     }
 });
 
-function setReady(readyYN) {	
- 	$.ajax({
-		url : path + '/party/ready',
-		type : 'POST',
-		data : {
-			p_num : p_num,
-			u_idx : u_idx,
-			readyYN : readyYN
-		},
-		success : function(data) {
-			//alert(data);
-			//alert(JSON.stringify(data));
-			showPartyUserList();
-		}
-	}); 
-}
 
 function showPartyUserList() {
-	//alert('야');
 	$.ajax({
 		url : path+'/party/room/'+p_num+'/user',
 		type : 'GET',
 		success : function(data) {
-			//alert('호');
-			//alert(JSON.stringify(data));
-			html2='';
-			for (var i = 0; i < data.length; i++) {
-				html2+=' '+data[i].u_photo+' '+data[i].u_name+' 여기는 상태<br>';
-			}
-			$('#partyUserInfo2').html(html2);
-			
-			
-			
 			
 			html1='';
-			html1+='<table>\n';
+			html1+='<table style="width:100%;">\n';
 			for (var i = 0; i < data.length; i++) {
 				var crown=''; 
 				var bold='';
@@ -272,13 +367,12 @@ function showPartyUserList() {
 				if(data[i].pc_masterYN=='Y'){
 					crown='<i class="fas fa-crown yellow"></i> ';
 					
-
 				}else{
  					if(isMaster()){
- 						crown='<a href="#" onclick="changeMaster('+data[i].u_idx+')"><i class="fas fa-user-alt gray" style="padding-left:2px;padding-right:2px;"></i></a> '; 
+ 						crown='<a href="#" onclick="changeMaster('+data[i].u_idx+')"><i class="fas fa-user-alt lightgray" style="padding-left:2px;padding-right:2px;"></i></a> '; 
  						delBtn='<a onclick="ban('+data[i].u_idx+')" class="ban"><i class="fas fa-times"></i></a>';
  					}else{
-						crown='<i class="fas fa-user-alt gray" style="padding-left:2px;padding-right:2px;"></i> '; 
+						crown='<i class="fas fa-user-alt lightgray" style="padding-left:2px;padding-right:2px;"></i> '; 
 					}
 				}
 				
@@ -287,10 +381,14 @@ function showPartyUserList() {
 					bold='bold';
 				}
 				
-				if(data[i].pc_readyYN=='Y'){
-					readyStr='<p class="ready">준비 완료!</p>';
+				if(data[i].pc_endYN=='Y'){
+					if(data[i].pc_finishYN=='Y'){
+						readyStr='<p class="">[★ 완주★] 라이딩 종료!</p>';
+					}else{
+						readyStr='<p class="">중도 포기</p>';
+					}
 				}else{
-					readyStr='<p class="gray">방 둘러보는 중...</p>';
+					readyStr='<p class="">열심히 달리는 중...</p>';
 				}
 				
 				
@@ -300,10 +398,9 @@ function showPartyUserList() {
 				html1+='<td class="width30">'+readyStr+'</td>\n';
 				html1+='</tr>\n';
 				
-				//html1+=' '+data[i].u_photo+' '+data[i].u_name+' '+data[i].pc_readyYN+'<br>';
 			}
 			html1+='</table>\n';
-			$('#partyUserInfo1').html(html1);
+			$('#partyUserInfoIng').html(html1);
 			
 		}
 
@@ -312,21 +409,23 @@ function showPartyUserList() {
 
 // 내가 파티를 나간다
 function exitPartyFn() {
-	if(confirm('현재 참여한 방에서 나가시겠습니까?')){
+
+	if(isMaster()){
 		if(getUserCount()<2){
-			if(confirm('인원 1명이야! 너 나가면 방폭 되는데 나갈거야?')){
+			if(confirm('인원이 1명일 때 나가면 방이 삭제됩니다. 방에서 나가시겠습니까?')){
 				exitParty(u_idx);
 				// 방삭제
 				deleteParty();
 			}
 		}else{
-			if(isMaster()){
-				alert('방장이 어딜나가! 나갈거면 위임해');
-			}else{
-				exitParty(u_idx); // 현재 로그인된 유저를 얌전히 보내준다
-			}
+			alert('방장은 나갈 수 없습니다! 나가고 싶다면, 방장을 위임해주세요');
+		}
+	}else{
+		if(confirm('현재 참여한 방에서 나가시겠습니까?')){
+			exitParty(u_idx); // 현재 로그인된 유저를 얌전히 보내준다
 		}
 	}
+	
 }
 	
 
@@ -342,7 +441,7 @@ function exitParty(idx) {
 		contentType : 'application/json; charset=utf-8',
  		success : function(data) {
  			//alert(data);
- 			location.href="../party";
+ 			location.href="../../party";
  		}
  	});
 }
@@ -358,7 +457,38 @@ function showMasterArea() {
 	}  
 	 
 }
+// 종료전과 후 다른 처리를 해준다
+function showEndArea() {
 
+  	if (isEnd()) {
+		$('#endArea').css('display','none');
+	}
+	else{
+		$('#endArea').css('display','block');
+	}  
+	 
+}
+
+function isEnd() {
+	var chk = false;
+	 $.ajax({
+	 		url : path + '/party/room/isEnd',
+	 		type : 'GET',
+			async : false,
+			data : {
+				u_idx : u_idx,
+				p_num : p_num
+			},
+	 		success : function(data) {
+	 			//alert(data);
+				if(data=='Y'){
+					chk=true;
+				}
+	 		}
+	 }); 
+	
+	return chk;
+}
 
 //방장이면 보이게
 function isMaster() {
@@ -400,7 +530,13 @@ function changeMaster(u_idx_t){
 	}
 }
 
-// 파티삭제
+function deletePartyBtn(){
+	if (confirm('방을 삭제하시면 복구할 수 없습니다. \n방을 폭파하시겠습니까?')) {
+		deleteParty();
+	}
+}
+
+/* // 파티삭제
 function deleteParty(){
 	 $.ajax({
 		url : path + '/party/'+p_num,
@@ -409,51 +545,28 @@ function deleteParty(){
  		//dataType : 'json', //데이터타입
 		success : function() {
 			//alert('삭제성공');
-			location.href="../party";
+			location.href="../../party";
 		}
 	 });
-}
+} */
 
 // 회원정보 계속 업데이트(준비 상태 바로 반영되게)
 var refreshReady = setInterval(function() {
 		showPartyUserList();
-		isAllReady();
+		showCurrentPos();
+		isAllEnd();
 }, 1000);
-
-
-function stopRefreshReady() {
-	clearInterval(refreshReady);
-}
-
-// 이걸 따로 하지 말고 레디할때 그냥 같이 반환시켜줘도 좋겠다
-function isAllReady() {
-	// 준비 N인 사람이 있으면 -> N / 준비 N인 사람 수가 0이면 -> Y 반환
-	var cnt = -2;
-	 $.ajax({
-	 		url : path + '/party/room/'+p_num+'/notReadyUsercount',
-	 		type : 'GET',
-			async : false,
-	 		success : function(data) {
-	 			cnt = parseInt(data);
-	 			//alert(cnt);
-	 		}
-	 }); 
-	 
-	 if(cnt==0){
-		 //alert('모두준비되었다!');
-		 // startBtn에 allReady클래스 추가 
-		 
-		 $('#startBtn').attr('disabled', false);
-		 $('#startBtn').addClass('allReady');
-	 }else{
-		 //alert('준비되지 않은 인원 :'+cnt);
-		 $('#startBtn').attr('disabled', true);
-		 $('#startBtn').removeClass('allReady');
-	 }
-}
 
 function startRiding() {
 	alert('시작');
+	 $.ajax({
+	 		url : path + '/party/'+p_num+'/start',
+	  		type : 'get',
+	 		success : function() {
+	 			alert('성공');
+	 			location.href="./"+p_num+"/ing";
+	 		}
+	 }); 
 }
 
 function ban(idx) {
@@ -464,7 +577,6 @@ function ban(idx) {
 }
 
 
-
 function initTmap(xy) {
 	
     // map 생성
@@ -472,11 +584,38 @@ function initTmap(xy) {
     map = new Tmap.Map({
         div: 'map_div', // map을 표시해줄 div
         width: "100%", // map의 width 설정
-        height: "400px", // map의 height 설정
+        height: "500px", // map의 height 설정
     });
-    map.setCenter(new Tmap.LonLat("126.986072", "37.570028").transform("EPSG:4326", "EPSG:3857"), 15); //설정한 좌표를 "EPSG:3857"로 좌표변환한 좌표값으로 즁심점을 설정합니다.						
-	
+
+    navigator.geolocation.getCurrentPosition(function(pos) {
+	    var latitude = pos.coords.latitude;
+	    var longitude = pos.coords.longitude;
+	    var lonlat = new Tmap.LonLat(longitude, latitude).transform("EPSG:4326", "EPSG:3857");//좌표 설정
+	    map.setCenter(lonlat, 17); 
+	});
+ //   map.setCenter(new Tmap.LonLat("126.986072", "37.570028").transform("EPSG:4326", "EPSG:3857"), 15); //설정한 좌표를 "EPSG:3857"로 좌표변환한 좌표값으로 즁심점을 설정합니다.						
     getRoute(xy);
+
+}
+
+function showCurrentPos(){
+	navigator.geolocation.getCurrentPosition(function(pos) {
+	    var latitude = pos.coords.latitude;
+	    var longitude = pos.coords.longitude;
+	    
+		markerLayer = new Tmap.Layer.Markers();//마커 레이어 생성
+		map.addLayer(markerLayer);//map에 마커 레이어 추가
+		   
+		var lonlat = new Tmap.LonLat(longitude, latitude).transform("EPSG:4326", "EPSG:3857");//좌표 설정
+		var size = new Tmap.Size(24, 38);//아이콘 크기 설정
+		var offset = new Tmap.Pixel(-(size.w / 2), -(size.h));//아이콘 중심점 설정
+		var icon = new Tmap.Icon('http://tmapapis.sktelecom.com/upload/tmap/marker/pin_b_m_i.png',size, offset);//마커 아이콘 설정
+		
+		marker = new Tmap.Marker(lonlat, icon);//마커 생성
+		markerLayer.addMarker(marker);//레이어에 마커 추가
+		
+		map.setCenter(lonlat, 17); 
+	});
 }
 
 
@@ -589,6 +728,11 @@ function getRoute(xy) {
         }
     });
 }
+
+history.pushState(null, null, location.href);
+window.onpopstate = function () {
+    history.go(1);
+};
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>

@@ -67,12 +67,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- 소속된 방이 있는지 -->	
 	<select id="hasParty" resultType="int">
-		select count(*) from participation where u_idx=#{idx};
+		select count(*) from participation pc join party pt on pc.p_num = pt.p_num where u_idx=#{idx} and p_closedYN='N';
 	</select>
 	
 	<!-- 소속된 방의 번호를 가져온다 -->	
 	<select id="getPartyNum" resultType="int">
-		select p_num from participation where u_idx=#{idx};
+		select pc.p_num from participation pc join party pt on pc.p_num = pt.p_num where u_idx=#{idx} and p_closedYN='N';
 	</select>
 	
 	<!-- 파티 정보 가져오기 -->
@@ -84,7 +84,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<update id="updateReady" parameterType="com.teamrun.runbike.party.domain.ReadyInfo">
 		update participation set pc_readyYN=#{readyYN} where p_num=#{p_num} and u_idx=#{u_idx}
 	</update>
-	
+		
+	<!-- 종료 상태 변경 -->
+	<update id="updateFinish" parameterType="com.teamrun.runbike.party.domain.FinishInfo">
+		update participation set pc_endYN='Y', pc_finishYN=#{finishYN} where p_num=#{p_num} and u_idx=#{u_idx}
+	</update>
+
 	<!-- 방 나가기 -->
 	<delete id="deleteParticipation">
 		delete from participation where p_num=#{p_num} and u_idx=#{u_idx}
@@ -115,6 +120,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		update participation set pc_masterYN='Y' where p_num=#{p_num} and u_idx=#{u_idx};
 	</update>
 	
+	
+	<!-- 해당회원 끝났는지 확인 -->
+	<select id="isEnd" resultType="int">
+		select if((select pc_endYN from participation where p_num=#{p_num} and u_idx=#{u_idx})='Y', 1, 0);
+	</select>
+	
 	<!-- 방을 삭제한다 -->
 	<delete id="deleteParty">
 		delete from party where p_num=#{num};
@@ -125,10 +136,25 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select count(*) from run_bike.participation where p_num=#{num} and pc_readyYN='N';
 	</select>
 	
+	<!-- 종료하지 않은 유저의 수를 반환한다 -->	
+	<select id="getNotEndUsercount" resultType="int">
+		select count(*) from run_bike.participation where p_num=#{num} and pc_endYN='N';
+	</select>
+	
 	<!--  방 수정 -->
 	<update id="editParty" parameterType="com.teamrun.runbike.party.domain.RequestPartyEdit">
 		update party set p_name=#{p_name}, p_start_info=#{p_start_info}, p_end_info=#{p_end_info}, p_XY=#{p_XY}, p_time=#{p_time}, p_capacity=#{p_capacity}, p_content=#{p_content}, p_password=#{p_password}, p_riding_km=#{p_riding_km}, p_riding_time=#{p_riding_time} 
 		where p_num=#{p_num};
+	</update>
+	
+	<!-- 시작 시간 업데이트 -->
+	<update id="updatePartyStartTime">
+		update party set p_start_time=current_timestamp() where p_num=#{p_num};
+	</update>
+	
+	<!-- 종료 시간 업데이트, 방 종료 여부 Y -->
+	<update id="endParty">
+		update party set p_end_time=current_timestamp(), p_closedYN='Y' where p_num=#{p_num};
 	</update>
 	
 </mapper>

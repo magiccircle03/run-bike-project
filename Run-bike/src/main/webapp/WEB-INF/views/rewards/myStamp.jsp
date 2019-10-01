@@ -66,36 +66,36 @@ p{
 	
 	
 		<div class="row">
-			<c:forEach var="stamp" items="${stampList}" varStatus="status">
-				<c:choose>
-					<c:when test="${empty myStampList}">
-						<div class="col" id="stampArea">
-						<img alt="stamp" src="<c:url value='/uploadfile/cs_stampPhoto/${stamp.cs_photo}'/>" style="width: 150px; height: 147px;">
-						<p id="stampName">${stamp.s_name}</p>
-						</div>
-					</c:when>
-					
-					<c:when test="${!empty myStampList}">
-						<c:forEach var="mystamp" items="${myStampList}" varStatus="status">		
-							<c:choose>	
-								<c:when test="${stamp.s_name eq mystamp.s_name}">
+			
+			<c:choose>		
+				<c:when test="${empty myStampList}">
+							<div class="col" id="stampArea">
+							<img alt="stamp" src="<c:url value='/uploadfile/cs_stampPhoto/${stamp.cs_photo}'/>" style="width: 150px; height: 147px;">
+							<p id="stampName">${stamp.s_name}</p>
+							</div>
+				</c:when>
+				
+				<c:when test="${!empty myStampList}">
+					<c:forEach var="stamp" items="${stampList}" varStatus="status">
+							<c:choose>				
+								<c:when test="${stamp.s_num eq myStampList.s_num}">
 									<div class="col" id="stampArea">
-									<img alt="stamp" src="<c:url value='/uploadfile/color_stampPhoto/${mystamp.s_photo}'/>" style="width: 150px; height: 147px;">
-									<p id="stampName">${mystamp.s_name}</p>
+										<img alt="stamp" src="<c:url value='/uploadfile/color_stampPhoto/${stamp.s_photo}'/>" style="width: 150px; height: 147px;">
+										<p id="stampName">${stamp.s_name}</p>
 									</div>
 								</c:when>
-								<c:when test="${stamp.s_name ne mystamp.s_name}">
+								<c:when test="${stamp.s_num ne myStampList.s_num}}">
 									<div class="col" id="stampArea">
-									<img alt="stamp" src="<c:url value='/uploadfile/cs_stampPhoto/${stamp.cs_photo}'/>" style="width: 150px; height: 147px;">
-									<p id="stampName">${stamp.s_name}</p>
+										<img alt="stamp" src="<c:url value='/uploadfile/cs_stampPhoto/${stamp.cs_photo}'/>" style="width: 150px; height: 147px;">
+										<p id="stampName">${stamp.s_name}</p>
 									</div>
-								</c:when>						 
-							</c:choose>					
-						</c:forEach>
-					</c:when>
-				</c:choose>			
-			</c:forEach>
+								</c:when>						 									
+							</c:choose>			
+					</c:forEach>
+				</c:when>
+			</c:choose>
 		</div>
+		
 	</div>
 	
 	<script>
