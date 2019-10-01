@@ -170,15 +170,15 @@ font-family: 'Exo', sans-serif;
 
 	<script>
 	
-	    $('#startRiding').on('click', function(){
+	    $('#startRiding').on('click touchstart', function(){
 	    	location.href="startRide"
 	    });
 	    
-	    $('#ridingGuide').on('click', function(){
+	    $('#ridingGuide').on('click touchstart', function(){
 	    	location.href="ridingGuide"
 	    });
 	    
-	    $('#myCourse').on('click', function(){
+	    $('#myCourse').on('click touchstart', function(){
 	    	location.href="myCourseList"
 	    });
 		
@@ -235,7 +235,7 @@ font-family: 'Exo', sans-serif;
             markerStartPointLayer.clearMarkers();
 
             //*****************현재 나의 위치를 얻어오기***************************
-            if (navigator.geolocation) {
+            if ("geolocation" in navigator) {
                 // GeoLocation을 이용해서 접속 위치를 얻어옵니다
                 navigator.geolocation.getCurrentPosition(function(position) {
 
@@ -298,7 +298,7 @@ font-family: 'Exo', sans-serif;
             map.addPopup(popup); //map에 popup 추가
             popup.hide();
 
-            markers.events.register("click", popup, onOverMarker);
+            markers.events.register("click touchstart", popup, onOverMarker);
             //마커를 클릭했을 때 발생하는 이벤트 함수입니다.
             function onOverMarker(evt) {
                 this.show(); //마커를 클릭하였을 때 팝업이 보입니다.
@@ -306,7 +306,7 @@ font-family: 'Exo', sans-serif;
 
             }
 
-            map.events.register("mouseup", popup, onOutMarker);
+            map.events.register("mouseup touchstart", popup, onOutMarker);
             //지도를 클릭했을 때 발생하는 이벤트 함수입니다.
             function onOutMarker(evt) {
                 this.hide(); //지도를 클릭하였을 때 팝업이 사라집니다.
