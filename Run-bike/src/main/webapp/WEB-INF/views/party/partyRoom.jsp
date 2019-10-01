@@ -316,14 +316,13 @@ function showPartyUserList() {
 		success : function(data) {
 			//alert('호');
 			//alert(JSON.stringify(data));
-			html2='';
-			for (var i = 0; i < data.length; i++) {
-				html2+=' '+data[i].u_photo+' '+data[i].u_name+' 여기는 상태<br>';
-			}
-			$('#partyUserInfo2').html(html2);
 			
-			
-			
+// 			html2='';
+// 			for (var i = 0; i < data.length; i++) {
+// 				html2+=' '+data[i].u_photo+' '+data[i].u_name+' 여기는 상태<br>';
+// 			}
+// 			$('#partyUserInfo2').html(html2);
+
 			
 			html1='';
 			html1+='<table style="width:100%;">\n';
@@ -335,7 +334,6 @@ function showPartyUserList() {
 				
 				if(data[i].pc_masterYN=='Y'){
 					crown='<i class="fas fa-crown yellow"></i> ';
-					
 
 				}else{
  					if(isMaster()){
