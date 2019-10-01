@@ -126,6 +126,12 @@ public class PartyMainContoller {
 
 		return "party/partyRoomIng";
 	}
+	
+	// 진행중인 파티의 채팅 페이지로 가기
+	@RequestMapping(value = "/{p_num}/chat", method = RequestMethod.GET)
+	public String getPartyChatPage(@PathVariable int p_num, Model model) {
+		return "party/partyChat";
+	}
 
 	// 라이딩 시작하여 시작시간 업데이트하기 // 왠지는 몰라도
 	@CrossOrigin
