@@ -69,7 +69,7 @@ body{
 <div class="tab-content">
   
   <div class="tab-pane fade show active">
-	채팅기능 준비중입니다^^!!!
+	채팅기능은 준비중입니다٩(*´ ꒳ `*)۶
   </div>
   
 </div>

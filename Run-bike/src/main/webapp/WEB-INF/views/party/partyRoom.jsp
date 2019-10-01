@@ -145,9 +145,7 @@ h5{
   <li class="nav-item tabWidth">
     <a class="nav-link" href="<c:url value='/party/${partyInfo.p_num}/chat' />">채팅</a>
   </li>
- 
 </ul>
-
 
 
 <hr>
