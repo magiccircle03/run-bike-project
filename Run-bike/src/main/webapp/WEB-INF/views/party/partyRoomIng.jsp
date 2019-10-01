@@ -133,8 +133,7 @@ h5{
 <!-- 숨겨진 u_idx -->
 <!-- <hr> -->
 <input id="u_idx" name="u_idx" type="hidden" class="form-control" value="${loginInfo.u_idx}">
-<button class="btn" onclick="exitPartyFn()">나가기</button> 
-<button class="btn" onclick="showCurrentPos()">현재위치</button> 
+<!-- <button class="btn" onclick="getCurrentPos()">현재위치</button>  -->
 
 <!-- 같이하기 내비게이션 -->
 <ul class="nav nav-pills nav-justified">
@@ -210,7 +209,7 @@ var path='http://localhost:8080/runbike';
 // 개인이 라이딩을 종료하는 함수
 function endRidingOne(){
 	var chk = confirm('현재위치 = 도착지 반경 500m?'); //완주여부 체크. 일단은 이렇게 받자
-	getCurrentPos(); // 검사해서 이 위치가 도착지 좌표 반경 몇 m 이내면, 완주여주 Y / 아니면 N //중도 포기하겠냐고 물어봄
+	//getCurrentPos(); // 검사해서 이 위치가 도착지 좌표 반경 몇 m 이내면, 완주여주 Y / 아니면 N //중도 포기하겠냐고 물어봄
 	if(chk){
 		updateEnd('Y'); // 완주여부 Y, end여부 Y로 업데이트
 	}else{
@@ -308,7 +307,10 @@ function getCurrentPos() {
 	navigator.geolocation.getCurrentPosition(function(pos) {
 	    var latitude = pos.coords.latitude;
 	    var longitude = pos.coords.longitude;
-	    alert("내 현재 위치는 : " + latitude + ", "+ longitude);
+//	    alert("내 현재 위치는 : " + latitude + ", "+ longitude);
+	    var lonlat = new Tmap.LonLat(longitude, latitude).transform("EPSG:4326", "EPSG:3857");//좌표 설정
+	   //map.setCenter(lonlat, 15); 
+	    map.setCenter(lonlat, 17); 
 	});
 }
 
@@ -427,7 +429,7 @@ function exitParty(idx) {
 		contentType : 'application/json; charset=utf-8',
  		success : function(data) {
  			//alert(data);
- 			location.href="../party";
+ 			location.href="../../party";
  		}
  	});
 }
@@ -522,7 +524,7 @@ function deletePartyBtn(){
 	}
 }
 
-// 파티삭제
+/* // 파티삭제
 function deleteParty(){
 	 $.ajax({
 		url : path + '/party/'+p_num,
@@ -531,10 +533,10 @@ function deleteParty(){
  		//dataType : 'json', //데이터타입
 		success : function() {
 			//alert('삭제성공');
-			location.href="../party";
+			location.href="../../party";
 		}
 	 });
-}
+} */
 
 // 회원정보 계속 업데이트(준비 상태 바로 반영되게)
 var refreshReady = setInterval(function() {
@@ -573,8 +575,13 @@ function initTmap(xy) {
         height: "500px", // map의 height 설정
     });
 
-    map.setCenter(new Tmap.LonLat("126.986072", "37.570028").transform("EPSG:4326", "EPSG:3857"), 15); //설정한 좌표를 "EPSG:3857"로 좌표변환한 좌표값으로 즁심점을 설정합니다.						
-	
+    navigator.geolocation.getCurrentPosition(function(pos) {
+	    var latitude = pos.coords.latitude;
+	    var longitude = pos.coords.longitude;
+	    var lonlat = new Tmap.LonLat(longitude, latitude).transform("EPSG:4326", "EPSG:3857");//좌표 설정
+	    map.setCenter(lonlat, 17); 
+	});
+ //   map.setCenter(new Tmap.LonLat("126.986072", "37.570028").transform("EPSG:4326", "EPSG:3857"), 15); //설정한 좌표를 "EPSG:3857"로 좌표변환한 좌표값으로 즁심점을 설정합니다.						
     getRoute(xy);
 
 }
@@ -595,6 +602,7 @@ function showCurrentPos(){
 		marker = new Tmap.Marker(lonlat, icon);//마커 생성
 		markerLayer.addMarker(marker);//레이어에 마커 추가
 		
+		map.setCenter(lonlat, 17); 
 	});
 }
 

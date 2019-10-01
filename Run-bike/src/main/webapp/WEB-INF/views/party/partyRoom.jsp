@@ -114,6 +114,9 @@ h5{
 	height: 40px;
 	
 }
+.width100{
+	width: 100%;
+}
 </style>
 </head>
 <body>
@@ -127,8 +130,6 @@ h5{
 <!-- 숨겨진 u_idx -->
 <!-- <hr> -->
 <input id="u_idx" name="u_idx" type="hidden" class="form-control" value="${loginInfo.u_idx}">
-<button class="btn" onclick="exitPartyFn()">나가기</button> 
-<button class="btn" onclick="getCurrentPos()">현재위치</button> 
 
 <!-- 같이하기 내비게이션 -->
 <ul class="nav nav-pills nav-justified">
@@ -136,7 +137,7 @@ h5{
     <a class="nav-link active" href="<c:url value='/party/${partyInfo.p_num}' />">방정보</a>
   </li>
   <li class="nav-item tabWidth">
-    <a class="nav-link" href="<c:url value='/party/${partyInfo.p_num}/ing' />">현재정보</a>
+    <a id="curInfoA" class="nav-link" href="<c:url value='/party/${partyInfo.p_num}/ing' />">현재정보</a>
   </li>
   <li class="nav-item tabWidth">
     <a class="nav-link" href="<c:url value='/party/${partyInfo.p_num}/chat' />">채팅</a>
@@ -167,13 +168,11 @@ h5{
     <!-- 시작 전에만 보이는 영역 -->
     <div id="beforeStartArea">
     
-	    <input id="readyChk" class="readyChk" type="checkbox" data-toggle="toggle" data-on="준비완료!" data-off="준비하기" data-onstyle="primary mint">
+	    <input id="readyChk" class="readyChk" type="checkbox" data-toggle="toggle" data-on="준비완료!" data-off="준비하기" data-onstyle="primary mint" data-width="100%">
 	
 	    <!-- 방장만 보이게 영역 -->
 		<div id="partyInfoMaster" class="master">
-		   	<button id="startBtn" type="button" class="btn" onclick="startRiding()" disabled="true">시작하기</button>
-		   	<!-- 그냥 종료버튼 -->
-		   	<!-- 방장 종료버튼  -->
+		   	<button id="startBtn" type="button" class="btn width100" onclick="startRiding()" disabled="true">시작하기</button>
 		    <button class="btn" onclick="editParty()">방 정보 수정</button> 
 		    <button class="btn" onclick="deletePartyBtn()">방 삭제</button> 
 		</div>
@@ -188,7 +187,7 @@ h5{
     </div>
     <!-- /시작 전에만 보이는 영역 -->
     <!-- ======================================= -->
-    
+    			<button class="btn" onclick="exitPartyFn()">나가기</button> 
     
     
   </div>
@@ -205,11 +204,19 @@ h5{
 var xy=${partyInfo.p_XY};
 
 $(document).ready(function() {
+	var isStarted;
 	initTmap(xy);
-	chkIsStarted();
+	isStarted = chkIsStarted();
 	showPartyUserList();
 	showMasterArea();
 	setReady('N');// 어디 갔다오면 처음엔 준비 안된걸로
+	
+	// 시작되지 않았을 때 현재정보 페이지로 가는 걸 막는다
+	$("#curInfoA").on("click",function(event){
+		if(!isStarted){
+			event.preventDefault();
+		}
+     });	
 	
 });
 
@@ -221,10 +228,13 @@ var path='http://localhost:8080/runbike';
 
 function chkIsStarted() {
 	//alert(p_num);
+	var chk;
 	$.ajax({
 		url : path + '/party/room/' + p_num,
 		type : 'GET',
+		async : false,
 		success : function(data) {
+			chk=(data.p_start_time!=null);
 			//alert("시작시간"+data.p_start_time);
 			//alert(data.p_start_time!=null);
 			if(data.p_start_time!=null){
@@ -236,7 +246,9 @@ function chkIsStarted() {
 				$('#startStat').html(' [ 대기중 ]');
 			}
 		}
+	
 	});
+	return chk;
 } 
 
 function editParty() {
@@ -363,22 +375,6 @@ function showPartyUserList() {
 
 // 내가 파티를 나간다
 function exitPartyFn() {
-/* 	if(confirm('현재 참여한 방에서 나가시겠습니까?')){
-		if(getUserCount()<2){
-			if(confirm('인원 1명이야! 너 나가면 방폭 되는데 나갈거야?')){
-				exitParty(u_idx);
-				// 방삭제
-				deleteParty();
-			}
-		}else{
-			if(isMaster()){
-				alert('방장이 어딜나가! 나갈거면 위임해');
-			}else{
-				exitParty(u_idx); // 현재 로그인된 유저를 얌전히 보내준다
-			}
-		}
-	} */
-	
 	
 	if(isMaster()){
 		if(getUserCount()<2){
@@ -514,11 +510,11 @@ function isAllReady() {
 	 			//alert(cnt);
 	 		}
 	 }); 
-	 
+	
+	 //	 if(cnt==0 && (getUserCount()>1)){
 	 if(cnt==0){
 		 //alert('모두준비되었다!');
 		 // startBtn에 allReady클래스 추가 
-		 
 		 $('#startBtn').attr('disabled', false);
 		 $('#startBtn').addClass('allReady');
 	 }else{
@@ -529,15 +525,20 @@ function isAllReady() {
 }
 
 function startRiding() {
-	alert('시작');
-	 $.ajax({
-	 		url : path + '/party/'+p_num+'/start',
-	  		type : 'get',
-	 		success : function() {
-	 			alert('성공');
-	 			location.href="./"+p_num+"/ing";
-	 		}
-	 }); 
+//	alert('시작');
+	if(getUserCount()>1){
+		 $.ajax({
+		 		url : path + '/party/'+p_num+'/start',
+		  		type : 'get',
+		 		success : function() {
+		 			//alert('성공');
+		 			location.href="./"+p_num+"/ing";
+		 		}
+		 }); 
+	}else{
+		alert('2명 이상일때 시작 가능합니다!');
+	}
+	
 }
 
 function ban(idx) {
