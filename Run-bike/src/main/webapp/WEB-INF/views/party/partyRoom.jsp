@@ -44,6 +44,12 @@
 .master{
 	display: none;
 }
+.dispalyNone{
+	display: none;
+}
+.dispalyBlock{
+	display: block;
+}
 .width30{
 	width: 30%;
 }
@@ -62,7 +68,7 @@ h5{
 
 .allReady{
 	font-weight: bold;
-	background-color: pink;
+	background-color: #007BFF;
 	color: #fefefe;
 }
 .ban{
@@ -80,6 +86,37 @@ h5{
 	margin-top: 20px;
 	margin-bottom: 20px;
 }
+.StartP{
+	display : inline;
+	color: red;
+}
+.red{
+	color: #FD5314;
+}
+.blue{
+	color: #007BFF;
+}
+.font-size-18{
+	font-size: 18px;
+}
+.gray{
+	color: #555555;
+}
+.h2{
+	font-size: 1.5em;
+
+}
+.readyChk{
+	width: 100%;
+}
+.partyUserImg{
+	width: 40px;
+	height: 40px;
+	
+}
+.width100{
+	width: 100%;
+}
 </style>
 </head>
 <body>
@@ -91,80 +128,73 @@ h5{
 <div class="container">
 
 <!-- 숨겨진 u_idx -->
-<input id="u_idx" name="u_idx" type="text" class="form-control" value="${loginInfo.u_idx}">
-<button class="btn" onclick="exitPartyFn()">나가기</button> 
-<button class="btn" onclick="getCurrentPos()">현재위치</button> 
+<!-- <hr> -->
+<input id="u_idx" name="u_idx" type="hidden" class="form-control" value="${loginInfo.u_idx}">
 
-<hr>
-
-<!-- 탭 클릭시마다 새로고침되게 하기 -->
+<!-- 같이하기 내비게이션 -->
 <ul class="nav nav-pills nav-justified">
   <li class="nav-item tabWidth">
-    <a class="nav-link active" data-toggle="tab" href="#partyInfoTab">방정보</a>
+    <a class="nav-link active" href="<c:url value='/party/${partyInfo.p_num}' />">방정보</a>
   </li>
   <li class="nav-item tabWidth">
-    <a class="nav-link" data-toggle="tab" href="#curInfoTab">현재정보</a>
+    <a id="curInfoA" class="nav-link" href="<c:url value='/party/${partyInfo.p_num}/ing' />">현재정보</a>
   </li>
   <li class="nav-item tabWidth">
-    <a class="nav-link" data-toggle="tab" href="#chatTab">채팅</a>
+    <a class="nav-link" href="<c:url value='/party/${partyInfo.p_num}/chat' />">채팅</a>
   </li>
 </ul>
 
+<hr>
 
 <div class="tab-content">
   
   <div class="tab-pane fade show active" id="partyInfoTab">
   
-    <div id="partyInfo">
-    
-    	    <h2 class="marginTop"> [${partyInfo.p_num}] ${partyInfo.p_name}</h2> 
-    	    <div id="map_div"> </div>
-    	    <i class="fab fa-font-awesome-flag"></i> ${partyInfo.p_start_info} / <i class="fas fa-flag-checkered"></i> ${partyInfo.p_end_info}  
+    <div id="partyInfo" class="font-size-18">
+    	    <h3 id="partyTitle" class="marginTop"> [${partyInfo.p_num}] ${partyInfo.p_name} <p id="startStat" class="StartP"></p></h3>
+    	    <h4 style="padding:20px 0;"><i class="fas fa-fire red"></i>&nbsp; 우리의 목표 경로</h4>
+    	    <div id="map_div"></div>
+    	    <div class="row">
+	    	    <div class="col-md-6"><i class="fab fa-font-awesome-flag gray"></i> 출발지 : ${partyInfo.p_start_info}</div>
+	    	    <div class="col-md-6"><i class="fas fa-flag-checkered gray"></i> 도착지 : ${partyInfo.p_end_info}</div>
+    	    </div>
     	    <br>
-	    	${partyInfo.p_content}
-	    	<br>
-	    	출발 예정 시각 : ${partyInfo.p_time_f}
-	    	<br>
-	    	총 거리 : ${partyInfo.p_riding_km} km , 예상 소요 시간 : ${partyInfo.p_riding_time} 분
-	    	
-	    	
-	    	
+    	    <div class="row"><div class="col-md-12">출발 예정 시각 : ${partyInfo.p_time_f}</div></div>
+<%-- 	    	<p>총 거리 : ${partyInfo.p_riding_km} km , 예상 소요 시간 : ${partyInfo.p_riding_time} 분</p> --%>
+	    	<div class="row"><div class="col-md-12">예상 소요 시간 : ${partyInfo.p_riding_time} 분</div></div>
+	    	<div class="row"><div class="col-md-12">총 거리 : ${partyInfo.p_riding_km} km</div></div>
+	    	<div class="row"><div class="col-md-12">${partyInfo.p_content}</div></div>
+	    		    	
+
     </div>
     
+    <!-- 시작 전에만 보이는 영역 -->
+    <div id="beforeStartArea">
     
-    <input id="readyChk" type="checkbox" data-toggle="toggle" data-on="준비완료!" data-off="준비하기" data-onstyle="primary mint">
-
-    <!-- 방장만 보이게 영역 -->
-	<div id="partyInfoMaster" class="master">
-	   	<button id="startBtn" class="btn" onclick="startRiding()" disabled="true">시작하기</button>
-	   	<!-- 그냥 종료버튼 -->
-	   	<!-- 방장 종료버튼  -->
-	    <button class="btn" onclick="editParty()">방 정보 수정</button> 
-	    <button class="btn" onclick="deletePartyBtn()">방 삭제</button> 
-	</div>
-    <!--  -->
-    
-    <hr>
-    <h5><i class="fas fa-child"></i> 함께 달릴 동료들 (<p id="capa" style="display: inline"></p> / ${partyInfo.p_capacity} )</h5>
-    <div id="partyUserInfo1">
-    <!-- 참가자 사진 / 이름 / 준비여부-->
-	</div>
+	    <input id="readyChk" class="readyChk" type="checkbox" data-toggle="toggle" data-on="준비완료!" data-off="준비하기" data-onstyle="primary mint" data-width="100%">
 	
-
+	    <!-- 방장만 보이게 영역 -->
+		<div id="partyInfoMaster" class="master">
+		   	<button id="startBtn" type="button" class="btn width100" onclick="startRiding()" disabled="true">시작하기</button>
+		    <button class="btn" onclick="editParty()">방 정보 수정</button> 
+		    <button class="btn" onclick="deletePartyBtn()">방 삭제</button> 
+		</div>
+		<!-- /방장만 보이게 영역 -->
+	   
+	    <hr>
+	    <h5><i class="fas fa-child"></i> 함께 달릴 동료들 (<p id="capa" style="display: inline"></p> / ${partyInfo.p_capacity} )</h5>
+	    <div id="partyUserInfo1">
+	    <!-- 참가자 사진 / 이름 / 준비여부-->
+		</div>
+<%-- 		<img src="${pageContext.request.contextPath}/uploadfile/userphoto/noImg.jpg"> --%>
+    </div>
+    <!-- /시작 전에만 보이는 영역 -->
+    <!-- ======================================= -->
+    			<button class="btn" onclick="exitPartyFn()">나가기</button> 
     
     
   </div>
   
-  <div class="tab-pane fade" id="curInfoTab">
-   	<p>지도 정보</p>
-   	<div id="partyUserInfo2">
-	참여한 사람 이미지 / 사람 이름 / 준비여부
-	</div>
-  </div>
-  
-  <div class="tab-pane fade" id="chatTab">
-    <p>채팅공간</p>
-  </div>
   
 </div>
 
@@ -177,10 +207,19 @@ h5{
 var xy=${partyInfo.p_XY};
 
 $(document).ready(function() {
+	var isStarted;
 	initTmap(xy);
+	isStarted = chkIsStarted();
 	showPartyUserList();
 	showMasterArea();
 	setReady('N');// 어디 갔다오면 처음엔 준비 안된걸로
+	
+	// 시작되지 않았을 때 현재정보 페이지로 가는 걸 막는다
+	$("#curInfoA").on("click",function(event){
+		if(!isStarted){
+			event.preventDefault();
+		}
+     });	
 	
 });
 
@@ -190,37 +229,30 @@ var u_idx = $('#u_idx').val();// 아이디 값 세션에서 가져오기.
 
 var path='http://localhost:8080/runbike';
 
-/* function showPartyInfo() {
+function chkIsStarted() {
 	//alert(p_num);
+	var chk;
 	$.ajax({
 		url : path + '/party/room/' + p_num,
 		type : 'GET',
+		async : false,
 		success : function(data) {
-			//alert(JSON.stringify(data));
-			var xy = new Object(); //좌표를 담는 json객체
-			html = '';
-	    	html += '<h2>['+data.p_num+'번]\n';
-	    	html += ''+data.p_name+' ( '+getUserCount()+' / '+data.p_capacity+'명 )</h1><br>\n';
-	    	html += '출발지 : '+data.p_start_info+'<br>\n';
-	    	html += '목적지 : '+data.p_end_info+'<br>\n';
-	    	//html += '좌표 : '+data.p_XY+'<br>\n';
-	    	html += '방내용 : '+data.p_content+'<br>\n';
-	    	html += '출발예정시간 : '+data.p_time_f+'<br>\n';
-	    	html += '방 개설 시간 : '+data.p_generate_date_f+'<br>\n';
-	    	
-	    	xy.startX = JSON.parse(data.p_XY).startX;
-            xy.startY = JSON.parse(data.p_XY).startY;
-            xy.endX = JSON.parse(data.p_XY).endX;
-            xy.endY = JSON.parse(data.p_XY).endY;
-        	
-            initTmap(xy);
-            //alert(JSON.stringify(xy));
-            //alert(xy);
-            
-	    	$('#partyInfo').html(html);
+			chk=(data.p_start_time!=null);
+			//alert("시작시간"+data.p_start_time);
+			//alert(data.p_start_time!=null);
+			if(data.p_start_time!=null){
+				$('#beforeStartArea').addClass( 'dispalyNone' );
+/* 				$('#partyTitle').append( '<p class="StartP"> [ 라이딩 진행중 ]</p>' ); */
+				$('#startStat').html(' [ 라이딩 진행중 ]');
+			}else{
+				$('#beforeStartArea').addClass( 'dispalyBlock' );
+				$('#startStat').html(' [ 대기중 ]');
+			}
 		}
+	
 	});
-} */
+	return chk;
+} 
 
 function editParty() {
 	if (confirm('방 정보를 수정할까요?')) {
@@ -284,17 +316,16 @@ function showPartyUserList() {
 		success : function(data) {
 			//alert('호');
 			//alert(JSON.stringify(data));
-			html2='';
-			for (var i = 0; i < data.length; i++) {
-				html2+=' '+data[i].u_photo+' '+data[i].u_name+' 여기는 상태<br>';
-			}
-			$('#partyUserInfo2').html(html2);
 			
-			
-			
+// 			html2='';
+// 			for (var i = 0; i < data.length; i++) {
+// 				html2+=' '+data[i].u_photo+' '+data[i].u_name+' 여기는 상태<br>';
+// 			}
+// 			$('#partyUserInfo2').html(html2);
+
 			
 			html1='';
-			html1+='<table>\n';
+			html1+='<table style="width:100%;">\n';
 			for (var i = 0; i < data.length; i++) {
 				var crown=''; 
 				var bold='';
@@ -303,7 +334,6 @@ function showPartyUserList() {
 				
 				if(data[i].pc_masterYN=='Y'){
 					crown='<i class="fas fa-crown yellow"></i> ';
-					
 
 				}else{
  					if(isMaster()){
@@ -327,7 +357,8 @@ function showPartyUserList() {
 				
 				
 				html1+='<tr>\n';
-				html1+='<td class="width30">'+data[i].u_photo+'</td>\n';
+				//html1+='<td class="width30">'+data[i].u_photo+'</td>\n';
+				html1+='<td class="width30"><img class="partyUserImg" src="${pageContext.request.contextPath}/uploadfile/userphoto/'+data[i].u_photo+'"></td>\n';
 				html1+='<td class="width30 '+bold+'">' + crown + data[i].u_name + delBtn + '</td>\n';
 				html1+='<td class="width30">'+readyStr+'</td>\n';
 				html1+='</tr>\n';
@@ -345,26 +376,10 @@ function showPartyUserList() {
 
 // 내가 파티를 나간다
 function exitPartyFn() {
-/* 	if(confirm('현재 참여한 방에서 나가시겠습니까?')){
-		if(getUserCount()<2){
-			if(confirm('인원 1명이야! 너 나가면 방폭 되는데 나갈거야?')){
-				exitParty(u_idx);
-				// 방삭제
-				deleteParty();
-			}
-		}else{
-			if(isMaster()){
-				alert('방장이 어딜나가! 나갈거면 위임해');
-			}else{
-				exitParty(u_idx); // 현재 로그인된 유저를 얌전히 보내준다
-			}
-		}
-	} */
-	
 	
 	if(isMaster()){
 		if(getUserCount()<2){
-			if(confirm('인원 1명이야! 너 나가면 방폭 되는데 나갈거야?')){
+			if(confirm('인원이 1명일 때 나가면 방이 삭제됩니다. 방에서 나가시겠습니까?')){
 				exitParty(u_idx);
 				// 방삭제
 				deleteParty();
@@ -377,7 +392,6 @@ function exitPartyFn() {
 			exitParty(u_idx); // 현재 로그인된 유저를 얌전히 보내준다
 		}
 	}
-	
 	
 }
 	
@@ -497,11 +511,11 @@ function isAllReady() {
 	 			//alert(cnt);
 	 		}
 	 }); 
-	 
+	
+	 //	 if(cnt==0 && (getUserCount()>1)){
 	 if(cnt==0){
 		 //alert('모두준비되었다!');
 		 // startBtn에 allReady클래스 추가 
-		 
 		 $('#startBtn').attr('disabled', false);
 		 $('#startBtn').addClass('allReady');
 	 }else{
@@ -512,7 +526,20 @@ function isAllReady() {
 }
 
 function startRiding() {
-	alert('시작');
+//	alert('시작');
+	if(getUserCount()>1){
+		 $.ajax({
+		 		url : path + '/party/'+p_num+'/start',
+		  		type : 'get',
+		 		success : function() {
+		 			//alert('성공');
+		 			location.href="./"+p_num+"/ing";
+		 		}
+		 }); 
+	}else{
+		alert('2명 이상일때 시작 가능합니다!');
+	}
+	
 }
 
 function ban(idx) {

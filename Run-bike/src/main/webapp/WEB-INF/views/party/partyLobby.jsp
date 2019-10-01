@@ -26,6 +26,10 @@
 	font-size: 22px;
 }
 
+.mint{
+	background-color: #21B2A6;
+	color: #fefefe;
+}
 .mintbtn{
 	background-color: #21B2A6;
 	color: #fefefe;
@@ -61,10 +65,22 @@ h3{
 .poptxt {
     padding: 10px;
 }
+.btn:hover{
+	cursor: pointer;
+}
+.borderline{
+	border: 1px solid #ddd;
+}
+.width100{
+	width: 100%;
+}
+.margin20{
+	margin:20px 0;
+}
 
 </style>
 </head>
-<body onload="initTmap()">
+<body onload="initTmap();initTmap2();">
 
 <!-- 해더 시작 -->
 <%@ include file="/WEB-INF/views/frame/header.jsp" %>
@@ -73,19 +89,18 @@ h3{
 <div class="container">
 
 	<!-- 숨겨진 u_idx -->
-	<input id="u_idx" name="u_idx" type="text" class="form-control" value="${loginInfo.u_idx}">
+	<input id="u_idx" name="u_idx" type="hidden" class="form-control" value="${loginInfo.u_idx}">
 
 	<div id="top-nav">
-		<table><tr>
-		<td>	
-			<h3>현재 개설된 파티</h3>
-			<p>다른 회원과 함께 달려보세요</p> 
-		</td>
-		<td style="text-align: right">
-			<a class="btn" data-toggle="modal" data-target="#createPartyModal">방 만들기</a> 
-		</td>
-		</tr>
-		</table>
+    	    <div class="row">
+	    	    <div class="col-md-6">
+		    	    <h3>현재 개설된 파티</h3>
+					<p>다른 회원과 함께 달려보세요</p> 
+				</div>
+	    	    <div class="col-md-6" style="text-align: right">
+	    	    	<a class="btn" data-toggle="modal" data-target="#createPartyModal">방 만들기</a>
+	    	    </div>
+    	    </div>
 	</div>
 
 
@@ -107,7 +122,7 @@ h3{
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 	      </div>
 	      
-<!-- 		  <form id="createForm"> -->
+		  <form id="createForm">
 	      <div class="modal-body">
 	          <div class="form-group">
 			    <label for="p_name">방 제목</label>
@@ -121,9 +136,9 @@ h3{
 			  
 			  <div class="form-group">
 			  	<label>목표 경로</label><br>
-	   			<input id="p_start_info" name="p_start_info" type="text" placeholder="시작지" class="form-control" style="display: inline-block; width:40%" required><button onclick="searchPoi('S')" class="btn" style="width:9%">검색</button>
-   				<input id="p_end_info" name="p_end_info" type="text" placeholder="도착지" class="form-control" style="display: inline-block; width:40%" required><button onclick="searchPoi('E')" class="btn" style="width:9%">검색</button>
-			  	<button class="btn" onclick="getRoute()">경로 선택</button>
+	   			<input id="p_start_info" name="p_start_info" type="text" placeholder="시작지" class="form-control" style="display: inline-block; width:40%" required><button type="button" onclick="searchPoi('S')" class="btn" style="width:9%">검색</button>
+   				<input id="p_end_info" name="p_end_info" type="text" placeholder="도착지" class="form-control" style="display: inline-block; width:40%" required><button type="button" onclick="searchPoi('E')" class="btn" style="width:9%">검색</button>
+			  	<button type="button" class="btn mint width100 margin20" onclick="getRoute()">경로 선택</button>
 				<div id="map_div">
 			    </div>
 			    <p id="result"></p>
@@ -157,10 +172,36 @@ h3{
 
 	      </div>
 	      <div class="modal-footer">
-	        <button id="createPartyBtn" type="submit" class="btn" onclick="createParty()">방 만들기</button>
+	        <input type="submit" class="btn" value="방 만들기">
 	      </div>
 	      
-<!-- 	     </form> -->
+ 	     </form> 
+	    </div>
+	  </div>
+	</div>
+	<!-- 모달끝 -->
+	
+	
+	
+	<!-- 상세보기 모달시작 -->
+	<div class="modal fade" id="partyDetailModal" tabindex="-1" role="dialog" aria-labelledby="partyDetailTitle" aria-hidden="true">
+	  <div class="modal-dialog modal-lg">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	      <h4 class="modal-title" id="partyDetailTitle">목표경로</h4>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	      </div>
+
+	      <div class="modal-body">
+			  <div class="form-group">
+			<!--   	<label>목표 경로</label> -->
+			  	<br>
+				<div id="map_div2">
+			    </div>
+			    <p id="result2"></p>
+			  </div>
+	      </div>
+	      
 	    </div>
 	  </div>
 	</div>
@@ -179,6 +220,12 @@ h3{
         var markerStartLayer = null;
         var markerEndLayer = null;
         var routeLayer = null;
+        
+
+        var markerStartLayer2 = null;
+        var markerEndLayer2 = null;
+        var routeLayer2 = null;
+        
         var xy = new Object();
         
         function initTmap() {
@@ -186,7 +233,8 @@ h3{
             // Tmap.map을 이용하여, 지도가 들어갈 div, 넓이, 높이를 설정합니다.								
             map = new Tmap.Map({
                 div: 'map_div', // map을 표시해줄 div
-                width: "100%", // map의 width 설정
+                //width: "100%", // map의 width 설정
+                width: "766px", // 일단은 고정
                 height: "400px", // map의 height 설정
             });
             map.setCenter(new Tmap.LonLat("126.986072", "37.570028").transform("EPSG:4326", "EPSG:3857"), 15); //설정한 좌표를 "EPSG:3857"로 좌표변환한 좌표값으로 즁심점을 설정합니다.						
@@ -512,13 +560,13 @@ h3{
 
                     map.zoomToExtent(routeLayer.getDataExtent()); //map의 zoom을 routeLayer의 영역에 맞게 변경합니다.
                     
-                    alert('루트 불러오기 성공');
+                    //alert('루트 불러오기 성공');
                     
                 },
                 //요청 실패시 콘솔창에서 에러 내용을 확인할 수 있습니다.
                 error: function(request, status, error) {
                     console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
-                    alert('루트 불러오기 실패');
+                    //alert('루트 불러오기 실패');
                     
                 }
             });
@@ -532,62 +580,225 @@ var timezoneOffset = new Date().getTimezoneOffset() * 60000;
 var timezoneDate = new Date(Date.now() - timezoneOffset); // 타임존을 반영한 현재 시각
  
 //document.getElementById('p_time').value= new Date().toISOString().slice(0, 16);
-$('#p_time').val(timezoneDate.toISOString().slice(0, 16));
+$('#createPartyModal #p_time').val(timezoneDate.toISOString().slice(0, 16));
 
 $(document).ready(function() {
 	list();
 });
 
 var u_idx = $('#u_idx').val();
-
 var path='http://localhost:8080/runbike';
 
-function createParty() {
-	$.ajax({
 
-		url : path+'/party',
-		type : 'POST',
-		data : JSON.stringify({
-			p_name : $('#createPartyModal #p_name').val(),
-			p_content : $('#createPartyModal #p_content').val(),
-			p_start_info : $('#createPartyModal #p_start_info').val(),
-			p_end_info : $('#createPartyModal #p_end_info').val(),
-			p_XY : $('#createPartyModal #p_XY').val(),
-			p_time : $('#createPartyModal #p_time').val(),
-			p_capacity : $('#createPartyModal #p_capacity').val(),
-			p_password : $('#createPartyModal #p_password').val(),
-			p_riding_km : $('#createPartyModal #p_riding_km').val(),
-			p_riding_time : $('#createPartyModal #p_riding_time').val(),
-			u_idx : u_idx
-		}),
-		contentType : 'application/json; charset=utf-8', //전달해줄 때 타입
-		//dataType : 'json', //데이터타입
-		success : function() {
-			//alert('성공');
-			//list();
-			location.href='party';
-		}
-	});
+$('#createForm').submit(function() {
+	
+	var chk = false;
+	if ($('#createPartyModal #p_XY').val().length<1) {
+		alert('경로를 선택해주세요');
+	}else if ($('#createPartyModal #p_capacity').val() == null || $('#createPartyModal #p_capacity').val()<2){
+		alert('최대 인원은 2명부터 가능합니다!');
+	}else{
+		chk = true;
+	}
+	
+	if(chk == true){
+	 	$.ajax({
+			url : path+'/party',
+			type : 'POST',
+			data : JSON.stringify({
+				p_name : $('#createPartyModal #p_name').val(),
+				p_content : $('#createPartyModal #p_content').val(),
+				p_start_info : $('#createPartyModal #p_start_info').val(),
+				p_end_info : $('#createPartyModal #p_end_info').val(),
+				p_XY : $('#createPartyModal #p_XY').val(),
+				p_time : $('#createPartyModal #p_time').val(),
+				p_capacity : $('#createPartyModal #p_capacity').val(),
+				p_password : $('#createPartyModal #p_password').val(),
+				p_riding_km : $('#createPartyModal #p_riding_km').val(),
+				p_riding_time : $('#createPartyModal #p_riding_time').val(),
+				u_idx : u_idx
+			}),
+			contentType : 'application/json; charset=utf-8', //전달해줄 때 타입
+			success : function() {
+				location.href='party';
+			}
+		}); 
+	}
+	return false;
+});
+
+/* var prtcl2;
+var markerStartLayer2; */
+
+
+function viewDetail(sx,sy,ex,ey) {
+	alert('뷰디테일4');
+
+	getRoute2(sx,sy,ex,ey);
+}
+
+function initTmap2() {
+    // map 생성
+    // Tmap.map을 이용하여, 지도가 들어갈 div, 넓이, 높이를 설정합니다.								
+    map2 = new Tmap.Map({
+        div: 'map_div2', // map을 표시해줄 div
+        //width: "100%", // map의 width 설정
+        width: "766px", // 일단은 고정
+        height: "400px", // map의 height 설정
+    });
+    map.setCenter(new Tmap.LonLat("126.986072", "37.570028").transform("EPSG:4326", "EPSG:3857"), 15); //설정한 좌표를 "EPSG:3857"로 좌표변환한 좌표값으로 즁심점을 설정합니다.						
+
+}
+
+
+function getRoute2(sx,sy,ex,ey) {
+	
+
+    // 2. 기존 마커, 팝업 제거
+    if (markerStartLayer2 != null) {
+    	markerStartLayer2.clearMarkers();
+    }
+    if (markerEndLayer2 != null) {
+    	markerEndLayer2.clearMarkers();
+    }    
+    if (routeLayer2 != null) {
+        map2.removeLayer(routeLayer2);
+        routeLayer2=null;
+    }
+	
+    // 시작 마커 표시
+    markerStartLayer2 = new Tmap.Layer.Markers("start"); //마커 레이어 생성
+    map2.addLayer(markerStartLayer2); //map에 마커 레이어 추가
+
+    var size = new Tmap.Size(24, 38); //아이콘 크기 설정
+    var offset = new Tmap.Pixel(-(size.w / 2), -size.h); //아이콘 중심점 설정
+    var icon = new Tmap.IconHtml('<img src=http://tmapapis.sktelecom.com/upload/tmap/marker/pin_r_m_s.png />', size, offset); //마커 아이콘 설정
+    //var marker_s = new Tmap.Marker(new Tmap.LonLat("126.986072", "37.570028").transform("EPSG:4326", "EPSG:3857"), icon); //설정한 좌표를 "EPSG:3857"로 좌표변환한 좌표값으로 설정합니다.
+    var marker_s2 = new Tmap.Marker(new Tmap.LonLat(sx, sy), icon);
+    markerStartLayer2.addMarker(marker_s2); //마커 레이어에 마커 추가
+    
+    // 도착 마커 표시
+    markerEndLayer2 = new Tmap.Layer.Markers("end"); //마커 레이어 생성
+    map2.addLayer(markerEndLayer2); //map에 마커 레이어 추가
+
+    var size = new Tmap.Size(24, 38); //아이콘 크기 설정
+    var offset = new Tmap.Pixel(-(size.w / 2), -size.h); //아이콘 중심점 설정
+    var icon = new Tmap.IconHtml('<img src=http://tmapapis.sktelecom.com/upload/tmap/marker/pin_r_m_e.png />', size, offset); //마커 아이콘 설정
+    var marker_e2 = new Tmap.Marker(new Tmap.LonLat(ex, ey), icon);
+    markerEndLayer2.addMarker(marker_e2); //마커 레이어에 마커 추가
+    
+    
+    var headers = {};
+    headers["appKey"] = "6d5877dc-c348-457f-a25d-46b11bcd07a9"; //실행을 위한 키 입니다. 발급받으신 AppKey(appKey)를 입력하세요.
+
+    $.ajax({
+        method: "POST",
+        headers: headers,
+        url: "https://apis.openapi.sk.com/tmap/routes/pedestrian?version=1&format=xml", //보행자 경로안내 api 요청 url입니다.
+        async: false,
+        data: {
+            //출발지 위경도 좌표입니다.
+            startX: sx,
+            startY: sy,
+            //목적지 위경도 좌표입니다.
+            endX: ex,
+            endY: ey,
+            reqCoordType: "EPSG3857",
+            resCoordType: "EPSG3857",
+            //각도입니다.
+            //출발지 명칭입니다.
+            startName: "출발지",
+            //목적지 명칭입니다.
+            endName: "도착지"
+        },
+        //데이터 로드가 성공적으로 완료되었을 때 발생하는 함수입니다.
+        success: function(response) {
+            
+            prtcl2 = response;
+           
+
+            // 결과 출력
+            var innerHtml = "";
+            var prtclString2 = new XMLSerializer().serializeToString(prtcl2); //xml to String	
+            xmlDoc = $.parseXML(prtclString2),
+                $xml = $(xmlDoc),
+                $intRate = $xml.find("Document");
+
+            var distanceM = $intRate[0].getElementsByTagName("tmap:totalDistance")[0].childNodes[0].nodeValue;
+            var distanceKm = ($intRate[0].getElementsByTagName("tmap:totalDistance")[0].childNodes[0].nodeValue / 1000).toFixed(1);
+            var ridingTimeMin = ((distanceKm/16)*60).toFixed(1);
+            var tDistance = "총 거리 : " + distanceKm + "km,";
+            var tTime = " 예상 시간 : 약 " + ridingTimeMin + "분";
+
+            $("#result2").text(tDistance + tTime);
+
+            prtcl2 = new Tmap.Format.KML({
+                extractStyles: true,
+                extractAttributes: true
+            }).read(prtcl2); //데이터(prtcl)를 읽고, 벡터 도형(feature) 목록을 리턴합니다.
+            routeLayer2 = new Tmap.Layer.Vector("route"); // 백터 레이어 생성
+            //표준 데이터 포맷인 KML을 Read/Write 하는 클래스 입니다.
+            //벡터 도형(Feature)이 추가되기 직전에 이벤트가 발생합니다.
+            routeLayer2.events.register("beforefeatureadded", routeLayer2, onBeforeFeatureAdded);
+
+            function onBeforeFeatureAdded(e) {
+                var style = {};
+                switch (e.feature.attributes.styleUrl) {
+                    case "#pointStyle":
+                        style.externalGraphic = "http://topopen.tmap.co.kr/imgs/point.png"; //렌더링 포인트에 사용될 외부 이미지 파일의 url입니다.
+                        style.graphicHeight = 16; //외부 이미지 파일의 크기 설정을 위한 픽셀 높이입니다.
+                        style.graphicOpacity = 1; //외부 이미지 파일의 투명도 (0-1)입니다.
+                        style.graphicWidth = 16; //외부 이미지 파일의 크기 설정을 위한 픽셀 폭입니다.
+                        break;
+                    default:
+                        style.strokeColor = "#ff0000"; //stroke에 적용될 16진수 color
+                        style.strokeOpacity = "1"; //stroke의 투명도(0~1)
+                        style.strokeWidth = "5"; //stroke의 넓이(pixel 단위)
+                };
+                e.feature.style = style;
+            }
+
+            routeLayer2.addFeatures(prtcl2); //레이어에 도형을 등록합니다.
+            map2.addLayer(routeLayer2); //맵에 레이어 추가
+
+            map2.zoomToExtent(routeLayer2.getDataExtent()); //map의 zoom을 routeLayer의 영역에 맞게 변경합니다.
+
+            
+        },
+        //요청 실패시 콘솔창에서 에러 내용을 확인할 수 있습니다.
+        error: function(request, status, error) {
+            console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+        }
+    });
 }
 
 function list() {
-	
+
 	$.ajax({
-		
 		url : path+'/party/list',
 		type : 'GET',
+		async : false,
 		success : function(data) {
 			//alert(JSON.stringify(data));
 
 			var html = '';
-
 			for (var i = 0; i < data.length; i++) {
-				//alert(data[i].p_name);
+				var lock='';
+				var jsonObj = JSON.parse(data[i].p_XY);
+
+				var startX = jsonObj['startX'];
+				var startY = jsonObj['startY'];
+				var endX = jsonObj['endX'];
+				var endY = jsonObj['endY'];
+				
+				if(data[i].p_password.length>0){
+					lock = '<i class="fas fa-lock"></i>';
+				}
 				html += '<div class="col-sm-6">\n';
 				html += '<div class="card card-style">\n';
 				html += '<div class="card-body">\n';
 				html += '<h5 class="card-title">\n';
-				html += data[i].p_name + ' ( '+getUserCount(data[i].p_num)+' / '+data[i].p_capacity+' ) \n'
+				html += data[i].p_name + ' ( '+getUserCount(data[i].p_num)+' / '+data[i].p_capacity+' ) '+lock+'\n'
 				html += '</h5>\n';
 				html += '<p class="card-text">\n';
 				html += '<i class="fas fa-map-marked-alt"></i> 출발지 : '+data[i].p_start_info+'<br>\n';
@@ -595,8 +806,16 @@ function list() {
 				html += '<i class="far fa-clock"></i> 모일 시간 : '+data[i].p_time_f+'<br>\n';
 				html += '</p>\n';
 				html += '<p class="card-text">'+data[i].p_content+'</p>\n';
-				html += '<a href="#" class="btn mintbtn"><i class="fas fa-info-circle"></i> 방 정보 보기</a>\n';
-				html += '<a href="#" onclick="join('+data[i].p_num+')" class="btn mintbtn"><i class="fas fa-child"></i> 참여하기!!</a>\n';
+				
+				html += '<a href="#" class="btn mintbtn" data-toggle="modal" data-target="#partyDetailModal" onclick="viewDetail('+startX+','+startY+','+endX+','+endY+')"><i class="fas fa-info-circle"></i> 방 정보 보기</a>\n';
+	
+				// 오브젝트타입으론 넘어가지 않아 고생함
+				//html += '<a href="#" class="btn mintbtn" data-toggle="modal" data-target="#partyDetailModal" onclick="viewDetail(\''+data[i].p_XY+'\')"><i class="fas fa-info-circle"></i> 방 정보 보기</a>\n';
+				//html += '<a href="#" class="btn mintbtn" data-toggle="modal" data-target="#partyDetailModal" onclick="viewDetail('+jsonXY+')"><i class="fas fa-info-circle"></i> 방 정보 보기</a>\n';
+				//html += '<a href="#" class="btn mintbtn" data-toggle="modal" data-target="#partyDetailModal" onclick="viewDetail('+stringXY+')"><i class="fas fa-info-circle"></i> 방 정보 보기</a>\n';
+				//html += '<a href="#" class="btn mintbtn" data-toggle="modal" data-target="#partyDetailModal" onclick="viewDetail(\''+stringXY+'\')"><i class="fas fa-info-circle"></i> 방 정보 보기</a>\n';
+				
+				html += '<a href="#" onclick="joinchk('+data[i].p_num+','+getUserCount(data[i].p_num)+','+data[i].p_capacity+','+data[i].p_password+')" class="btn mintbtn"><i class="fas fa-child"></i> 참여하기!!</a>\n';
 				html += '</div>\n';
 				html += '</div>\n';
 				html += '</div>';
@@ -620,6 +839,37 @@ function getUserCount(p_num) {
 		}
 	});
 	return cnt;
+}
+
+function joinchk(p_num, cur_capacity, p_capacity, p_password) {
+	var chkPass = false;
+	var chkCapa = false;
+	
+	if (cur_capacity<p_capacity){
+		chkCapa = true;
+		
+		if (typeof p_password == "undefined" || p_password == null || p_password == ""){
+			chkPass = true;
+		}else {
+			var input_pw = prompt('암호가 있는 방입니다. 비밀번호를 입력해주세요!');
+			if(p_password == input_pw){
+				chkPass = true;
+			}else if(typeof input_pw == "undefined" || input_pw == null || input_pw == "") {
+				alert('취소하였습니다.');
+			}else{
+				alert('비밀번호가 틀렸습니다');
+			}
+		}
+		
+	}else {
+		alert('인원이 모두 찼습니다!');
+	}
+	
+	
+	if (chkPass&&chkCapa){
+		join(p_num);
+	}
+	
 }
 
 function join(p_num) {
