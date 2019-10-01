@@ -66,34 +66,23 @@ p{
 	
 	
 		<div class="row">
-			
-			<c:choose>		
-				<c:when test="${empty myStampList}">
+			<c:forEach var="myStamp" items="${myStampList}" varStatus="status">
+				<c:set var="serial" value="${myStamp.serial}"/>						
+					<c:choose>				
+						<c:when test="${1 eq serial}">
 							<div class="col" id="stampArea">
-							<img alt="stamp" src="<c:url value='/uploadfile/cs_stampPhoto/${stamp.cs_photo}'/>" style="width: 150px; height: 147px;">
-							<p id="stampName">${stamp.s_name}</p>
+								<img alt="myStamp" src="<c:url value='/uploadfile/color_stampPhoto/${myStamp.s_photo}'/>" style="width: 150px; height: 147px;">
+								<p id="stampName">${myStamp.s_name}</p>
 							</div>
-				</c:when>
-				
-				<c:when test="${!empty myStampList}">
-					<c:forEach var="stamp" items="${stampList}" varStatus="status">
-							<c:choose>				
-								<c:when test="${stamp.s_num eq myStampList.s_num}">
-									<div class="col" id="stampArea">
-										<img alt="stamp" src="<c:url value='/uploadfile/color_stampPhoto/${stamp.s_photo}'/>" style="width: 150px; height: 147px;">
-										<p id="stampName">${stamp.s_name}</p>
-									</div>
-								</c:when>
-								<c:when test="${stamp.s_num ne myStampList.s_num}}">
-									<div class="col" id="stampArea">
-										<img alt="stamp" src="<c:url value='/uploadfile/cs_stampPhoto/${stamp.cs_photo}'/>" style="width: 150px; height: 147px;">
-										<p id="stampName">${stamp.s_name}</p>
-									</div>
-								</c:when>						 									
-							</c:choose>			
-					</c:forEach>
-				</c:when>
-			</c:choose>
+						</c:when>
+						<c:when test="${0 eq serial}">
+							<div class="col" id="stampArea">
+								<img alt="myStamp" src="<c:url value='/uploadfile/cs_stampPhoto/${myStamp.cs_photo}'/>" style="width: 150px; height: 147px;">
+								<p id="stampName">${myStamp.s_name}</p>
+							</div>
+						</c:when>						 									
+					</c:choose>
+			</c:forEach>
 		</div>
 		
 	</div>
