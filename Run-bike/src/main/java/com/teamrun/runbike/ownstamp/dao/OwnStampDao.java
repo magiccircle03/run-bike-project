@@ -6,6 +6,8 @@ import com.teamrun.runbike.ownstamp.domain.Stamp;
 
 public interface OwnStampDao {
 	
+	public int insertMyStamp(int s_num, int u_idx);
+	
 	//전체 스탬프 가져오기(흑백)
 	public List<Stamp> selectAllStamp();
 	

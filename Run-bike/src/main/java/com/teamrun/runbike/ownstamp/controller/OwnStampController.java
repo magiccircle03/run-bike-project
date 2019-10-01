@@ -11,14 +11,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.teamrun.runbike.ownstamp.domain.Stamp;
-import com.teamrun.runbike.ownstamp.service.GetOwnStampService;
+import com.teamrun.runbike.ownstamp.service.OwnStampService;
 
 @Controller
 @RequestMapping("/stamp")
 public class OwnStampController {
 
 	@Autowired
-	private GetOwnStampService service;
+	private OwnStampService service;
 	
 	// 사용자 스탬프 조회 페이지
 	@RequestMapping("/user")
@@ -40,10 +40,14 @@ public class OwnStampController {
 
 	// 스탬프 얻기 위한 페이지
 	@RequestMapping("/getStamp")
-	public String getStampGame() {
+	public String getStampGame(Model model) {
 		
 		String view = "stamp/getStamp";
 
+		List<Stamp> stampList = service.getAllStamp();
+		
+		model.addAttribute("stampList", stampList);
+		
 		return view;
 	}
 	

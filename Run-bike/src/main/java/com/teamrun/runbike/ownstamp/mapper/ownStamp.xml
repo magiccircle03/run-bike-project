@@ -17,7 +17,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="s_point_lat" column="s_point_lat" />
 	</resultMap>
 	
-
+	<!-- insert  -->
+	<insert id="insertMyStamp">
+		insert into own_stamp (s_num, u_idx) values (#{param1}, #{param2})
+	</insert>
+	
 	<!-- select -->
 		<!-- 전체 스탬프 불러오기  -->
 		<select id="selectAllStamp" resultMap="stamp">

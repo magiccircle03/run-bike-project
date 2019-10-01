@@ -12,8 +12,8 @@ import com.teamrun.runbike.ownstamp.dao.OwnStampDao;
 import com.teamrun.runbike.ownstamp.domain.Stamp;
 import com.teamrun.runbike.user.domain.LoginInfo;
 
-@Service("getStampService")
-public class GetOwnStampService {
+@Service("ownStampService")
+public class OwnStampService {
 
 	@Autowired
 	private SqlSessionTemplate template;
@@ -24,8 +24,7 @@ public class GetOwnStampService {
 		
 		dao = template.getMapper(OwnStampDao.class);
 		
-		//전체 스탬프 리스트
-		
+		//전체 스탬프 리스트	
 		List<Stamp> allStampList = null; 
 		allStampList = dao.selectAllStamp();
 		 
@@ -47,6 +46,5 @@ public class GetOwnStampService {
 		
 		return stampList;
 	}
-	
 	
 }
