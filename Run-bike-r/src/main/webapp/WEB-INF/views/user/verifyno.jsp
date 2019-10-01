@@ -8,6 +8,6 @@
 </head>
 <body>
 	<h1>이메일 인증에 실패했습니다.</h1>
-	<a href="http://15.164.162.21/runbike">메인</a>
+	<a href="http://15.164.162.21:8080/runbike">메인</a>
 </body>
 </html>

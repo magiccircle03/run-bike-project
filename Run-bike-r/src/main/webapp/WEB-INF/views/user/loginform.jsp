@@ -268,7 +268,7 @@
 					            </div>
 					            <div class="not-user">
 					            	<p class="label-reg" style="text-decoration: underline">아직 회원이 아니신가요?</p>
-					            	<a class="btn btn-reg" href="http://15.164.162.21/runbike/user/register">회원가입</a>
+					            	<a class="btn btn-reg" href="http://15.164.162.21:8080/runbike/user/register">회원가입</a>
 					            </div>
 					        </form>
 					    </div>
@@ -280,11 +280,11 @@
 			<script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js" charset="utf-8"></script>
 			<script type="text/javascript">
 			
-				var naver_id_login = new naver_id_login("bGcr_qQ18WcY_tp0AIjX", "http://15.164.162.21/runbike/user/login");
+				var naver_id_login = new naver_id_login("bGcr_qQ18WcY_tp0AIjX", "http://15.164.162.21:8080/runbike/user/login");
 			  	var state = naver_id_login.getUniqState();
 			  	
 			  	naver_id_login.setButton("green",2, 45);
-			  	naver_id_login.setDomain("http://15.164.162.21/runbike/user/login");
+			  	naver_id_login.setDomain("http://15.164.162.21:8080/runbike/user/login");
 			  	naver_id_login.setState(state);
 			  	naver_id_login.init_naver_id_login();
 			  	
@@ -301,18 +301,18 @@
 			    	
 			    	$.ajax({
 			    		type:'GET',
-						url:'http://15.164.162.21/runbike/user/register/idCheck?u_id='+email,
+						url:'http://15.164.162.21:8080/runbike/user/register/idCheck?u_id='+email,
 						success: function(data){
 							console.log(data);
 							// 기존 아이디가 없을 경우 회원가입
 							if(data == 'Y'){			
 								$.ajax({
 									type:'POST',
-									url: 'http://15.164.162.21/runbike/user/login/naver',
+									url: 'http://15.164.162.21:8080/runbike/user/login/naver',
 									data: {u_id: email, u_pw: "naverPassword123",u_name: name, image: image},
 									success: function(data){
 										if(data == 'Y'){
-											location.href = 'http://15.164.162.21/runbike/record/startRide';
+											location.href = 'http://15.164.162.21:8080/runbike/record/startRide';
 										} 
 									},
 									error: function(data){
@@ -324,11 +324,11 @@
 								$.ajax({			
 									type: 'POST',
 									data: {u_id: email, u_pw: "naverPassword123"},
-									url: 'http://15.164.162.21/runbike/user/login',
+									url: 'http://15.164.162.21:8080/runbike/user/login',
 									success : function(data){
 										console.log(data);
 										if(data=='ok'){
-											location.href = 'http://15.164.162.21/runbike/record/startRide';									
+											location.href = 'http://15.164.162.21:8080/runbike/record/startRide';									
 										} else {
 											alert("로그인에 실패했습니다. 아이디 혹은 비밀번호를 확인해주세요.");
 										}
@@ -358,17 +358,17 @@
 							$.ajax({			
 								type: 'POST',
 								data: $('#loginForm').serialize(),
-								url: 'http://15.164.162.21/runbike/user/login',
+								url: 'http://15.164.162.21:8080/runbike/user/login',
 								success : function(data){
 									console.log(data);
 									if(data=='ok'){
-										location.href = 'http://15.164.162.21/runbike/record/startRide';									
+										location.href = 'http://15.164.162.21:8080/runbike/record/startRide';									
 									} else if(data=='yet'){
-										location.href='http://15.164.162.21/runbike/verify/'+data;
+										location.href='http://15.164.162.21:8080/runbike/verify/'+data;
 									} else if(data == 'leave'){
 										alert("이미 탈퇴한 회원입니다.");
 									} else if(data =='admin'){
-										//location.href='http://15.164.162.21/runbike/verify/'+data;
+										//location.href='http://15.164.162.21:8080/runbike/verify/'+data;
 									} else {
 										alert("로그인에 실패했습니다. 아이디 혹은 비밀번호를 확인해주세요.");
 									}
