@@ -10,14 +10,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.teamrun.runbike.ownbadge.domain.Badge;
-import com.teamrun.runbike.ownbadge.service.OwnBadgeService;
+import com.teamrun.runbike.ownbadge.service.GetOwnBadgeService;
 
 @Controller
 @RequestMapping("/badge")
 public class OwnBadgeController {
 
 	@Autowired
-	private OwnBadgeService service;
+	private GetOwnBadgeService service;
 	
 	// 사용자 뱃지 페이지
 	@RequestMapping("/user")
