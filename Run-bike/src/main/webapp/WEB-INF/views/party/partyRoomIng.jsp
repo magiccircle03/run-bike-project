@@ -609,7 +609,7 @@ function showCurrentPos(){
 		var lonlat = new Tmap.LonLat(longitude, latitude).transform("EPSG:4326", "EPSG:3857");//좌표 설정
 		var size = new Tmap.Size(24, 38);//아이콘 크기 설정
 		var offset = new Tmap.Pixel(-(size.w / 2), -(size.h));//아이콘 중심점 설정
-		var icon = new Tmap.Icon('http://tmapapis.sktelecom.com/upload/tmap/marker/pin_b_m_a.png',size, offset);//마커 아이콘 설정
+		var icon = new Tmap.Icon('http://tmapapis.sktelecom.com/upload/tmap/marker/pin_b_m_i.png',size, offset);//마커 아이콘 설정
 		
 		marker = new Tmap.Marker(lonlat, icon);//마커 생성
 		markerLayer.addMarker(marker);//레이어에 마커 추가

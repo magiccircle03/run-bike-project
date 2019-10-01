@@ -26,6 +26,10 @@
 	font-size: 22px;
 }
 
+.mint{
+	background-color: #21B2A6;
+	color: #fefefe;
+}
 .mintbtn{
 	background-color: #21B2A6;
 	color: #fefefe;
@@ -61,6 +65,18 @@ h3{
 .poptxt {
     padding: 10px;
 }
+.btn:hover{
+	cursor: pointer;
+}
+.borderline{
+	border: 1px solid #ddd;
+}
+.width100{
+	width: 100%;
+}
+.margin20{
+	margin:20px 0;
+}
 
 </style>
 </head>
@@ -76,16 +92,15 @@ h3{
 	<input id="u_idx" name="u_idx" type="hidden" class="form-control" value="${loginInfo.u_idx}">
 
 	<div id="top-nav">
-		<table><tr>
-		<td>	
-			<h3>현재 개설된 파티</h3>
-			<p>다른 회원과 함께 달려보세요</p> 
-		</td>
-		<td style="text-align: right">
-			<a class="btn" data-toggle="modal" data-target="#createPartyModal">방 만들기</a> 
-		</td>
-		</tr>
-		</table>
+    	    <div class="row">
+	    	    <div class="col-md-6">
+		    	    <h3>현재 개설된 파티</h3>
+					<p>다른 회원과 함께 달려보세요</p> 
+				</div>
+	    	    <div class="col-md-6" style="text-align: right">
+	    	    	<a class="btn" data-toggle="modal" data-target="#createPartyModal">방 만들기</a>
+	    	    </div>
+    	    </div>
 	</div>
 
 
@@ -123,7 +138,7 @@ h3{
 			  	<label>목표 경로</label><br>
 	   			<input id="p_start_info" name="p_start_info" type="text" placeholder="시작지" class="form-control" style="display: inline-block; width:40%" required><button type="button" onclick="searchPoi('S')" class="btn" style="width:9%">검색</button>
    				<input id="p_end_info" name="p_end_info" type="text" placeholder="도착지" class="form-control" style="display: inline-block; width:40%" required><button type="button" onclick="searchPoi('E')" class="btn" style="width:9%">검색</button>
-			  	<button type="button" class="btn" onclick="getRoute()">경로 선택</button>
+			  	<button type="button" class="btn mint width100 margin20" onclick="getRoute()">경로 선택</button>
 				<div id="map_div">
 			    </div>
 			    <p id="result"></p>
