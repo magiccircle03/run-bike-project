@@ -75,17 +75,17 @@ p{
 					<c:when test="${1 eq serial}">
 						<div class="col" id="badgeArea">
 							<img alt="myBadge"
-								src="<c:url value='/uploadfile/color_badgePhoto/${myBadgelist.s_photo}'/>"
+								src="<c:url value='/uploadfile/color_badgePhoto/${myBadgelist.b_photo}'/>"
 								style="width: 150px; height: 147px;">
-							<p id="badgeName">${myBadgelist.s_name}</p>
+							<p id="badgeName">${myBadgelist.b_name}</p>
 						</div>
 					</c:when>
 					<c:when test="${0 eq serial}">
 						<div class="col" id="badgeArea">
 							<img alt="myBadge"
-								src="<c:url value='/uploadfile/cs_badgePhoto/${myBadgelist.cs_photo}'/>"
+								src="<c:url value='/uploadfile/cs_badgePhoto/${myBadgelist.cb_photo}'/>"
 								style="width: 150px; height: 147px;">
-							<p id="badgeName">${myBadgelist.s_name}</p>
+							<p id="badgeName">${myBadgelist.b_name}</p>
 						</div>
 					</c:when>
 				</c:choose>
