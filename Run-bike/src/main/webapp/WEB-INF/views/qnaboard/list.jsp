@@ -212,7 +212,8 @@
         $('#editFrame').css('display', 'block');
         
            $.ajax({
-                url : 'http://localhost:8080/runbike/rest/board/'+q_num,
+                //url : 'http://localhost:8080/runbike/rest/board/'+q_num,
+                url : '../../rest/board/'+q_num,
                 type : 'GET',
                 success : function(data){
                   	$('#u_idx').val(u_idx);
@@ -239,7 +240,8 @@
 	  		var u_idx = ($('#u_idx').val());
         
          $.ajax({
-             url : 'http://localhost:8080/runbike/rest/board/'+q_num,
+             //url : 'http://localhost:8080/runbike/rest/board/'+q_num,
+             url : '../../rest/board/'+q_num,
              type : 'POST',
              data : {q_num:q_num, q_writer:q_writer, q_title:q_title, q_content:q_content},   
              success : function(data){
@@ -278,7 +280,8 @@
 			//alert(num);
 			
 			$.ajax({
-				url : 'http://localhost:8080/runbike/rest/board/list',
+				//url : 'http://localhost:8080/runbike/rest/board/list',
+				url : '../../rest/board/list',
 				type : 'GET',
 				data : {page:pgNum, searchType : $('#searchType').val(), keyword : $('#keyword').val()},
 				success : function(data){
@@ -418,7 +421,8 @@
 			    
 			        $.ajax({
 			            type : 'POST',
-			            url : 'http://localhost:8080/runbike/rest/reply',
+			            //url : 'http://localhost:8080/runbike/rest/reply',
+			            url : '../../rest/reply',
 			            enctype: 'multipart/form-data',
 			            contentType : false,
 			            processData : false,
@@ -444,7 +448,8 @@
 			    	//alert('글번호 :'+q_num);
 			    	
 			    	$.ajax({
-						url : 'http://localhost:8080/runbike/rest/reply/reply/'+q_num,
+						//url : 'http://localhost:8080/runbike/rest/reply/reply/'+q_num,
+						url : '../../rest/reply/reply/'+q_num,
 						type : 'GET',
 						success : function(data){
 							if(data.length>0){
@@ -525,7 +530,8 @@
 
 	            
 	            $.ajax({
-	                url: 'http://localhost:8080/runbike/rest/reply',
+	                //url: 'http://localhost:8080/runbike/rest/reply',
+	                url: '../../rest/reply',
 	                type: 'POST',
 	                processData: false,  
 	                contentType: false,  
@@ -557,7 +563,8 @@
 				$('#detailFrame').css('display','block');
 					
 					$.ajax({
-						url : 'http://localhost:8080/runbike/rest/board/detail/'+q_num,
+						//url : 'http://localhost:8080/runbike/rest/board/detail/'+q_num,
+						url : '../../rest/board/detail/'+q_num,
 						type : 'GET',
 						 success : function(data){
 			                    $('#dq_num').val(data.q_num);
@@ -591,7 +598,8 @@
 		        
 		        if(confirm('정말 삭제하시겠습니까?')){
 		           $.ajax({
-		                url : 'http://localhost:8080/runbike/rest/board/del/'+q_num,
+		               // url : 'http://localhost:8080/runbike/rest/board/del/'+q_num,
+		               	url : '../../rest/board/del/'+q_num,
 		                type : 'DELETE',
 		                success : function(data){
 		                        if(data=='SUCCESS'){
@@ -612,7 +620,8 @@
 			
 			if(confirm('정말 삭제하시겠습니까?')){
 		           $.ajax({
-		                url : 'http://localhost:8080/runbike/rest/reply/del/'+rp_num,
+		                //url : 'http://localhost:8080/runbike/rest/reply/del/'+rp_num,
+		                 url : '../../rest/reply/del/'+rp_num,
 		                type : 'DELETE',
 		                success : function(data){
 		             

@@ -143,7 +143,8 @@
         	}        
             
             $.ajax({
-                url: 'http://localhost:8080/runbike/board/writeform',
+                //url: 'http://localhost:8080/runbike/board/writeform',
+                url: '../../board/writeform',
                 type: 'POST',
                 processData: false,  
                 contentType: false,  
@@ -153,7 +154,8 @@
                 	
                 	
                 	 alert("글 등록이 완료되었습니다");
-                 	location.href= 'http://localhost:8080/runbike/qnaboard';
+                 	//location.href= 'http://localhost:8080/runbike/qnaboard';
+                	 location.href= '../../qnaboard';
                 }
                 	
                        
