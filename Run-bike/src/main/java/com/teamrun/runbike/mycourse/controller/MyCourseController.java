@@ -31,10 +31,6 @@ public class MyCourseController {
 	@Autowired
 	private InsertMyCourseService insertService;
 	
-	/*
-	 * @Autowired private GetMyCourseService getService;
-	 */
-	 	
 	@Autowired
 	private GetTotalPageService totalPageService;
 	
@@ -64,37 +60,17 @@ public class MyCourseController {
 	  @CrossOrigin
 	  @ResponseBody
 	  @RequestMapping(value = "/{currentPageNumber}", method = RequestMethod.GET) public
-	  ResponseEntity<List<MyCourse>> selectMyCourseList(@PathVariable("currentPageNumber") int currentPageNumber) {
+	  ResponseEntity<List<MyCourse>> selectMyCourseList(@PathVariable("currentPageNumber") int currentPageNumber, HttpServletRequest request) {
 	  
-	  List<MyCourse> myCourseList = listService.getListData(currentPageNumber);
+	  List<MyCourse> myCourseList = listService.getListData(currentPageNumber, request);
 	  
 	  ResponseEntity<List<MyCourse>> entity = new
 	  ResponseEntity<List<MyCourse>>(myCourseList, HttpStatus.OK);
 	  
 	  return entity;
 	  }
-	 
-	
-	/*
-	 * // Read
-	 * 
-	 * @CrossOrigin
-	 * 
-	 * @ResponseBody
-	 * 
-	 * @RequestMapping(value = "/{currentPageNumber}", method = RequestMethod.GET)
-	 * public ResponseEntity<ListMyCourse>
-	 * selectMyCourseList(@PathVariable("currentPageNumber") int currentPageNumber)
-	 * {
-	 * 
-	 * ListMyCourse myCourseList = listService.getListData(currentPageNumber);
-	 * 
-	 * ResponseEntity<ListMyCourse> entity = new
-	 * ResponseEntity<ListMyCourse>(myCourseList, HttpStatus.OK);
-	 * 
-	 * return entity; }
-	 */
 
+	//전체 페이지 수 가져오기  
 	@CrossOrigin
 	@ResponseBody
 	@RequestMapping(value = "/totalPage/{u_idx}", method = RequestMethod.GET)

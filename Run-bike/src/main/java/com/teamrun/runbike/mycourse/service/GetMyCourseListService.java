@@ -4,12 +4,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.teamrun.runbike.mycourse.dao.MyCourseDao;
 import com.teamrun.runbike.mycourse.domain.MyCourse;
+import com.teamrun.runbike.user.domain.LoginInfo;
 
 @Service("getMyCourseListService")
 public class GetMyCourseListService {
@@ -21,7 +24,7 @@ public class GetMyCourseListService {
 
 	final int CNT_LIST = 4;
 	
-	public List<MyCourse> getListData(int currentPageNumber){
+	public List<MyCourse> getListData(int currentPageNumber, HttpServletRequest request){
 		
 		dao = template.getMapper(MyCourseDao.class);
 		
@@ -33,8 +36,12 @@ public class GetMyCourseListService {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("index", index);
 		params.put("CNT_LIST", CNT_LIST);
+		
 		//★추후에 Server쪽 Session으로 받아오기
-		params.put("u_idx", 71);
+		//세션에서 로그인 정보 받아오기
+		LoginInfo loginInfo = (LoginInfo)request.getSession(false).getAttribute("loginInfo");
+		int u_idx = loginInfo.getU_idx();
+		params.put("u_idx", u_idx);
 		
 		//map형태로 보낸 parameters를 통해 MyCourse 반환받고 저장
 		List<MyCourse> myCourseList = null;

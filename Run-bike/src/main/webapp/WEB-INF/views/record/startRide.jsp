@@ -239,7 +239,6 @@ font-family: 'Exo', sans-serif;
                 // GeoLocation을 이용해서 접속 위치를 얻어옵니다
                 navigator.geolocation.getCurrentPosition(function(position) {
 
-                    //시작지점을 startLonLat에 저장합니다.
                     startLonLat = position.coords;
                     /*startTime =*/
 
