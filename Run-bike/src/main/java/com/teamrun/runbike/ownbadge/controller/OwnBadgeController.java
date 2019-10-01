@@ -36,6 +36,7 @@ public class OwnBadgeController {
 		System.out.println(myBadgeList);
 		
 		insertService.insertFirstLoginBadge(request);
+		insertService.insertConsecutiveLoginBadge(request);
 		insertService.insertRidingAloneKmBadge(request);
 		insertService.insertRidingWithKmBadge(request);
 		insertService.insertRidingAloneTimeBadge(request);

@@ -37,20 +37,19 @@ public class InsertOwnBadgeService {
 	}
 	
 	// 연속 로그인
-	/*
-	 * public void insertConsecutiveLoginBadge(HttpServletRequest request) { dao =
-	 * template.getMapper(OwnBadgeDao.class);
-	 * 
-	 * LoginInfo loginInfo =
-	 * (LoginInfo)request.getSession().getAttribute("loginInfo");
-	 * 
-	 * int u_idx = loginInfo.getU_idx();
-	 * 
-	 * if(dao.consecutiveLogin(u_idx) != '' && dao.consecutiveLogin(u_idx)>=1) {
-	 * if(dao.isMyBadge(u_idx, 2)==0) { dao.insertMyBadge(2, u_idx); } }
-	 * 
-	 * }
-	 */
+	 public void insertConsecutiveLoginBadge(HttpServletRequest request) { dao =
+	 template.getMapper(OwnBadgeDao.class);
+	 
+	 LoginInfo loginInfo =
+	 (LoginInfo)request.getSession().getAttribute("loginInfo");
+	 
+	 int u_idx = loginInfo.getU_idx();
+	 
+	 if(dao.consecutiveLogin(u_idx)>=1) {
+		 if(dao.isMyBadge(u_idx, 2)==0) { dao.insertMyBadge(2, u_idx); } }
+	 
+	 }
+	 
 	
 	// 혼자 라이딩 km
 	public void insertRidingAloneKmBadge(HttpServletRequest request) {

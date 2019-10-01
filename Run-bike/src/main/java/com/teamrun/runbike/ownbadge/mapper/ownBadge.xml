@@ -61,7 +61,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		</select>
 		<!-- select 2: 연속 세번 방문 -->
 		<select id="consecutiveLogin" resultType="int">
-			select serial from 
+			select count(serial) from 
 			(select
 			distinct date_format(login_date, '%Y-%m-%d') DATEONLY, 
 			@serial := if(datediff(login_date, @prev_login)=1, @serial + datediff(login_date, @prev_login), 0) as serial,
