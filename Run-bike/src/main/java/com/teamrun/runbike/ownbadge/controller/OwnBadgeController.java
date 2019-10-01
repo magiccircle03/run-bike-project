@@ -9,40 +9,38 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.teamrun.runbike.ownbadge.domain.Badge;
+import com.teamrun.runbike.ownbadge.domain.MyBadge;
 import com.teamrun.runbike.ownbadge.service.GetOwnBadgeService;
+import com.teamrun.runbike.ownbadge.service.InsertOwnBadgeService;
 
 @Controller
 @RequestMapping("/badge")
 public class OwnBadgeController {
 
 	@Autowired
-	private GetOwnBadgeService service;
+	private GetOwnBadgeService getService;
+	
+	@Autowired
+	private InsertOwnBadgeService insertService;
 	
 	// 사용자 뱃지 페이지
 	@RequestMapping("/user")
 	public String getUsersBadge(Model model, HttpServletRequest request) {
+		
 		String view = "rewards/myBadge";
 		
-		List<Badge> badgeList = service.getAllBadge();
-		List<List<Badge>> myBadgeList = service.getMyBadge(request);
+		List<MyBadge> myBadgeList = getService.selectMyBadge(request);
 		
-		System.out.println(myBadgeList.size());
-		
-		model.addAttribute("badgeList", badgeList);
 		model.addAttribute("myBadgeList",myBadgeList);
 		
-		System.out.println("마뱃지"+myBadgeList);
-		System.out.println(badgeList);
+		System.out.println(myBadgeList);
 		
-		service.insertFirstLoginBadge(request);
-		
-		//service.insertConsecutiveLoginBadge(request);
-		service.insertRidingAloneKmBadge(request);
-		service.insertRidingWithKmBadge(request);
-		service.insertRidingAloneTimeBadge(request);
-		service.insertOwnStampBadge(request);
-		service.insertIsMasterBadge(request);
+		insertService.insertFirstLoginBadge(request);
+		insertService.insertRidingAloneKmBadge(request);
+		insertService.insertRidingWithKmBadge(request);
+		insertService.insertRidingAloneTimeBadge(request);
+		insertService.insertOwnStampBadge(request);
+		insertService.insertIsMasterBadge(request);
 		return view;
 	}
 

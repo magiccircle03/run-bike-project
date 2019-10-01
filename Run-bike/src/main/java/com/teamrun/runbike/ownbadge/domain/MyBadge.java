@@ -1,13 +1,13 @@
 package com.teamrun.runbike.ownbadge.domain;
 
-public class Badge {
+public class MyBadge {
 
 	private int b_num; //뱃지 고유 번호
 	private String b_name; //뱃지명
 	private String b_photo; //뱃지사진
 	private String cb_photo; //뱃지흑백사진
+	private int serial;
 	
-	//Getter and Setter
 	public int getB_num() {
 		return b_num;
 	}
@@ -26,16 +26,24 @@ public class Badge {
 	public void setB_photo(String b_photo) {
 		this.b_photo = b_photo;
 	}
-	public String getcb_photo() {
+	public String getCb_photo() {
 		return cb_photo;
 	}
-	public void setcb_photo(String cb_photo) {
+	public void setCb_photo(String cb_photo) {
 		this.cb_photo = cb_photo;
 	}
+	public int getSerial() {
+		return serial;
+	}
+	public void setSerial(int serial) {
+		this.serial = serial;
+	}
 	
-	//확인 위한 toString()
 	@Override
 	public String toString() {
-		return "Badge [b_num=" + b_num + ", b_name=" + b_name + ", b_photo=" + b_photo + ", cb_photo=" + cb_photo + "]";
+		return "MyBadge [b_num=" + b_num + ", b_name=" + b_name + ", b_photo=" + b_photo + ", cb_photo=" + cb_photo
+				+ ", serial=" + serial + "]";
 	}
+	
+	
 }

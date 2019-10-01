@@ -37,6 +37,8 @@ public class OwnStampController {
 
 		List<MyStamp> myStampList = getService.selectMyStamp(request);
 		
+		System.out.println(myStampList);
+		
 		model.addAttribute("myStampList", myStampList);
 
 		System.out.println(myStampList);
@@ -68,17 +70,4 @@ public class OwnStampController {
 		System.out.println(":::::::::::::::::::::::::입력 값은 " + cnt);
 		return new ResponseEntity<String>(cnt > 0 ? "success" : "fail", HttpStatus.OK);
 	}
-	
-	/*
-	 * @RequestMapping(method = RequestMethod.GET)
-	 * 
-	 * @CrossOrigin
-	 * 
-	 * @ResponseBody public List<MyStamp> getMyStamp(HttpServletRequest request){
-	 * 
-	 * List<MyStamp> myStampList = getService.selectMyStamp(request);
-	 * 
-	 * return myStampList; }
-	 */
-
 }
