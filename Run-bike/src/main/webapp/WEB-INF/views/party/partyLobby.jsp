@@ -587,8 +587,6 @@ $(document).ready(function() {
 });
 
 var u_idx = $('#u_idx').val();
-var path='http://localhost:8080/runbike';
-
 
 $('#createForm').submit(function() {
 	
@@ -603,7 +601,7 @@ $('#createForm').submit(function() {
 	
 	if(chk == true){
 	 	$.ajax({
-			url : path+'/party',
+	 		url : 'party',
 			type : 'POST',
 			data : JSON.stringify({
 				p_name : $('#createPartyModal #p_name').val(),
@@ -775,7 +773,7 @@ function getRoute2(sx,sy,ex,ey) {
 function list() {
 
 	$.ajax({
-		url : path+'/party/list',
+		url : 'party/list',
 		type : 'GET',
 		async : false,
 		success : function(data) {
@@ -831,7 +829,7 @@ function list() {
 function getUserCount(p_num) {
 	var cnt=-2;
 	$.ajax({
-		url : path+'/party/room/'+p_num+'/usercount',
+		url : 'party/room/'+p_num+'/usercount',
 		type : 'GET',
 		async : false,
 		success : function(data) {
@@ -873,16 +871,13 @@ function joinchk(p_num, cur_capacity, p_capacity, p_password) {
 }
 
 function join(p_num) {
-	//alert(p_num+","+u_idx);	
   	 $.ajax({
-		url : path + '/party/room/'+p_num,
+		url : './party/room/'+p_num,
 		type : 'POST',
 		data : {
 			u_idx : u_idx
 		},
 		success : function(data) {
-			//alert(data);
-			//location.reload();
 			location.href='party';
 		}
 	});  
