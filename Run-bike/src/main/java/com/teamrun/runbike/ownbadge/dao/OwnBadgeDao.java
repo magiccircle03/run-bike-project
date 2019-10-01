@@ -13,8 +13,28 @@ public interface OwnBadgeDao {
 	public List<Badge> selectAllBadge();
 	
 	//나의 뱃지 소환
-	public List<Badge> selectMyBadge(int u_idx);
+	public List<List<Badge>> selectMyBadge(int u_idx);
 	
 	//연속로그인 확인
 	public int consecutiveLogin(int u_idx);
+	
+	//방문 일자수 확인
+	public int firstLogin(int u_idx);
+	
+	//혼자 라이딩 km수 확인
+	public int ridingAloneDistance(int u_idx);
+	
+	//같이 라이딩 km수 확인
+	public int ridingWithDistance(int u_idx);
+	
+	//혼자라이딩 타임 확인
+	public int ridingAloneTime(int u_idx);
+	
+	//얻은 스탬프 수 확인
+	public int myOwnStampCount(int u_idx);
+	
+	//방장 횟수 확인
+	public int isMasterCount(int u_idx);
+	
+	public int isMyBadge(int u_idx, int b_num);
 }

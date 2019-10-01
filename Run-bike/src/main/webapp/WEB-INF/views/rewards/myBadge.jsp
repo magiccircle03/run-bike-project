@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %> 
 
 <!DOCTYPE html>
 <html>
@@ -47,7 +48,43 @@
 	<div class="container">
 			<h4 class="font-weight-bold pt-5 mb-4"><i class="fas fa-trophy"> 나의 뱃지</i></h4>
 			<div class="page-info-text text-dark">내가 모은 뱃지를 볼 수 있습니다.</div>
-			<hr>		
+			<hr>	
+			${fn:length(myBadgeList)}
+			
+			<div class="row">
+			<c:forEach var="badge" items="${badgeList}" varStatus="status">
+				<c:choose>
+					<c:when test="${empty myBadgeList}">
+						<div class="col" id="badgeArea">
+						<img alt="badge" src="<c:url value='/uploadfile/cs_badgePhoto/${badge.cb_photo}'/>" style="">
+						<p id="badgeName">${badge.b_name}</p>
+						</div>
+					</c:when>
+					
+					<c:when test="${!empty myBadgeList}">
+						<c:forEach var="mybadge" items="${myBadgeList}" varStatus="status">		
+							<c:choose>	
+								<c:when test="${badge.b_name eq mybadge.b_name}">
+									<div class="col" id="badgeArea">
+									<img alt="badge" src="<c:url value='/uploadfile/color_badgePhoto/${mybadge.b_photo}'/>" style="">
+									<p id="badgeName">${mybadge.b_name}</p>
+									</div>
+								</c:when>
+								<c:when test="${badge.b_name ne mybadge.b_name}">
+									<div class="col" id="badgeArea">
+									<img alt="badge" src="<c:url value='/uploadfile/cs_badgePhoto/${badge.cb_photo}'/>" style="">
+									<p id="badgeName">${badge.b_name}</p>
+									</div>
+								</c:when>						 
+							</c:choose>					
+						</c:forEach>
+					</c:when>
+				</c:choose>			
+			</c:forEach>
+			</div>
+			
+			
+				
 	</div>
 	
 	<script>

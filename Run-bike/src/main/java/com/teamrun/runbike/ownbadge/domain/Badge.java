@@ -5,7 +5,7 @@ public class Badge {
 	private int b_num; //뱃지 고유 번호
 	private String b_name; //뱃지명
 	private String b_photo; //뱃지사진
-	private String bc_photo; //뱃지흑백사진
+	private String cb_photo; //뱃지흑백사진
 	
 	//Getter and Setter
 	public int getB_num() {
@@ -26,16 +26,16 @@ public class Badge {
 	public void setB_photo(String b_photo) {
 		this.b_photo = b_photo;
 	}
-	public String getBc_photo() {
-		return bc_photo;
+	public String getcb_photo() {
+		return cb_photo;
 	}
-	public void setBc_photo(String bc_photo) {
-		this.bc_photo = bc_photo;
+	public void setcb_photo(String cb_photo) {
+		this.cb_photo = cb_photo;
 	}
 	
 	//확인 위한 toString()
 	@Override
 	public String toString() {
-		return "Badge [b_num=" + b_num + ", b_name=" + b_name + ", b_photo=" + b_photo + ", bc_photo=" + bc_photo + "]";
+		return "Badge [b_num=" + b_num + ", b_name=" + b_name + ", b_photo=" + b_photo + ", cb_photo=" + cb_photo + "]";
 	}
 }
