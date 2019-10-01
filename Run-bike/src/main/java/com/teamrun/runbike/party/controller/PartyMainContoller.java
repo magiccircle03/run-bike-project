@@ -69,7 +69,6 @@ public class PartyMainContoller {
 	// 인덱스에서 함께하기로 갈 때 분기처리(참여한 방이 있냐없냐 따라서)
 	@RequestMapping(method = RequestMethod.GET)
 	public String getMain(HttpServletRequest request, Model model) {
-
 		String view = "party/partyLobby";
 		int count = 0;
 		int p_num = 0;

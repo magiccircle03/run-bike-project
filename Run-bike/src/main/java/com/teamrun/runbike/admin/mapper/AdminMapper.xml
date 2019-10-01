@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.teamrun.runbike.admin.dao.AdminDao">
+
+<resultMap id="userInfoMap" type="com.teamrun.runbike.user.domain.UserInfo">
+	<id property="u_idx" column="u_idx" />
+	<result property="u_id" column="u_id" />
+	<result property="u_pw" column="u_pw" />
+	<result property="u_name" column="u_name" />
+	<result property="u_photo" column="u_photo" />
+	<result property="regdate" column="regdate" />
+	<result property="u_code" column="u_code" />
+	<result property="u_sns" column="u_sns" />
+</resultMap>
+
+
+
+		<!-- 회원리스트 - 관리자 -->
+		<select id="selectAllListAdmin" resultMap="userInfoMap" >
+<!-- 		  <![CDATA[
+                       select *
+                       from user
+                       order by u_idx desc
+               ]]> -->
+			select * from user order by u_idx
+		</select>
+		
+		
+		<!-- 회원 삭제 - 관리자 -->
+		<delete id="memberDeleteAdmin">		
+			delete from user where u_idx=#{u_idx}
+		</delete>
+		
+		
+		
+		<!-- 회원 리스트의 개수 : 검색을 위해 동적쿼리 적용 -->
+	<select id="selectTotalCount" parameterType="com.teamrun.runbike.admin.domain.SearchParam"
+		resultType="int">
+		select count(*) from user
+		<where>
+			<if test="stype != null">
+				<if test="stype == 'both'">
+					u_id LIKE CONCAT('%', #{keyword}, '%')
+					or u_name LIKE CONCAT('%', #{keyword}, '%')
+				</if>
+				<if test="stype == 'id'">
+					u_id LIKE CONCAT('%', #{keyword}, '%')
+				</if>
+				<if test="stype == 'name'">
+					u_name LIKE CONCAT('%', #{keyword}, '%')
+				</if>
+
+			</if>
+		</where>
+	</select>
+
+
+
+	<!-- 회원 리스트 : 검색을 위해 동적쿼리 적용 -->
+	<select id="selectList" parameterType="map" resultMap="userInfoMap">
+		SELECT * FROM user
+		<where>
+		
+			<if test="search != null">
+				<if test="search.stype == 'both'">
+					<include refid="whereId"/>
+					<include refid="whereName"/>
+				</if>
+				<if test="search.stype == 'id'">				
+					<include refid="whereId"/>
+				</if>
+				<if test="search.stype == 'name'">
+					<include refid="whereName"/>
+				</if>
+			</if>
+			
+		</where>	
+		limit #{index}, #{count}
+	</select>
+
+
+	<sql id="whereId">
+		or u_id LIKE CONCAT('%', #{search.keyword}, '%')
+	</sql>
+		
+	<sql id="whereName">
+		or u_name LIKE CONCAT('%', #{search.keyword}, '%')
+	</sql>
+		
+
+
+
+
+
+
+</mapper>
