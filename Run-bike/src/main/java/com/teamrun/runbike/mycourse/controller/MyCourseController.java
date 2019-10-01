@@ -20,7 +20,6 @@ import com.teamrun.runbike.mycourse.domain.RegMyCourse;
 import com.teamrun.runbike.mycourse.service.ChangeMyCourseService;
 import com.teamrun.runbike.mycourse.service.DeleteMyCourseService;
 import com.teamrun.runbike.mycourse.service.GetMyCourseListService;
-import com.teamrun.runbike.mycourse.service.GetMyCourseService;
 import com.teamrun.runbike.mycourse.service.GetTotalPageService;
 import com.teamrun.runbike.mycourse.service.InsertMyCourseService;
 

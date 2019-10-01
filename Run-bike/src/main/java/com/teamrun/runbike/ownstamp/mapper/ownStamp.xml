@@ -18,8 +18,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</resultMap>
 	
 	<!-- insert  -->
-	<insert id="insertMyStamp">
-		insert into own_stamp (s_num, u_idx) values (#{param1}, #{param2})
+	<insert id="insertMyStamp" parameterType="com.teamrun.runbike.ownstamp.domain.OwnStamp">
+		insert into own_stamp (s_num, u_idx) values (#{s_num}, #{u_idx})
 	</insert>
 	
 	<!-- select -->
@@ -30,7 +30,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		
 		<!-- 회원이 가지고 있는 stamp 불러오기  -->
 		<select id="selectMyStamp" resultMap="stamp">
-			select stamp.s_num, stamp.s_name, stamp.s_photo, stamp.cs_photo, stamp.s_point_lon, stamp.s_point_lat from run_bike.stamp stamp inner join run_bike.own_stamp myStamp on stamp.s_num = myStamp.s_num where myStamp.u_idx=#{u_idx};
+			select * from own_stamp where u_idx=#{u_idx};
 		</select>
 
 </mapper>

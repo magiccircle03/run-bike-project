@@ -13,7 +13,7 @@ import com.teamrun.runbike.ownstamp.domain.Stamp;
 import com.teamrun.runbike.user.domain.LoginInfo;
 
 @Service("ownStampService")
-public class OwnStampService {
+public class GetOwnStampService {
 
 	@Autowired
 	private SqlSessionTemplate template;
