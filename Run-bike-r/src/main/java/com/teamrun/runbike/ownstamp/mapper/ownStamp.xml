@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.teamrun.runbike.ownstamp.dao.OwnStampDao">
+
+	<!-- Result Mapping 설정 -->
+	<resultMap id="stamp"
+		type="com.teamrun.runbike.ownstamp.domain.Stamp">
+		<id property="s_num" column="s_num" />
+		<result property="s_name" column="s_name" />
+		<result property="s_photo" column="s_photo" />
+		<result property="cs_photo" column="cs_photo" />
+		<result property="s_point_lon" column="s_point_lon" />
+		<result property="s_point_lat" column="s_point_lat" />
+	</resultMap>
+	
+	<!-- insert  -->
+	<insert id="insertMyStamp" parameterType="com.teamrun.runbike.ownstamp.domain.OwnStamp">
+		insert into own_stamp (s_num, u_idx) values (#{s_num}, #{u_idx})
+	</insert>
+	
+	<!-- select -->
+		<!-- 전체 스탬프 불러오기  -->
+		<select id="selectAllStamp" resultMap="stamp">
+			select * from stamp
+		</select>
+		
+		<!-- 회원이 가지고 있는 stamp 불러오기  -->
+		<select id="selectMyStamp" resultMap="stamp">
+			select * from own_stamp where u_idx=#{u_idx};
+		</select>
+
+</mapper>

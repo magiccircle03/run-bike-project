@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.teamrun.runbike.ownbadge.dao.OwnBadgeDao">
+
+	<!-- Result Mapping 설정 -->
+	<resultMap id="badge"
+		type="com.teamrun.runbike.ownbadge.domain.Badge">
+		<id property="b_num" column="b_num" />
+		<result property="b_name" column="b_name" />
+		<result property="b_photo" column="b_photo" />
+		<result property="cb_photo" column="cb_photo" />
+	</resultMap>
+	
+	<!-- insert  -->
+	<insert id="insertMyBadge">
+		insert into own_badge (b_num, u_idx) values (#{param1}, #{param2})
+	</insert>
+	
+	<!-- select -->
+		<!-- 전체 스탬프 불러오기  -->
+		<select id="selectAllBadge" resultMap="badge">
+			select * from badge
+		</select>
+		
+		<!-- 회원이 가지고 있는 stamp 불러오기  -->
+		<select id="selectMyBadge" resultMap="badge">
+			select badge.b_num, badge.b_name, badge.b_photo, badge.cb_photo from run_bike.badge badge inner join run_bike.own_badge myBadge on badge.b_num = myBadge.b_num where myBadge.u_idx=#{u_idx};
+		</select>
+		
+		<!-- 뱃지 소유 여부 확인 -->
+		<select id="isMyBadge" resultType="int">
+			select count(*)
+			from run_bike.own_badge o
+			inner join run_bike.user u
+			on o.u_idx = o.u_idx
+			where u.u_idx = #{param1} and o.b_num = #{param2};
+		</select>
+		
+		<!-- select 1: 첫방문 시 뱃지 -->
+		<select id="firstLogin" resultType="int">
+			select count(*) count
+			from run_bike.user u
+			inner join run_bike.login_log l
+			on u.u_idx = l.u_idx
+			where u.u_idx = #{u_idx}
+		</select>
+		<!-- select 2: 연속 세번 방문 -->
+		<select id="consecutiveLogin" resultType="int">
+			select serial from 
+			(select
+			distinct date_format(login_date, '%Y-%m-%d') DATEONLY, 
+			@serial := if(datediff(login_date, @prev_login)=1, @serial + datediff(login_date, @prev_login), 0) as serial,
+			@prev_login := date_format(login_date, '%Y-%m-%d') as prev_login,
+			u_idx
+			from run_bike.login_log where u_idx = #{u_idx} order by login_date) 
+			as t1 where serial >= 3;
+		</select>
+		<!-- select 3: 혼자 라이딩 총 km 수가 10km 이상 -->
+		<select id="ridingAloneDistance" resultType="int">
+			select sum(r_riding_km) riding_km
+			from run_bike.record r
+			inner join run_bike.user u
+			on u.u_idx = r.u_idx 
+			where u.u_idx = #{u_idx}
+		</select>		
+		<!-- select 4: 같이 라이딩 총 km 수가 10km 이상 -->
+		<select id="ridingWithDistance" resultType="int">
+			select sum(p.p_riding_km) riding_km
+			from run_bike.party p
+			inner join run_bike.participation pc
+			inner join run_bike.user u
+			on u.u_idx = pc.u_idx and pc.p_num = p.p_num
+			where u.u_idx = #{u_idx}
+		</select>
+				
+		<!-- select 5: 라이딩 타임이 1시간 이상 -->
+		<select id="ridingAloneTime" resultType="int">
+			select round(sum(r_riding_time/60)) r_riding_time
+			from run_bike.record r
+			inner join run_bike.user u
+			on u.u_idx = r.u_idx 
+			where u.u_idx = #{u_idx};
+		</select>
+		
+		<!-- select 6: 얻은 스탬프가 5개 이상 -->
+		<select id="myOwnStampCount" resultType="int">
+			select count(*) count
+			from run_bike.own_stamp o
+			join run_bike.user u
+			on u.u_idx=o.u_idx
+			where u.u_idx = #{u_idx}
+		</select>
+		
+		<!-- select 7: 방장한 횟수가 1번 이상 -->
+		<select id="isMasterCount" resultType="int">
+			select count(*)
+			from run_bike.participation pc
+			inner join run_bike.user u
+			on u.u_idx = pc.u_idx
+			where pc_masterYN = 'Y' and u.u_idx = #{u_idx};
+		</select>
+</mapper>
