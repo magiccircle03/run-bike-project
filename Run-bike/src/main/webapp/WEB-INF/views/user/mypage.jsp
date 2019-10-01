@@ -89,6 +89,12 @@
 	#user-record .card p{
 		font-family: 'Exo', sans-serif;
 	}
+	.ix{
+		padding-top: 6rem;
+		font-size: 24px;
+		font-weight: bold;
+		text-align: center;
+	}
 	
 	@media screen (max-width: 767px){
 		#user-record strong{
@@ -238,7 +244,7 @@
 			<section id="record-wrapper">
 				
 				<div id="user-record-wrapper">
-					<h4 class="col-12"><i class="fas fa-biking"></i> 혼자 라이딩</h4>
+					<h4 class="col-12 font-bold"><i class="fas fa-biking"></i> 혼자 라이딩</h4>
 					<div id="user-record">
 						<div class="row col-12 gtr-uniform">
 							<div class="col-12">
@@ -249,8 +255,8 @@
 							<div class="col-sm-12 col-md-6 col-lg-3"><div class="card card-record-view"><strong id="avgKM"><span>KM</span></strong><p>라이딩 평균 KM</p></div></div> 
 							<div class="col-sm-12 col-md-6 col-lg-3"><div class="card card-record-view"><strong id="avgTime"><span>분</span></strong><p>라이딩 평균 시간</p></div></div> 
 							
-							<div class="row col-12 gtr-uniform">
-								<h4 class="col-12"><i class="fas fa-history"></i> 최근 기록</h4>
+							<div class="row col-12 gtr-uniform mt-4">
+								<h6 class="col-12"><i class="fas fa-history"></i> 최근 기록</h6>
 								<table id="recent-record" class="table">
 									
 								</table>
@@ -263,8 +269,8 @@
 						<a href="<c:url value='/record/startRide'/>" class="">라이딩 시작!</a>
 					</div>					
 				</div>
-				<div id="party-record-wrapper" style="border-top: 1px dotted #ccc">
-					<h4 class="col-12"><i class="fas fa-users"></i> 같이 달리기</h4>
+				<div id="party-record-wrapper" style="border-top: 1px dotted #ccc;margin-top:40px">
+					<h4 class="col-12 font-bold"><i class="fas fa-users"></i> 같이 달리기</h4>
 					<div id="party-record">
 						
 						<!-- 	
@@ -409,15 +415,15 @@
     					
     					var ix = data.partyRecord.length;
     					
+    						html+='<p>참여했던 방 정보입니다.</p>'
+    						html+='<h5>총 러닝 횟수 '+data.partyRecord[0].cnt+'</h5>';
     					for(var j in data.partyRecord){
     						$('#party-record-status').css('display','none');
         					$('#party-record').css('display','block');
-    						html+='<h5>총 러닝 횟수 '+data.partyRecord[j].cnt+'</h5>';
-    						html+='<p>참여했던 방 정보입니다.</p>'
     						html += '<div class="card">';
     						html += '<div class="row no-gutters">';
-    						html+='<div class="col-1 pt-5">'+(ix--)+'</div>'
-    						html+=	'<div class="card-body col-11">';
+    						html+='<div class="col-2 ix">'+(ix--)+'</div>'
+    						html+=	'<div class="card-body col-10">';
     						html+=	'<small class="text-mute">'+data.partyRecord[j].p_time+'</small>';
     						html+=	'<h5 class="card-title bold">'+data.partyRecord[j].p_name+'</h5>';
     						html+=	'<p class="card-title">출발지 - '+data.partyRecord[j].p_start_info+'</p>';
