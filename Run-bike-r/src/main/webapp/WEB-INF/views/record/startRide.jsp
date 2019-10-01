@@ -566,7 +566,7 @@ font-family: 'Exo', sans-serif;
         	$("#searchEndPoint").removeAttr("disabled");
         	$("#endPoint").removeAttr("disabled");
 
-            var path = 'http://15.164.162.21/runbike';
+            var path = 'http://15.164.162.21:8080/runbike';
 
             $.ajax({
                 url: path + '/record',
@@ -594,7 +594,7 @@ font-family: 'Exo', sans-serif;
         
         function regMyCourse() {
         	        	 
-            var path = 'http://15.164.162.21/runbike';
+            var path = 'http://15.164.162.21:8080/runbike';
 
             if($('#myCourse_name').val()==""){
             	alert('코스 이름을 입력해주세요!');

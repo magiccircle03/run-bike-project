@@ -226,7 +226,7 @@ h3{
 	    		/* modalMap.updateSize(); */
 	    });
 	    
-        var path = 'http://15.164.162.21/runbike';
+        var path = 'http://15.164.162.21:8080/runbike';
         var u_idx = $('#u_idx').val();
         
       //전역변수
@@ -954,7 +954,7 @@ h3{
 
         function regMyCourse() {
 
-            var path = 'http://15.164.162.21/runbike';
+            var path = 'http://15.164.162.21:8080/runbike';
 			
             $.ajax({
                 url: path + '/myCourse',
