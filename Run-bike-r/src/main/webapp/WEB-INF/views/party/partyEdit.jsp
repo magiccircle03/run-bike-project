@@ -144,7 +144,7 @@ var timezoneDate = new Date(Date.now() - timezoneOffset); // 타임존을 반영
 //document.getElementById('p_time').value= new Date().toISOString().slice(0, 16);
 $('#p_time').val(timezoneDate.toISOString().slice(0, 16));
 
-var path='http://localhost:8080/runbike';
+var path='http://15.164.162.21:8080/runbike';
 
 function editParty(){
 	

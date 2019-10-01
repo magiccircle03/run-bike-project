@@ -216,7 +216,7 @@ var p_num = ${partyInfo.p_num};
 var u_idx = $('#u_idx').val();// 아이디 값 세션에서 가져오기. 
 
 
-var path='http://localhost:8080/runbike';
+var path='http://15.164.162.21:8080/runbike';
 
 // 개인이 라이딩을 종료하는 함수
 function endRidingOne(){

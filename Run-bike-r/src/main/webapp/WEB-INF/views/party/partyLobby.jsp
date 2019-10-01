@@ -587,7 +587,7 @@ $(document).ready(function() {
 });
 
 var u_idx = $('#u_idx').val();
-var path='http://localhost:8080/runbike';
+var path='http://15.164.162.21:8080/runbike';
 
 
 $('#createForm').submit(function() {
