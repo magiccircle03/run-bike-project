@@ -158,7 +158,7 @@ h5{
 <!-- <hr> -->
 <input id="u_idx" name="u_idx" type="hidden" class="form-control" value="${loginInfo.u_idx}">
 <!-- <button class="btn" onclick="getCurrentPos()">현재위치</button>  -->
- <button onclick="getDistanceCE()">현재위치와의 직선거리 계산</button>
+<!--  <button onclick="getDistanceCE()">현재위치와의 직선거리 계산</button> -->
 <!-- 같이하기 내비게이션 -->
 <ul class="nav nav-pills nav-justified">
   <li class="nav-item tabWidth">
@@ -197,7 +197,9 @@ h5{
      
      	<div id="endArea" style="display:none;">
 	    	<!-- 원래는 장소를 체크해서 가까우면 완주 아니면 그냥 종료로 간다. -->
-	    	<button id="endBtn" class="btn width100 black btnHeight" onclick="endRidingOne()">종료하기</button>
+<!-- 	    	<button id="endBtn" class="btn width100 black btnHeight" onclick="endRidingOne()">종료하기</button> -->
+	    	<button id="endBtn" class="btn width100 black btnHeight" onclick="getDistanceCE()">종료하기</button>
+	    	
     	</div>
     	
     	<!-- 방장만 보이게 영역 -->
@@ -265,9 +267,9 @@ function getDistanceCE() {
 			    $intRate = $xml.find("distanceInfo");
 				var distance = $intRate[0].getElementsByTagName("distance")[0].childNodes[0].nodeValue;
 				
-				alert('직선거리 : '+distance);
+				//alert('직선거리 : '+distance);
 				
-				//endRidingOne(distance<=300);
+				endRidingOne(distance<=300);
 				
 			},
 			//요청 실패시 콘솔창에서 에러 내용을 확인할 수 있습니다.
@@ -282,15 +284,17 @@ function getDistanceCE() {
 
 
 // 개인이 라이딩을 종료하는 함수
-function endRidingOne(){
+function endRidingOne(chk){
 	
 	//alert('chk : '+chk);
-	var chk = confirm('현재위치 = 도착지 반경 500m?'); //완주여부 체크. 일단은 이렇게 받자
+	//var chk = confirm('현재위치 = 도착지 반경 500m?'); //완주여부 체크. 일단은 이렇게 받자
 	//getCurrentPos(); // 검사해서 이 위치가 도착지 좌표 반경 몇 m 이내면, 완주여주 Y / 아니면 N //중도 포기하겠냐고 물어봄
 	if(chk){
 		updateEnd('Y'); // 완주여부 Y, end여부 Y로 업데이트
 	}else{
-		updateEnd('N'); // 완주여부 N, end여부 Y로 업데이트
+		if (confirm('아직 도착지에 도착하지 않았습니다. 중도 포기하시겠습니까?')) {
+			updateEnd('N'); // 완주여부 N, end여부 Y로 업데이트
+		}
 	}
 	alert('라이딩을 종료하였습니다!');
 	$('#endArea').css('display','none');
@@ -687,10 +691,6 @@ function showCircle(xy) {
 	var circleFeature = new Tmap.Feature.Vector(circle, null, style_red); // 원 백터 생성
 	vector_layer.addFeatures([circleFeature]); // 원 백터 를 백터 레이어에 추가
 
-/* 	var vectorLayer = new Tmap.Layer.Vector("vectorLayerID"); // 백터 레이어 생성
-	map.addLayer(vectorLayer); // 지도에 백터 레이어 추가
-	
-	vectorLayer.addFeatures([ mLineFeature ]); // 백터 레이어에 백터 추가 */
 }
 
 function showCurrentPos(){
