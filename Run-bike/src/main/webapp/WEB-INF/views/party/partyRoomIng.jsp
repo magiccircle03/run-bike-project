@@ -22,6 +22,10 @@
 
 
 <style type="text/css">
+.btnHeight{
+	margin-top: 20px;
+	height: 50px;
+}
 body{
 	color : #333333;
 }
@@ -122,7 +126,7 @@ h5{
 	position: relative;
 	z-index:999;
 	bottom:0px;
-	top:-70px;  
+	top:-120px;  
 }
 
 .lightgray{
@@ -134,6 +138,11 @@ h5{
 }
 .width100{
 	width: 100%;
+}
+.partyUserImg{
+	width: 40px;
+	height: 40px;
+	
 }
 </style>
 </head>
@@ -188,12 +197,12 @@ h5{
      
      	<div id="endArea" style="display:none;">
 	    	<!-- 원래는 장소를 체크해서 가까우면 완주 아니면 그냥 종료로 간다. -->
-	    	<button id="endBtn" class="btn width100 black" onclick="endRidingOne()">종료하기</button>
+	    	<button id="endBtn" class="btn width100 black btnHeight" onclick="endRidingOne()">종료하기</button>
     	</div>
     	
     	<!-- 방장만 보이게 영역 -->
 		<div class="master">
-		   	<button id="endBtnMaster" class="btn width100" onclick="endRidingMaster()" disabled="true">전체 라이딩 종료하기!</button>
+		   	<button id="endBtnMaster" class="btn width100 btnHeight" onclick="endRidingMaster()" disabled="true">전체 라이딩 종료하기!</button>
 		</div>
 		<!-- /방장만 보이게 영역 -->
 
@@ -395,7 +404,9 @@ function showPartyUserList() {
 				
 				
 				html1+='<tr>\n';
-				html1+='<td class="width30">'+data[i].u_photo+'</td>\n';
+				//html1+='<td class="width30">'+data[i].u_photo+'</td>\n';
+				html1+='<td class="width30"><img class="partyUserImg" src="${pageContext.request.contextPath}/uploadfile/userphoto/'+data[i].u_photo+'"></td>\n';
+				
 				html1+='<td class="width30 '+bold+'">' + crown + data[i].u_name + delBtn + '</td>\n';
 				html1+='<td class="width30">'+readyStr+'</td>\n';
 				html1+='</tr>\n';
