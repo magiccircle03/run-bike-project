@@ -45,6 +45,11 @@
 } 
 p{
 	margin: 10px;
+	font-size: 13px;
+}
+
+#stampArea{
+	margin-bottom: 10px;
 }
 </style>
 

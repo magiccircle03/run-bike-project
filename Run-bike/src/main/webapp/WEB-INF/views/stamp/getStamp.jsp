@@ -38,10 +38,16 @@
 
 #stampButtonArea{
 	text-align: center;
+	margin: 10px;
 }
 
 #getStampButton{
 	margin : 30px 0;
+}
+
+#stampButton{
+	width: 130px;
+	height: 40px;
 }
 </style>
 
@@ -64,9 +70,9 @@
 		<br>
 		<div class="row">
 			<c:forEach var="stamp" items="${stampList}" varStatus="status">	
-				<div class="col">
+				<div class="col-4">
 					<div id="stampButtonArea">
-						<button type="button" class="btn btn-outline-primary" onclick="getStampMarker(${stamp.s_point_lon}, ${stamp.s_point_lat}, ${stamp.s_num})">${stamp.s_name}</button>					
+						<button type="button" id="stampButton" class="btn btn-outline-primary" onclick="getStampMarker(${stamp.s_point_lon}, ${stamp.s_point_lat}, ${stamp.s_num})">${stamp.s_name}</button>					
 					</div>
 				</div>	
 			</c:forEach>
@@ -179,7 +185,7 @@
 		
 		//원
 		var coord = new Tmap.LonLat(lon, lat).transform("EPSG:4326", "EPSG:3857");
-		var circle = new Tmap.Geometry.Circle(coord.lon, coord.lat, 1300); // 원 생성
+		var circle = new Tmap.Geometry.Circle(coord.lon, coord.lat, 1250); // 원 생성
 				
 		// 지도상에 그려질 스타일을 설정합니다
 		var style_red = {
@@ -222,8 +228,11 @@
 		 }
 		 
     	 var distance = Math.sqrt(Math.pow((stampLon-myLon),2) + Math.pow((stampLat-myLat),2));
-    	 
-    	 if(distance <= 0.011){
+ 		 var realDistance = distance.toFixed(3);
+
+		 console.log(":::::거리는 " + realDistance);
+		 
+    	 if(realDistance < 0.012){
     		 alert('반경 안에 위치해있습니다');
             
     		 $.ajax({
