@@ -77,7 +77,10 @@ h3{
 .margin20{
 	margin:20px 0;
 }
-
+.ing{
+    color:#00A2E8;
+    display:inline-block;
+ }
 </style>
 </head>
 <body onload="initTmap();initTmap2();">
@@ -630,7 +633,7 @@ var markerStartLayer2; */
 
 
 function viewDetail(sx,sy,ex,ey) {
-	alert('뷰디테일4');
+	//alert('뷰디테일4');
 
 	getRoute2(sx,sy,ex,ey);
 }
@@ -725,10 +728,10 @@ function getRoute2(sx,sy,ex,ey) {
             var distanceM = $intRate[0].getElementsByTagName("tmap:totalDistance")[0].childNodes[0].nodeValue;
             var distanceKm = ($intRate[0].getElementsByTagName("tmap:totalDistance")[0].childNodes[0].nodeValue / 1000).toFixed(1);
             var ridingTimeMin = ((distanceKm/16)*60).toFixed(1);
-            var tDistance = "총 거리 : " + distanceKm + "km,";
-            var tTime = " 예상 시간 : 약 " + ridingTimeMin + "분";
+            var tDistance = "<h5>총 거리 : " + distanceKm + "km,";
+            var tTime = " 예상 시간 : 약 " + ridingTimeMin + "분</h5>";
 
-            $("#result2").text(tDistance + tTime);
+            $("#result2").html(tDistance + tTime);
 
             prtcl2 = new Tmap.Format.KML({
                 extractStyles: true,
@@ -782,6 +785,7 @@ function list() {
 			var html = '';
 			for (var i = 0; i < data.length; i++) {
 				var lock='';
+				var ingYN='';
 				var jsonObj = JSON.parse(data[i].p_XY);
 
 				var startX = jsonObj['startX'];
@@ -792,11 +796,14 @@ function list() {
 				if(data[i].p_password.length>0){
 					lock = '<i class="fas fa-lock"></i>';
 				}
+				if(data[i].p_start_time!=null){
+					ingYN = ' <p class="ing"> [ 진행중 ]</p>';
+				}
 				html += '<div class="col-sm-6">\n';
 				html += '<div class="card card-style">\n';
 				html += '<div class="card-body">\n';
 				html += '<h5 class="card-title">\n';
-				html += data[i].p_name + ' ( '+getUserCount(data[i].p_num)+' / '+data[i].p_capacity+' ) '+lock+'\n'
+				html += data[i].p_name + ' ( '+getUserCount(data[i].p_num)+' / '+data[i].p_capacity+' ) '+lock+ingYN+'\n'
 				html += '</h5>\n';
 				html += '<p class="card-text">\n';
 				html += '<i class="fas fa-map-marked-alt"></i> 출발지 : '+data[i].p_start_info+'<br>\n';
@@ -804,6 +811,7 @@ function list() {
 				html += '<i class="far fa-clock"></i> 모일 시간 : '+data[i].p_time_f+'<br>\n';
 				html += '</p>\n';
 				html += '<p class="card-text">'+data[i].p_content+'</p>\n';
+				
 				
 				html += '<a href="#" class="btn mintbtn" data-toggle="modal" data-target="#partyDetailModal" onclick="viewDetail('+startX+','+startY+','+endX+','+endY+')"><i class="fas fa-info-circle"></i> 방 정보 보기</a>\n';
 	
