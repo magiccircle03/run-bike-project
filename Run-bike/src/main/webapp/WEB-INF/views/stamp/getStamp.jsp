@@ -84,7 +84,7 @@
 	 var map, myPointLayer, markerLayer, vector_layer;
 	 var myLocation = new Object();
 	 var stampLocation = new Object();
-	 var path = 'http://localhost:8080/runbike';
+	 var path = '<c:url value="/stamp" />';
 	 
 	 function initTmap() {
          //map 생성
@@ -227,7 +227,7 @@
     		 alert('반경 안에 위치해있습니다');
             
     		 $.ajax({
-                 url: path + '/stamp',
+                 url: path,
                  type: 'POST',
                  data: {
                      s_num: s_num

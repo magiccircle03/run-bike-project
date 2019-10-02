@@ -170,15 +170,15 @@ font-family: 'Exo', sans-serif;
 
 	<script>
 	
-	    $('#startRiding').on('click touchstart', function(){
+	    $('#startRiding').on('click', function(){
 	    	location.href="startRide"
 	    });
 	    
-	    $('#ridingGuide').on('click touchstart', function(){
+	    $('#ridingGuide').on('click', function(){
 	    	location.href="ridingGuide"
 	    });
 	    
-	    $('#myCourse').on('click touchstart', function(){
+	    $('#myCourse').on('click', function(){
 	    	location.href="myCourseList"
 	    });
 		
@@ -205,7 +205,8 @@ font-family: 'Exo', sans-serif;
         var tDistance; //거리
         var tTime; //소요시간
 		var endPointChk = 0; //목적지가 정상적으로 찾아졌는지를 확인하는 함수
-
+		var path = '<c:url value="/record" />';
+		
         // 1. 지도 띄우기
         function initTmap() {
             // map 생성
@@ -298,7 +299,8 @@ font-family: 'Exo', sans-serif;
             map.addPopup(popup); //map에 popup 추가
             popup.hide();
 
-            markers.events.register("click touchstart", popup, onOverMarker);
+            markers.events.register("click", popup, onOverMarker);
+            markers.events.register("touchstart", popup, onOverMarker);
             //마커를 클릭했을 때 발생하는 이벤트 함수입니다.
             function onOverMarker(evt) {
                 this.show(); //마커를 클릭하였을 때 팝업이 보입니다.
@@ -306,7 +308,8 @@ font-family: 'Exo', sans-serif;
 
             }
 
-            map.events.register("mouseup touchstart", popup, onOutMarker);
+            map.events.register("mouseup", popup, onOutMarker);
+            map.events.register("touchstart", popup, onOutMarker);
             //지도를 클릭했을 때 발생하는 이벤트 함수입니다.
             function onOutMarker(evt) {
                 this.hide(); //지도를 클릭하였을 때 팝업이 사라집니다.
@@ -554,7 +557,7 @@ font-family: 'Exo', sans-serif;
 
             return result;
         }
-
+        
         //데이터 저장하기!!!
         function saveData() {
         	
@@ -564,12 +567,10 @@ font-family: 'Exo', sans-serif;
         	$('#regMyCourseBtn').css("display", "block");
         	
         	$("#searchEndPoint").removeAttr("disabled");
-        	$("#endPoint").removeAttr("disabled");
-
-            var path = 'http://localhost:8080/runbike';
-
+        	$("#endPoint").removeAttr("disabled");         
+            
             $.ajax({
-                url: path + '/record',
+                url: path,
                 type: 'POST',
                 data: {
                     r_riding_time: tTime,
@@ -593,8 +594,6 @@ font-family: 'Exo', sans-serif;
         
         
         function regMyCourse() {
-        	        	 
-            var path = 'http://localhost:8080/runbike';
 
             if($('#myCourse_name').val()==""){
             	alert('코스 이름을 입력해주세요!');
@@ -648,7 +647,7 @@ font-family: 'Exo', sans-serif;
                             url: "http://openapi.seoul.go.kr:8088/574c4c6e5173757038395565797a4f/json/bikeList/"+startNum+"/"+endNum+"/\"",
                             type: 'GET',
                             success: function(data) {
-			
+								alert(data);
                             	var connectStatues = data.rentBikeStatus.RESULT.CODE;
                             	var rowData = data.rentBikeStatus.row;
                             	var lon;
@@ -745,12 +744,14 @@ font-family: 'Exo', sans-serif;
                 popup.hide();
 
                 markers.events.register("click", popup, onOverMarker);
+                markers.events.register("touchstart", popup, onOverMarker);
                 //마커를 클릭했을 때 발생하는 이벤트 함수입니다.
                 function onOverMarker(evt) {
                     this.show(); //마커를 클릭하였을 때 팝업이 보입니다.
                 }
 
                 map.events.register("mouseup", popup, onOutMarker);
+                map.events.register("touchstart", popup, onOutMarker);
                 //지도를 클릭했을 때 발생하는 이벤트 함수입니다.
                 function onOutMarker(evt) {
                     this.hide(); //지도를 클릭하였을 때 팝업이 사라집니다.
