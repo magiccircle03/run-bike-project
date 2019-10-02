@@ -65,15 +65,14 @@
 	line-height: 35px;
 }
 
-.pages{
-	width: 100px;
-	margin: 0 auto;
-}
-
 .none-record-status{  
    padding: 50px 10px;
    margin: auto;
    ;
+}
+
+#toolbar{
+	margin: auto;
 }
 
 h3{
@@ -111,8 +110,8 @@ h3{
 	            <!-- myCourseList 시작 -->
 	            <div id="myCourseList" class="row"></div>
 
-			<div class="pages">
-			    <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+			<div class="row">
+			    <div class="btn-toolbar" id="toolbar" role="toolbar" aria-label="Toolbar with button groups">
 	            	<div id="pagingBox" class="btn-group mr-2" role="group" aria-label="First group">
 	            	</div>
 	           	</div>

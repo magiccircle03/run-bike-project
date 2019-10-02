@@ -80,7 +80,7 @@ font-family: 'Exo', sans-serif;
 		<div class="page-info-text text-dark">함께 라이딩을 시작해 볼까요?</div>
 		<hr>
 
-		<div style="margin: 20px 0px;">
+		<div style="margin-bottom: 20px;">
 			<div style="margin-bottom: 4px">
 			<i class="fas fa-flag"> 시작지점</i>
 			<input type="text" id="startPoint" style="word-spacing: -2px; width: 300px; margin-left: 10px" readonly> 
