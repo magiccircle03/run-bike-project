@@ -241,7 +241,6 @@ font-family: 'Exo', sans-serif;
                 navigator.geolocation.getCurrentPosition(function(position) {
 
                     startLonLat = position.coords;
-                    /*startTime =*/
 
                     // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
                     var lat = position.coords.latitude;
@@ -263,7 +262,11 @@ font-family: 'Exo', sans-serif;
 
                     $('#startPoint').val("나의 위치:  " + reverseGeo(lonlat.lon, lonlat.lat));
 
+                }, function(error) {
+                	alert(error);
                 });
+            } else {
+            	alert('GPS를 지원하지 않습니다.');
             }
         }
 
