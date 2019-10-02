@@ -16,9 +16,14 @@
 	crossorigin="anonymous">
 <link rel="stylesheet" href="<c:url value='/assets/css/layout.css'/>">
 <style>
+	h1{
+		text-align:center;
+	}
+
 	table {
 		border-collapse: collapse;
 		border: 0;	
+		margin: auto;
 	}
 	td {
 		padding : 3px 10px;		
@@ -29,7 +34,8 @@
 	
 	div#pagingBox {	
 		overflow: hidden;
-		margin-top:15px;
+		/* margin-top:15px; */
+		margin : 15px 1000px;
 	}
 	div#pagingBox>div {
 		float: left;
@@ -45,10 +51,13 @@
 	}
 	
 	div.searchBox {
-		margin : 15px 0;
+		margin : 15px 243px;
 		width : 500px;
 		padding : 15px;
 	}
+	
+
+
 	
 </style>
 </head>
@@ -57,14 +66,6 @@
 <!-- 해더 시작 -->
 <%@ include file="/WEB-INF/views/frame/header.jsp" %>
 <!-- 해더 끝 -->
-
-
-		<ul>
-		<li><a href="<c:url value='stamp.jsp' />">스탬프관리</a></li>
-		<li><a href="<c:url value='badge.jsp' />">뱃지관리</a></li>	
-		</ul>
-
-
 
 
 

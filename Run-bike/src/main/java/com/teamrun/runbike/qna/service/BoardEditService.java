@@ -41,7 +41,6 @@ public class BoardEditService implements BoardService{
 		System.out.println("BoardEditService: "+editRequest);
 	
 		Message message = editRequest.toMessage();
-		
 		System.out.println("수정서비스 :"+message);
 		
 		int rCnt = dao.boardUpdate(message);

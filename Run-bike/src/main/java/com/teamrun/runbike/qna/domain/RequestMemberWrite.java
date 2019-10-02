@@ -66,6 +66,8 @@ public class RequestMemberWrite {
 	
 	public Message toMessage() { 
 		  Message message = new Message(q_num,u_idx,q_title,q_content, q_writer,null);
+		  
+		  System.out.println("문의글 작성 domain :"+message);
 		  return message;
 		  }
 

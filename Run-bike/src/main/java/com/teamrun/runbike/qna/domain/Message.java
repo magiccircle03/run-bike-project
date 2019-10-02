@@ -13,23 +13,21 @@ public class Message {
 	private String q_writer;
 	private Date regdate;
 	
-	//페이지넘버
-	//private String pnum;
 
-	//private String message_regdate;
-	
-	
-	//날짜 재설정
-	//SimpleDateFormat setDate = new SimpleDateFormat("yyyy.MM.DD HH:mm:ss");
-	
-	
-	//public String getMessage_regdate() {
-	//	return message_regdate;
-	//}
-
-	//public void setMessage_regdate(Date message_regdate) {
-	//	this.message_regdate = setDate.format(message_regdate);
-	//}
+//	private String message_regdate;
+//	
+//	
+//	//날짜 재설정
+//	SimpleDateFormat setDate = new SimpleDateFormat("yyyy.MM.DD HH:mm:ss");
+//	
+//	
+//	public String getMessage_regdate() {
+//		return message_regdate;
+//	}
+//
+//	public void setMessage_regdate(Date message_regdate) {
+//		this.message_regdate = setDate.format(message_regdate);
+//	}
 
 
 
@@ -51,10 +49,6 @@ public class Message {
 		
 	}
 	
-
-
-
-
 
 
 	public int getQ_num() {
@@ -125,27 +119,13 @@ public class Message {
 				+ ", q_writer=" + q_writer + ", regdate=" + regdate + "]";
 	}
 
-
-
-
-	
-	
 	
 	
 
 
+	
 
 
-
-
-
-
-	
-	
-	
-	
-	
-	
 	
 	
 	

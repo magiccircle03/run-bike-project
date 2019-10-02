@@ -64,8 +64,8 @@ public class MemberListService {
 		
 
 		memberList = dao.selectList(params);
-		System.out.println("사이즈 : : : : " + totalCnt);
-		System.out.println("리스트 사이즈 : : : : " + memberList.size());
+		System.out.println("회원 총인원 : " + totalCnt);
+		System.out.println("회원리스트 admin 사이즈 : " + memberList.size());
 		
 		listData.setMemberList(memberList);
 		for(UserInfo m : memberList) {

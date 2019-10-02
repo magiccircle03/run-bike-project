@@ -17,7 +17,7 @@
   <nav class="mx-md-auto font-weight-bold my-2 my-md-0">   
     <c:choose>
     	<c:when test="${loginInfo.u_id == 'admin'}">
-        <a class="pt-md-2 mx-md-3" href="<c:url value='/adminpage/managelist' />"><i class="fas fa-headset"></i>관리자 회원 관리</a> 
+        <a class="pt-md-2 mx-md-3" href="<c:url value='/adminpage/managelist' />"><i class="fas fa-headset"></i>회원 관리</a> 
         <a class="pt-md-2 mx-md-3" href="<c:url value='/qnaboard' />"><i class="fas fa-headset"></i>문의하기</a>   		
     	</c:when>
     	<c:when test="${loginInfo.u_id != 'admin'}">
