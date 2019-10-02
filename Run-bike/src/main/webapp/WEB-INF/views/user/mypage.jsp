@@ -313,14 +313,13 @@
 	<script>
     
     	$(document).ready(function(){
-    		var path = '<c:url value=""/>';
+    		var path = '<c:url value="/"/>';
     		var u_idx = ${loginInfo.u_idx};
     		var datalist = "";
-    		
     		// 회원 기록 가져오기
     		$.ajax({
     			type: 'GET',
-    			url: path+ 'user/record/'+u_idx,
+    			url: path+'user/record/'+u_idx,
     			success: function(data){
     				if(data.userRecord.total_count>0){
     					$('#user-record-status').css('display','none');
