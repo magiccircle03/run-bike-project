@@ -226,7 +226,7 @@ h3{
 	    		/* modalMap.updateSize(); */
 	    });
 	    
-        var path = 'http://localhost:8080/runbike';
+	    var path = '<c:url value="/myCourse" />'
         var u_idx = $('#u_idx').val();
         
       //전역변수
@@ -268,7 +268,7 @@ h3{
 
 		function getTotalPage(){
 			$.ajax({
-				url: path + '/myCourse/totalPage/' + u_idx,
+				url: path + '/totalPage/' + u_idx,
 				type: 'GET',
 				success: function(data){
 					
@@ -292,7 +292,7 @@ h3{
         function list(currentPageNumber) {
         	    	
             $.ajax({
-                url: path + '/myCourse/' + currentPageNumber,
+                url: path + '/' + currentPageNumber,
                 type: 'GET',
                 success: function(data) {
 	
@@ -574,7 +574,7 @@ h3{
             	alert('코스 이름을 입력해주세요!');
             }else{
                 $.ajax({
-                    url: path + '/myCourse',
+                    url: path,
                     type: 'PUT',
                     data: JSON.stringify({
                     	mc_idx: mc_idx,
@@ -603,7 +603,7 @@ h3{
             if (result) {
 
                 $.ajax({
-                    url: path + '/myCourse/' + mc_idx,
+                    url: path + '/' + mc_idx,
                     type: 'DELETE',
                     success: function(data) {
                         if (data == "success") {
@@ -686,6 +686,7 @@ h3{
             popup.hide();
 
             markers.events.register("click", popup, onOverMarker);
+            markers.events.register("touchstart", popup, onOverMarker);
             //마커를 클릭했을 때 발생하는 이벤트 함수입니다.
             function onOverMarker(evt) {
                 this.show(); //마커를 클릭하였을 때 팝업이 보입니다.
@@ -694,6 +695,7 @@ h3{
             }
 
             modalMap.events.register("mouseup", popup, onOutMarker);
+            modalMap.events.register("touchstart", popup, onOutMarker);
             //지도를 클릭했을 때 발생하는 이벤트 함수입니다.
             function onOutMarker(evt) {
                 this.hide(); //지도를 클릭하였을 때 팝업이 사라집니다.
@@ -953,11 +955,9 @@ h3{
         /********************************************나의 코스 좌표 및 이름, 설명 저장***********************************************************/
 
         function regMyCourse() {
-
-            var path = 'http://localhost:8080/runbike';
 			
             $.ajax({
-                url: path + '/myCourse',
+                url: path,
                 type: 'POST',
                 data: {
                     mc_distance: tDistance,
