@@ -13,6 +13,7 @@ import com.teamrun.runbike.qna.dao.BoardDaoInterface;
 import com.teamrun.runbike.qna.domain.ListViewBoardData;
 import com.teamrun.runbike.qna.domain.Message;
 import com.teamrun.runbike.qna.domain.SearchParam;
+import com.teamrun.runbike.user.domain.UserInfo;
 
 
 @Service("boardlistService")
@@ -62,14 +63,13 @@ public class BoardListService implements BoardService{
 		params.put("index", index);
 		params.put("count",  MESSAGE_COUNT_PER_PAGE);
 		
-		//memberList = dao.selectList(index, MEMBER_CNT_List);
 		boardList = dao.selectList(params);
-		
-		System.out.println("사이즈 : : : : " + totalCnt);
-		System.out.println("리스트 사이즈 : : : : " + boardList.size());
 		
 
 		
+//		System.out.println("전체 문의글 개수: " + totalCnt);
+//		System.out.println("한 페이지당 문의글 개수: " + boardList.size());
+			
 		pagelistdata.setBoardList(boardList);
 		int no = totalCnt - index;
 		
