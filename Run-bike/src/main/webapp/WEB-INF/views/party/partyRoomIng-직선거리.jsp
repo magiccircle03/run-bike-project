@@ -158,7 +158,9 @@ h5{
 <!-- <hr> -->
 <input id="u_idx" name="u_idx" type="hidden" class="form-control" value="${loginInfo.u_idx}">
 <!-- <button class="btn" onclick="getCurrentPos()">현재위치</button>  -->
- <button onclick="getDistanceCE()">현재위치와의 직선거리 계산</button>
+
+<!-- <button onclick="getDistanceCE()">현재위치와의 직선거리 계산</button> -->
+
 <!-- 같이하기 내비게이션 -->
 <ul class="nav nav-pills nav-justified">
   <li class="nav-item tabWidth">
@@ -195,9 +197,10 @@ h5{
 		
 		<hr>
      
-     	<div id="endArea" style="display:none;">
+<!--      	<div id="endArea" style="display:none;"> -->
+     	<div id="endArea">
 	    	<!-- 원래는 장소를 체크해서 가까우면 완주 아니면 그냥 종료로 간다. -->
-	    	<button id="endBtn" class="btn width100 black btnHeight" onclick="endRidingOne()">종료하기</button>
+	    	<button id="endBtn" class="btn width100 black btnHeight" onclick="getDistanceCE()">종료하기</button>
     	</div>
     	
     	<!-- 방장만 보이게 영역 -->
@@ -229,72 +232,6 @@ $(document).ready(function() {
 var p_num = ${partyInfo.p_num};
 var u_idx = $('#u_idx').val();// 아이디 값 세션에서 가져오기. 
 
-//직선 거리를 계산하는 함수
-
-function getDistanceCE() {
-	navigator.geolocation.getCurrentPosition(function(pos) {
-		var distanceCE;
-	    var latitude = pos.coords.latitude;
-	    var longitude = pos.coords.longitude;
-	    //alert("내 현재 위치는 : " + latitude + ", "+ longitude);
-	    lonlat = new Tmap.LonLat(longitude, latitude).transform("EPSG:4326", "EPSG:3857");//좌표 설정
-		 //직선거리 계산
-		$.ajax({
-			method:"GET",
-			url:"https://apis.openapi.sk.com/tmap/routes/distance?version=1&format=xml",//직선거리 계산 api 요청 url입니다.
-			async:false, 
-			data:{
-				//시작 지점 위경도 좌표입니다.
-				"startX" : lonlat.lon,
-				"startY" : lonlat.lat,
-				//끝 지점 위경도 좌표입니다. 
-				"endX" : xy.endX,
-				"endY" : xy.endY,
-				//입력하는 좌표계 유형을 지정합니다.
-				"reqCoordType" : "EPSG3857",
-				//실행을 위한 키 입니다. 발급받으신 AppKey(appKey)를 입력하세요.
-				"appKey" : "6d5877dc-c348-457f-a25d-46b11bcd07a9"
-			},
-			//데이터 로드가 성공적으로 완료되었을 때 발생하는 함수입니다.
-			success:function(response){
-				prtcl = response;
-				
-				var prtclString = new XMLSerializer().serializeToString(prtcl);//xml to String	
-			    xmlDoc = $.parseXML( prtclString ),
-			    $xml = $( xmlDoc ),
-			    $intRate = $xml.find("distanceInfo");
-				var distance = $intRate[0].getElementsByTagName("distance")[0].childNodes[0].nodeValue;
-				
-				alert('직선거리 : '+distance);
-				
-				//endRidingOne(distance<=300);
-				
-			},
-			//요청 실패시 콘솔창에서 에러 내용을 확인할 수 있습니다.
-			error:function(request,status,error){
-				console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-			}
-		});
-	});
-
-	
-}
-
-
-// 개인이 라이딩을 종료하는 함수
-function endRidingOne(){
-	
-	//alert('chk : '+chk);
-	var chk = confirm('현재위치 = 도착지 반경 500m?'); //완주여부 체크. 일단은 이렇게 받자
-	//getCurrentPos(); // 검사해서 이 위치가 도착지 좌표 반경 몇 m 이내면, 완주여주 Y / 아니면 N //중도 포기하겠냐고 물어봄
-	if(chk){
-		updateEnd('Y'); // 완주여부 Y, end여부 Y로 업데이트
-	}else{
-		updateEnd('N'); // 완주여부 N, end여부 Y로 업데이트
-	}
-	alert('라이딩을 종료하였습니다!');
-	$('#endArea').css('display','none');
-}
 
 function updateEnd(finishYN) {
  	$.ajax({
@@ -389,6 +326,108 @@ function getCurrentPos() {
 	   //map.setCenter(lonlat, 15); 
 	    map.setCenter(lonlat, 17); 
 	});
+}
+
+/* function coordConvert(lon, lat){
+	$.ajax({
+		method:"GET",
+		url:"https://apis.openapi.sk.com/tmap/geo/coordconvert?version=1&format=xml&callback=result",// 좌표변환 api 요청 url입니다.
+		async:false,
+		data:{
+			"lon" : lon,
+			"lat" : lat,
+			"toCoord" : "EPSG3857",// 지구 위의 위치를 나타내는 좌표 타입.
+			"appKey" : "6d5877dc-c348-457f-a25d-46b11bcd07a9",// 실행을 위한 키 입니다. 발급받으신 AppKey(appKey)를 입력하세요.
+		},
+		//데이터 로드가 성공적으로 완료되었을 때 발생하는 함수입니다.
+		success:function(response){
+			prtcl = response;
+			
+			// 3. xml에서 주소 파싱
+			var prtclString = new XMLSerializer().serializeToString(prtcl);//xml to String	
+		    xmlDoc = $.parseXML( prtclString ),
+		    $xml = $( xmlDoc ),
+		    $intRate = $xml.find("coordinate");
+			
+		    var lon2 = $intRate[0].getElementsByTagName("lon")[0].childNodes[0].nodeValue;
+		    var lat2 = $intRate[0].getElementsByTagName("lat")[0].childNodes[0].nodeValue;
+			
+			var result = lon+","+lat+"->"+lon2+","+lat2; 
+			var resultDiv = document.getElementById("result");//결과를 출력할 태그를 찾습니다.
+			resultDiv.innerHTML = result;//결과를 html에 출력합니다.
+		},
+		//요청 실패시 콘솔창에서 에러 내용을 확인할 수 있습니다.
+		error:function(request,status,error){
+			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+		}
+	});
+	
+} */
+
+//개인이 라이딩을 종료하는 함수
+function endRidingOne(chk){
+//	var chk = confirm('현재위치 = 도착지 반경 500m?'); //완주여부 체크. 일단은 이렇게 받자
+	//getCurrentPos(); // 검사해서 이 위치가 도착지 좌표 반경 몇 m 이내면, 완주여주 Y / 아니면 N //중도 포기하겠냐고 물어봄
+	if(chk){
+		alert('완주 ㅇ');
+		updateEnd('Y'); // 완주여부 Y, end여부 Y로 업데이트
+	}else{
+		alert('완주 x');
+		updateEnd('N'); // 완주여부 N, end여부 Y로 업데이트
+	}
+	alert('라이딩을 종료하였습니다!');
+	$('#endArea').css('display','none');
+}
+
+// 직선 거리를 계산하는 함수
+
+function getDistanceCE() {
+	navigator.geolocation.getCurrentPosition(function(pos) {
+		var distanceCE;
+	    var latitude = pos.coords.latitude;
+	    var longitude = pos.coords.longitude;
+	    //alert("내 현재 위치는 : " + latitude + ", "+ longitude);
+	    lonlat = new Tmap.LonLat(longitude, latitude).transform("EPSG:4326", "EPSG:3857");//좌표 설정
+		 //직선거리 계산
+		$.ajax({
+			method:"GET",
+			url:"https://apis.openapi.sk.com/tmap/routes/distance?version=1&format=xml",//직선거리 계산 api 요청 url입니다.
+			async:false, 
+			data:{
+				//시작 지점 위경도 좌표입니다.
+				"startX" : lonlat.lon,
+				"startY" : lonlat.lat,
+				//끝 지점 위경도 좌표입니다. 
+				"endX" : xy.endX,
+				"endY" : xy.endY,
+				//입력하는 좌표계 유형을 지정합니다.
+				"reqCoordType" : "EPSG3857",
+				//실행을 위한 키 입니다. 발급받으신 AppKey(appKey)를 입력하세요.
+				"appKey" : "6d5877dc-c348-457f-a25d-46b11bcd07a9"
+			},
+			//데이터 로드가 성공적으로 완료되었을 때 발생하는 함수입니다.
+			success:function(response){
+				prtcl = response;
+				
+				var prtclString = new XMLSerializer().serializeToString(prtcl);//xml to String	
+			    xmlDoc = $.parseXML( prtclString ),
+			    $xml = $( xmlDoc ),
+			    $intRate = $xml.find("distanceInfo");
+				var distance = $intRate[0].getElementsByTagName("distance")[0].childNodes[0].nodeValue;
+				
+				alert('직선거리 : '+distance);
+				
+				endRidingOne(distance<=300);
+				
+			},
+			//요청 실패시 콘솔창에서 에러 내용을 확인할 수 있습니다.
+			error:function(request,status,error){
+				console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+			}
+		});
+
+	});
+
 }
 
 function getUserCount() {
@@ -662,10 +701,9 @@ function initTmap(xy) {
 	});
  //   map.setCenter(new Tmap.LonLat("126.986072", "37.570028").transform("EPSG:4326", "EPSG:3857"), 15); //설정한 좌표를 "EPSG:3857"로 좌표변환한 좌표값으로 즁심점을 설정합니다.						
     getRoute(xy);
-    showCircle(xy);
+ 	showCircle(xy);
 
 }
-
 
 function showCircle(xy) {
 	//원
@@ -687,10 +725,6 @@ function showCircle(xy) {
 	var circleFeature = new Tmap.Feature.Vector(circle, null, style_red); // 원 백터 생성
 	vector_layer.addFeatures([circleFeature]); // 원 백터 를 백터 레이어에 추가
 
-/* 	var vectorLayer = new Tmap.Layer.Vector("vectorLayerID"); // 백터 레이어 생성
-	map.addLayer(vectorLayer); // 지도에 백터 레이어 추가
-	
-	vectorLayer.addFeatures([ mLineFeature ]); // 백터 레이어에 백터 추가 */
 }
 
 function showCurrentPos(){
