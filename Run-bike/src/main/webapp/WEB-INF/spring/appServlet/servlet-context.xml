@@ -99,6 +99,10 @@
          <mapping path="/user/**"></mapping>
          <mapping path="/record/**"></mapping>
          <mapping path="/party/**"></mapping>
+         <mapping path="/stamp/**"></mapping>
+         <mapping path="/reward/**"></mapping>
+         <mapping path="/qnaboard/**"></mapping>
+         <mapping path="/adminpage/**"></mapping>
          <exclude-mapping path="/user/register/**" />
          <exclude-mapping path="/user/login/**" />
          <beans:ref bean="AuthCheckInterceptor"/>

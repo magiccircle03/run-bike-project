@@ -35,7 +35,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			select * from badge
 		</select>
 		
-		<!-- 회원이 가지고 있는 stamp 불러오기  -->	
+		<!-- 회원이 가지고 있는 badge 불러오기  -->	
 		<select id="selectMyBadge" resultMap="myBadge">
 			select distinct(badge.b_num), badge.b_name, badge.b_photo, badge.cb_photo,
 			@serial := if(badge.b_num=myBadge.b_num, 1, 0) as serial
@@ -50,7 +50,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			select count(*)
 			from run_bike.own_badge o
 			inner join run_bike.user u
-			on o.u_idx = o.u_idx
+			on u.u_idx = o.u_idx
 			where u.u_idx = #{param1} and o.b_num = #{param2};
 		</select>
 		
