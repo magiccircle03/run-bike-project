@@ -158,7 +158,7 @@ h5{
 <!-- <hr> -->
 <input id="u_idx" name="u_idx" type="hidden" class="form-control" value="${loginInfo.u_idx}">
 <!-- <button class="btn" onclick="getCurrentPos()">현재위치</button>  -->
-
+<!--  <button onclick="getDistanceCE()">현재위치와의 직선거리 계산</button> -->
 <!-- 같이하기 내비게이션 -->
 <ul class="nav nav-pills nav-justified">
   <li class="nav-item tabWidth">
@@ -197,7 +197,9 @@ h5{
      
      	<div id="endArea" style="display:none;">
 	    	<!-- 원래는 장소를 체크해서 가까우면 완주 아니면 그냥 종료로 간다. -->
-	    	<button id="endBtn" class="btn width100 black btnHeight" onclick="endRidingOne()">종료하기</button>
+<!-- 	    	<button id="endBtn" class="btn width100 black btnHeight" onclick="endRidingOne()">종료하기</button> -->
+	    	<button id="endBtn" class="btn width100 black btnHeight" onclick="getDistanceCE()">종료하기</button>
+	    	
     	</div>
     	
     	<!-- 방장만 보이게 영역 -->
@@ -229,14 +231,70 @@ $(document).ready(function() {
 var p_num = ${partyInfo.p_num};
 var u_idx = $('#u_idx').val();// 아이디 값 세션에서 가져오기. 
 
+//직선 거리를 계산하는 함수
+
+function getDistanceCE() {
+	navigator.geolocation.getCurrentPosition(function(pos) {
+		var distanceCE;
+	    var latitude = pos.coords.latitude;
+	    var longitude = pos.coords.longitude;
+	    //alert("내 현재 위치는 : " + latitude + ", "+ longitude);
+	    lonlat = new Tmap.LonLat(longitude, latitude).transform("EPSG:4326", "EPSG:3857");//좌표 설정
+		 //직선거리 계산
+		$.ajax({
+			method:"GET",
+			url:"https://apis.openapi.sk.com/tmap/routes/distance?version=1&format=xml",//직선거리 계산 api 요청 url입니다.
+			async:false, 
+			data:{
+				//시작 지점 위경도 좌표입니다.
+				"startX" : lonlat.lon,
+				"startY" : lonlat.lat,
+				//끝 지점 위경도 좌표입니다. 
+				"endX" : xy.endX,
+				"endY" : xy.endY,
+				//입력하는 좌표계 유형을 지정합니다.
+				"reqCoordType" : "EPSG3857",
+				//실행을 위한 키 입니다. 발급받으신 AppKey(appKey)를 입력하세요.
+				"appKey" : "6d5877dc-c348-457f-a25d-46b11bcd07a9"
+			},
+			//데이터 로드가 성공적으로 완료되었을 때 발생하는 함수입니다.
+			success:function(response){
+				prtcl = response;
+				
+				var prtclString = new XMLSerializer().serializeToString(prtcl);//xml to String	
+			    xmlDoc = $.parseXML( prtclString ),
+			    $xml = $( xmlDoc ),
+			    $intRate = $xml.find("distanceInfo");
+				var distance = $intRate[0].getElementsByTagName("distance")[0].childNodes[0].nodeValue;
+				
+				//alert('직선거리 : '+distance);
+				
+				endRidingOne(distance<=300);
+				
+			},
+			//요청 실패시 콘솔창에서 에러 내용을 확인할 수 있습니다.
+			error:function(request,status,error){
+				console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+			}
+		});
+	});
+
+	
+}
+
+
 // 개인이 라이딩을 종료하는 함수
-function endRidingOne(){
-	var chk = confirm('현재위치 = 도착지 반경 500m?'); //완주여부 체크. 일단은 이렇게 받자
+function endRidingOne(chk){
+	
+	//alert('chk : '+chk);
+	//var chk = confirm('현재위치 = 도착지 반경 500m?'); //완주여부 체크. 일단은 이렇게 받자
 	//getCurrentPos(); // 검사해서 이 위치가 도착지 좌표 반경 몇 m 이내면, 완주여주 Y / 아니면 N //중도 포기하겠냐고 물어봄
 	if(chk){
 		updateEnd('Y'); // 완주여부 Y, end여부 Y로 업데이트
 	}else{
-		updateEnd('N'); // 완주여부 N, end여부 Y로 업데이트
+		if (confirm('아직 도착지에 도착하지 않았습니다. 중도 포기하시겠습니까?')) {
+			updateEnd('N'); // 완주여부 N, end여부 Y로 업데이트
+		}
 	}
 	alert('라이딩을 종료하였습니다!');
 	$('#endArea').css('display','none');
@@ -608,6 +666,30 @@ function initTmap(xy) {
 	});
  //   map.setCenter(new Tmap.LonLat("126.986072", "37.570028").transform("EPSG:4326", "EPSG:3857"), 15); //설정한 좌표를 "EPSG:3857"로 좌표변환한 좌표값으로 즁심점을 설정합니다.						
     getRoute(xy);
+    showCircle(xy);
+
+}
+
+
+function showCircle(xy) {
+	//원
+	var vector_layer = new Tmap.Layer.Vector('Tmap Vector Layer'); // 백터 레이어 생성
+	map.addLayers([vector_layer]); // 지도에 백터 레이어 추가
+	
+// 	var coord = new Tmap.LonLat(126.935063, 37.564432).transform("EPSG:4326", "EPSG:3857");
+// 	var circle = new Tmap.Geometry.Circle(coord.lon, coord.lat, 500); // 원 생성
+	var circle = new Tmap.Geometry.Circle(xy.endX, xy.endY, 300); // 원 생성
+	// 지도상에 그려질 스타일을 설정합니다
+	var style_red = {
+		fillColor:"#FF0000",
+		fillOpacity:0.2,
+		strokeColor: "#FF0000",
+		strokeWidth: 3,
+		strokeDashstyle: "solid",
+		pointRadius: 60
+	};
+	var circleFeature = new Tmap.Feature.Vector(circle, null, style_red); // 원 백터 생성
+	vector_layer.addFeatures([circleFeature]); // 원 백터 를 백터 레이어에 추가
 
 }
 
