@@ -89,6 +89,7 @@
 			<script src="../assets/js/jquery.min.js"></script>
 			<script>
 				$(document).ready(function(){
+					var path = '<c:url value="/"/>';
 					// 정규식
 					// @ & /.com/.net/.co.kr
                     var idChk = /^[a-z0-9_+.-]+@([a-z0-9-]+\.)+[a-z0-9]{2,4}$/;
@@ -139,7 +140,7 @@
 							console.log(u_id);
 							$.ajax({
 								type:'GET',
-								url:'/runbike/user/register/idCheck?u_id='+u_id,
+								url:path+'user/register/idCheck?u_id='+u_id,
 								success: function(data){
 									console.log(data);
 									if(data == 'Y'){									
@@ -237,7 +238,7 @@
 							$.ajax({			
 								type: 'POST',
 								enctype: 'multipart/form-data',
-								url: '/runbike/user/register',
+								url: path+'user/register',
 								contentType: false,
 								processData: false,
 								data : formData,
@@ -245,7 +246,7 @@
 									console.log(data);
 									if(data=='ok'){
 										alert("회원가입이 완료되었습니다. 이메일 인증 후 이용하시기 바랍니다.");
-										location.href = '/runbike/';
+										location.href = path;
 										
 									} else {
 										alert("회원가입에 실패했습니다. 관리자에게 문의하세요.");
@@ -289,7 +290,7 @@
 
 
 					$('#btnReset').on('click',function(){
-						location.href="/runbike/";
+						location.href=path;
 					})
 					
 					

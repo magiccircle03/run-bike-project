@@ -33,10 +33,10 @@
 							<ul class="actions special">
 							<c:choose>
 								<c:when test="${loginInfo ne null}">
-									<li><a href="/runbike/record/startRide" class="button primary">시작하기</a></li>
+									<li><a href="<c:url value='record/startRide'/>" class="button primary">시작하기</a></li>
 								</c:when>
 								<c:otherwise>
-									<li><a href="/runbike/user/login" class="button primary">시작하기</a></li>
+									<li><a href="<c:url value='user/login'/>" class="button primary">시작하기</a></li>
 								</c:otherwise>
 							</c:choose>
 							</ul>
@@ -45,10 +45,10 @@
 					
 			</div>
 			<script src="<c:url value='/assets/js/jquery.min.js'/>"></script>
-			<script src="assets/js/jquery.scrollex.min.js"></script>
-			<script src="assets/js/jquery.scrolly.min.js"></script>
-			<script src="assets/js/browser.min.js"></script>
-			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="<c:url value='assets/js/jquery.scrollex.min.js'/>"></script>
+			<script src="<c:url value='assets/js/jquery.scrolly.min.js'/>"></script>
+			<script src="<c:url value='assets/js/browser.min.js'/>"></script>
+			<script src="<c:url value='assets/js/breakpoints.min.js'/>"></script>
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
 

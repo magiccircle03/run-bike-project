@@ -313,13 +313,14 @@
 	<script>
     
     	$(document).ready(function(){
+    		var path = '<c:url value=""/>';
     		var u_idx = ${loginInfo.u_idx};
     		var datalist = "";
     		
     		// 회원 기록 가져오기
     		$.ajax({
     			type: 'GET',
-    			url: '/runbike/user/record/'+u_idx,
+    			url: path+ 'user/record/'+u_idx,
     			success: function(data){
     				if(data.userRecord.total_count>0){
     					$('#user-record-status').css('display','none');
@@ -430,7 +431,7 @@
 	    			$.ajax({
 	    				enctype:'multipart/form-data',
 	    				type: 'POST',    				
-	    				url: '/runbike/user/edit',
+	    				url: path+'user/edit',
 	    				data: formData,
 	    				contentType: false,
 	    				processData : false,
@@ -456,19 +457,19 @@
     		// 회원 탈퇴 기능
     		$('#deleteForm').on('submit',function(){
     			$.ajax({
-    				url: '/runbike/user/chkMaster/'+u_idx,
+    				url: path+'user/chkMaster/'+u_idx,
     				success: function(data){
     					console.log(data);
     					if(data !='Y'){
     						if(confirm("정말로 탈퇴하시겠습니까?")){
     							$.ajax({
         		    				type: 'post',
-        		    				url: '/runbike/user/delete/'+u_idx,
+        		    				url: path+'user/delete/'+u_idx,
         		    				data: {'delete_u_pw': $('#delete_u_pw').val()},
         		    				success: function(data){
         		    					if(data==1){
         			    					alert("탈퇴를 완료했습니다.");
-        			    					location.href="/runbike/";
+        			    					location.href= path;
         		    					} else{
         		    						alert("비밀번호를 다시 확인하세요.");
         		    					}
