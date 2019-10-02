@@ -15,6 +15,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="cb_photo" column="cb_photo" />
 	</resultMap>
 	
+	<resultMap id="myBadge"
+		type="com.teamrun.runbike.ownbadge.domain.MyBadge">
+		<id property="b_num" column="b_num" />
+		<result property="b_name" column="b_name" />
+		<result property="b_photo" column="b_photo" />
+		<result property="cb_photo" column="cb_photo" />
+		<result property="serial" column="serial" />
+	</resultMap>
+	
 	<!-- insert  -->
 	<insert id="insertMyBadge">
 		insert into own_badge (b_num, u_idx) values (#{param1}, #{param2})
@@ -26,9 +35,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			select * from badge
 		</select>
 		
-		<!-- 회원이 가지고 있는 stamp 불러오기  -->
-		<select id="selectMyBadge" resultMap="badge">
-			select badge.b_num, badge.b_name, badge.b_photo, badge.cb_photo from run_bike.badge badge inner join run_bike.own_badge myBadge on badge.b_num = myBadge.b_num where myBadge.u_idx=#{u_idx};
+		<!-- 회원이 가지고 있는 badge 불러오기  -->	
+		<select id="selectMyBadge" resultMap="myBadge">
+			select distinct(badge.b_num), badge.b_name, badge.b_photo, badge.cb_photo,
+			@serial := if(badge.b_num=myBadge.b_num, 1, 0) as serial
+			from run_bike.badge badge  
+			left join 
+				(select * from run_bike.own_badge where u_idx = #{u_idx}) as myBadge 
+			on badge.b_num = myBadge.b_num;
 		</select>
 		
 		<!-- 뱃지 소유 여부 확인 -->
@@ -36,7 +50,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			select count(*)
 			from run_bike.own_badge o
 			inner join run_bike.user u
-			on o.u_idx = o.u_idx
+			on u.u_idx = o.u_idx
 			where u.u_idx = #{param1} and o.b_num = #{param2};
 		</select>
 		
@@ -50,7 +64,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		</select>
 		<!-- select 2: 연속 세번 방문 -->
 		<select id="consecutiveLogin" resultType="int">
-			select serial from 
+			select count(serial) from 
 			(select
 			distinct date_format(login_date, '%Y-%m-%d') DATEONLY, 
 			@serial := if(datediff(login_date, @prev_login)=1, @serial + datediff(login_date, @prev_login), 0) as serial,
@@ -61,7 +75,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		</select>
 		<!-- select 3: 혼자 라이딩 총 km 수가 10km 이상 -->
 		<select id="ridingAloneDistance" resultType="int">
-			select sum(r_riding_km) riding_km
+			select ifnull(sum(r_riding_km),0) riding_km
 			from run_bike.record r
 			inner join run_bike.user u
 			on u.u_idx = r.u_idx 
@@ -69,7 +83,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		</select>		
 		<!-- select 4: 같이 라이딩 총 km 수가 10km 이상 -->
 		<select id="ridingWithDistance" resultType="int">
-			select sum(p.p_riding_km) riding_km
+			select ifnull(sum(p.p_riding_km),0) riding_km
 			from run_bike.party p
 			inner join run_bike.participation pc
 			inner join run_bike.user u
@@ -79,7 +93,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				
 		<!-- select 5: 라이딩 타임이 1시간 이상 -->
 		<select id="ridingAloneTime" resultType="int">
-			select round(sum(r_riding_time/60)) r_riding_time
+			select ifnull(round(sum(r_riding_time/60)),0) r_riding_time
 			from run_bike.record r
 			inner join run_bike.user u
 			on u.u_idx = r.u_idx 

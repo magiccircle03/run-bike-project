@@ -2,6 +2,7 @@ package com.teamrun.runbike.ownstamp.dao;
 
 import java.util.List;
 
+import com.teamrun.runbike.ownstamp.domain.MyStamp;
 import com.teamrun.runbike.ownstamp.domain.OwnStamp;
 import com.teamrun.runbike.ownstamp.domain.Stamp;
 
@@ -13,5 +14,5 @@ public interface OwnStampDao {
 	public List<Stamp> selectAllStamp();
 	
 	//내가 가지고 있는 스탬프 목록 가져오기
-	public List<Stamp> selectMyStamp(int u_idx);
+	public List<MyStamp> selectMyStamp(int u_idx);
 }

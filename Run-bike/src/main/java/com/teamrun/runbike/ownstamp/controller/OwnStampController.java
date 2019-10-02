@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.teamrun.runbike.ownstamp.domain.MyStamp;
 import com.teamrun.runbike.ownstamp.domain.Stamp;
 import com.teamrun.runbike.ownstamp.service.InsertOwnStampService;
 import com.teamrun.runbike.ownstamp.service.GetOwnStampService;
@@ -35,13 +35,12 @@ public class OwnStampController {
 
 		String view = "rewards/myStamp";
 
-		List<Stamp> stampList = getService.getAllStamp();
-		List<Stamp> myStampList = getService.selectMyStamp(request);
+		List<MyStamp> myStampList = getService.selectMyStamp(request);
 		
-		model.addAttribute("stampList", stampList);
+		System.out.println(myStampList);
+		
 		model.addAttribute("myStampList", myStampList);
 
-		System.out.println(stampList);
 		System.out.println(myStampList);
 
 		return view;
@@ -71,15 +70,4 @@ public class OwnStampController {
 		System.out.println(":::::::::::::::::::::::::입력 값은 " + cnt);
 		return new ResponseEntity<String>(cnt > 0 ? "success" : "fail", HttpStatus.OK);
 	}
-	
-	@RequestMapping(method = RequestMethod.GET)
-	@CrossOrigin
-	@ResponseBody
-	public List<Stamp> getMyStamp(HttpServletRequest request){
-		
-		List<Stamp> myStampList = getService.selectMyStamp(request);
-		
-		return myStampList;
-	}
-
 }

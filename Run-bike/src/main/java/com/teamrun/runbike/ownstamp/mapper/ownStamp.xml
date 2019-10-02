@@ -17,6 +17,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="s_point_lat" column="s_point_lat" />
 	</resultMap>
 	
+	<resultMap id="myStamp"
+		type="com.teamrun.runbike.ownstamp.domain.MyStamp">
+		<id property="s_num" column="s_num" />
+		<result property="s_name" column="s_name" />
+		<result property="s_photo" column="s_photo" />
+		<result property="cs_photo" column="cs_photo" />
+		<result property="s_point_lon" column="s_point_lon" />
+		<result property="s_point_lat" column="s_point_lat" />
+		<result property="serial" column="serial" />
+	</resultMap>
+	
 	<!-- insert  -->
 	<insert id="insertMyStamp" parameterType="com.teamrun.runbike.ownstamp.domain.OwnStamp">
 		insert into own_stamp (s_num, u_idx) values (#{s_num}, #{u_idx})
@@ -29,8 +40,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		</select>
 		
 		<!-- 회원이 가지고 있는 stamp 불러오기  -->
-		<select id="selectMyStamp" resultMap="stamp">
-			select * from own_stamp where u_idx=#{u_idx};
+		<select id="selectMyStamp" resultMap="myStamp">
+			select distinct(stamp.s_num), stamp.s_name, stamp.s_photo, stamp.cs_photo, stamp.s_point_lon, stamp.s_point_lat,
+			@serial := if(stamp.s_num=myStamp.s_num, 1, 0) as serial
+			from run_bike.stamp stamp  
+			left join 
+				(select * from run_bike.own_stamp where u_idx = #{u_idx}) as myStamp 
+			on stamp.s_num = myStamp.s_num;
 		</select>
 
 </mapper>

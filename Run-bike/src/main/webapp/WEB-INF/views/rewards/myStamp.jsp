@@ -27,7 +27,7 @@
 
 <!--Tmap API-->
 <script src="https://apis.openapi.sk.com/tmap/js?version=1&format=javascript&appKey=6d5877dc-c348-457f-a25d-46b11bcd07a9"></script>
-
+<link href="https://fonts.googleapis.com/css?family=Do+Hyeon&display=swap" rel="stylesheet">
 <!--폰트어썸 아이콘  -->
 <script src="https://kit.fontawesome.com/ff137eb685.js"
 	crossorigin="anonymous"></script>
@@ -39,9 +39,17 @@
 .row{
 	text-align: center;
 }
-
+#stampArea{
+	font-family: 'Do Hyeon', sans-serif;
+	font-size: 20px;
+} 
 p{
 	margin: 10px;
+	font-size: 13px;
+}
+
+#stampArea{
+	margin-bottom: 10px;
 }
 </style>
 
@@ -66,34 +74,23 @@ p{
 	
 	
 		<div class="row">
-			
-			<c:choose>		
-				<c:when test="${empty myStampList}">
-							<div class="col" id="stampArea">
-							<img alt="stamp" src="<c:url value='/uploadfile/cs_stampPhoto/${stamp.cs_photo}'/>" style="width: 150px; height: 147px;">
-							<p id="stampName">${stamp.s_name}</p>
+			<c:forEach var="myStamp" items="${myStampList}" varStatus="status">
+				<c:set var="serial" value="${myStamp.serial}"/>						
+					<c:choose>				
+						<c:when test="${1 eq serial}">
+							<div class="col-4" id="stampArea">
+								<img alt="myStamp" src="<c:url value='/uploadfile/color_stampPhoto/${myStamp.s_photo}'/>" style="width: 150px; height: 147px;">
+								<p id="stampName">${myStamp.s_name}</p>
 							</div>
-				</c:when>
-				
-				<c:when test="${!empty myStampList}">
-					<c:forEach var="stamp" items="${stampList}" varStatus="status">
-							<c:choose>				
-								<c:when test="${stamp.s_num eq myStampList.s_num}">
-									<div class="col" id="stampArea">
-										<img alt="stamp" src="<c:url value='/uploadfile/color_stampPhoto/${stamp.s_photo}'/>" style="width: 150px; height: 147px;">
-										<p id="stampName">${stamp.s_name}</p>
-									</div>
-								</c:when>
-								<c:when test="${stamp.s_num ne myStampList.s_num}}">
-									<div class="col" id="stampArea">
-										<img alt="stamp" src="<c:url value='/uploadfile/cs_stampPhoto/${stamp.cs_photo}'/>" style="width: 150px; height: 147px;">
-										<p id="stampName">${stamp.s_name}</p>
-									</div>
-								</c:when>						 									
-							</c:choose>			
-					</c:forEach>
-				</c:when>
-			</c:choose>
+						</c:when>
+						<c:when test="${0 eq serial}">
+							<div class="col-4" id="stampArea">
+								<img alt="myStamp" src="<c:url value='/uploadfile/cs_stampPhoto/${myStamp.cs_photo}'/>" style="width: 150px; height: 147px;">
+								<p id="stampName">${myStamp.s_name}</p>
+							</div>
+						</c:when>						 									
+					</c:choose>
+			</c:forEach>
 		</div>
 		
 	</div>

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.teamrun.runbike.ownstamp.dao.OwnStampDao;
+import com.teamrun.runbike.ownstamp.domain.MyStamp;
 import com.teamrun.runbike.ownstamp.domain.Stamp;
 import com.teamrun.runbike.user.domain.LoginInfo;
 
@@ -31,20 +32,21 @@ public class GetOwnStampService {
 		return allStampList;
 	}
 	
-	public List<Stamp> selectMyStamp(HttpServletRequest request) {
+	public List<MyStamp> selectMyStamp(HttpServletRequest request) {
 		
 		dao = template.getMapper(OwnStampDao.class);
 		
-		List<Stamp> stampList = null;
+		List<MyStamp> myStampList = null;
 		
 		//세션에서 로그인 정보 받아오기
 		LoginInfo loginInfo = (LoginInfo)request.getSession(false).getAttribute("loginInfo");
 				
 		int u_idx = loginInfo.getU_idx();
 		
-		stampList = dao.selectMyStamp(u_idx);
+		myStampList = dao.selectMyStamp(u_idx);
 		
-		return stampList;
+		
+		return myStampList;
 	}
 	
 }

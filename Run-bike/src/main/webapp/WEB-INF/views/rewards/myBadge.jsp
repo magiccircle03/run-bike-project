@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %> 
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
 <!DOCTYPE html>
 <html>
@@ -25,77 +25,95 @@
 	crossorigin="anonymous"></script>
 
 <link rel="stylesheet" href="<c:url value='/assets/css/layout.css'/>">
-
+<link href="https://fonts.googleapis.com/css?family=Do+Hyeon&display=swap" rel="stylesheet">
 <!--폰트어썸 아이콘  -->
 <script src="https://kit.fontawesome.com/ff137eb685.js"
 	crossorigin="anonymous"></script>
 
 <title>나의 뱃지 보기</title>
+
+<style type="text/css">
+
+.row{
+	text-align: center;	
+}
+#badgeArea{
+	font-family: 'Do Hyeon', sans-serif;
+	font-size: 20px;
+} 
+
+p{
+	margin: 10px;
+	font-size: 13px;
+}
+
+#badgeArea{
+	margin-bottom: 10px;
+}
+
+</style>
+
 </head>
 <body>
 	<!-- 해더 시작 -->
 	<%@ include file="/WEB-INF/views/frame/header.jsp"%>
 	<!-- 해더 끝 -->
-	
-	<div class="row mb-md-5" >
-		<div class="list-group list-group-horizontal col-md-4 col-sm-12 mx-auto text-center" id="myList" role="tablist">
-			<a class="list-group-item list-group-item-action active" id="myBadge" data-toggle="list" id="ridingGuide" href="#" role="tab">나의 뱃지</a> 
-			<a class="list-group-item list-group-item-action" id="myStamp" data-toggle="list" id="myCourse" href="#" role="tab">나의 스탬프</a>
+
+	<div class="row mb-md-5">
+		<div
+			class="list-group list-group-horizontal col-md-4 col-sm-12 mx-auto text-center"
+			id="myList" role="tablist">
+			<a class="list-group-item list-group-item-action active" id="myBadge"
+				data-toggle="list" id="ridingGuide" href="#" role="tab">나의 뱃지</a> <a
+				class="list-group-item list-group-item-action" id="myStamp"
+				data-toggle="list" id="myCourse" href="#" role="tab">나의 스탬프</a>
 		</div>
 	</div>
-	
+
 	<!-- 컨테이너 시작 -->
 	<div class="container">
-			<h4 class="font-weight-bold pt-5 mb-4"><i class="fas fa-trophy"> 나의 뱃지</i></h4>
-			<div class="page-info-text text-dark">내가 모은 뱃지를 볼 수 있습니다.</div>
-			<hr>	
-			${fn:length(myBadgeList)}
-			
-			<div class="row">
-			<c:forEach var="badge" items="${badgeList}" varStatus="status">
+		<h4 class="font-weight-bold pt-5 mb-4">
+			<i class="fas fa-trophy"> 나의 뱃지</i>
+		</h4>
+		<div class="page-info-text text-dark">내가 모은 뱃지를 볼 수 있습니다.</div>
+		<hr>
+
+		<div class="row">
+			<c:forEach var="myBadgelist" items="${myBadgeList}" varStatus="status">
+				<c:set var="serial" value="${myBadgelist.serial}" />
 				<c:choose>
-					<c:when test="${empty myBadgeList}">
-						<div class="col" id="badgeArea">
-						<img alt="badge" src="<c:url value='/uploadfile/cs_badgePhoto/${badge.cb_photo}'/>" style="">
-						<p id="badgeName">${badge.b_name}</p>
+					<c:when test="${1 eq serial}">
+						<div class="col-4" id="badgeArea">
+							<img alt="myBadge"
+								src="<c:url value='/uploadfile/color_badgePhoto/${myBadgelist.b_photo}'/>"
+								style="width: 150px; height: 147px;">
+							<p id="badgeName">${myBadgelist.b_name}</p>
 						</div>
 					</c:when>
-					
-					<c:when test="${!empty myBadgeList}">
-						<c:forEach var="mybadge" items="${myBadgeList}" varStatus="status">		
-							<c:choose>	
-								<c:when test="${badge.b_name eq mybadge.b_name}">
-									<div class="col" id="badgeArea">
-									<img alt="badge" src="<c:url value='/uploadfile/color_badgePhoto/${mybadge.b_photo}'/>" style="">
-									<p id="badgeName">${mybadge.b_name}</p>
-									</div>
-								</c:when>
-								<c:when test="${badge.b_name ne mybadge.b_name}">
-									<div class="col" id="badgeArea">
-									<img alt="badge" src="<c:url value='/uploadfile/cs_badgePhoto/${badge.cb_photo}'/>" style="">
-									<p id="badgeName">${badge.b_name}</p>
-									</div>
-								</c:when>						 
-							</c:choose>					
-						</c:forEach>
+					<c:when test="${0 eq serial}">
+						<div class="col-4" id="badgeArea">
+							<img alt="myBadge"
+								src="<c:url value='/uploadfile/cs_badgePhoto/${myBadgelist.cb_photo}'/>"
+								style="width: 150px; height: 147px;">
+							<p id="badgeName">${myBadgelist.b_name}</p>
+						</div>
 					</c:when>
-				</c:choose>			
+				</c:choose>
 			</c:forEach>
-			</div>
-			
-			
-				
+		</div>
+
+
+
 	</div>
-	
+
 	<script>
-	 	$('#myBadge').on('click', function(){
-	    	location.href="<c:url value='/badge/user' />";
-	    });
-	    
-	    $('#myStamp').on('click', function(){
-	    	location.href="<c:url value='/stamp/user' />"
-	    });
-	    
+		$('#myBadge').on('click', function() {
+			location.href = "<c:url value='/badge/user' />";
+		});
+
+		$('#myStamp').on('click', function() {
+			location.href = "<c:url value='/stamp/user' />"
+		});
 	</script>
 	<!-- 푸터 시작 -->
 	<%@ include file="/WEB-INF/views/frame/footer.jsp"%>
