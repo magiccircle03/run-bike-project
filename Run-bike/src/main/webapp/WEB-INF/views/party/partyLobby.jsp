@@ -803,7 +803,7 @@ function list() {
 				html += '<div class="card card-style">\n';
 				html += '<div class="card-body">\n';
 				html += '<h5 class="card-title">\n';
-				html += data[i].p_name + ' ( '+getUserCount(data[i].p_num)+' / '+data[i].p_capacity+' ) '+lock+ingYN+'\n'
+				html += '['+data[i].p_num+'] '+data[i].p_name + ' ( '+getUserCount(data[i].p_num)+' / '+data[i].p_capacity+' ) '+lock+ingYN+'\n'
 				html += '</h5>\n';
 				html += '<p class="card-text">\n';
 				html += '<i class="fas fa-map-marked-alt"></i> 출발지 : '+data[i].p_start_info+'<br>\n';
