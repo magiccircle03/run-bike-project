@@ -25,7 +25,7 @@
 	crossorigin="anonymous"></script>
 
 <link rel="stylesheet" href="<c:url value='/assets/css/layout.css'/>">
-
+<link href="https://fonts.googleapis.com/css?family=Do+Hyeon&display=swap" rel="stylesheet">
 <!--폰트어썸 아이콘  -->
 <script src="https://kit.fontawesome.com/ff137eb685.js"
 	crossorigin="anonymous"></script>
@@ -35,12 +35,17 @@
 <style type="text/css">
 
 .row{
-	text-align: center;
+	text-align: center;	
 }
+#badgeArea{
+	font-family: 'Do Hyeon', sans-serif;
+	font-size: 20px;
+} 
 
 p{
 	margin: 10px;
 }
+
 </style>
 
 </head>
@@ -73,7 +78,7 @@ p{
 				<c:set var="serial" value="${myBadgelist.serial}" />
 				<c:choose>
 					<c:when test="${1 eq serial}">
-						<div class="col-md-3 col-sm-4" id="badgeArea">
+						<div class="col-md-4 col-sm-4" id="badgeArea">
 							<img alt="myBadge"
 								src="<c:url value='/uploadfile/color_badgePhoto/${myBadgelist.b_photo}'/>"
 								style="width: 150px; height: 147px;">
@@ -81,7 +86,7 @@ p{
 						</div>
 					</c:when>
 					<c:when test="${0 eq serial}">
-						<div class="col-md-3 col-sm-4" id="badgeArea">
+						<div class="col-md-4 col-sm-4" id="badgeArea">
 							<img alt="myBadge"
 								src="<c:url value='/uploadfile/cs_badgePhoto/${myBadgelist.cb_photo}'/>"
 								style="width: 150px; height: 147px;">
