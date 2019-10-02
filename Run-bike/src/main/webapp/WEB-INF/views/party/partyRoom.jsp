@@ -22,6 +22,9 @@
 
 
 <style type="text/css">
+body{
+	color : #333333;
+}
 .mint{
 	background-color: #21B2A6;
 	color: #fefefe;
@@ -59,8 +62,9 @@ h5{
 .yellow{
 	color: #FBAB00;
 }
-.gray{
-	color: #aaaaaa;
+.lightgray{
+
+	background-color: #efefef;
 }
 .bold{
 	font-weight: bold;
@@ -117,6 +121,19 @@ h5{
 .width100{
 	width: 100%;
 }
+.middle{
+	vertical-align: middle;
+}
+.cardmargin{
+	margin-top: 10px;
+}
+.btnHeight{
+	margin-top: 20px;
+	height: 50px;
+}
+.right{
+	text-align: right;
+}
 </style>
 </head>
 <body>
@@ -142,9 +159,7 @@ h5{
   <li class="nav-item tabWidth">
     <a class="nav-link" href="<c:url value='/party/${partyInfo.p_num}/chat' />">채팅</a>
   </li>
- 
 </ul>
-
 
 
 <hr>
@@ -173,27 +188,33 @@ h5{
     
     <!-- 시작 전에만 보이는 영역 -->
     <div id="beforeStartArea">
-    
-	    <input id="readyChk" class="readyChk" type="checkbox" data-toggle="toggle" data-on="준비완료!" data-off="준비하기" data-onstyle="primary mint" data-width="100%">
-	
-	    <!-- 방장만 보이게 영역 -->
-		<div id="partyInfoMaster" class="master">
-		   	<button id="startBtn" type="button" class="btn width100" onclick="startRiding()" disabled="true">시작하기</button>
+    	<br>
+	    <input id="readyChk" class="readyChk" type="checkbox" data-toggle="toggle" data-on="준비완료!" data-off="준비하기" data-onstyle="primary mint" data-width="100%" data-height="50px">
+		<br>
+		<!-- 방장만 보이는 시작버튼 -->
+		<button id="startBtn" type="button" class="btn width100 master btnHeight" onclick="startRiding()" disabled="true">시작하기</button>
+		<br>
+	    <hr>
+	    <h5><i class="fas fa-child"></i> 함께 달릴 동료들 (<p id="capa" style="display: inline"></p> / ${partyInfo.p_capacity} )</h5>
+	    <br>
+	    <div id="partyUserInfo1" class="row">
+	    <!-- 참가자 사진 / 이름 / 준비여부-->
+
+		</div>
+
+		
+		<hr>
+		  
+		<!-- 방장만 보이게 영역 -->
+		<div id="partyInfoMaster" class="master right">
 		    <button class="btn" onclick="editParty()">방 정보 수정</button> 
 		    <button class="btn" onclick="deletePartyBtn()">방 삭제</button> 
 		</div>
 		<!-- /방장만 보이게 영역 -->
-	   
-	    <hr>
-	    <h5><i class="fas fa-child"></i> 함께 달릴 동료들 (<p id="capa" style="display: inline"></p> / ${partyInfo.p_capacity} )</h5>
-	    <div id="partyUserInfo1">
-	    <!-- 참가자 사진 / 이름 / 준비여부-->
-		</div>
-<%-- 		<img src="${pageContext.request.contextPath}/uploadfile/userphoto/noImg.jpg"> --%>
     </div>
     <!-- /시작 전에만 보이는 영역 -->
     <!-- ======================================= -->
-    			<button class="btn" onclick="exitPartyFn()">나가기</button> 
+    <button class="btn width100 lightgray" onclick="exitPartyFn()">나가기</button> 
     
     
   </div>
@@ -312,15 +333,66 @@ function showPartyUserList() {
 		url : '../party/room/'+p_num+'/user',
 		type : 'GET',
 		success : function(data) {
-			//alert('호');
-			//alert(JSON.stringify(data));
-			
-// 			html2='';
-// 			for (var i = 0; i < data.length; i++) {
-// 				html2+=' '+data[i].u_photo+' '+data[i].u_name+' 여기는 상태<br>';
-// 			}
-// 			$('#partyUserInfo2').html(html2);
+			html='';
+			for (var i = 0; i < data.length; i++) {
+				var crown=''; 
+				var bold='';
+				var readyStr='';
+				var delBtn='';
+				
+				if(data[i].pc_masterYN=='Y'){
+						crown='<i class="fas fa-crown yellow"></i> ';
 
+					}else{
+	 					if(isMaster()){
+	 						crown='<a href="#" onclick="changeMaster('+data[i].u_idx+')"><i class="fas fa-user-alt gray" style="padding-left:2px;padding-right:2px;"></i></a> '; 
+	 						delBtn='<a onclick="ban('+data[i].u_idx+')" class="ban"><i class="fas fa-times"></i></a>';
+	 					}else{
+							crown='<i class="fas fa-user-alt gray" style="padding-left:2px;padding-right:2px;"></i> '; 
+						}
+					}
+					
+					// 자신은 굵은 글씨로 표시된다
+					if(data[i].u_idx==u_idx){
+						bold='bold';
+					}
+					
+					if(data[i].pc_readyYN=='Y'){
+						readyStr='<p class="ready middle">준비 완료!</p>';
+					}else{
+						readyStr='<p class="gray middle">방 둘러보는 중...</p>';
+					}
+					
+					
+				html+='<div class="col-sm-6">\n';
+				html+='<div class="card cardmargin">\n';
+				html+='<div class="row no-gutters">\n';
+				html+='<div class="col-2">\n';
+				html+='<img src="${pageContext.request.contextPath}/uploadfile/userphoto/'+data[i].u_photo+'" alt="" class="card-img" />\n';
+				html+='</div>\n';
+				html+='<div class="col-5">\n';
+				html+='<div class="card-body">\n';
+				html+='<p class="card-text middle '+bold+'">\n';
+				html+= crown + data[i].u_name + delBtn;
+				html+='</p>\n';
+				html+='</div>\n';
+				html+='</div>\n';
+				html+='<div class="col-5">\n';
+				html+='<div class="card-body middle">\n';
+				html+='<p class="card-text middle">\n';
+				html+= readyStr;
+				html+='</p>\n';
+				html+='</div>\n';
+				html+='</div>\n';
+				html+='</div>\n';
+				html+='</div>\n';
+				html+='</div>';//col-sm-6
+			
+			}
+			
+			$('#partyUserInfo1').html(html);
+			$('#capa').html(" "+getUserCount());
+/* 
 			
 			html1='';
 			html1+='<table style="width:100%;">\n';
@@ -365,7 +437,7 @@ function showPartyUserList() {
 			}
 			html1+='</table>\n';
 			$('#partyUserInfo1').html(html1);
-			$('#capa').html(" "+getUserCount());
+			$('#capa').html(" "+getUserCount()); */
 			
 		}
 

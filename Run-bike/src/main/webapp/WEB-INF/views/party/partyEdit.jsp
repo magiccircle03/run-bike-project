@@ -22,7 +22,9 @@
 
 
 <style type="text/css">
-
+body{
+	color : #333333;
+}
 .tabWidth{
 	width:33%;
 	text-align: center;

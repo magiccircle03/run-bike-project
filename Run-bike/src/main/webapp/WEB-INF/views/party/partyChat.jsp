@@ -22,7 +22,9 @@
 
 
 <style type="text/css">
-
+body{
+	color : #333333;
+}
 .tabWidth{
 	width:33%;
 	text-align: center;
@@ -67,7 +69,7 @@
 <div class="tab-content">
   
   <div class="tab-pane fade show active">
-	채팅기능 준비중입니다^^!!!
+	채팅기능은 준비중입니다٩(*´ ꒳ `*)۶
   </div>
   
 </div>
