@@ -33,10 +33,10 @@
 							<ul class="actions special">
 							<c:choose>
 								<c:when test="${loginInfo ne null}">
-									<li><a href="http://localhost:8080/runbike/record/startRide" class="button primary">시작하기</a></li>
+									<li><a href="/runbike/record/startRide" class="button primary">시작하기</a></li>
 								</c:when>
 								<c:otherwise>
-									<li><a href="http://localhost:8080/runbike/user/login" class="button primary">시작하기</a></li>
+									<li><a href="/runbike/user/login" class="button primary">시작하기</a></li>
 								</c:otherwise>
 							</c:choose>
 							</ul>

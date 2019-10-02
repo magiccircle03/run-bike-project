@@ -26,7 +26,9 @@ public class InsertOwnBadgeService {
 		
 		int u_idx = loginInfo.getU_idx();
 		
-		
+		System.out.println("첫방문 뱃지 되는지?"+dao.firstLogin(u_idx));
+		System.out.println("뱃지있는지?"+dao.isMyBadge(u_idx, 1));
+		System.out.println("뱃지 넣을 수 있는지?"+dao.insertMyBadge(1, u_idx));
 		if(dao.firstLogin(u_idx)>=1) {
 			if(dao.isMyBadge(u_idx, 1)==0) {
 				System.out.println("출력이 된다된다된다된다!!");
@@ -37,20 +39,19 @@ public class InsertOwnBadgeService {
 	}
 	
 	// 연속 로그인
-	/*
-	 * public void insertConsecutiveLoginBadge(HttpServletRequest request) { dao =
-	 * template.getMapper(OwnBadgeDao.class);
-	 * 
-	 * LoginInfo loginInfo =
-	 * (LoginInfo)request.getSession().getAttribute("loginInfo");
-	 * 
-	 * int u_idx = loginInfo.getU_idx();
-	 * 
-	 * if(dao.consecutiveLogin(u_idx) != '' && dao.consecutiveLogin(u_idx)>=1) {
-	 * if(dao.isMyBadge(u_idx, 2)==0) { dao.insertMyBadge(2, u_idx); } }
-	 * 
-	 * }
-	 */
+	 public void insertConsecutiveLoginBadge(HttpServletRequest request) { dao =
+	 template.getMapper(OwnBadgeDao.class);
+	 
+	 LoginInfo loginInfo =
+	 (LoginInfo)request.getSession().getAttribute("loginInfo");
+	 
+	 int u_idx = loginInfo.getU_idx();
+	 
+	 if(dao.consecutiveLogin(u_idx)>=1) {
+		 if(dao.isMyBadge(u_idx, 2)==0) { dao.insertMyBadge(2, u_idx); } }
+	 
+	 }
+	 
 	
 	// 혼자 라이딩 km
 	public void insertRidingAloneKmBadge(HttpServletRequest request) {

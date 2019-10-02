@@ -43,7 +43,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<select id="selectMyStamp" resultMap="myStamp">
 			select distinct(stamp.s_num), stamp.s_name, stamp.s_photo, stamp.cs_photo, stamp.s_point_lon, stamp.s_point_lat,
 			@serial := if(stamp.s_num=myStamp.s_num, 1, 0) as serial
-			from run_bike.stamp stamp  left join run_bike.own_stamp myStamp on stamp.s_num = myStamp.s_num;
+			from run_bike.stamp stamp  
+			left join 
+				(select * from run_bike.own_stamp where u_idx = #{u_idx}) as myStamp 
+			on stamp.s_num = myStamp.s_num;
 		</select>
 
 </mapper>

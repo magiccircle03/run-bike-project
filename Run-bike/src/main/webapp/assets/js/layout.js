@@ -15,5 +15,10 @@ $(document).ready(function() {
                   
               }
           });
+          console.log("하이루루루루루");
+          console.log($('nav a.pt-md-2[href$="'+ window.location.pathname+'"]'));
+          
+          $('nav a.pt-md-2[href$="'+ window.location.pathname+'"]').addClass("active");
+          
           
     });

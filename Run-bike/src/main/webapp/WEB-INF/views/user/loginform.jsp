@@ -268,7 +268,7 @@
 					            </div>
 					            <div class="not-user">
 					            	<p class="label-reg" style="text-decoration: underline">아직 회원이 아니신가요?</p>
-					            	<a class="btn btn-reg" href="http://localhost:8080/runbike/user/register">회원가입</a>
+					            	<a class="btn btn-reg" href="<c:url value='user/register'/>">회원가입</a>
 					            </div>
 					        </form>
 					    </div>
@@ -301,18 +301,18 @@
 			    	
 			    	$.ajax({
 			    		type:'GET',
-						url:'http://localhost:8080/runbike/user/register/idCheck?u_id='+email,
+						url:'/runbike/user/register/idCheck?u_id='+email,
 						success: function(data){
 							console.log(data);
 							// 기존 아이디가 없을 경우 회원가입
 							if(data == 'Y'){			
 								$.ajax({
 									type:'POST',
-									url: 'http://localhost:8080/runbike/user/login/naver',
+									url: '/runbike/user/login/naver',
 									data: {u_id: email, u_pw: "naverPassword123",u_name: name, image: image},
 									success: function(data){
 										if(data == 'Y'){
-											location.href = 'http://localhost:8080/runbike/record/startRide';
+											location.href = '/runbike/record/startRide';
 										} 
 									},
 									error: function(data){
@@ -324,11 +324,11 @@
 								$.ajax({			
 									type: 'POST',
 									data: {u_id: email, u_pw: "naverPassword123"},
-									url: 'http://localhost:8080/runbike/user/login',
+									url: '/runbike/user/login',
 									success : function(data){
 										console.log(data);
 										if(data=='ok'){
-											location.href = 'http://localhost:8080/runbike/record/startRide';									
+											location.href = '/runbike/record/startRide';									
 										} else {
 											alert("로그인에 실패했습니다. 아이디 혹은 비밀번호를 확인해주세요.");
 										}
@@ -358,13 +358,13 @@
 							$.ajax({			
 								type: 'POST',
 								data: $('#loginForm').serialize(),
-								url: 'http://localhost:8080/runbike/user/login',
+								url: '/runbike/user/login',
 								success : function(data){
 									console.log(data);
 									if(data=='ok'){
-										location.href = 'http://localhost:8080/runbike/record/startRide';									
+										location.href = '/runbike/record/startRide';									
 									} else if(data=='yet'){
-										location.href='http://localhost:8080/runbike/verify/'+data;
+										location.href='/runbike/verify/'+data;
 									} else if(data == 'leave'){
 										alert("이미 탈퇴한 회원입니다.");
 									} else if(data =='admin'){
