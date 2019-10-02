@@ -42,6 +42,11 @@
 
 p{
 	margin: 10px;
+	font-size: 13px;
+}
+
+#stampArea{
+	margin-bottom: 10px;
 }
 </style>
 
@@ -70,13 +75,13 @@ p{
 				<c:set var="serial" value="${myStamp.serial}"/>						
 					<c:choose>				
 						<c:when test="${1 eq serial}">
-							<div class="col" id="stampArea">
+							<div class="col-4" id="stampArea">
 								<img alt="myStamp" src="<c:url value='/uploadfile/color_stampPhoto/${myStamp.s_photo}'/>" style="width: 150px; height: 147px;">
 								<p id="stampName">${myStamp.s_name}</p>
 							</div>
 						</c:when>
 						<c:when test="${0 eq serial}">
-							<div class="col" id="stampArea">
+							<div class="col-4" id="stampArea">
 								<img alt="myStamp" src="<c:url value='/uploadfile/cs_stampPhoto/${myStamp.cs_photo}'/>" style="width: 150px; height: 147px;">
 								<p id="stampName">${myStamp.s_name}</p>
 							</div>
