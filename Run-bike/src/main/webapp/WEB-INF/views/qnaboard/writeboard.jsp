@@ -22,14 +22,14 @@
         	margin:auto;   
 	}
 	
-	div#boardwriteform{
-			width:500px;
-			margin:auto;
-	}
+ 	div#boardwriteform{ 
+ 			width:800px; 
+ 			margin:auto; 
+ 	} 
 	
-	div#form-group{
-		width:400px;
-	}
+/* 	div#form-group{ */
+/* 		width:400px; */
+/* 	} */
     
 
     </style>
@@ -45,11 +45,70 @@
 <!-- 해더 끝 -->
 
 
+
+
+
+
+
+
 <div id="boardwriteform">
 			<div class="page-header">
 		
 	     	<h1>게시글 작성</h1>
 			</div>
+			<hr>
+
+	     <!-- 파일 업로드 기능을 구현할 시에는 <form> 태그안에 반드시  enctype="multipart/form-data"를 작성해주어야 하고, 용량이 크기 때문에 method는 반드시 post로 작성해야 합니다. -->
+	     <form id="regform" method="post" onsubmit="return false;" >           <!-- action="qnaboard/writepro" -->
+	            	<!-- user테이블의 u_idx를 임의 지정 -->
+	          <input type="hidden" value="${loginInfo.u_idx}" name="u_idx" id="u_idx">
+	           <input type="hidden" name="q_num" id="q_num" value="1">
+	       <table id=writeTable>
+		       	<tr>
+		            <td id="title">작성자</td>
+		             <c:choose>
+    				<c:when test="${loginInfo.u_id == 'admin'}">	
+		            <td><input type="text" name="q_writer" id="q_writer" class="form-control" value="관리자" readonly/></td>
+		            </c:when>
+		            <c:when test="${loginInfo.u_id != 'admin'}">
+		            <td><input type="text" name="q_writer" id="q_writer" class="form-control" value="회원${loginInfo.u_idx}번" readonly/></td>
+	       			</c:when>
+   					 </c:choose>
+	       		</tr>
+	       		<tr>
+	       		  	<td id="title">제 목</td>
+           			<td> <input type="text" name="q_title" id="q_title" class="form-control" placeholder="제목을 입력하세요" required/></td>     
+	       		</tr>
+	       		<tr>
+	       			  <td id="title"> 내 용</td>
+	       			  <td> <textarea name="q_content" id="q_content" class="form-control" cols="70" rows="15" placeholder="내용을 입력하세요" required></textarea></td>
+	       		</tr>
+		         <tr>
+		          <td><button type="submit" class="btn btn-default" id="boardInsertButton" onclick="formSubmit();">등록</button></td>
+		        </tr>
+	    
+   			 </table>    
+    		</form>
+
+
+      		</div>
+
+	    
+	         
+	     
+	         
+
+	
+	
+	
+<%-- 	
+	
+<div id="boardwriteform">
+			<div class="page-header">
+		
+	     	<h1>게시글 작성</h1>
+			</div>
+			<hr>
 	
 		<div style="padding : 30px;">
 	     <!-- 파일 업로드 기능을 구현할 시에는 <form> 태그안에 반드시  enctype="multipart/form-data"를 작성해주어야 하고, 용량이 크기 때문에 method는 반드시 post로 작성해야 합니다. -->
@@ -86,7 +145,8 @@
 	   	</div>
 	    </form>
 	 </div>
-	</div>
+	</div> --%>
+	
 
 
 
