@@ -11,7 +11,7 @@
     </button>
     <h5 class="logo my-0 font-weight-normal"><a href="<c:url value='/record/startRide' />">RUNBIKE</a></h5>
       <h5 class="page-select-name font-weight-bold mt-1">
-          혼자 달리기
+          	혼자 달리기
       </h5>
   <div class="navbar-toggle navbar-collapse" data-toggle="collapse" id="navbar">
   <nav class="mx-md-auto font-weight-bold my-2 my-md-0">   
