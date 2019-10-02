@@ -16,9 +16,31 @@ $(document).ready(function() {
               }
           });
           console.log("하이루루루루루");
-          console.log($('nav a.pt-md-2[href$="'+ window.location.pathname+'"]'));
           
-          $('nav a.pt-md-2[href$="'+ window.location.pathname+'"]').addClass("active");
+          var path = window.location.pathname;
+          
+          switch(path){
+          
+          	case '/runbike/record/ridingGuide':
+          	case '/runbike/record/myCourseList':
+          	case '/runbike/record/startRide':
+          		 $('nav a.pt-md-2[href$="/runbike/record/startRide"]').addClass("active");
+          		 return;
+          	case '/runbike/party**':
+          		$('nav a.pt-md-2[href$="/runbike/party"]').addClass("active");
+          		return;
+          	case '/runbike/stamp/getStamp':
+          		$('nav a.pt-md-2[href$="/runbike/stamp/getStamp"]').addClass("active");
+          		return;
+          	case '/runbike/badge/user':
+          	case '/runbike/stamp/user':
+          		$('nav a.pt-md-2[href$="/runbike/badge/user"]').addClass("active");
+          		return;
+          	case '/runbike/qnaboard':
+          		$('nav a.pt-md-2[href$="/runbike/qnaboard"]').addClass("active");		
+          		return;
+          }
           
           
+         
     });
