@@ -280,13 +280,11 @@
 			<script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js" charset="utf-8"></script>
 			<script type="text/javascript">
 				var path = '<c:url value="/"/>';
-				console.log(path);
-				console.log(path+"user/login");
-				var naver_id_login = new naver_id_login("bGcr_qQ18WcY_tp0AIjX", path+"user/login");
+				var naver_id_login = new naver_id_login("bGcr_qQ18WcY_tp0AIjX", "http://localhost:8080/runbike/user/login");
 			  	var state = naver_id_login.getUniqState();
 			  	
 			  	naver_id_login.setButton("green",2, 45);
-			  	naver_id_login.setDomain(path+"user/login");
+			  	naver_id_login.setDomain("http://localhost:8080/runbike/user/login");
 			  	naver_id_login.setState(state);
 			  	naver_id_login.init_naver_id_login();
 			  	
