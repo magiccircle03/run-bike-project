@@ -66,7 +66,14 @@
 	       <table id=writeTable>
 		       	<tr>
 		            <td id="title">작성자</td>
-		            <td><input type="text" name="q_writer" id="q_writer" class="form-control" value="회원${loginInfo.u_idx}번" required/></td>
+		             <c:choose>
+    				<c:when test="${loginInfo.u_id == 'admin'}">	
+		            <td><input type="text" name="q_writer" id="q_writer" class="form-control" value="관리자" readonly/></td>
+		            </c:when>
+		            <c:when test="${loginInfo.u_id != 'admin'}">
+		            <td><input type="text" name="q_writer" id="q_writer" class="form-control" value="회원${loginInfo.u_idx}번" readonly/></td>
+	       			</c:when>
+   					 </c:choose>
 	       		</tr>
 	       		<tr>
 	       		  	<td id="title">제 목</td>
