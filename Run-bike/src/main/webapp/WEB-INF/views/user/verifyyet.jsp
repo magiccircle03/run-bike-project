@@ -11,14 +11,14 @@
 	<h1>이메일 인증이 되지 않았습니다. 인증 후 서비스를 이용해주세요.</h1>
 	<p>혹시 이메일 인증 메일을 받지 못하셨나요? 아래 버튼을 눌러 다시 재인증 해주세요.</p>
 	<button type="button" id="resend" onclick="reSend('${email}')">이메일 재인증</button>
-	<a href="<c:url value='user/login'/>">로그인 페이지로 이동</a>
+	<a href="<c:url value='/user/login'/>">로그인 페이지로 이동</a>
 <script src="<c:url value='/assets/js/jquery.min.js'/>"></script>
 <script>
-
+var path = '<c:url value="/"/>';
 function reSend(email){
 	$.ajax({			
 		type: 'get',
-		url: 'resend',
+		url: path+'verify/resend',
 		data : {email: email},
 		success : function(){
 			alert("이메일을 보냈습니다.");

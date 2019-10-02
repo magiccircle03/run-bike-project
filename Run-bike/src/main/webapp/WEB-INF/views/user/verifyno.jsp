@@ -9,6 +9,6 @@
 </head>
 <body>
 	<h1>이메일 인증에 실패했습니다.</h1>
-	<a href="<c:url value=''/>">메인</a>
+	<a href="<c:url value='/'/>">메인</a>
 </body>
 </html>

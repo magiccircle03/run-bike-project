@@ -7,6 +7,7 @@ import java.io.UnsupportedEncodingException;
 import javax.mail.Message.RecipientType;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.servlet.http.HttpServletRequest;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,12 +28,17 @@ public class MailSenderService implements UserService {
 	
 	private UserDao dao;
 	
-	public void mailSend(String u_id, String u_code,String u_name) {	
+	public void mailSend(HttpServletRequest request, String u_id, String u_code,String u_name) {	
 		MimeMessage message = sender.createMimeMessage();
+		
+		String scheme = request.getScheme() + "://";
+	    String serverName = request.getServerName();
+	    String serverPort = (request.getServerPort() == 80) ? "" : ":" + request.getServerPort();
+	    String contextPath = request.getContextPath();
 		
 		try {
 			message.setSubject("[RUN BIKE] 이메일 계정을 인증해주세요. ("+u_id+")","utf-8");
-			String html = "<h1>회원가입을 축하드립니다.</h1><p>안녕하세요. "+u_name+" 님. <br> 이메일 계정을 인증 받으시려면 아래 링크를 클릭해주세요.</p><a href='http://localhost:8080/runbike/verify?id="+u_id+"&code="+u_code+"'>이메일 인증하기</a>";
+			String html = "<h1>회원가입을 축하드립니다.</h1><p>안녕하세요. "+u_name+" 님. <br> 이메일 계정을 인증 받으시려면 아래 링크를 클릭해주세요.</p><a href='"+scheme+serverName+serverPort+contextPath+"/verify?id="+u_id+"&code="+u_code+"'>이메일 인증하기</a>";
 			message.setText(html, "utf-8", "html");
 			message.setFrom(new InternetAddress("j35147@naver.com"));
 			message.addRecipient(RecipientType.TO, new InternetAddress(u_id," 고객님","utf-8"));
@@ -50,18 +56,21 @@ public class MailSenderService implements UserService {
 		
 	}
 	
-	public void mailResend(String u_id) {
+	public void mailResend(HttpServletRequest request,String u_id) {
 		dao = template.getMapper(UserDao.class);
 		
-		UserInfo userInfo = dao.selectUserById(u_id);
+		String scheme = request.getScheme() + "://";
+	    String serverName = request.getServerName();
+	    String serverPort = (request.getServerPort() == 80) ? "" : ":" + request.getServerPort();
+	    String contextPath = request.getContextPath();
 		
-		System.out.println("resend 메일 userInfo : "+userInfo);
+		UserInfo userInfo = dao.selectUserById(u_id);
 		
 		MimeMessage message = sender.createMimeMessage();
 		
 		try {
 			message.setSubject("[RUN BIKE] 이메일 계정을 인증해주세요. ("+u_id+")","utf-8");
-			String html = "<h1>이메일 재인증</h1><p>안녕하세요. "+userInfo.getU_name()+" 님. <br> 이메일 계정을 인증 받으시려면 아래 링크를 클릭해주세요.</p><a href='http://localhost:8080/runbike/verify?id="+u_id+"&code="+userInfo.getU_code()+"'>이메일 인증하기</a>";
+			String html = "<h1>이메일 재인증</h1><p>안녕하세요. "+userInfo.getU_name()+" 님. <br> 이메일 계정을 인증 받으시려면 아래 링크를 클릭해주세요.</p><a href='"+scheme+serverName+serverPort+contextPath+"/verify?id="+u_id+"&code="+userInfo.getU_code()+"'>이메일 인증하기</a>";
 			message.setText(html, "utf-8", "html");
 			message.setFrom(new InternetAddress("j35147@naver.com"));
 			message.addRecipient(RecipientType.TO, new InternetAddress(u_id," 고객님","utf-8"));

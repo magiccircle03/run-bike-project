@@ -2,6 +2,8 @@ package com.teamrun.runbike.user.controller;
 
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -36,7 +38,7 @@ public class VerifyController {
 	
 	@RequestMapping("resend")
 	@ResponseBody
-	public void resend(@RequestParam("email")String u_id) {
-		mailService.mailResend(u_id);
+	public void resend(HttpServletRequest request, @RequestParam("email")String u_id) {
+		mailService.mailResend(request,u_id);
 	}
 }

@@ -9,6 +9,6 @@
 </head>
 <body>
 	<h1>이메일 인증이 완료되었습니다.</h1>
-	<a href="<c:url value='user/login'/>">로그인</a>
+	<a href="<c:url value='/user/login'/>">로그인</a>
 </body>
 </html>

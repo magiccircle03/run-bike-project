@@ -56,7 +56,7 @@ public class RegisterService implements UserService{
 		
 		System.out.println(userInfo.toString());
 		
-		mailService.mailSend(userInfo.getU_id(), userInfo.getU_code(), userInfo.getU_name());
+		mailService.mailSend(request, userInfo.getU_id(), userInfo.getU_code(), userInfo.getU_name());
 		
 		result = dao.insertUser(userInfo);
 		
