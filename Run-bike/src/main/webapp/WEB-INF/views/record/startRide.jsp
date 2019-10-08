@@ -56,6 +56,8 @@ font-family: 'Exo', sans-serif;
 	font-size: 40px;
 }
 </style>
+
+
 </head>
 
 <body>
@@ -593,8 +595,6 @@ font-family: 'Exo', sans-serif;
                 }
             });
         }
-		
-        
         
         function regMyCourse() {
 
@@ -603,7 +603,7 @@ font-family: 'Exo', sans-serif;
             
             }else{
             	$.ajax({
-                    url: path + '/myCourse',
+                    url: '<c:url value="/myCourse" />',
                     type: 'POST',
                     data: {
                         mc_distance: tDistance,
@@ -650,7 +650,6 @@ font-family: 'Exo', sans-serif;
                             url: "http://openapi.seoul.go.kr:8088/574c4c6e5173757038395565797a4f/json/bikeList/"+startNum+"/"+endNum+"/\"",
                             type: 'GET',
                             success: function(data) {
-								alert(data);
                             	var connectStatues = data.rentBikeStatus.RESULT.CODE;
                             	var rowData = data.rentBikeStatus.row;
                             	var lon;
