@@ -5,8 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<!-- 지도, 모델 -->
-<title>같이 달리기</title>
+<title>같이 달리기 : 현재 정보</title>
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <!-- tmap api -->
 <script src="https://apis.openapi.sk.com/tmap/js?version=1&format=javascript&appKey=6d5877dc-c348-457f-a25d-46b11bcd07a9"></script>
@@ -22,12 +21,12 @@
 
 
 <style type="text/css">
+body{
+	color : #333333;
+}
 .btnHeight{
 	margin-top: 20px;
 	height: 50px;
-}
-body{
-	color : #333333;
 }
 .mint{
 	background-color: #21B2A6;

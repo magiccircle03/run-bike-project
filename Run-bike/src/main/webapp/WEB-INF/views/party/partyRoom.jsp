@@ -5,8 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<!-- 지도, 모델 -->
-<title>같이 달리기</title>
+<title>같이 달리기 : 방 정보</title>
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <!-- tmap api -->
 <script src="https://apis.openapi.sk.com/tmap/js?version=1&format=javascript&appKey=6d5877dc-c348-457f-a25d-46b11bcd07a9"></script>
@@ -19,7 +18,6 @@
 
 <link href="//cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.4.0/css/bootstrap4-toggle.min.css" rel="stylesheet">  
 <script src="//cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.4.0/js/bootstrap4-toggle.min.js"></script>
-
 
 <style type="text/css">
 body{
@@ -145,7 +143,6 @@ h5{
 <div class="container">
 
 <!-- 숨겨진 u_idx -->
-<!-- <hr> -->
 <input id="u_idx" name="u_idx" type="hidden" class="form-control" value="${loginInfo.u_idx}">
 
 <!-- 같이하기 내비게이션 -->
@@ -161,84 +158,86 @@ h5{
   </li>
 </ul>
 
-
 <hr>
 
 <div class="tab-content">
   
   <div class="tab-pane fade show active" id="partyInfoTab">
   
+ 	<!-- 방의 정보 -->
     <div id="partyInfo" class="font-size-18">
     	    <h3 id="partyTitle" class="marginTop"> [${partyInfo.p_num}] ${partyInfo.p_name} <p id="startStat" class="StartP"></p></h3>
     	    <h4 style="padding:20px 0;"><i class="fas fa-fire red"></i>&nbsp; 우리의 목표 경로</h4>
-    	    <div id="map_div"></div>
+    	    <div id="map_div"></div><!-- 지도 -->
     	    <div class="row">
 	    	    <div class="col-md-6"><i class="fab fa-font-awesome-flag gray"></i> 출발지 : ${partyInfo.p_start_info}</div>
 	    	    <div class="col-md-6"><i class="fas fa-flag-checkered gray"></i> 도착지 : ${partyInfo.p_end_info}</div>
     	    </div>
     	    <br>
     	    <div class="row"><div class="col-md-12">출발 예정 시각 : ${partyInfo.p_time_f}</div></div>
-<%-- 	    	<p>총 거리 : ${partyInfo.p_riding_km} km , 예상 소요 시간 : ${partyInfo.p_riding_time} 분</p> --%>
 	    	<div class="row"><div class="col-md-12">예상 소요 시간 : ${partyInfo.p_riding_time} 분</div></div>
 	    	<div class="row"><div class="col-md-12">총 거리 : ${partyInfo.p_riding_km} km</div></div>
 	    	<div class="row"><div class="col-md-12">${partyInfo.p_content}</div></div>
-	    		    	
-
     </div>
     
     <!-- 시작 전에만 보이는 영역 -->
     <div id="beforeStartArea">
+    
     	<br>
 	    <input id="readyChk" class="readyChk" type="checkbox" data-toggle="toggle" data-on="준비완료!" data-off="준비하기" data-onstyle="primary mint" data-width="100%" data-height="50px">
 		<br>
 		<!-- 방장만 보이는 시작버튼 -->
 		<button id="startBtn" type="button" class="btn width100 master btnHeight" onclick="startRiding()" disabled="true">시작하기</button>
 		<br>
-	    <hr>
+		
+	    <hr><!-- ========================================= -->
+	    
 	    <h5><i class="fas fa-child"></i> 함께 달릴 동료들 (<p id="capa" style="display: inline"></p> / ${partyInfo.p_capacity} )</h5>
 	    <br>
+	    
+	    <!-- 참가자 정보 영역  -->
 	    <div id="partyUserInfo1" class="row">
-	    <!-- 참가자 사진 / 이름 / 준비여부-->
-
+	    	<!-- 참가자 사진 / 이름 / 준비여부-->
 		</div>
-
 		
-		<hr>
-		  
-		<!-- 방장만 보이게 영역 -->
+		<hr><!-- ========================================= -->
+		
+		<!-- 방장만 보이는 영역 -->
 		<div id="partyInfoMaster" class="master right">
 		    <button class="btn" onclick="editParty()">방 정보 수정</button> 
 		    <button class="btn" onclick="deletePartyBtn()">방 삭제</button> 
 		</div>
-		<!-- /방장만 보이게 영역 -->
-    </div>
-    <!-- /시작 전에만 보이는 영역 -->
-    <!-- ======================================= -->
+		<!-- /방장만 보이는 영역 -->
+		
+    </div><!-- /시작 전에만 보이는 영역 -->
+
     <button class="btn width100 lightgray" onclick="exitPartyFn()">나가기</button> 
-    
-    
-  </div>
+
+  </div><!-- partyInfoTab -->
   
-  
-</div>
+</div><!-- tab-content 끝 -->
 
 </div><!-- 컨테이너 끝 -->
+
 <!-- 푸터 시작 -->
 <%@ include file="/WEB-INF/views/frame/footer.jsp" %>
 <!-- 푸터 끝 -->
+
 <script>
 
-var xy=${partyInfo.p_XY};
+var xy=${partyInfo.p_XY}; // 목표 시작지, 도착지 좌표가 있는 json객체
+var p_num = ${partyInfo.p_num}; // 방 번호
+var u_idx = $('#u_idx').val();// 유저 번호
 
 $(document).ready(function() {
 	var isStarted;
-	initTmap(xy);
-	isStarted = chkIsStarted();
-	showPartyUserList();
-	showMasterArea();
-	setReady('N');// 어디 갔다오면 처음엔 준비 안된걸로
+	initTmap(xy); // 맵을 초기화한다
+	isStarted = chkIsStarted(); // 해당 방이 진행중인 방인지 체크한다
+	showPartyUserList(); // 파티에 속한 유저 정보를 보여준다
+	showMasterArea(); // 방장이면 방장 영역을 보여준다
+	setReady('N'); // 어디 나갔다오면 처음엔 준비 안된 걸로
 	
-	// 시작되지 않았을 때 현재정보 페이지로 가는 걸 막는다
+	// 라이딩 진행중이 아닐 땐, 현재정보 페이지로 가는 걸 막는다
 	$("#curInfoA").on("click",function(event){
 		if(!isStarted){
 			event.preventDefault();
@@ -248,10 +247,7 @@ $(document).ready(function() {
 	
 });
 
-var p_num = ${partyInfo.p_num};
-var u_idx = $('#u_idx').val();// 아이디 값 세션에서 가져오기. 
-
-
+/* 라이딩이 진행중인지 체크한다 */
 function chkIsStarted() {
 	var chk;
 	$.ajax({
@@ -273,20 +269,14 @@ function chkIsStarted() {
 	return chk;
 } 
 
+/* 방 정보 수정 버튼을 클릭하면 수정 페이지로 이동한다 */
 function editParty() {
 	if (confirm('방 정보를 수정할까요?')) {
 		location.href = '../party/'+p_num+'/edit';
 	}
 }
 
-function getCurrentPos() {
-	navigator.geolocation.getCurrentPosition(function(pos) {
-	    var latitude = pos.coords.latitude;
-	    var longitude = pos.coords.longitude;
-	    alert("내 현재 위치는 : " + latitude + ", "+ longitude);
-	});
-}
-
+/* 현재 방에 참여한 유저 수를 가져온다 */
 function getUserCount() {
 	var cnt=-2;
 	$.ajax({
@@ -300,16 +290,16 @@ function getUserCount() {
 	return cnt;
 }
 
+/* 준비 버튼을 누르면, 준비 상태가 변하도록 한다 */
 $('#readyChk').change(function() {
     if($("#readyChk").is(":checked")){
-        //alert("레디!");
-        setReady('Y');
+        setReady('Y'); // 레디
     }else{
-        //alert("레디 취소!");
-        setReady('N');
+        setReady('N'); // 레디 취소
     }
 });
 
+/* readyYN 컬럼 업데이트 함수 */
 function setReady(readyYN) {	
  	$.ajax({
 		url : '../party/ready',
@@ -320,15 +310,13 @@ function setReady(readyYN) {
 			readyYN : readyYN
 		},
 		success : function(data) {
-			//alert(data);
-			//alert(JSON.stringify(data));
 			showPartyUserList();
 		}
 	}); 
 }
 
+/* 파티에 속한 유저의 정보를 보여준다 */
 function showPartyUserList() {
-	//alert('야');
 	$.ajax({
 		url : '../party/room/'+p_num+'/user',
 		type : 'GET',
@@ -357,6 +345,7 @@ function showPartyUserList() {
 						bold='bold';
 					}
 					
+					// 준비 여부 표시
 					if(data[i].pc_readyYN=='Y'){
 						readyStr='<p class="ready middle">준비 완료!</p>';
 					}else{
@@ -364,87 +353,41 @@ function showPartyUserList() {
 					}
 					
 					
-				html+='<div class="col-sm-6">\n';
-				html+='<div class="card cardmargin">\n';
-				html+='<div class="row no-gutters">\n';
-				html+='<div class="col-2">\n';
-				html+='<img src="${pageContext.request.contextPath}/uploadfile/userphoto/'+data[i].u_photo+'" alt="" class="card-img" />\n';
-				html+='</div>\n';
-				html+='<div class="col-5">\n';
-				html+='<div class="card-body">\n';
-				html+='<p class="card-text middle '+bold+'">\n';
-				html+= crown + data[i].u_name + delBtn;
-				html+='</p>\n';
-				html+='</div>\n';
-				html+='</div>\n';
-				html+='<div class="col-5">\n';
-				html+='<div class="card-body middle">\n';
-				html+='<p class="card-text middle">\n';
-				html+= readyStr;
-				html+='</p>\n';
-				html+='</div>\n';
-				html+='</div>\n';
-				html+='</div>\n';
-				html+='</div>\n';
-				html+='</div>';//col-sm-6
+					html+='<div class="col-sm-6">\n';
+					html+='<div class="card cardmargin">\n';
+					html+='<div class="row no-gutters">\n';
+					html+='<div class="col-2">\n';
+					html+='<img src="${pageContext.request.contextPath}/uploadfile/userphoto/'+data[i].u_photo+'" alt="" class="card-img" />\n';
+					html+='</div>\n';
+					html+='<div class="col-5">\n';
+					html+='<div class="card-body">\n';
+					html+='<p class="card-text middle '+bold+'">\n';
+					html+= crown + data[i].u_name + delBtn;
+					html+='</p>\n';
+					html+='</div>\n';
+					html+='</div>\n';
+					html+='<div class="col-5">\n';
+					html+='<div class="card-body middle">\n';
+					html+='<p class="card-text middle">\n';
+					html+= readyStr;
+					html+='</p>\n';
+					html+='</div>\n';
+					html+='</div>\n';
+					html+='</div>\n';
+					html+='</div>\n';
+					html+='</div>';//col-sm-6
 			
 			}
 			
 			$('#partyUserInfo1').html(html);
 			$('#capa').html(" "+getUserCount());
-/* 
-			
-			html1='';
-			html1+='<table style="width:100%;">\n';
-			for (var i = 0; i < data.length; i++) {
-				var crown=''; 
-				var bold='';
-				var readyStr='';
-				var delBtn='';
-				
-				if(data[i].pc_masterYN=='Y'){
-					crown='<i class="fas fa-crown yellow"></i> ';
-
-				}else{
- 					if(isMaster()){
- 						crown='<a href="#" onclick="changeMaster('+data[i].u_idx+')"><i class="fas fa-user-alt gray" style="padding-left:2px;padding-right:2px;"></i></a> '; 
- 						delBtn='<a onclick="ban('+data[i].u_idx+')" class="ban"><i class="fas fa-times"></i></a>';
- 					}else{
-						crown='<i class="fas fa-user-alt gray" style="padding-left:2px;padding-right:2px;"></i> '; 
-					}
-				}
-				
-				// 자신은 굵은 글씨로 표시된다
-				if(data[i].u_idx==u_idx){
-					bold='bold';
-				}
-				
-				if(data[i].pc_readyYN=='Y'){
-					readyStr='<p class="ready">준비 완료!</p>';
-				}else{
-					readyStr='<p class="gray">방 둘러보는 중...</p>';
-				}
-				
-				
-				html1+='<tr>\n';
-				//html1+='<td class="width30">'+data[i].u_photo+'</td>\n';
-				html1+='<td class="width30"><img class="partyUserImg" src="${pageContext.request.contextPath}/uploadfile/userphoto/'+data[i].u_photo+'"></td>\n';
-				html1+='<td class="width30 '+bold+'">' + crown + data[i].u_name + delBtn + '</td>\n';
-				html1+='<td class="width30">'+readyStr+'</td>\n';
-				html1+='</tr>\n';
-				
-				//html1+=' '+data[i].u_photo+' '+data[i].u_name+' '+data[i].pc_readyYN+'<br>';
-			}
-			html1+='</table>\n';
-			$('#partyUserInfo1').html(html1);
-			$('#capa').html(" "+getUserCount()); */
 			
 		}
 
 	});
 }
 
-// 내가 파티를 나간다
+/* 내가 파티를 나간다 */
 function exitPartyFn() {
 	
 	if(isMaster()){
@@ -466,7 +409,7 @@ function exitPartyFn() {
 }
 	
 
-// 매개변수로 전해진 유저를 참여테이블에서 delete 하는 함수
+/* 매개변수로 전해진 유저를 참여테이블에서 delete 하는 함수 */
 function exitParty(idx) {
 	// alert(p_num+","+u_idx);
  	 $.ajax({
@@ -483,7 +426,7 @@ function exitParty(idx) {
  	});
 }
 
-// 방장이면 보이게
+/* 방장이면 보이게 하는 함수 */
 function showMasterArea() {
 
   	if (isMaster()) {
@@ -495,8 +438,7 @@ function showMasterArea() {
 	 
 }
 
-
-//방장이면 보이게
+/* 방장인지 체크하는 함수 */
 function isMaster() {
 	var master = 0;
 	var chk = false;
@@ -506,20 +448,15 @@ function isMaster() {
 			async : false,
 	 		success : function(data) {
 	 			master = parseInt(data);
-	 			//alert(master);
 	 			chk = (master==u_idx);
-	 			//alert(chk);
 	 		}
 	 }); 
-	
 	return chk;
 }
 
-// 방장 위임
-// 타겟 유저의 idx를 받는다
-function changeMaster(u_idx_t){
+/* 방장을 위임하는 함수 */
+function changeMaster(u_idx_t){ // 타겟 유저의 idx를 받는다
 	if (confirm('방장을 위임하시겠습니까?')) {
-		//alert('방장을 위임합니다');
 	 	 $.ajax({
 		 	url : '../party/room/'+p_num+'/master',
 	  		type : 'PUT',
@@ -531,44 +468,41 @@ function changeMaster(u_idx_t){
 	  			alert(data); // 방장 위임 결과를 띄워줌
 	  			showMasterArea();
 	  		}
-	  		
 	  	});
 	}
 }
 
+/* 파티 삭제 버튼을 눌렀을 때 */
 function deletePartyBtn(){
 	if (confirm('방을 삭제하시면 복구할 수 없습니다. \n방을 폭파하시겠습니까?')) {
 		deleteParty();
 	}
 }
 
-// 파티삭제
+/* 파티 삭제 함수 */
 function deleteParty(){
 	 $.ajax({
 		url : '../party/'+p_num,
 		type : 'DELETE',
  		contentType : 'application/json; charset=utf-8',
- 		//dataType : 'json', //데이터타입
 		success : function() {
-			//alert('삭제성공');
 			location.href="../party";
 		}
 	 });
 }
 
-// 회원정보 계속 업데이트(준비 상태 바로 반영되게)
+/* 회원 준비 정보 계속 업데이트하는 함수(준비 상태 바로 반영되게) */
 var refreshReady = setInterval(function() {
 		showPartyUserList();
 		isAllReady();
-		
 }, 1000);
 
-
+/* 회원 준비 정보 그만 업데이트 하는 함수 */
 function stopRefreshReady() {
 	clearInterval(refreshReady);
 }
 
-// 이걸 따로 하지 말고 레디할때 그냥 같이 반환시켜줘도 좋겠다
+/* 모두가 준비했는지 체크하는 함수 */
 function isAllReady() {
 	// 준비 N인 사람이 있으면 -> N / 준비 N인 사람 수가 0이면 -> Y 반환
 	var cnt = -2;
@@ -582,27 +516,24 @@ function isAllReady() {
 	 		}
 	 }); 
 	
-	 //	 if(cnt==0 && (getUserCount()>1)){
 	 if(cnt==0){
-		 //alert('모두준비되었다!');
-		 // startBtn에 allReady클래스 추가 
+		 // 시작버튼 활성화
 		 $('#startBtn').attr('disabled', false);
 		 $('#startBtn').addClass('allReady');
 	 }else{
-		 //alert('준비되지 않은 인원 :'+cnt);
+		 // 시작버튼 비활성화
 		 $('#startBtn').attr('disabled', true);
 		 $('#startBtn').removeClass('allReady');
 	 }
 }
 
+/* 라이딩을 시작하는 함수 */
 function startRiding() {
-//	alert('시작');
 	if(getUserCount()>1){
 		 $.ajax({
 		 		url : '../party/'+p_num+'/start',
 		  		type : 'get',
 		 		success : function() {
-		 			//alert('성공');
 		 			location.href="./"+p_num+"/ing";
 		 		}
 		 }); 
@@ -612,6 +543,7 @@ function startRiding() {
 	
 }
 
+/* 회원 강퇴 */
 function ban(idx) {
 	if (confirm('해당 유저를 내보낼까요?')) {
 		exitParty(idx+"");
@@ -619,8 +551,7 @@ function ban(idx) {
 	}
 }
 
-
-
+/* 맵 초기화 */
 function initTmap(xy) {
 	
     // map 생성
@@ -635,7 +566,7 @@ function initTmap(xy) {
     getRoute(xy);
 }
 
-
+/* 디비에서 가져온 목표 경로 뿌려주기 */
 function getRoute(xy) {
 	
     // 시작 마커 표시
@@ -685,7 +616,6 @@ function getRoute(xy) {
         },
         //데이터 로드가 성공적으로 완료되었을 때 발생하는 함수입니다.
         success: function(response) {
-            
             prtcl = response;
 
             // 결과 출력
@@ -746,6 +676,7 @@ function getRoute(xy) {
     });
 }
 
+/* 뒤로가기 버튼 비활성화 (나가기를 해야 로비로 갈 수 있게) */
 history.pushState(null, null, location.href);
 window.onpopstate = function () {
     history.go(1);
