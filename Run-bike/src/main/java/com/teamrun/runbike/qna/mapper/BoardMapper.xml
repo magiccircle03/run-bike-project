@@ -78,11 +78,8 @@
 		
 		<!-- 문의글 수정 -->
 		<select id="boardUpdate" parameterType="com.teamrun.runbike.qna.domain.Message">
-		update board set q_title=#{q_title}, q_content=#{q_content}, q_writer=#{q_writer} where q_num=#{q_num}
+		update board set q_title=#{q_title}, q_content=#{q_content}, q_writer=#{q_writer} where q_num=#{q_num} and u_idx=#{u_idx}
 		</select>
-		
-
-
 		
 		
 		<!-- 문의글 삭제 -->
@@ -110,7 +107,6 @@
 						</if>
 
 					</if>
-
 			 	</where>
 			 </select>
 		
@@ -121,8 +117,7 @@
 		
 	<!-- 게시판 리스트 : 검색을 위해 동적쿼리 적용 -->
 	
-	<select id="selectList" parameterType="map"
-		resultMap="messageResultmap">
+	<select id="selectList" parameterType="map" resultMap="messageResultmap">
 		
 		SELECT * FROM board
 		
@@ -138,7 +133,6 @@
 			</if>
 			
 		</where>
-
 		limit #{index}, #{count}
 	</select>
 	
