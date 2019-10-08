@@ -9,13 +9,13 @@ import com.teamrun.runbike.party.dao.PartyDaoInterface;
 
 @Service
 public class PartyMasterService {
-	//수정 삭제 방장위임 내쫒기 등 
-	
+
 	private PartyDaoInterface dao;
 	
 	@Inject
 	private SqlSessionTemplate template;
 	
+	// 방장 위임
 	public String changeMaster(int p_num, int u_idx) {
 		dao = template.getMapper(PartyDaoInterface.class);
 		int resultCnt1 = -1;

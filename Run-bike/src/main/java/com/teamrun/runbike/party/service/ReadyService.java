@@ -15,7 +15,7 @@ public class ReadyService {
 	@Inject
 	private SqlSessionTemplate template;
 	
-	// 참여 테이블을 바꾼다.
+	// 참여 테이블의 레디컬럼을 바꾼다.
 	public int updateReady(ReadyInfo readyInfo) {
 		int resultCnt = -1;
 		dao = template.getMapper(PartyDaoInterface.class);
@@ -24,7 +24,7 @@ public class ReadyService {
 		return resultCnt;
 	}
 	
-	//
+	// 아직 준비하지 않은 인원 수를 구해온다
 	public int getNotReadyUsercount(int p_num) {
 		int resultCnt = -1;
 		dao = template.getMapper(PartyDaoInterface.class);
