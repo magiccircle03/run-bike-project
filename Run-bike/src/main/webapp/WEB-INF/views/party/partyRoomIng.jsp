@@ -19,7 +19,6 @@
 <link href="//cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.4.0/css/bootstrap4-toggle.min.css" rel="stylesheet">  
 <script src="//cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.4.0/js/bootstrap4-toggle.min.js"></script>
 
-
 <style type="text/css">
 body{
 	color : #333333;
@@ -154,10 +153,8 @@ h5{
 <div class="container">
 
 <!-- 숨겨진 u_idx -->
-<!-- <hr> -->
 <input id="u_idx" name="u_idx" type="hidden" class="form-control" value="${loginInfo.u_idx}">
-<!-- <button class="btn" onclick="getCurrentPos()">현재위치</button>  -->
-<!--  <button onclick="getDistanceCE()">현재위치와의 직선거리 계산</button> -->
+
 <!-- 같이하기 내비게이션 -->
 <ul class="nav nav-pills nav-justified">
   <li class="nav-item tabWidth">
@@ -179,44 +176,46 @@ h5{
   
   <div class="tab-pane fade show active" id="partyInfoTab">
   
-    <div id="partyInfo">
-    	    <h3 id="partyTitle" class="marginTop"> [${partyInfo.p_num}] ${partyInfo.p_name} <p id="startStat" class="StartP"></p></h3>
-    	    <h4 style="padding:20px 0;"><i class="fas fa-biking blue"></i>&nbsp; 우리가 달리고 있는 길 : ${partyInfo.p_start_info_short} ~ ${partyInfo.p_end_info_short}</h4>
-    	    <div id="divArea">
-	    	    <div id="map_div">
-	    	    </div>
-	    	    <div id="partyUserInfoIng">
-		  	 	<!-- 참가자 사진 / 이름 / 상태-->
+  		<!-- 파티 현재 정보 영역 시작-->
+	    <div id="partyInfo">
+	    	    <h3 id="partyTitle" class="marginTop"> [${partyInfo.p_num}] ${partyInfo.p_name} <p id="startStat" class="StartP"></p></h3>
+	    	    <h4 style="padding:20px 0;"><i class="fas fa-biking blue"></i>&nbsp; 우리가 달리고 있는 길 : ${partyInfo.p_start_info_short} ~ ${partyInfo.p_end_info_short}</h4>
+	    	    <div id="divArea">
+		    	    <div id="map_div">
+		    	    </div>
+		    	    <div id="partyUserInfoIng">
+			  	 	<!-- 참가자 사진 / 이름 / 상태-->
+					</div>
 				</div>
-			</div>
-    </div>
-
-		
-		<hr>
-     
-     	<div id="endArea" style="display:none;">
-	    	<!-- 원래는 장소를 체크해서 가까우면 완주 아니면 그냥 종료로 간다. -->
-<!-- 	    	<button id="endBtn" class="btn width100 black btnHeight" onclick="endRidingOne()">종료하기</button> -->
-	    	<button id="endBtn" class="btn width100 black btnHeight" onclick="getDistanceCE()">종료하기</button>
+	    </div> <!-- /partyInfo-->
+	
+		<hr> <!-- ================================================== -->
+	     
+	    <!-- 끝내기 -->
+	   	<div id="endArea" style="display:none;">
+	  	 	<button id="endBtn" class="btn width100 black btnHeight" onclick="getDistanceCE()">종료하기</button>
+	  	</div>
 	    	
-    	</div>
-    	
-    	<!-- 방장만 보이게 영역 -->
+	   	<!-- 방장만 보이게 영역 -->
 		<div class="master">
 		   	<button id="endBtnMaster" class="btn width100 btnHeight" onclick="endRidingMaster()" disabled="true">전체 라이딩 종료하기!</button>
 		</div>
 		<!-- /방장만 보이게 영역 -->
-
   
+	</div>
 </div>
 
 </div><!-- 컨테이너 끝 -->
+
 <!-- 푸터 시작 -->
 <%@ include file="/WEB-INF/views/frame/footer.jsp" %>
 <!-- 푸터 끝 -->
+
 <script>
 
 var xy=${partyInfo.p_XY};
+var p_num = ${partyInfo.p_num};
+var u_idx = $('#u_idx').val();// 아이디 값 세션에서 가져오기. 
 
 $(document).ready(function() {
 	initTmap(xy);
@@ -227,11 +226,7 @@ $(document).ready(function() {
 	showCurrentPos();
 });
 
-var p_num = ${partyInfo.p_num};
-var u_idx = $('#u_idx').val();// 아이디 값 세션에서 가져오기. 
-
-//직선 거리를 계산하는 함수
-
+/* 직선 거리를 계산하는 함수 */
 function getDistanceCE() {
 	navigator.geolocation.getCurrentPosition(function(pos) {
 		var distanceCE;
@@ -266,9 +261,7 @@ function getDistanceCE() {
 			    $intRate = $xml.find("distanceInfo");
 				var distance = $intRate[0].getElementsByTagName("distance")[0].childNodes[0].nodeValue;
 				
-				//alert('직선거리 : '+distance);
-				
-				endRidingOne(distance<=300);
+				endRidingOne(distance<=300); // 직선거리가 300m이내인지 여부를 넘겨준다
 				
 			},
 			//요청 실패시 콘솔창에서 에러 내용을 확인할 수 있습니다.
@@ -277,17 +270,11 @@ function getDistanceCE() {
 			}
 		});
 	});
-
-	
 }
 
-
-// 개인이 라이딩을 종료하는 함수
+/* 개인이 라이딩을 종료하는 함수 */
 function endRidingOne(chk){
-	
-	//alert('chk : '+chk);
-	//var chk = confirm('현재위치 = 도착지 반경 500m?'); //완주여부 체크. 일단은 이렇게 받자
-	//getCurrentPos(); // 검사해서 이 위치가 도착지 좌표 반경 몇 m 이내면, 완주여주 Y / 아니면 N //중도 포기하겠냐고 물어봄
+	// 현재 위치가 도착지 좌표 반경 300m 이내면, 완주여주 Y / 아니면 N //중도 포기하겠냐고 물어봄
 	if(chk){
 		updateEnd('Y'); // 완주여부 Y, end여부 Y로 업데이트
 	}else{
@@ -299,6 +286,7 @@ function endRidingOne(chk){
 	$('#endArea').css('display','none');
 }
 
+/* 라이딩종료 시, 완주 여부와 함께 컬럼 업데이트 */
 function updateEnd(finishYN) {
  	$.ajax({
 		url : '../../party/'+p_num+'/finishOne',
@@ -313,6 +301,7 @@ function updateEnd(finishYN) {
 	}); 
 }
 
+/* 파티 전체 라이딩 종료 */
 function endRidingMaster(){
 	if(confirm('라이딩을 종료하고 파티를 해산할까요?')){
 		// 종료시간과 사용가능한 방 여부 업데이트하기
@@ -327,17 +316,16 @@ function endRidingMaster(){
 	 			endRidingGreet();
 	 		}
 	 	}); 
-		
 	}
 }
 
-// 종료인사와 보내주기
+/* 종료인사와 보내주기 */
 function endRidingGreet() {
 	alert('종료합니다! 수고하셨습니다!');
 	location.href="../../party";
 }
 
-
+/* 모든 사람이 라이딩을 끝내면 전체종료 버튼 활성화 */
 function isAllEnd(){
 	var cnt = -2;
 	$.ajax({
@@ -350,30 +338,19 @@ function isAllEnd(){
 	 }); 
 	 
 	 if(cnt==0){
-		 //alert('모두 종료!');
 		 $('#endBtnMaster').attr('disabled', false);
 		 $('#endBtnMaster').addClass('allEnd');
-	 }/* else{
-		 //alert('아직 종료하지 않은 사람 있음!');
-		 $('#endBtnMaster').attr('disabled', true);
-		 $('#endBtnMaster').removeClass('allEnd');
-	 } */
+	 }
 }
 
-
-
-
+/* 진행중이면 진행중 표시해주는 함수 */
 function chkIsStarted() {
-	//alert(p_num);
 	$.ajax({
 		url : '../../party/room/' + p_num,
 		type : 'GET',
 		success : function(data) {
-			//alert("시작시간"+data.p_start_time);
-			//alert(data.p_start_time!=null);
 			if(data.p_start_time!=null){
 				$('#beforeStartArea').addClass( 'dispalyNone' );
-/* 				$('#partyTitle').append( '<p class="StartP"> [ 라이딩 진행중 ]</p>' ); */
 				$('#startStat').html(' [ 라이딩 진행중 ]');
 			}else{
 				$('#beforeStartArea').addClass( 'dispalyBlock' );
@@ -383,17 +360,7 @@ function chkIsStarted() {
 	});
 } 
 
-function getCurrentPos() {
-	navigator.geolocation.getCurrentPosition(function(pos) {
-	    var latitude = pos.coords.latitude;
-	    var longitude = pos.coords.longitude;
-//	    alert("내 현재 위치는 : " + latitude + ", "+ longitude);
-	    var lonlat = new Tmap.LonLat(longitude, latitude).transform("EPSG:4326", "EPSG:3857");//좌표 설정
-	   //map.setCenter(lonlat, 15); 
-	    map.setCenter(lonlat, 17); 
-	});
-}
-
+/* 참여중인 유저 수 구하는 함수 */
 function getUserCount() {
 	var cnt=-2;
 	$.ajax({
@@ -407,17 +374,7 @@ function getUserCount() {
 	return cnt;
 }
 
-$('#readyChk').change(function() {
-    if($("#readyChk").is(":checked")){
-        //alert("레디!");
-        setReady('Y');
-    }else{
-        //alert("레디 취소!");
-        setReady('N');
-    }
-});
-
-
+/* 달리기중인 유저의 정보를 가져온다 */
 function showPartyUserList() {
 	$.ajax({
 		url : '../../party/room/'+p_num+'/user',
@@ -461,9 +418,7 @@ function showPartyUserList() {
 				
 				
 				html1+='<tr>\n';
-				//html1+='<td class="width30">'+data[i].u_photo+'</td>\n';
 				html1+='<td class="width30"><img class="partyUserImg" src="${pageContext.request.contextPath}/uploadfile/userphoto/'+data[i].u_photo+'"></td>\n';
-				
 				html1+='<td class="width30 '+bold+'">' + crown + data[i].u_name + delBtn + '</td>\n';
 				html1+='<td class="width30">'+readyStr+'</td>\n';
 				html1+='</tr>\n';
@@ -477,15 +432,14 @@ function showPartyUserList() {
 	});
 }
 
-// 내가 파티를 나간다
+/* 내가 파티를 나간다 */
 function exitPartyFn() {
 
 	if(isMaster()){
 		if(getUserCount()<2){
 			if(confirm('인원이 1명일 때 나가면 방이 삭제됩니다. 방에서 나가시겠습니까?')){
 				exitParty(u_idx);
-				// 방삭제
-				deleteParty();
+				deleteParty();// 방삭제
 			}
 		}else{
 			alert('방장은 나갈 수 없습니다! 나가고 싶다면, 방장을 위임해주세요');
@@ -495,13 +449,11 @@ function exitPartyFn() {
 			exitParty(u_idx); // 현재 로그인된 유저를 얌전히 보내준다
 		}
 	}
-	
 }
 	
-
-// 매개변수로 전해진 유저를 참여테이블에서 delete 하는 함수
+/* 해당 유저를 참여테이블에서 delete 하는 함수 */
 function exitParty(idx) {
-	// alert(p_num+","+u_idx);
+
  	 $.ajax({
  		url : '../../party/room/'+p_num,
  		type : 'DELETE',
@@ -510,57 +462,12 @@ function exitParty(idx) {
 		}),
 		contentType : 'application/json; charset=utf-8',
  		success : function(data) {
- 			//alert(data);
  			location.href="../../party";
  		}
  	});
 }
 
-// 방장이면 보이게
-function showMasterArea() {
-
-  	if (isMaster()) {
-		$('.master').css('display','block');
-	}
-	else{
-		$('.master').css('display','none');
-	}  
-	 
-}
-// 종료전과 후 다른 처리를 해준다
-function showEndArea() {
-
-  	if (isEnd()) {
-		$('#endArea').css('display','none');
-	}
-	else{
-		$('#endArea').css('display','block');
-	}  
-	 
-}
-
-function isEnd() {
-	var chk = false;
-	 $.ajax({
-	 		url : '../../party/room/isEnd',
-	 		type : 'GET',
-			async : false,
-			data : {
-				u_idx : u_idx,
-				p_num : p_num
-			},
-	 		success : function(data) {
-	 			//alert(data);
-				if(data=='Y'){
-					chk=true;
-				}
-	 		}
-	 }); 
-	
-	return chk;
-}
-
-//방장이면 보이게
+/* 방장 여부 체크 */
 function isMaster() {
 	var master = 0;
 	var chk = false;
@@ -579,11 +486,52 @@ function isMaster() {
 	return chk;
 }
 
-// 방장 위임
-// 타겟 유저의 idx를 받는다
-function changeMaster(u_idx_t){
+/* 방장이면 보이게 */
+function showMasterArea() {
+  	if (isMaster()) {
+		$('.master').css('display','block');
+	}
+	else{
+		$('.master').css('display','none');
+	}  
+}
+
+/* 종료 여부에 따라 종료영역 보여주고 숨기기 */
+function showEndArea() {
+
+  	if (isEnd()) {
+		$('#endArea').css('display','none');
+	}
+	else{
+		$('#endArea').css('display','block');
+	}  
+	 
+}
+
+/* 현재 유저가 라이딩을 종료했는지 */
+function isEnd() {
+	var chk = false;
+	 $.ajax({
+	 		url : '../../party/room/isEnd',
+	 		type : 'GET',
+			async : false,
+			data : {
+				u_idx : u_idx,
+				p_num : p_num
+			},
+	 		success : function(data) {
+	 			//alert(data);
+				if(data=='Y'){
+					chk=true;
+				}
+	 		}
+	 }); 
+	return chk;
+}
+
+/* 방장을 위임하는 함수 */
+function changeMaster(u_idx_t){ // 타겟 유저의 idx를 받는다
 	if (confirm('방장을 위임하시겠습니까?')) {
-		//alert('방장을 위임합니다');
 	 	 $.ajax({
 		 	url : '../../party/room/'+p_num+'/master',
 	  		type : 'PUT',
@@ -600,45 +548,14 @@ function changeMaster(u_idx_t){
 	}
 }
 
-function deletePartyBtn(){
-	if (confirm('방을 삭제하시면 복구할 수 없습니다. \n방을 폭파하시겠습니까?')) {
-		deleteParty();
-	}
-}
-
-/* // 파티삭제
-function deleteParty(){
-	 $.ajax({
-		url : '../../party/'+p_num,
-		type : 'DELETE',
- 		contentType : 'application/json; charset=utf-8',
- 		//dataType : 'json', //데이터타입
-		success : function() {
-			//alert('삭제성공');
-			location.href="../../party";
-		}
-	 });
-} */
-
-// 회원정보 계속 업데이트(준비 상태 바로 반영되게)
+/* 회원정보 계속 업데이트( 현재 위치 및 유저정보 바로 반영) */
 var refreshReady = setInterval(function() {
 		showPartyUserList();
 		showCurrentPos();
 		isAllEnd();
 }, 1000);
 
-function startRiding() {
-	alert('시작');
-	 $.ajax({
-	 		url : '../../party/'+p_num+'/start',
-	  		type : 'get',
-	 		success : function() {
-	 			alert('성공');
-	 			location.href="./"+p_num+"/ing";
-	 		}
-	 }); 
-}
-
+/* 강퇴 */
 function ban(idx) {
 	if (confirm('해당 유저를 내보낼까요?')) {
 		exitParty(idx+"");
@@ -646,7 +563,7 @@ function ban(idx) {
 	}
 }
 
-
+/* 맵 초기화 */
 function initTmap(xy) {
 	
     // map 생성
@@ -663,20 +580,17 @@ function initTmap(xy) {
 	    var lonlat = new Tmap.LonLat(longitude, latitude).transform("EPSG:4326", "EPSG:3857");//좌표 설정
 	    map.setCenter(lonlat, 17); 
 	});
- //   map.setCenter(new Tmap.LonLat("126.986072", "37.570028").transform("EPSG:4326", "EPSG:3857"), 15); //설정한 좌표를 "EPSG:3857"로 좌표변환한 좌표값으로 즁심점을 설정합니다.						
     getRoute(xy);
     showCircle(xy);
 
 }
 
-
+/* 도착지 주변에 원을 뿌려준다 */
 function showCircle(xy) {
 	//원
 	var vector_layer = new Tmap.Layer.Vector('Tmap Vector Layer'); // 백터 레이어 생성
 	map.addLayers([vector_layer]); // 지도에 백터 레이어 추가
 	
-// 	var coord = new Tmap.LonLat(126.935063, 37.564432).transform("EPSG:4326", "EPSG:3857");
-// 	var circle = new Tmap.Geometry.Circle(coord.lon, coord.lat, 500); // 원 생성
 	var circle = new Tmap.Geometry.Circle(xy.endX, xy.endY, 300); // 원 생성
 	// 지도상에 그려질 스타일을 설정합니다
 	var style_red = {
@@ -692,6 +606,7 @@ function showCircle(xy) {
 
 }
 
+/* 현재위치 보여주는 함수 */
 function showCurrentPos(){
 	navigator.geolocation.getCurrentPosition(function(pos) {
 	    var latitude = pos.coords.latitude;
@@ -712,7 +627,7 @@ function showCurrentPos(){
 	});
 }
 
-
+/* 경로를 보여주느 함수 */
 function getRoute(xy) {
 	
     // 시작 마커 표시
@@ -823,6 +738,7 @@ function getRoute(xy) {
     });
 }
 
+/* 뒤로가기 막는 함수 */
 history.pushState(null, null, location.href);
 window.onpopstate = function () {
     history.go(1);
