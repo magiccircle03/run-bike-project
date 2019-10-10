@@ -55,6 +55,7 @@ body{
   background-color: Aquamarine;
   text-align: center;
   margin-top: 10px;
+  padding: 5px;
 }
 
 /* 접속 종료 알림 */
@@ -64,30 +65,61 @@ body{
   background-color: #e0e0e0;
   text-align: center;
   margin-top: 10px;
+  padding: 5px;
 }
 
+
 /* 내가 보낸 메시지 */
-.me {
+/* .me {
   width: 45%;
   margin-left: 50%;
-  /* width: 90%;
-  margin: auto; */
   background-color: #fefefe; 
   text-align: right;
   border-radius: 5px;
   margin-top: 10px;
-}
+} */
+
+
+/* 상대방이 보낸 메시지 */
+/* .other {
+  width: 45%;
+  margin-left: 5%;
+  background-color: #fefefe;
+  border-radius: 5px;
+  margin-top: 10px;
+} */
 
 /* 상대방이 보낸 메시지 */
 .other {
   width: 45%;
   margin-left: 5%;
-  /* width: 90%;
-  margin: auto; */
   background-color: #fefefe;
   border-radius: 5px;
   margin-top: 10px;
+} 
+
+/* 말풍선 감싸는 div */
+.balloon_me{
+	width: 90%;
+	margin: auto;
+	text-align: right;
+	margin-top: 10px;
 }
+
+.balloon_other{
+	width: 90%;
+	margin: auto;
+	margin-top: 10px;
+}
+
+.ballon_span{
+	background-color: #fefefe; 
+	border-radius: 5px;
+	display: inline-block;
+	padding: 5px;
+}
+
+/* 메시지 입력 부분 */
 #msgArea{
 	width: 90%;
 	margin: 0 auto;
@@ -95,9 +127,6 @@ body{
 #msg_process{
 	background-color: #fafafa;
 	width: 100%;
-}
-#input_msg{
-/* 	width: 100%; */
 }
 </style>
 </head>
@@ -157,14 +186,14 @@ body{
 <!-- 푸터 시작 -->
 <%@ include file="/WEB-INF/views/frame/footer.jsp" %>
 <!-- 푸터 끝 -->
-<!-- <script src="http://localhost:3000/socket.io/socket.io.js"></script> -->
-<script src="http://54.180.26.199:3000/socket.io/socket.io.js"></script>
+<script src="http://localhost:3000/socket.io/socket.io.js"></script>
+<!-- <script src="http://54.180.26.199:3000/socket.io/socket.io.js"></script> -->
 
 <script type="text/javascript">
 var p_num = $('#p_num').val();
 var user_name = $('#u_name').val();
-/* var socket = io('http://localhost:3000'); */
-var socket = io('http://54.180.26.199:3000');
+var socket = io('http://localhost:3000');
+/* var socket = io('http://54.180.26.199:3000'); */
 
 $(document).ready(function() {
     //msg에서 키를 누를떄
@@ -185,37 +214,37 @@ $(document).ready(function() {
 	/* 서버로부터 데이터 받은 경우 */
 	socket.on('update', function(data) {
 		
-	  var chat = document.getElementById('chat');
-	  var message = document.createElement('div');
 	  var node;
 	  
 	  if(data.name=="SERVER"){
-		  node = document.createTextNode(data.message);
+		  node = data.message;
 	  }else{
-		  node = document.createTextNode(data.name+": "+data.message);
+		  node = data.name+": "+data.message;
 	  }
 
-	  var className = '';
+	  var divClassName = '';
+	  var spanClassName='';
 
 	  // 타입에 따라 적용할 클래스를 다르게 지정
 	  switch(data.type) {
 	    case 'message':
-	      className = 'other';
+	   	  divClassName = 'balloon_other';
+	      spanClassName = 'ballon_span';
 	      break;
 
 	    case 'connect':
-	      className = 'connect';
+	      divClassName = 'connect';
 	      break;
 
 	    case 'disconnect':
-	      className = 'disconnect';
+	      divClassName = 'disconnect';
 	      break;
 	  }
 
-	  message.classList.add(className);
-	  message.appendChild(node);
-	  chat.appendChild(message);
+	  $('#chat').append('<div class="'+divClassName+'"><span class="'+spanClassName+'">'+node+'</span></div>');
+	  
 	});
+	
 	
 	//=========
 		
@@ -254,12 +283,9 @@ function send() {
 	$('#input_msg').val('');
 	
 	// 내가 전송할 메시지 클라이언트에게 표시
-	var msg = document.createElement('div');
-	var node = document.createTextNode(message);
-	msg.classList.add('me');
-	msg.appendChild(node);
-	$('#chat').append(msg);
-	
+/* 	$('#chat').append('<div class="me">'+message+'</div>'); */
+	$('#chat').append('<div class="balloon_me"><span class="ballon_span">'+message+'</span></div>');
+		
 	// 서버로 message 이벤트 전달 + 데이터와 함께
 	socket.emit('message', {type: 'message', message: message});
 }
