@@ -37,8 +37,8 @@ body{
   box-shadow: 5px 5px lightgray;
   background-color: #efefef;
   text-align: left;
-  width: 500px;
-  height: 800px;
+  width: 90%;
+  height: 650px;
 }
 
 /* 채팅 영역 */
@@ -52,7 +52,7 @@ body{
 .connect {
   width: 90%;
   margin: auto;
-  background-color: aquamarine;
+  background-color: Aquamarine;
   text-align: center;
   margin-top: 10px;
 }
@@ -88,10 +88,16 @@ body{
   border-radius: 5px;
   margin-top: 10px;
 }
-
-/**/
-input{
-  width: 80%;
+#msgArea{
+	width: 90%;
+	margin: 0 auto;
+}
+#msg_process{
+	background-color: #fafafa;
+	width: 100%;
+}
+#input_msg{
+/* 	width: 100%; */
 }
 </style>
 </head>
@@ -137,9 +143,10 @@ input{
       <div id="chat">
         <!-- 채팅 메시지 영역 -->
       </div>
-      <div>
-        <input type="text" id="input_msg" placeholder="메시지를 입력해주세요..">
-        <button onclick="send()">전송</button>
+      <div id="msgArea" class="row">
+      	<div class="col-md-10"><input type="text" id="input_msg" class="form-control" placeholder="메시지를 입력해주세요.."></div>
+      	<div class="col-md-2"><button id="msg_process" class="btn" onclick="send()">전송</button></div>
+        
       </div>
     </div>
   </div>
@@ -158,7 +165,14 @@ var user_name = $('#u_name').val();
 var socket = io('http://localhost:3000');
 
 $(document).ready(function() {
-
+    //msg에서 키를 누를떄
+    $("#input_msg").keydown(function(key){
+        //해당하는 키가 엔터키(13) 일떄
+        if(key.keyCode == 13){
+            //msg_process를 클릭해준다.
+            msg_process.click();
+        }
+    });
 
 	/* 접속 되었을 때 실행 */
 	socket.on('connect', function() {
@@ -185,15 +199,15 @@ $(document).ready(function() {
 	  switch(data.type) {
 	    case 'message':
 	      className = 'other';
-	      break
+	      break;
 
 	    case 'connect':
 	      className = 'connect';
-	      break
+	      break;
 
 	    case 'disconnect':
 	      className = 'disconnect';
-	      break
+	      break;
 	  }
 
 	  message.classList.add(className);
@@ -231,21 +245,21 @@ function chkIsStarted() {
 
 /* 메시지 전송 함수 */
 function send() {
-  // 입력되어있는 데이터 가져오기
-  var message = $('#input_msg').val();
-  
-  // 가져왔으니 데이터 빈칸으로 변경
-  $('#input_msg').val('');
-
-  // 내가 전송할 메시지 클라이언트에게 표시
-  var msg = document.createElement('div');
-  var node = document.createTextNode(message);
-  msg.classList.add('me');
-  msg.appendChild(node);
-  $('#chat').append(msg);
-
-  // 서버로 message 이벤트 전달 + 데이터와 함께
-  socket.emit('message', {type: 'message', message: message});
+	// 입력되어있는 데이터 가져오기
+	var message = $('#input_msg').val();
+	
+	// 가져왔으니 데이터 빈칸으로 변경
+	$('#input_msg').val('');
+	
+	// 내가 전송할 메시지 클라이언트에게 표시
+	var msg = document.createElement('div');
+	var node = document.createTextNode(message);
+	msg.classList.add('me');
+	msg.appendChild(node);
+	$('#chat').append(msg);
+	
+	// 서버로 message 이벤트 전달 + 데이터와 함께
+	socket.emit('message', {type: 'message', message: message});
 }
 
 </script>
