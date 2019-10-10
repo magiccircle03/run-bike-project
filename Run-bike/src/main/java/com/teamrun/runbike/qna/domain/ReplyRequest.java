@@ -1,5 +1,7 @@
 package com.teamrun.runbike.qna.domain;
 
+import java.util.Date;
+
 public class ReplyRequest {
 
 	
@@ -11,7 +13,6 @@ public class ReplyRequest {
 	private int u_idx;
 	private int q_num;
 
-	
 	
 	public ReplyRequest() {}
 	

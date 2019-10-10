@@ -25,7 +25,12 @@
  	div#boardwriteform{ 
  			width:800px; 
  			margin:auto; 
- 	} 
+ 	}
+	
+	#writebtn{
+ 		width:80px;
+ 		margin:auto;
+ 	}
 	
 /* 	div#form-group{ */
 /* 		width:400px; */
@@ -84,7 +89,8 @@
 	       			  <td> <textarea name="q_content" id="q_content" class="form-control" cols="70" rows="15" placeholder="내용을 입력하세요" required></textarea></td>
 	       		</tr>
 		         <tr>
-		          <td><button type="submit" class="btn btn-default" id="boardInsertButton" onclick="formSubmit();">등록</button></td>
+				  <td>&nbsp;</td>
+		          <td><input id="writebtn" type="submit" value="등록" onclick="formSubmit();"></td>
 		        </tr>
 	    
    			 </table>    
@@ -133,11 +139,7 @@
 	          
 	            //alert($('#regform').serialize());
 	            
-	            if($("#q_writer").val() == ""){
-	        		alert("작성자 이름을 입력해주세요.");
-	        		$("q_writer").focus();
-	        		return false;
-	        		}
+
 	        	if($("#q_title").val() == ""){
 	        		  alert("제목을 입력해주세요.");
 	        		  $("q_title").focus();

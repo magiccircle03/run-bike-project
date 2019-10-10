@@ -43,10 +43,8 @@
 		height: 30px;
 		line-height: 30px;
 		text-align: center;
-		border : 1px solid #333;
-		
-		border-radius:10px;
-		
+		border : 1px solid #333;		
+		border-radius:10px;		
 		margin: 0 5px;
 	}
 	
@@ -115,7 +113,6 @@
 			<input type="text" name="keyword"> <input type="submit" value="검색">
 		</form>
 		</div>
-	
 	
 	
 	
