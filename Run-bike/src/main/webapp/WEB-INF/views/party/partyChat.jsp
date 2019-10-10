@@ -157,12 +157,14 @@ body{
 <!-- 푸터 시작 -->
 <%@ include file="/WEB-INF/views/frame/footer.jsp" %>
 <!-- 푸터 끝 -->
-<script src="http://localhost:3000/socket.io/socket.io.js"></script>
+<!-- <script src="http://localhost:3000/socket.io/socket.io.js"></script> -->
+<script src="http://54.180.26.199:3000/socket.io/socket.io.js"></script>
 
 <script type="text/javascript">
 var p_num = $('#p_num').val();
 var user_name = $('#u_name').val();
-var socket = io('http://localhost:3000');
+/* var socket = io('http://localhost:3000'); */
+var socket = io('http://54.180.26.199:3000');
 
 $(document).ready(function() {
     //msg에서 키를 누를떄
