@@ -29,7 +29,70 @@ body{
 	width:33%;
 	text-align: center;
 }
+/* 메인 */
+#main {
+  margin: auto;
+  margin-top: 20px;
+  border-radius: 5px;
+  box-shadow: 5px 5px lightgray;
+  background-color: #efefef;
+  text-align: left;
+  width: 500px;
+  height: 800px;
+}
 
+/* 채팅 영역 */
+#chat {
+  height: 90%;
+  width: 100%;
+  overflow-y: auto;
+}
+
+/* 접속 알림 */
+.connect {
+  width: 90%;
+  margin: auto;
+  background-color: aquamarine;
+  text-align: center;
+  margin-top: 10px;
+}
+
+/* 접속 종료 알림 */
+.disconnect {
+  width: 90%;
+  margin: auto;
+  background-color: #e0e0e0;
+  text-align: center;
+  margin-top: 10px;
+}
+
+/* 내가 보낸 메시지 */
+.me {
+  width: 45%;
+  margin-left: 50%;
+  /* width: 90%;
+  margin: auto; */
+  background-color: #fefefe; 
+  text-align: right;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+/* 상대방이 보낸 메시지 */
+.other {
+  width: 45%;
+  margin-left: 5%;
+  /* width: 90%;
+  margin: auto; */
+  background-color: #fefefe;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+/**/
+input{
+  width: 80%;
+}
 </style>
 </head>
 <body>
@@ -43,6 +106,7 @@ body{
 <!-- 숨겨진 u_idx -->
 <!-- <hr> -->
 <input id="u_idx" name="u_idx" type="hidden" class="form-control" value="${loginInfo.u_idx}">
+<input id="u_name" name="u_name" type="hidden" class="form-control" value="${loginInfo.u_name}">
 <input id="p_num" name="p_num" type="hidden" class="form-control" value="${partyInfo.p_num}">
 
 
@@ -69,7 +133,15 @@ body{
 <div class="tab-content">
   
   <div class="tab-pane fade show active">
-	채팅기능은 준비중입니다٩(*´ ꒳ `*)۶
+	<div id="main">
+      <div id="chat">
+        <!-- 채팅 메시지 영역 -->
+      </div>
+      <div>
+        <input type="text" id="input_msg" placeholder="메시지를 입력해주세요..">
+        <button onclick="send()">전송</button>
+      </div>
+    </div>
   </div>
   
 </div>
@@ -78,20 +150,68 @@ body{
 <!-- 푸터 시작 -->
 <%@ include file="/WEB-INF/views/frame/footer.jsp" %>
 <!-- 푸터 끝 -->
+<script src="http://localhost:3000/socket.io/socket.io.js"></script>
 
 <script type="text/javascript">
 var p_num = $('#p_num').val();
+var user_name = $('#u_name').val();
+var socket = io('http://localhost:3000');
 
 $(document).ready(function() {
+
+
+	/* 접속 되었을 때 실행 */
+	socket.on('connect', function() {
+	  /* 서버에 새로운 유저가 왔다고 알림 */
+	  socket.emit('newUser', user_name);
+	});
+
+	/* 서버로부터 데이터 받은 경우 */
+	socket.on('update', function(data) {
+		
+	  var chat = document.getElementById('chat');
+	  var message = document.createElement('div');
+	  var node;
+	  
+	  if(data.name=="SERVER"){
+		  node = document.createTextNode(data.message);
+	  }else{
+		  node = document.createTextNode(data.name+": "+data.message);
+	  }
+
+	  var className = '';
+
+	  // 타입에 따라 적용할 클래스를 다르게 지정
+	  switch(data.type) {
+	    case 'message':
+	      className = 'other';
+	      break
+
+	    case 'connect':
+	      className = 'connect';
+	      break
+
+	    case 'disconnect':
+	      className = 'disconnect';
+	      break
+	  }
+
+	  message.classList.add(className);
+	  message.appendChild(node);
+	  chat.appendChild(message);
+	});
+	
+	//=========
+		
 	isStarted = chkIsStarted();
 	// 시작되지 않았을 때 현재정보 페이지로 가는 걸 막는다
-	$("#curInfoA").on("click",function(event){
+	$('#curInfoA').on('click',function(event){
 		if(!isStarted){
 			event.preventDefault();
 			alert('라이딩이 시작되면 볼 수 있습니다!');
 		}
      });	
-	
+
 });
 
 function chkIsStarted() {
@@ -107,6 +227,27 @@ function chkIsStarted() {
 	});
 	return chk;
 } 
+
+
+/* 메시지 전송 함수 */
+function send() {
+  // 입력되어있는 데이터 가져오기
+  var message = $('#input_msg').val();
+  
+  // 가져왔으니 데이터 빈칸으로 변경
+  $('#input_msg').val('');
+
+  // 내가 전송할 메시지 클라이언트에게 표시
+  var msg = document.createElement('div');
+  var node = document.createTextNode(message);
+  msg.classList.add('me');
+  msg.appendChild(node);
+  $('#chat').append(msg);
+
+  // 서버로 message 이벤트 전달 + 데이터와 함께
+  socket.emit('message', {type: 'message', message: message});
+}
+
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
