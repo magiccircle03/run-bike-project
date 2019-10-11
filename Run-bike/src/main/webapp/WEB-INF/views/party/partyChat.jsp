@@ -68,27 +68,6 @@ body{
   padding: 5px;
 }
 
-
-/* 내가 보낸 메시지 */
-/* .me {
-  width: 45%;
-  margin-left: 50%;
-  background-color: #fefefe; 
-  text-align: right;
-  border-radius: 5px;
-  margin-top: 10px;
-} */
-
-
-/* 상대방이 보낸 메시지 */
-/* .other {
-  width: 45%;
-  margin-left: 5%;
-  background-color: #fefefe;
-  border-radius: 5px;
-  margin-top: 10px;
-} */
-
 /* 상대방이 보낸 메시지 */
 .other {
   width: 45%;
@@ -139,19 +118,15 @@ body{
 <div class="container">
 
 <!-- 숨겨진 u_idx -->
-<!-- <hr> -->
 <input id="u_idx" name="u_idx" type="hidden" class="form-control" value="${loginInfo.u_idx}">
 <input id="u_name" name="u_name" type="hidden" class="form-control" value="${loginInfo.u_name}">
 <input id="p_num" name="p_num" type="hidden" class="form-control" value="${partyInfo.p_num}">
-
-
 
 <!-- 같이하기 내비게이션 -->
 <ul class="nav nav-pills nav-justified">
 
   <li class="nav-item tabWidth">
-  <a class="nav-link" href="<c:url value='/party/${partyInfo.p_num}' />">방정보</a>
-    <!-- http://localhost:8080/runbike/party/69 이런식으로 들어가야하는데 69/ 하고 들어가서 일단 이렇게 해뒀다. 방번호 받아오면 제대로 가능할듯 -->
+ 	 <a class="nav-link" href="<c:url value='/party/${partyInfo.p_num}' />">방정보</a>
   </li>
   
   <li class="nav-item tabWidth">
@@ -283,7 +258,6 @@ function send() {
 	$('#input_msg').val('');
 	
 	// 내가 전송할 메시지 클라이언트에게 표시
-/* 	$('#chat').append('<div class="me">'+message+'</div>'); */
 	$('#chat').append('<div class="balloon_me"><span class="ballon_span">'+message+'</span></div>');
 		
 	// 서버로 message 이벤트 전달 + 데이터와 함께
