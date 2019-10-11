@@ -168,6 +168,9 @@ var user_name = $('#u_name').val();
 var socket = io('http://localhost:3000');
 /* var socket = io('http://54.180.26.199:3000'); */
 
+const $chat = $('#chat'); 
+
+
 $(document).ready(function() {
     //msg에서 키를 누를떄
     $("#input_msg").keydown(function(key){
@@ -215,7 +218,7 @@ $(document).ready(function() {
 	  }
 
 	  $('#chat').append('<div class="'+divClassName+'"><span class="'+spanClassName+'">'+node+'</span></div>');
-	  
+	  $chat.scrollTop($chat[0].scrollHeight);
 	});
 	
 	
@@ -267,6 +270,7 @@ function send() {
 			
 		// 서버로 message 이벤트 전달 + 데이터와 함께
 		socket.emit('message', {type: 'message', message: message});
+		$chat.scrollTop($chat[0].scrollHeight);
 	}
 }
 
