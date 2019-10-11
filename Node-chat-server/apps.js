@@ -65,7 +65,7 @@ io.sockets.on('connection', function(socket) {
         socket.leave(socket.room_num);
 
         /* 나가는 사람을 제외한 나머지 유저에게 메시지 전송 */
-        socket.broadcast.to(socket.room_num).emit('update', {type: 'disconnect', name: 'SERVER', message: socket.name + '님이 나가셨습니다.'});
+        socket.broadcast.to(socket.room_num).emit('update', {type: 'disconnect', name: 'SERVER', message: socket.name + '님이 나가셨습니다. _(:3」∠)_'});
     });
     
 });

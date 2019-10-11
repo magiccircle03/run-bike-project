@@ -42,6 +42,7 @@ body{
   text-align: left;
   width: 90%;
   height: 650px;
+  padding: 10px;
 }
 
 /* 채팅 영역 */
