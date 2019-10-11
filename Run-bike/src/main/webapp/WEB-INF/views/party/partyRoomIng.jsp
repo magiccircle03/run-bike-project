@@ -95,7 +95,8 @@ h5{
 	color: #007BFF;
 }
 .font-size-18{
-	font-size: 18px;
+	/* font-size: 18px; */
+	font-size: 1.125em;
 }
 .gray{
 	color: #555555;
