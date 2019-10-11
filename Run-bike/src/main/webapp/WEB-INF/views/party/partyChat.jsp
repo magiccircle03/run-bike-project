@@ -52,7 +52,7 @@ body{
 }
 
 /* 접속 알림 */
-.connect {
+.join {
   width: 90%;
   margin: auto;
   background-color: Aquamarine;
@@ -148,11 +148,11 @@ body{
         <!-- 채팅 메시지 영역 -->
       </div><!-- "chat" -->
       <div id="msgArea" class="row">
-      	<div class="col-md-10"><input type="text" id="input_msg" class="form-control" placeholder="메시지를 입력해주세요.."></div>
+      	<div class="col-md-10"><input type="text" id="input_msg" class="form-control" placeholder="메시지를 입력해주세요✿*:･ﾟ"></div>
       	<div class="col-md-2"><button id="msg_process" class="btn" onclick="send()">전송</button></div>
       </div><!-- msgArea -->
       
-   </div>
+   	</div>
 
 </div><!-- 컨테이너 끝 -->
 <!-- 푸터 시작 -->
@@ -179,8 +179,8 @@ $(document).ready(function() {
 
 	/* 접속 되었을 때 실행 */
 	socket.on('connect', function() {
-	  /* 서버에 새로운 유저가 왔다고 알림 */
-	  socket.emit('newUser', user_name);
+	  /* 서버에 새로운 유저가 왔다고 알림 (join) */
+	  socket.emit('join', {'name':user_name,'room_num':p_num});
 	});
 
 	/* 서버로부터 데이터 받은 경우 */
@@ -204,9 +204,9 @@ $(document).ready(function() {
 	      spanClassName = 'ballon_span';
 	      break;
 
-	    case 'connect':
-	      divClassName = 'connect';
-	      break;
+	    case 'join':
+	        divClassName = 'join';
+	    break;
 
 	    case 'disconnect':
 	      divClassName = 'disconnect';
