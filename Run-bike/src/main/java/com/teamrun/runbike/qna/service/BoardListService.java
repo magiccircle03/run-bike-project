@@ -58,6 +58,7 @@ public class BoardListService implements BoardService{
 		
 		List<Message> boardList = null;  
 		
+		//데이터를 맵에 저장
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("search", searchParam);
 		params.put("index", index);
@@ -74,6 +75,8 @@ public class BoardListService implements BoardService{
 		int no = totalCnt - index;
 		
 		pagelistdata.setNo(no);
+		
+		pagelistdata.setTotalCount(totalCnt);
 		
 		return pagelistdata;
 

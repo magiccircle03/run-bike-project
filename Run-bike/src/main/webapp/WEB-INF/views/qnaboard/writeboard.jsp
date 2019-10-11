@@ -166,8 +166,6 @@
 	                 	//location.href= 'http://localhost:8080/runbike/qnaboard';
 	                	 location.href= '../qnaboard';
 	                }
-	                	
-	                       
 	                
 	            });
 	  }
