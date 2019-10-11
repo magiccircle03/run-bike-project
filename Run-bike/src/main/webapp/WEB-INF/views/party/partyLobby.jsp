@@ -4,6 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>같이 달리기</title>
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <!-- tmap api -->

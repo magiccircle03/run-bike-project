@@ -5,6 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <!-- 지도, 모델 -->
 <title>같이 달리기</title>
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
@@ -25,14 +26,7 @@
 body{
 	color : #333333;
 }
-.tabWidth{
-	width:33%;
-	text-align: center;
-}
 
-.width30{
-	width: 30%;
-}
 h5{
 	font-weight: bold;
 }
@@ -60,70 +54,68 @@ h5{
 
 <div class="container">
 
+
+<!-- 같이하기 내비게이션 -->
 <ul class="nav nav-pills nav-justified">
-  <li class="nav-item tabWidth">
-    <a class="nav-link active" data-toggle="tab" href="#partyInfoTab">방정보</a>
+  <li class="nav-item">
+    <a class="nav-link" href="<c:url value='/party/${partyInfo.p_num}' />">방정보</a>
   </li>
-  <li class="nav-item tabWidth">
-    <a class="nav-link" data-toggle="tab" href="#curInfoTab">현재정보</a>
+  
+  <li class="nav-item">
+    <a id="curInfoA" class="nav-link active" href="<c:url value='./ing' />">현재정보</a>
   </li>
-  <li class="nav-item tabWidth">
-    <a class="nav-link" data-toggle="tab" href="#chatTab">채팅</a>
+  
+  <li class="nav-item">
+    <a class="nav-link" href="<c:url value='./chat' />">채팅</a>
   </li>
 </ul>
 
-<div class="tab-content">
-  
-  <div class="tab-pane fade show active" id="partyInfoTab">
-  
-    <div id="partyInfo">
-    		<h3>방 정보 수정하기</h3>
-    		<div class="form-group">
-     			<input id="p_num" name="p_num" type="hidden" class="form-control" value="${partyInfo.p_num}">
-    	  		<input id="p_name" name="p_name" type="text" onclick="select()" value="${partyInfo.p_name}" class="form-control marginTop" required="required">
-    	    </div>
-    	    <div id="map_div"></div>
-    	    
-    	    <div class="form-group">
-    	    	<i class="fab fa-font-awesome-flag"></i> <input id="p_start_info" name="p_start_info" type="text" onclick="select()" value="${partyInfo.p_start_info}" class="form-control" style="display: inline-block; width:35%" required><button onclick="searchPoi('S')" class="btn" style="width:7%">검색</button>
-   				<i class="fas fa-flag-checkered"></i> <input id="p_end_info" name="p_end_info" type="text" onclick="select()" value="${partyInfo.p_end_info}" class="form-control" style="display: inline-block; width:35%" required><button onclick="searchPoi('E')" class="btn" style="width:7%">검색</button>
-			  	<button class="btn" onclick="getRouteNew()">경로 선택</button>
-			    <p id="result"></p>
-			    
-			    <input id="p_riding_km" type="number" style="display: none;" readonly="readonly">
-			    <input id="p_riding_time" type="number" style="display: none;" readonly="readonly">
-			  	<textarea id="p_XY" name="p_XY" class="form-control" style="display: none;" readonly="readonly" value="${partyInfo.p_XY}"></textarea>
-			  	
-    	    </div>
-    	
-    	    <div class="form-group">
-    	  		<input id="p_content" name="p_content" type="text" onclick="select()" value="${partyInfo.p_content}" class="form-control marginTop" required="required">
-    	    </div>
-    	    
- 				<div class="form-group">
-			    <label for="p_time">출발 예정 시간</label>
-			    <input id="p_time" name="p_time" type="datetime-local" value="${partyInfo.p_time}" class="form-control" required="required">
-			  </div>
-			  
-			  <div class="form-group">
-			    <label for="p_capacity">최대 인원</label>
-			    <input id="p_capacity" name="p_capacity" type="number" value="${partyInfo.p_capacity}" class="form-control" required="required">
-			  </div>
-			  
-			  <div class="form-group">
-			    <label for="p_password">비밀번호</label>
-			    <input id="p_password" name="p_password" type="text" value="${partyInfo.p_password}" class="form-control">
-			  </div>
-			  
-	    	<br>
+<hr>
+
+   <div>
+  		<h3>방 정보 수정하기</h3>
+  		<div class="form-group">
+   			<input id="p_num" name="p_num" type="hidden" class="form-control" value="${partyInfo.p_num}">
+  	  		<input id="p_name" name="p_name" type="text" onclick="select()" value="${partyInfo.p_name}" class="form-control marginTop" required="required">
+  	    </div>
+  	    <div id="map_div"></div>
+  	    
+  	    <div class="form-group">
+  	    	<i class="fab fa-font-awesome-flag"></i> <input id="p_start_info" name="p_start_info" type="text" onclick="select()" value="${partyInfo.p_start_info}" class="form-control" style="display: inline-block; width:35%" required><button onclick="searchPoi('S')" class="btn" style="width:7%">검색</button>
+ 				<i class="fas fa-flag-checkered"></i> <input id="p_end_info" name="p_end_info" type="text" onclick="select()" value="${partyInfo.p_end_info}" class="form-control" style="display: inline-block; width:35%" required><button onclick="searchPoi('E')" class="btn" style="width:7%">검색</button>
+	  	<button class="btn" onclick="getRouteNew()">경로 선택</button>
+	    <p id="result"></p>
 	    
-			<button class="btn" onclick="editParty()">수정하기</button>
+	    <input id="p_riding_km" type="number" style="display: none;" readonly="readonly">
+	    <input id="p_riding_time" type="number" style="display: none;" readonly="readonly">
+	  	<textarea id="p_XY" name="p_XY" class="form-control" style="display: none;" readonly="readonly" value="${partyInfo.p_XY}"></textarea>
+	  	
+  	    </div>
+  	
+  	    <div class="form-group">
+  	  		<input id="p_content" name="p_content" type="text" onclick="select()" value="${partyInfo.p_content}" class="form-control marginTop" required="required">
+  	    </div>
+  	    
+			<div class="form-group">
+	    <label for="p_time">출발 예정 시간</label>
+	    <input id="p_time" name="p_time" type="datetime-local" value="${partyInfo.p_time}" class="form-control" required="required">
+	  </div>
+	  
+	  <div class="form-group">
+	    <label for="p_capacity">최대 인원</label>
+	    <input id="p_capacity" name="p_capacity" type="number" value="${partyInfo.p_capacity}" class="form-control" required="required">
+	  </div>
+	  
+	  <div class="form-group">
+	    <label for="p_password">비밀번호</label>
+	    <input id="p_password" name="p_password" type="text" value="${partyInfo.p_password}" class="form-control">
+	  </div>
+	  
+   	<br>
+   
+	<button class="btn" onclick="editParty()">수정하기</button>
 
-    </div>
-
-  </div><!-- /partyInfoTab -->
- 
-</div>
+   </div>
 
 </div><!-- 컨테이너 끝 -->
 <!-- 푸터 시작 -->

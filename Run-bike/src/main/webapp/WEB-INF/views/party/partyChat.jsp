@@ -5,6 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <!-- 지도, 모델 -->
 <title>같이 달리기</title>
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
@@ -25,14 +26,16 @@
 body{
 	color : #333333;
 }
-.tabWidth{
-	width:33%;
-	text-align: center;
+
+.StartP{
+	display : inline;
+	color: red;
 }
+
 /* 메인 */
 #main {
   margin: auto;
-  margin-top: 20px;
+  margin-top: 40px;
   border-radius: 5px;
   box-shadow: 5px 5px lightgray;
   background-color: #efefef;
@@ -117,45 +120,39 @@ body{
 
 <div class="container">
 
-<!-- 숨겨진 u_idx -->
-<input id="u_idx" name="u_idx" type="hidden" class="form-control" value="${loginInfo.u_idx}">
-<input id="u_name" name="u_name" type="hidden" class="form-control" value="${loginInfo.u_name}">
-<input id="p_num" name="p_num" type="hidden" class="form-control" value="${partyInfo.p_num}">
+	<!-- 숨겨진 u_idx -->
+	<input id="u_idx" name="u_idx" type="hidden" class="form-control" value="${loginInfo.u_idx}">
+	<input id="u_name" name="u_name" type="hidden" class="form-control" value="${loginInfo.u_name}">
+	<input id="p_num" name="p_num" type="hidden" class="form-control" value="${partyInfo.p_num}">
+	
+	<!-- 같이하기 내비게이션 -->
+	<ul class="nav nav-pills nav-justified">
+	  <li class="nav-item">
+	 	 <a class="nav-link" href="<c:url value='/party/${partyInfo.p_num}' />">방정보</a>
+	  </li>
+	  
+	  <li class="nav-item">
+	    <a id="curInfoA" class="nav-link" href="<c:url value='./ing' />">현재정보</a>
+	  </li>
+	  
+	  <li class="nav-item">
+	    <a class="nav-link active" href="<c:url value='./chat' />">채팅</a>
+	  </li>
+	</ul>
+	
+	<hr>
 
-<!-- 같이하기 내비게이션 -->
-<ul class="nav nav-pills nav-justified">
-
-  <li class="nav-item tabWidth">
- 	 <a class="nav-link" href="<c:url value='/party/${partyInfo.p_num}' />">방정보</a>
-  </li>
-  
-  <li class="nav-item tabWidth">
-    <a id="curInfoA" class="nav-link" href="<c:url value='./ing' />">현재정보</a>
-  </li>
-  
-  <li class="nav-item tabWidth">
-    <a class="nav-link active" href="<c:url value='./chat' />">채팅</a>
-  </li>
-</ul>
-
-<hr>
-
-<div class="tab-content">
-  
-  <div class="tab-pane fade show active">
-	<div id="main">
+	<h3 id="partyTitle" class="marginTop"> [${partyInfo.p_num}] ${partyInfo.p_name} <p id="startStat" class="StartP"></p></h3>
+	<div id="main"> 
       <div id="chat">
         <!-- 채팅 메시지 영역 -->
-      </div>
+      </div><!-- "chat" -->
       <div id="msgArea" class="row">
       	<div class="col-md-10"><input type="text" id="input_msg" class="form-control" placeholder="메시지를 입력해주세요.."></div>
       	<div class="col-md-2"><button id="msg_process" class="btn" onclick="send()">전송</button></div>
-        
-      </div>
-    </div>
-  </div>
-  
-</div>
+      </div><!-- msgArea -->
+      
+   </div>
 
 </div><!-- 컨테이너 끝 -->
 <!-- 푸터 시작 -->
@@ -234,6 +231,7 @@ $(document).ready(function() {
 
 });
 
+/* 라이딩이 진행중인지 체크한다 */
 function chkIsStarted() {
 	//alert(p_num);
 	var chk;
@@ -243,6 +241,11 @@ function chkIsStarted() {
 		async : false,
 		success : function(data) {
 			chk=(data.p_start_time!=null);
+			if(chk){
+				$('#startStat').html(' [ 라이딩 진행중 ]');
+			}else{
+				$('#startStat').html(' [ 대기중 ]');
+			}
 		}
 	});
 	return chk;
@@ -254,15 +257,19 @@ function send() {
 	// 입력되어있는 데이터 가져오기
 	var message = $('#input_msg').val();
 	
-	// 가져왔으니 데이터 빈칸으로 변경
-	$('#input_msg').val('');
-	
-	// 내가 전송할 메시지 클라이언트에게 표시
-	$('#chat').append('<div class="balloon_me"><span class="ballon_span">'+message+'</span></div>');
+	if(message.length>0){
+		// 가져왔으니 데이터 빈칸으로 변경
+		$('#input_msg').val('');
 		
-	// 서버로 message 이벤트 전달 + 데이터와 함께
-	socket.emit('message', {type: 'message', message: message});
+		// 내가 전송할 메시지 클라이언트에게 표시
+		$('#chat').append('<div class="balloon_me"><span class="ballon_span">'+message+'</span></div>');
+			
+		// 서버로 message 이벤트 전달 + 데이터와 함께
+		socket.emit('message', {type: 'message', message: message});
+	}
 }
+
+
 
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>

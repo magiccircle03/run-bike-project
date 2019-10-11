@@ -5,6 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>같이 달리기 : 현재 정보</title>
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <!-- tmap api -->
@@ -42,19 +43,14 @@ body{
 	color: #fefefe;
 	font-weight: bold;
 }
-.tabWidth{
-	width:33%;
-	text-align: center;
-}
+
 .master{
 	display: none;
 }
 .dispalyNone{
 	display: none;
 }
-.width30{
-	width: 30%;
-}
+
 h5{
 	font-weight: bold;
 }
@@ -152,33 +148,30 @@ h5{
 
 <div class="container">
 
-<!-- 숨겨진 u_idx -->
-<input id="u_idx" name="u_idx" type="hidden" class="form-control" value="${loginInfo.u_idx}">
+	<!-- 숨겨진 u_idx -->
+	<input id="u_idx" name="u_idx" type="hidden" class="form-control" value="${loginInfo.u_idx}">
+	
+	<!-- 같이하기 내비게이션 -->
+	<ul class="nav nav-pills nav-justified">
+	  <li class="nav-item">
+	    <a class="nav-link" href="<c:url value='/party/${partyInfo.p_num}' />">방정보</a>
+	  </li>
+	  
+	  <li class="nav-item">
+	    <a id="curInfoA" class="nav-link active" href="<c:url value='./ing' />">현재정보</a>
+	  </li>
+	  
+	  <li class="nav-item">
+	    <a class="nav-link" href="<c:url value='./chat' />">채팅</a>
+	  </li>
+	</ul>
+	
+	<hr>
 
-<!-- 같이하기 내비게이션 -->
-<ul class="nav nav-pills nav-justified">
-  <li class="nav-item tabWidth">
-    <a class="nav-link" href="<c:url value='/party/${partyInfo.p_num}' />">방정보</a>
-  </li>
-  
-  <li class="nav-item tabWidth">
-    <a id="curInfoA" class="nav-link active" href="<c:url value='./ing' />">현재정보</a>
-  </li>
-  
-  <li class="nav-item tabWidth">
-    <a class="nav-link" href="<c:url value='./chat' />">채팅</a>
-  </li>
-</ul>
-
-<hr>
-
-<div class="tab-content">
-  
-  <div class="tab-pane fade show active" id="partyInfoTab">
-  
-  		<!-- 파티 현재 정보 영역 시작-->
+	<div>
+	 	<!-- 파티 현재 정보 영역 시작-->
 	    <div id="partyInfo">
-	    	    <h3 id="partyTitle" class="marginTop"> [${partyInfo.p_num}] ${partyInfo.p_name} <p id="startStat" class="StartP"></p></h3>
+	    	    <h3 id="partyTitle" class="marginTop"> [${partyInfo.p_num}] ${partyInfo.p_name} <span id="startStat" class="StartP"></span></h3>
 	    	    <h4 style="padding:20px 0;"><i class="fas fa-biking blue"></i>&nbsp; 우리가 달리고 있는 길 : ${partyInfo.p_start_info_short} ~ ${partyInfo.p_end_info_short}</h4>
 	    	    <div id="divArea">
 		    	    <div id="map_div">
@@ -201,9 +194,7 @@ h5{
 		   	<button id="endBtnMaster" class="btn width100 btnHeight" onclick="endRidingMaster()" disabled="true">전체 라이딩 종료하기!</button>
 		</div>
 		<!-- /방장만 보이게 영역 -->
-  
 	</div>
-</div>
 
 </div><!-- 컨테이너 끝 -->
 

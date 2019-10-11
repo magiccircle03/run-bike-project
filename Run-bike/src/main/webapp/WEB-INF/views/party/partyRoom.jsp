@@ -5,6 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>같이 달리기 : 방 정보</title>
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <!-- tmap api -->
@@ -38,10 +39,7 @@ body{
 	color: #fefefe;
 	font-weight: bold;
 }
-.tabWidth{
-	width:33%;
-	text-align: center;
-}
+
 .master{
 	display: none;
 }
@@ -51,9 +49,7 @@ body{
 .dispalyBlock{
 	display: block;
 }
-.width30{
-	width: 30%;
-}
+
 h5{
 	font-weight: bold;
 }
@@ -147,26 +143,24 @@ h5{
 
 <!-- 같이하기 내비게이션 -->
 <ul class="nav nav-pills nav-justified">
-  <li class="nav-item tabWidth">
+  <li class="nav-item">
     <a class="nav-link active" href="<c:url value='/party/${partyInfo.p_num}' />">방정보</a>
   </li>
-  <li class="nav-item tabWidth">
+  <li class="nav-item">
     <a id="curInfoA" class="nav-link" href="<c:url value='/party/${partyInfo.p_num}/ing' />">현재정보</a>
   </li>
-  <li class="nav-item tabWidth">
+  <li class="nav-item">
     <a class="nav-link" href="<c:url value='/party/${partyInfo.p_num}/chat' />">채팅</a>
   </li>
 </ul>
 
 <hr>
 
-<div class="tab-content">
-  
-  <div class="tab-pane fade show active" id="partyInfoTab">
-  
+<div>
+
  	<!-- 방의 정보 -->
     <div id="partyInfo" class="font-size-18">
-    	    <h3 id="partyTitle" class="marginTop"> [${partyInfo.p_num}] ${partyInfo.p_name} <p id="startStat" class="StartP"></p></h3>
+    	    <h3 id="partyTitle" class="marginTop"> [${partyInfo.p_num}] ${partyInfo.p_name} <span id="startStat" class="StartP"></span></h3>
     	    <h4 style="padding:20px 0;"><i class="fas fa-fire red"></i>&nbsp; 우리의 목표 경로</h4>
     	    <div id="map_div"></div><!-- 지도 -->
     	    <div class="row">
@@ -213,9 +207,7 @@ h5{
 
     <button class="btn width100 lightgray" onclick="exitPartyFn()">나가기</button> 
 
-  </div><!-- partyInfoTab -->
-  
-</div><!-- tab-content 끝 -->
+</div>
 
 </div><!-- 컨테이너 끝 -->
 
