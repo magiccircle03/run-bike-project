@@ -39,9 +39,6 @@
 	margin-top: 10px;
 	margin-bottom: 10px;
 	}
-	#map_div{
-		height: 400px;
-	}
 }
 
 body{
