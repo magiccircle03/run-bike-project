@@ -45,6 +45,12 @@ body{
   padding: 10px;
 }
 
+@media ( max-width: 768px ){
+	#main{height: 400px;  margin-top: 20px;}
+	#main .btn{margin: 10px 0;}
+	h3{font-size:1.2em;}
+}
+
 /* 채팅 영역 */
 #chat {
   height: 90%;
@@ -143,8 +149,8 @@ body{
 	
 	<hr>
 
-	<h3 id="partyTitle" class="marginTop"> [${partyInfo.p_num}] ${partyInfo.p_name} <p id="startStat" class="StartP"></p></h3>
-	<div id="main"> 
+	<h3 id="partyTitle" class="marginTop"> [${partyInfo.p_num}] ${partyInfo.p_name} <span id="startStat" class="StartP"></span></h3>
+	<div id="main" class="container"> 
       <div id="chat">
         <!-- 채팅 메시지 영역 -->
       </div><!-- "chat" -->

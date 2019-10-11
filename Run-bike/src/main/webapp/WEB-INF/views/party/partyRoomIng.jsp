@@ -21,6 +21,29 @@
 <script src="//cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.4.0/js/bootstrap4-toggle.min.js"></script>
 
 <style type="text/css">
+.title{
+	margin:20px 0;
+}
+.marginTop{
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+#map_div{
+	bottom: 0px;
+	position: relative;
+}
+@media ( max-width: 768px ){
+	h3{font-size:1.2em;}
+	.title{font-size:1.1em;margin:10px 0;}
+	.marginTop{
+	margin-top: 10px;
+	margin-bottom: 10px;
+	}
+	#map_div{
+		height: 400px;
+	}
+}
+
 body{
 	color : #333333;
 }
@@ -80,10 +103,7 @@ h5{
 .fa-times{
 	color: #B84A5B;
 }
-.marginTop{
-	margin-top: 20px;
-	margin-bottom: 20px;
-}
+
 .StartP{
 	display : inline;
 	color: red;
@@ -95,8 +115,7 @@ h5{
 	color: #007BFF;
 }
 .font-size-18{
-	/* font-size: 18px; */
-	font-size: 1.125em;
+	font-size: 1.1em;
 }
 .gray{
 	color: #555555;
@@ -127,10 +146,7 @@ h5{
 .lightgray{
 	color : #bcbcbc;
 }
-#map_div{
-	bottom: 0px;
-	position: relative;
-}
+
 .width100{
 	width: 100%;
 }
@@ -173,7 +189,7 @@ h5{
 	 	<!-- 파티 현재 정보 영역 시작-->
 	    <div id="partyInfo">
 	    	    <h3 id="partyTitle" class="marginTop"> [${partyInfo.p_num}] ${partyInfo.p_name} <span id="startStat" class="StartP"></span></h3>
-	    	    <h4 style="padding:20px 0;"><i class="fas fa-biking blue"></i>&nbsp; 우리가 달리고 있는 길 : ${partyInfo.p_start_info_short} ~ ${partyInfo.p_end_info_short}</h4>
+	    	    <h4 class="title"><i class="fas fa-biking blue"></i>&nbsp; 우리가 달리고 있는 길 : ${partyInfo.p_start_info_short} ~ ${partyInfo.p_end_info_short}</h4>
 	    	    <div id="divArea">
 		    	    <div id="map_div">
 		    	    </div>

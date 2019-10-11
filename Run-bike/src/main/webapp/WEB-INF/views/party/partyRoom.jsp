@@ -21,6 +21,22 @@
 <script src="//cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.4.0/js/bootstrap4-toggle.min.js"></script>
 
 <style type="text/css">
+.title{
+	margin:20px 0;
+}
+.marginTop{
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+@media ( max-width: 768px ){
+	h3{font-size:1.2em;}
+	.title{font-size:1.1em;margin:10px 0;}
+	.marginTop{
+	margin-top: 10px;
+	margin-bottom: 10px;
+	}
+}
+
 body{
 	color : #333333;
 }
@@ -80,10 +96,7 @@ h5{
 .fa-times{
 	color: #B84A5B;
 }
-.marginTop{
-	margin-top: 20px;
-	margin-bottom: 20px;
-}
+
 .StartP{
 	display : inline;
 	color: red;
@@ -95,8 +108,7 @@ h5{
 	color: #007BFF;
 }
 .font-size-18{
-	/* font-size: 18px; */
-	font-size: 1.125em;
+	font-size: 1.1em;
 }
 .gray{
 	color: #555555;
@@ -161,7 +173,7 @@ h5{
  	<!-- 방의 정보 -->
     <div id="partyInfo" class="font-size-18">
     	    <h3 id="partyTitle" class="marginTop"> [${partyInfo.p_num}] ${partyInfo.p_name} <span id="startStat" class="StartP"></span></h3>
-    	    <h4 style="padding:20px 0;"><i class="fas fa-fire red"></i>&nbsp; 우리의 목표 경로</h4>
+    	    <h4 class="title"><i class="fas fa-fire red"></i>&nbsp; 우리의 목표 경로</h4>
     	    <div id="map_div"></div><!-- 지도 -->
     	    <div class="row">
 	    	    <div class="col-md-6"><i class="fab fa-font-awesome-flag gray"></i> 출발지 : ${partyInfo.p_start_info}</div>
