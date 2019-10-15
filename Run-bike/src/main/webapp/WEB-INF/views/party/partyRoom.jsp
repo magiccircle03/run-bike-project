@@ -237,8 +237,8 @@ h5{
 var xy=${partyInfo.p_XY}; // 목표 시작지, 도착지 좌표가 있는 json객체
 var p_num = ${partyInfo.p_num}; // 방 번호
 var u_idx = $('#u_idx').val();// 유저 번호
+var user_name = $('#u_name').val(); // 유저 이름
 var socket = io('http://localhost:3000/room');
-var user_name = $('#u_name').val();
 /* var socket = io('http://54.180.26.199:3000/room'); */
 
 $(document).ready(function() {
@@ -319,6 +319,7 @@ function getUserCount() {
 
 /* 준비 버튼을 누르면, 준비 상태가 변하도록 한다 */
 $('#readyChk').change(function() {
+	
     if($("#readyChk").is(":checked")){
         setReady('Y'); // 레디
     }else{
@@ -329,7 +330,7 @@ $('#readyChk').change(function() {
 
 /* 서버로부터 ready 받은 경우 */
 socket.on('ready_up', function(data) {
-	alert(data.u_idx+' 준비상태변경');
+//	alert(data.u_idx+' 준비상태변경');
 	showPartyUserList();
 	isAllReady();
 });

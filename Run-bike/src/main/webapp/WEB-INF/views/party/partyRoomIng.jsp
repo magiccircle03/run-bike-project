@@ -152,6 +152,26 @@ h5{
 	height: 40px;
 	
 }
+/* #toast{
+	width: 250px; 
+	height: 20px; 
+	height:auto;
+	position: fixed; 
+	left: 50%; 
+	margin-left:-125px; 
+	bottom: 100px; 
+	z-index: 9999; 
+	background-color: #383838; 
+	color: #F0F0F0; 
+	font-family: Calibri; 
+	font-size: 15px; 
+	padding: 10px; 
+	text-align:center; 
+	border-radius: 2px; 
+	-webkit-box-shadow: 0px 0px 24px -1px rgba(56, 56, 56, 1); 
+	-moz-box-shadow: 0px 0px 24px -1px rgba(56, 56, 56, 1); 
+	box-shadow: 0px 0px 24px -1px rgba(56, 56, 56, 1);
+} */
 </style>
 </head>
 <body>
@@ -159,12 +179,13 @@ h5{
 <!-- 해더 시작 -->
 <%@ include file="/WEB-INF/views/frame/header.jsp" %>
 <!-- 해더 끝 -->
-
+<!-- <div id="toast" class="toast" style="display:block">토스트토스트트</div> -->
 <div class="container">
-
+<!-- 	<button onclick="toast()">알림테스트</button> -->
 	<!-- 숨겨진 u_idx -->
 	<input id="u_idx" name="u_idx" type="hidden" class="form-control" value="${loginInfo.u_idx}">
-	
+	<input id="u_name" name="u_name" type="hidden" class="form-control" value="${loginInfo.u_name}">
+
 	<!-- 같이하기 내비게이션 -->
 	<ul class="nav nav-pills nav-justified">
 	  <li class="nav-item">
@@ -216,11 +237,19 @@ h5{
 <%@ include file="/WEB-INF/views/frame/footer.jsp" %>
 <!-- 푸터 끝 -->
 
+<!-- 소켓 -->
+<script src="http://localhost:3000/socket.io/socket.io.js"></script>
+<!-- <script src="http://54.180.26.199:3000/socket.io/socket.io.js"></script> -->
+
 <script>
 
 var xy=${partyInfo.p_XY};
 var p_num = ${partyInfo.p_num};
 var u_idx = $('#u_idx').val();// 아이디 값 세션에서 가져오기. 
+var user_name = $('#u_name').val(); // 유저 이름
+
+var socket = io('http://localhost:3000/rooming');
+/* var socket = io('http://54.180.26.199:3000/rooming'); */
 
 $(document).ready(function() {
 	initTmap(xy);
@@ -229,7 +258,25 @@ $(document).ready(function() {
 	showMasterArea();
 	showEndArea();
 	showCurrentPos();
+	
+	//==========
+	/* 접속 되었을 때 실행 */
+	socket.on('connect', function() {
+		navigator.geolocation.getCurrentPosition(function(pos) {
+		    var latitude = pos.coords.latitude;
+		    var longitude = pos.coords.longitude;	
+		    
+		    /* 서버에 새로운 유저가 왔다고 알림 (join) */
+			socket.emit('join', {'name':user_name,'room_num':p_num,'u_idx':u_idx, 'latitude':latitude, 'longitude':longitude});
+		});
+	});
+	
 });
+
+/* function toast() {
+	// 토스트 
+	$('#toast').fadeIn(400).delay(1000).fadeOut(400);
+} */
 
 /* 직선 거리를 계산하는 함수 */
 function getDistanceCE() {
@@ -279,17 +326,32 @@ function getDistanceCE() {
 
 /* 개인이 라이딩을 종료하는 함수 */
 function endRidingOne(chk){
+	var endmsg='';
 	// 현재 위치가 도착지 좌표 반경 300m 이내면, 완주여주 Y / 아니면 N //중도 포기하겠냐고 물어봄
 	if(chk){
 		updateEnd('Y'); // 완주여부 Y, end여부 Y로 업데이트
+		endmsg = user_name+'님이 완주에 성공하였습니다! 축하해주세요! ٩(*˙︶˙*)۶';
 	}else{
 		if (confirm('아직 도착지에 도착하지 않았습니다. 중도 포기하시겠습니까?')) {
 			updateEnd('N'); // 완주여부 N, end여부 Y로 업데이트
+			endmsg = user_name+'님이 중도 포기하셨습니다.. 너무 힘들어요 _(:3」∠)_';
 		}
 	}
+	socket.emit('end',{'u_idx':u_idx, 'name':user_name,'room_num':p_num, 'endmsg':endmsg});
 	alert('라이딩을 종료하였습니다!');
 	$('#endArea').css('display','none');
 }
+
+/* 서버로부터 end 받은 경우 */
+socket.on('end_up', function(data) {
+	showPartyUserList();
+	isAllEnd();
+});
+
+socket.on('end_up_msg', function(data) {
+	alert(data);
+});
+
 
 /* 라이딩종료 시, 완주 여부와 함께 컬럼 업데이트 */
 function updateEnd(finishYN) {
@@ -555,9 +617,9 @@ function changeMaster(u_idx_t){ // 타겟 유저의 idx를 받는다
 
 /* 회원정보 계속 업데이트( 현재 위치 및 유저정보 바로 반영) */
 var refreshReady = setInterval(function() {
-		showPartyUserList();
+/* 		showPartyUserList();
+		isAllEnd(); */
 		showCurrentPos();
-		isAllEnd();
 }, 1000);
 
 /* 강퇴 */
