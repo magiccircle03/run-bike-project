@@ -130,7 +130,7 @@ socket_rooming.on('connection', function(socket) {
 
     /* 유저에게 전송 */
     socket_rooming.in(socket.room_num).emit('end_up', data);
-    socket.broadcast.to(socket.room_num).emit('end_up_msg', data.endmsg);
+    socket.broadcast.to(socket.room_num).emit('end_up_msg', {'endmsg':data.endmsg, 'does_success':data.does_success});
   });
 
   /* 모두 라이딩 종료 */

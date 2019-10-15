@@ -527,17 +527,6 @@ function deleteParty(){
 	 });
 }
 
-/* 회원 준비 정보 계속 업데이트하는 함수(준비 상태 바로 반영되게) */
-/* var refreshReady = setInterval(function() {
-		showPartyUserList();
-		isAllReady();
-}, 1000);
- */
-/* 회원 준비 정보 그만 업데이트 하는 함수 */
-function stopRefreshReady() {
-	clearInterval(refreshReady);
-}
-
 /* 모두가 준비했는지 체크하는 함수 */
 function isAllReady() {
 	// 준비 N인 사람이 있으면 -> N / 준비 N인 사람 수가 0이면 -> Y 반환
@@ -548,7 +537,6 @@ function isAllReady() {
 			async : false,
 	 		success : function(data) {
 	 			cnt = parseInt(data);
-	 			//alert(cnt);
 	 		}
 	 }); 
 	

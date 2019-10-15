@@ -19,6 +19,10 @@
 
 <link href="//cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.4.0/css/bootstrap4-toggle.min.css" rel="stylesheet">  
 <script src="//cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.4.0/js/bootstrap4-toggle.min.js"></script>
+<!-- Toastr -->
+<link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
+<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    
 
 <style type="text/css">
 .title{
@@ -152,26 +156,7 @@ h5{
 	height: 40px;
 	
 }
-/* #toast{
-	width: 250px; 
-	height: 20px; 
-	height:auto;
-	position: fixed; 
-	left: 50%; 
-	margin-left:-125px; 
-	bottom: 100px; 
-	z-index: 9999; 
-	background-color: #383838; 
-	color: #F0F0F0; 
-	font-family: Calibri; 
-	font-size: 15px; 
-	padding: 10px; 
-	text-align:center; 
-	border-radius: 2px; 
-	-webkit-box-shadow: 0px 0px 24px -1px rgba(56, 56, 56, 1); 
-	-moz-box-shadow: 0px 0px 24px -1px rgba(56, 56, 56, 1); 
-	box-shadow: 0px 0px 24px -1px rgba(56, 56, 56, 1);
-} */
+
 </style>
 </head>
 <body>
@@ -179,9 +164,9 @@ h5{
 <!-- 해더 시작 -->
 <%@ include file="/WEB-INF/views/frame/header.jsp" %>
 <!-- 해더 끝 -->
-<!-- <div id="toast" class="toast" style="display:block">토스트토스트트</div> -->
+<button onclick="toast('warning','dd')">알림테스트</button>
+
 <div class="container">
-<!-- 	<button onclick="toast()">알림테스트</button> -->
 	<!-- 숨겨진 u_idx -->
 	<input id="u_idx" name="u_idx" type="hidden" class="form-control" value="${loginInfo.u_idx}">
 	<input id="u_name" name="u_name" type="hidden" class="form-control" value="${loginInfo.u_name}">
@@ -273,10 +258,7 @@ $(document).ready(function() {
 	
 });
 
-/* function toast() {
-	// 토스트 
-	$('#toast').fadeIn(400).delay(1000).fadeOut(400);
-} */
+
 
 /* 직선 거리를 계산하는 함수 */
 function getDistanceCE() {
@@ -327,18 +309,23 @@ function getDistanceCE() {
 /* 개인이 라이딩을 종료하는 함수 */
 function endRidingOne(chk){
 	var endmsg='';
+	var does_success='';
 	// 현재 위치가 도착지 좌표 반경 300m 이내면, 완주여주 Y / 아니면 N //중도 포기하겠냐고 물어봄
 	if(chk){
+		alert('완주 성공!!');
 		updateEnd('Y'); // 완주여부 Y, end여부 Y로 업데이트
-		endmsg = user_name+'님이 완주에 성공하였습니다! 축하해주세요! ٩(*˙︶˙*)۶';
+		does_success = 'success';
+		endmsg = user_name+'님이 완주에 성공하였습니다! \n축하해주세요! ٩(*˙︶˙*)۶';
 	}else{
 		if (confirm('아직 도착지에 도착하지 않았습니다. 중도 포기하시겠습니까?')) {
+			alert('라이딩을 종료하셨습니다!(중도포기)');
 			updateEnd('N'); // 완주여부 N, end여부 Y로 업데이트
-			endmsg = user_name+'님이 중도 포기하셨습니다.. 너무 힘들어요 _(:3」∠)_';
+			does_success = 'warning';
+			endmsg = user_name+'님이 중도 포기하셨습니다.. \n너무 힘들어요 _(:3」∠)_';
 		}
 	}
-	socket.emit('end',{'u_idx':u_idx, 'name':user_name,'room_num':p_num, 'endmsg':endmsg});
-	alert('라이딩을 종료하였습니다!');
+	socket.emit('end',{'u_idx':u_idx, 'name':user_name,'room_num':p_num, 'endmsg':endmsg, 'does_success':does_success});
+
 	$('#endArea').css('display','none');
 }
 
@@ -349,8 +336,29 @@ socket.on('end_up', function(data) {
 });
 
 socket.on('end_up_msg', function(data) {
-	alert(data);
+	toast(data.does_success,data.endmsg);
 });
+
+function toast(does_success,endmsg) {
+	toastr.options = {
+			  "closeButton": false,
+			  "debug": false,
+			  "newestOnTop": false,
+			  "progressBar": false,
+			  "positionClass": "toast-top-center",
+			  "preventDuplicates": false,
+			  "onclick": null,
+			  "showDuration": "300",
+			  "hideDuration": "1000",
+			  "timeOut": "5000",
+			  "extendedTimeOut": "1000",
+			  "showEasing": "swing",
+			  "hideEasing": "linear",
+			  "showMethod": "fadeIn",
+			  "hideMethod": "fadeOut"
+	};
+    toastr[does_success](endmsg);
+} 
 
 
 /* 라이딩종료 시, 완주 여부와 함께 컬럼 업데이트 */
