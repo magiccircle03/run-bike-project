@@ -165,14 +165,16 @@ body{
 <!-- 푸터 시작 -->
 <%@ include file="/WEB-INF/views/frame/footer.jsp" %>
 <!-- 푸터 끝 -->
+
+<!-- 소켓 -->
 <script src="http://localhost:3000/socket.io/socket.io.js"></script>
 <!-- <script src="http://54.180.26.199:3000/socket.io/socket.io.js"></script> -->
 
 <script type="text/javascript">
 var p_num = $('#p_num').val();
 var user_name = $('#u_name').val();
-var socket = io('http://localhost:3000');
-/* var socket = io('http://54.180.26.199:3000'); */
+var socket = io('http://localhost:3000/chat');
+/* var socket = io('http://54.180.26.199:3000/chat'); */
 
 const $chat = $('#chat'); 
 
@@ -207,7 +209,7 @@ $(document).ready(function() {
 	  var divClassName = '';
 	  var spanClassName='';
 
-	  // 타입에 따라 적용할 클래스를 다르게 지정
+	  // 타입에 따라 적용할 클래스를 다르게 지정 
 	  switch(data.type) {
 	    case 'message':
 	   	  divClassName = 'balloon_other';

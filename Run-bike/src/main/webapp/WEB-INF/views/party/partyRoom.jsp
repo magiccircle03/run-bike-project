@@ -152,6 +152,7 @@ h5{
 
 <!-- 숨겨진 u_idx -->
 <input id="u_idx" name="u_idx" type="hidden" class="form-control" value="${loginInfo.u_idx}">
+<input id="u_name" name="u_name" type="hidden" class="form-control" value="${loginInfo.u_name}">
 
 <!-- 같이하기 내비게이션 -->
 <ul class="nav nav-pills nav-justified">
@@ -227,11 +228,18 @@ h5{
 <%@ include file="/WEB-INF/views/frame/footer.jsp" %>
 <!-- 푸터 끝 -->
 
+<!-- 소켓 -->
+<script src="http://localhost:3000/socket.io/socket.io.js"></script>
+<!-- <script src="http://54.180.26.199:3000/socket.io/socket.io.js"></script> -->
+
 <script>
 
 var xy=${partyInfo.p_XY}; // 목표 시작지, 도착지 좌표가 있는 json객체
 var p_num = ${partyInfo.p_num}; // 방 번호
 var u_idx = $('#u_idx').val();// 유저 번호
+var socket = io('http://localhost:3000/room');
+var user_name = $('#u_name').val();
+/* var socket = io('http://54.180.26.199:3000/room'); */
 
 $(document).ready(function() {
 	var isStarted;
@@ -240,6 +248,7 @@ $(document).ready(function() {
 	showPartyUserList(); // 파티에 속한 유저 정보를 보여준다
 	showMasterArea(); // 방장이면 방장 영역을 보여준다
 	setReady('N'); // 어디 나갔다오면 처음엔 준비 안된 걸로
+	showCurrentPos()// 내 현재위치
 	
 	// 라이딩 진행중이 아닐 땐, 현재정보 페이지로 가는 걸 막는다
 	$("#curInfoA").on("click",function(event){
@@ -248,6 +257,20 @@ $(document).ready(function() {
 			alert('라이딩이 시작되면 볼 수 있습니다!');
 		}
      });	
+	
+	//==========
+	/* 접속 되었을 때 실행 */
+	socket.on('connect', function() {
+		navigator.geolocation.getCurrentPosition(function(pos) {
+		    var latitude = pos.coords.latitude;
+		    var longitude = pos.coords.longitude;	
+		    
+		    /* 서버에 새로운 유저가 왔다고 알림 (join) */
+			socket.emit('join', {'name':user_name,'room_num':p_num,'u_idx':u_idx, 'latitude':latitude, 'longitude':longitude});
+		});
+	});
+	
+	
 	
 });
 
@@ -301,6 +324,14 @@ $('#readyChk').change(function() {
     }else{
         setReady('N'); // 레디 취소
     }
+    socket.emit('ready',{'u_idx':u_idx, 'name':user_name,'room_num':p_num});
+});
+
+/* 서버로부터 ready 받은 경우 */
+socket.on('ready_up', function(data) {
+	alert(data.u_idx+' 준비상태변경');
+	showPartyUserList();
+	isAllReady();
 });
 
 /* readyYN 컬럼 업데이트 함수 */
@@ -496,11 +527,11 @@ function deleteParty(){
 }
 
 /* 회원 준비 정보 계속 업데이트하는 함수(준비 상태 바로 반영되게) */
-var refreshReady = setInterval(function() {
+/* var refreshReady = setInterval(function() {
 		showPartyUserList();
 		isAllReady();
 }, 1000);
-
+ */
 /* 회원 준비 정보 그만 업데이트 하는 함수 */
 function stopRefreshReady() {
 	clearInterval(refreshReady);
@@ -678,6 +709,26 @@ function getRoute(xy) {
             console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
         }
     });
+}
+
+
+/* 내 현재위치 보여주는 함수 */
+function showCurrentPos(){
+	navigator.geolocation.getCurrentPosition(function(pos) {
+	    var latitude = pos.coords.latitude;
+	    var longitude = pos.coords.longitude;
+	    
+		markerLayer = new Tmap.Layer.Markers();//마커 레이어 생성
+		map.addLayer(markerLayer);//map에 마커 레이어 추가
+		   
+		var lonlat = new Tmap.LonLat(longitude, latitude).transform("EPSG:4326", "EPSG:3857");//좌표 설정
+		var size = new Tmap.Size(24, 38);//아이콘 크기 설정
+		var offset = new Tmap.Pixel(-(size.w / 2), -(size.h));//아이콘 중심점 설정
+		var icon = new Tmap.Icon('http://tmapapis.sktelecom.com/upload/tmap/marker/pin_b_m_i.png',size, offset);//마커 아이콘 설정
+		
+		marker = new Tmap.Marker(lonlat, icon);//마커 생성
+		markerLayer.addMarker(marker);//레이어에 마커 추가
+	});
 }
 
 /* 뒤로가기 버튼 비활성화 (나가기를 해야 로비로 갈 수 있게) */
