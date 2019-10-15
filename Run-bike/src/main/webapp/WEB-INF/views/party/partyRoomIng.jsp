@@ -164,7 +164,6 @@ h5{
 <!-- 해더 시작 -->
 <%@ include file="/WEB-INF/views/frame/header.jsp" %>
 <!-- 해더 끝 -->
-<button onclick="toast('warning','dd')">알림테스트</button>
 
 <div class="container">
 	<!-- 숨겨진 u_idx -->
@@ -483,12 +482,12 @@ function showPartyUserList() {
 				
 				if(data[i].pc_endYN=='Y'){
 					if(data[i].pc_finishYN=='Y'){
-						readyStr='<p class="">[★ 완주★] 라이딩 종료!</p>';
+						readyStr='<p class="">[★ 완주 성공!٩(*˙︶˙*)۶ ★] </p>';
 					}else{
-						readyStr='<p class="">중도 포기</p>';
+						readyStr='<p class="">중도 포기_(:3」∠)_</p>';
 					}
 				}else{
-					readyStr='<p class="">열심히 달리는 중...</p>';
+					readyStr='<p class="">열심히 달리는 중...( •̀.•̫́)✧</p>';
 				}
 				
 				
