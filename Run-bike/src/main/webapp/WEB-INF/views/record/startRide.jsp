@@ -13,6 +13,7 @@
 
 <!--제이쿼리-->
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="<c:url value='/JS/jquery.ajax-cross-origin.min.js'/>"></script>
 
 <!-- Bootstrap CSS & JS -->
 <link rel="stylesheet"
@@ -91,14 +92,9 @@ font-family: 'Exo', sans-serif;
 		<hr>
 
 		<div style="margin-bottom: 20px;">
-			<div style="margin-bottom: 4px">
-			<i class="fas fa-flag"> 시작지점</i>
-			<input type="text" id="startPoint" style="word-spacing: -2px; width: 300px; margin-left: 10px" readonly> 
-			</div>
-			
 			<div>
 			<i class="fas fa-flag-checkered"> 도착지점</i>
-			<input type="text" id="endPoint" style="width: 300px; margin-left: 10px" placeholder="예)명동역"> 
+			<input type="text" id="endPoint" style="width: 180px; margin-left: 10px" placeholder="예)명동역"> 
 			<button type="button" id="searchEndPoint" style="margin-top: -3px"  class="btn btn-primary btn-sm" onclick="searchPOIEnd()"><i class="fas fa-search-location"> 검색</i></button>
 			</div>
 		</div>
@@ -231,19 +227,19 @@ font-family: 'Exo', sans-serif;
                 width: '100%', // map의 width 설정
                 height: '400px' // map의 height 설정
             });
-            markerStartPointLayer = new Tmap.Layer.Markers();
-            markerEndPointLayer = new Tmap.Layer.Markers();
-            markersLayer = new Tmap.Layer.Markers();
+            
             DrawLine.vectorLayer2 = new Tmap.Layer.Vector('TmapVectorLayer');
             seoulBikeLayer = new Tmap.Layer.Markers();
             routeLayer = new Tmap.Layer.Vector("route"); // 루트를 표시하는 백터 레이어 생성
-           
+            markerStartPointLayer = new Tmap.Layer.Markers();
+            markerEndPointLayer = new Tmap.Layer.Markers();
+            markersLayer = new Tmap.Layer.Markers();
             
             map.addLayer(markerStartPointLayer);
             map.addLayer(markerEndPointLayer);
-            map.addLayers([DrawLine.vectorLayer2]); // 지도에 백터 레이어 추가
-            map.addLayer(markersLayer);      
+            map.addLayers([DrawLine.vectorLayer2]); // 지도에 백터 레이어 추가           
             map.addLayer(seoulBikeLayer);
+            map.addLayer(markersLayer);  
             
             DrawLine.initData(); // 포인트 데이터 초기화  
             getStartPoint();
@@ -279,8 +275,6 @@ font-family: 'Exo', sans-serif;
                     var startPoint = new Tmap.LonLat(lon, lat).transform(PR_4326, PR_3857);
                     direct.startPoint = startPoint;
 
-                    $('#startPoint').val("나의 위치:  " + reverseGeo(lonlat.lon, lonlat.lat));
-
                 }, function(error) {
                 	alert(error);
                 });
@@ -291,7 +285,7 @@ font-family: 'Exo', sans-serif;
 
         //검색 시에 마커를 찍는 함수입니다.
         function addMarker(options) {
-
+        	
             var size = new Tmap.Size(12, 19); //아이콘 크기입니다.
             var offset = new Tmap.Pixel(-(size.w / 2), -size.h); //아이콘 중심점입니다.
             var icon = new Tmap.Icon("http://tmapapis.sktelecom.com/upload/tmap/marker/pin_b_s_simple.png", size, offset); //마커 아이콘입니다.
@@ -310,39 +304,46 @@ font-family: 'Exo', sans-serif;
                 "<div style='position: relative; padding-top: 5px; display:inline-block'>" +
                 "<div style='display:inline-block; margin-left:5px; vertical-align: top;'>" +
                 "<span style='font-size: 12px; margin-left:2px;'>" +
-                "<input type=\"button\" id=\"endBtn\" onclick=\"setEndPoint(" + lon + "," + lat + ")\"value=\"도착지로 지정\">" +
+                "<button type='button' class='btn btn-primary btn-sm' onclick='setEndPoint(" + lon + "," + lat + ")'>" +
+                "도착지로 지정" +
+                "</button>" +
                 "</span>" +
                 "</div>" +
                 "</div>";
 
-            var popup = new Tmap.Popup("p1", options.lonlat, new Tmap.Size(120, 50), content, true);
-            popup.setBorder("1px solid #8d8d8d"); //popup border 조절
-            popup.autoSize = true; //popup 사이즈 자동 조절		                         
+            var popup = new Tmap.Popup("p1", options.lonlat, new Tmap.Size(250, 68), content, true);
+            popup.setBorder("1px solid #8d8d8d"); //popup border 조절                         
             map.addPopup(popup); //map에 popup 추가
             popup.hide();
 
+            var endLocation; 
+            
             markers.events.register("click", popup, onOverMarker);
-            markers.events.register("touchstart", popup, onOverMarker);
+            markers.events.register("touchstart", endLocation, onTouchMarker);
+            map.events.register("mouseup", popup, onOutMarker);
+            
             //마커를 클릭했을 때 발생하는 이벤트 함수입니다.
             function onOverMarker(evt) {
                 this.show(); //마커를 클릭하였을 때 팝업이 보입니다.
-                options.select = 1;
-
             }
+            //앱에서 실행했을 때의 이벤트 함수
+			function onTouchMarker(){
+				endLocation = confirm(options.name + "\n도착지로 설정하시겠습니까?");
+				if(endLocation == true){
+					setEndPoint(lon, lat);
+				}
+            }    				
 
-            map.events.register("mouseup", popup, onOutMarker);
-            map.events.register("touchstart", popup, onOutMarker);
             //지도를 클릭했을 때 발생하는 이벤트 함수입니다.
             function onOutMarker(evt) {
-                this.hide(); //지도를 클릭하였을 때 팝업이 사라집니다.
-                options.select = 0;
+                this.hide();
             }
-
         }
 
         //데이터 로드가 섬공적으로 완료 되었을 때 발생하는 함수입니다.
         function onCompleteTData(e) {
 
+        	console.log(e);
             markersLayer.clearMarkers();
             markersLayer.setVisibility(true);
 
@@ -353,11 +354,12 @@ font-family: 'Exo', sans-serif;
                     var name = jQuery(this).find("name").text(); //name의 값을 추출 합니다.
                     var lon = jQuery(this).find("frontLon").text(); //lon 값을 추출 합니다.
                     var lat = jQuery(this).find("frontLat").text(); //lat 값을 추출 합니다.
-                    var options = {
-                        name: name, //마커의 라벨 옵션 설정
-                        lonlat: new Tmap.LonLat(lon, lat), //마커의 좌표 옵션 지정
-                    };
-                    addMarker(options); //위에서 만들어 놓은 마커를 등록하는 함수 실행합니다.
+					var options = {
+                            name: name, //마커의 라벨 옵션 설정
+                            lonlat: new Tmap.LonLat(lon, lat), //마커의 좌표 옵션 지정
+                            touched: 0
+                       };
+			         addMarker(options); //위에서 만들어 놓은 마커를 등록하는 함수 실행합니다.
                 });
             }
             map.zoomToExtent(markersLayer.getDataExtent()); //map의 zoom을 마커 레이어의 해상도에 맞게 변경합니다.
@@ -365,7 +367,7 @@ font-family: 'Exo', sans-serif;
 
         /*********************************************endPoint를 direct에 저장하고, endPoint의 Marker를 변경************************************************/
         function setEndPoint(lon, lat) {
-
+        	
             //기존에 등록했던 endPointMarker 삭제
             markerEndPointLayer.clearMarkers();
 
@@ -393,7 +395,7 @@ font-family: 'Exo', sans-serif;
 
         /***********************************************************************EndPoint를 검색하는 함수!!!!!*********************************************************/
         function searchPOIEnd() {
-
+        	
         	$("#customSwitch1").attr("checked", false);
 			
             //기존 endPoint로 지정했던 마커를 삭제한다.
@@ -423,7 +425,7 @@ font-family: 'Exo', sans-serif;
 
         /********************************************티맵 경로찾기***********************************************************/
         function findRoad() {
-
+        	
             routeLayer.setVisibility(true);
             
             var startX = direct.startPoint.lon;
@@ -660,6 +662,7 @@ font-family: 'Exo', sans-serif;
                 	var endNum2 = 2000;
 
                 		$.ajax({
+                			crossOrigin : true,
                             url: "http://openapi.seoul.go.kr:8088/574c4c6e5173757038395565797a4f/json/bikeList/"+startNum+"/"+endNum+"/\"",
                             type: 'GET',
                             success: function(data) {
@@ -684,6 +687,7 @@ font-family: 'Exo', sans-serif;
                     	});
                 		
                 		$.ajax({
+                			crossOrigin : true,
                             url: "http://openapi.seoul.go.kr:8088/574c4c6e5173757038395565797a4f/json/bikeList/"+startNum2+"/"+endNum2+"/\"",
                             type: 'GET',
                             success: function(data) {
