@@ -13,7 +13,7 @@
 
 <!--제이쿼리-->
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-<script src="<c:url value='/js/jquery.ajax-cross-origin.min.js'/>"></script>
+<script src="/js/jquery.ajax-cross-origin.min.js"></script>
 
 <!-- Bootstrap CSS & JS -->
 <link rel="stylesheet"
