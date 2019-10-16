@@ -38,7 +38,7 @@
 
 #stampButtonArea{
 	text-align: center;
-	margin: 10px;
+	margin: 15px 0;
 }
 
 #getStampButton{
@@ -46,8 +46,8 @@
 }
 
 #stampButton{
-	width: 130px;
-	height: 40px;
+	width: 90%;
+	height: 50px;
 }
 </style>
 
@@ -68,16 +68,12 @@
 		<div id="map_div"></div>
 		
 		<br>
-		<div class="row">
+		<div>
 			<c:forEach var="stamp" items="${stampList}" varStatus="status">	
-				<div class="col-4">
 					<div id="stampButtonArea">
-						<button type="button" id="stampButton" class="btn btn-outline-primary" onclick="getStampMarker(${stamp.s_point_lon}, ${stamp.s_point_lat}, ${stamp.s_num})">${stamp.s_name}</button>					
+						<button type="button" id="stampButton" class="btn btn-outline-primary  btn-lg" onclick="getStampMarker(${stamp.s_point_lon}, ${stamp.s_point_lat}, ${stamp.s_num})">${stamp.s_name}</button>					
 					</div>
-				</div>	
-			</c:forEach>
-			
-			
+			</c:forEach>			
 		</div>
 		
 		<div id="getStampButton">

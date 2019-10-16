@@ -13,7 +13,6 @@
 
 <!--제이쿼리-->
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-<script src="<c:url value='/JS/jquery.ajax-cross-origin.min.js'/>"></script>
 
 <!-- Bootstrap CSS & JS -->
 <link rel="stylesheet"
@@ -1167,22 +1166,21 @@ font-family: 'Exo', sans-serif;
 
    		 console.log(":::::거리는 " + realDistance);
    		 
-       	 if(realDistance < 0.00001){
+       	 if(realDistance < 0.0001){ //1km내면 종료
+       		 alert('라이딩 종료!');
+       		 //라이딩 종료
+             stop(); // 타이머 종료
+             stopMyLocation(); //내 위치 받기 종료
+             drowMyRoad(); //내가 이동한 위치 그리기   	
+       		       		
+       	 } else{
        		var askEnd = confirm('목표지점에 도달하지 못했습니다. 종료하시겠습니까?');
 
        		if(askEnd == true){
        			stop(); // 타이머 종료
                 stopMyLocation(); //내 위치 받기 종료
                 drowMyRoad(); //내가 이동한 위치 그리기   	
-       		}
-       		
-       	 } else{
-       		 alert('라이딩 종료!');
-       		 //라이딩 종료
-             stop(); // 타이머 종료
-             stopMyLocation(); //내 위치 받기 종료
-             drowMyRoad(); //내가 이동한 위치 그리기   	
-             
+       		}            
        	 }
        	 
    	 }
