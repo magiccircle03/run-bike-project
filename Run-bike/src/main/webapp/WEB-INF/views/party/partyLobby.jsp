@@ -14,8 +14,12 @@
 <link rel="stylesheet" href="<c:url value='/assets/css/layout.css'/>">
 <script src="<c:url value='/assets/js/layout.js'/>"></script>
 <script src="https://kit.fontawesome.com/8653072c68.js"></script>
-<style type="text/css">
 
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/moonspam/NanumSquare@1.0/nanumsquare.css">
+<style type="text/css">
+.container{
+	font-family: 'NanumSquare', sans-serif;
+}
 .right{
 	text-align: right;
 }

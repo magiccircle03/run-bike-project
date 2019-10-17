@@ -23,8 +23,9 @@
 
 
 <style type="text/css">
-body{
+.container{
 	color : #333333;
+	font-family: 'NanumSquare', sans-serif;
 }
 
 .StartP{

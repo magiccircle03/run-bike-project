@@ -22,9 +22,12 @@
 <!-- Toastr -->
 <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
 <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-    
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/moonspam/NanumSquare@1.0/nanumsquare.css">
 
 <style type="text/css">
+.container{
+	font-family: 'NanumSquare', sans-serif;
+}
 .title{
 	margin:20px 0;
 }
