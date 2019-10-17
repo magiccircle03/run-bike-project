@@ -10,8 +10,6 @@ import com.teamrun.runbike.qna.domain.Message;
 import com.teamrun.runbike.qna.domain.RequestMemberWrite;
 
 
-
-
 @Service("writeService")
 public class BoardWriteService implements BoardService {
 	

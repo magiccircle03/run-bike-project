@@ -20,25 +20,30 @@
 		text-align:center;
 	}
 	
- 	#list{ 
-		width:35%;
-		margin-right:auto;	
-		margin-left:auto;
- 	}
+/*  	#list{  */
+/* 		width:35%; */
+/* 		margin-right:auto;	 */
+/* 		margin-left:auto; */
+/*  	} */
 
 	
 	table {
-		border-collapse: collapse;
-		border: 1;	
+		table-layout:fixed;
+		word-break:break-all;
 	}
 
-	td {
-		padding : 5px 10px;	
-       	height:20px;
-       /*  table-layout:fixed; */
-	}
+/* 	td { */
+/* 		padding : 5px 10px;	 */
+/*        	height:20px; */
+/*        /*  table-layout:fixed; */ */
+/* 	} */
 	
-
+		.container {
+			width:1500px;
+		  margin-right: auto;
+		  margin-left: auto;
+		}
+	
 	#paging{
 
 		width:80px;
@@ -79,17 +84,65 @@
 				
 				
 	<!-- 문의글 전체 리스트, 페이징 포함 --> 
-
+	<div class="table-responsive">
 		<H1> 문의글 리스트</H1>
-		<div style="text-align: center;"><a href="board/writeform">글쓰기</a></div>	    
+<!-- 		<div style="text-align: center;"><a href="board/writeform">글쓰기</a></div>	     -->
 		
-		<article id="list">	
-		<table id="board_all" class="table"></table>
-		</article>
+<div class="container table-responsive">
 		
+		
+		<article id="list">
+		
+		<table id="board_all" class="table table-condensed"></table>
+			
 		<article id="searchBox"></article>
+		
+		</article>
+
+	</div>		
 
 		<article id="paging"> </article>
+		
+				 <!-- Pagination -->
+		    <ul class="pagination justify-content-center">
+		      <li class="page-item">
+		        <a class="page-link" href="#" aria-label="Previous">
+		          <span aria-hidden="true">&laquo;</span>
+		          <span class="sr-only">Previous</span>
+		        </a>
+		      </li>
+		      <li class="page-item">
+		        <a class="page-link" href="#" aria-label="Next">
+		          <span aria-hidden="true">&raquo;</span>
+		          <span class="sr-only">Next</span>
+		        </a>
+		      </li>
+		    </ul>
+		  <!-- /.container -->
+</div>		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
 
 	
 	
@@ -214,27 +267,152 @@
 		});
 		    
 
+	
+	
+	
+	
+	
+	
+// 	 function list(pgNum){
+// 	        console.log($('#stype').val());
+// 	        console.log($('#keyword').val());
+// 	        $.ajax({
+// 	            url : 'http://localhost:8080/runbike/rest/board/list',
+// 	            contentType : 'application/json; charset=utf-8',
+// 	            data : {p : pgNum, searchType : $('#stype').val(), keyword : $('#keyword').val()},
+// 	            dataType : 'json',
+// 	            type : 'GET',
+// 	            success : function(data){
+// 	                var $row = $('.row')[0];
+// 	                var list = data.boardList; 
+// 	                var html = '';
+// 	                if(list.length>0){
+// 	                    for(var i=0;i<list.length;i++){
+							
+// 	                    	var q_num = list[i].q_num;
+// 	                    	var u_idx = list[i].u_idx;
+// 							var q_title = list[i].q_title;
+// 							var q_writer = list[i].q_writer;
+// 							var q_content = list[i].q_content;
+// 							var regdate = list[i].regdate;
+							
+	                    	
+	                    	
+	                    	
+// 	                        html += '<div class="col-lg-12 col-sm-12 portfolio-item">';
+// 	                        html += '<div class="card h-100">';
+// 	                        html += '<div class="card-body">';
+// 	                        html += '<h4 class="card-title">';
+// 	                        html += '<a onclick="detaildata('+q_num+')" style="font-weight:bold;text-decoration:underline;font-size:18px;">'+q_title+'</a>';
+// 	                        html += '</h4>';
+
+// 	                        html += u_idx;
+// 							html += q_writer;
+// 							html += regdate;
+// 	    //                    html += '<button type="button" onclick="writeCmt('+list[i].r_idx+')">리뷰 작성</button>'+'</p>'; 
+// 							if(${loginInfo.u_idx} == u_idx){
+// 				           		html += '<a href="#" onclick="editPreSet('+q_num+')">수정</td>';
+// 				            }else{
+// 				            	html+= '&nbsp;';
+// 				            }												
+// 							if(${loginInfo.u_idx} == u_idx || ${loginInfo.u_id == 'admin'}){
+// 				            	html += '<a href="#" onclick="del('+q_num+')">삭제';
+// 				            }else{
+// 				            	html+= '&nbsp;';
+// 				            }						
+// 								html += '<a href="#" onclick="getreplylist('+q_num+')">답글리스트';						
+// 							if(${loginInfo.u_id == 'admin'}){	
+// 								html += '<a href="#" onclick="replywrite('+q_num+')">답글작성';
+// 							}else{
+// 								html+= '&nbsp;';
+// 							}
+	    
+							
+	    
+// 	                        html += '<div id="getreplylist'+q_num+'">';
+// 	                        html += '</div>';
+// 	                        html += '<div id="writeForm'+q_num+'">';
+// 	                        html += '</div>';
+// 	                        html += '</div>';
+// 	                        html += '</div>';
+// 	                        html += '</div>';
+// 	                    }
+// 	                }
+	                
+	                	                
+	                
+	                
+// 	                html += '<div class="col-lg-12 input-group">';
+// 	                html += '<form id="searchBox" class="input-group-prepend" onsubmit="return false" class="float-lg-right">';
+// 	                html += '<select id="stype" class="custom-select"><option value="q_title">제목</option><option value="q_writer">작성자</option></select>';
+// 	                html += '<input type="text" class="control" name="keyword" id="keyword">';
+// 	                html += '<input type="submit" class="btn btn-primary" value="검색" onclick="list('+pgNum+')">';
+// 	                html += '</form>';
+// 	                html += '</div>';
+	                
+// 	                var paging = '';
+// 	                for(var j=1;j<=data.pageTotalCount;j++){
+// 	                    paging += '<li class="page-item"><a class="page-link" href="#" onclick="list('+j+')">'+j+'</a></li>';
+// 	                }
+// 	                $('.row').html(html);
+	                
+// 	                $('.pagination').html(paging);
+// 	            }
+	            
+// 	        });
+// 	    }
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
   
 
-			
-	  function list(pgNum){
+ function list(pgNum){
 			
 			//alert(num);
-
 			$.ajax({
 				//url : 'http://localhost:8080/runbike/rest/board/list',
 				url : './rest/board/list',
 				type : 'GET',
 				data : {page:pgNum, stype:$('#stype').val(), keyword:$('#keyword').val()},
 				success : function(data){
-
 					
 					
 					var table = $('#board_all');
 					var html = '';
-
 					html +='<thead class>';
-					html +='<tr bgcolor="#81BEF7">';
+					html +='<tr class="table-primary">';
 					html +='<td>글번호</td>';
 					html +='<td>제목</td>';
 					html +='<td>idx</td>';
@@ -294,7 +472,6 @@
 						}
 						
 						
-
 						html +='</tr>';
 						html += '<tr></tr>';
 						html += '<tr>';
@@ -308,12 +485,11 @@
 					}
 						
 					
-						 html+= '</tbody>';
-				     	 table.html(html);
+						 
 				      
 				      
 				      
-					      var searching = '';
+					     // var searching = '';
 					      
 					      
 // 					      searching += '<div class="searchBox">';
@@ -328,34 +504,46 @@
 // 					      searching += '</form>';
 // 					      searching += '</div>';
 					      
+					      html += '<tr>';
+					      html += '<div class="searchBox">';
+					      html += '<form id="searchBox">';
+					      html += '<select name="stype"><option value="q_title">제목</option><option value="q_writer">작성자</option></select>';
+					      html += '<input type="text" name="keyword">';
+					      html += '<input type="submit" value="검색" href="#" onclick="list('+pgNum+')">';
 					      
-					      searching += '<div class="searchBox">';
-					      searching += '<form id="searchBox">';
-					      searching += '<select name="stype"><option value="q_title">제목</option><option value="q_writer">작성자</option></select>';
-					      searching += '<input type="text" name="keyword">';
-	 				      //searching += '<input type="submit" value="검색" href="#" onclick="list('+pgNum+')">';
-	 				      searching += '<input type="submit" value="검색">';
+	 				      //searching += '<input type="submit" value="검색" a href="qnaboard?page='+pgNum+'">';
 	 				      
 	 				     //searching += '<div><input type="submit" value="검색" a href="list?p='+pgNum+'></a></div>';
 	 				     // searching += '<input type="submit" value="검색" a href="list?p='+pgNum+'&stype='+${param.stype}+'&keyword='+${param.keyword}+'">'+pgNum+'</a>';
-					      searching += '</form>';
-					      searching += '</div>';
+					      html += '</form>';
+					      html += '</div>';
+					      html += '</tr>';
 					      
 					      
+					      html+= '</tbody>';
+							 html+= '<hr>';
+					     	 table.html(html);
+					      
+					     
 	
 						var paging = '';
 						
+						paging +='<a class="page-link" href="qnaboard"><span>처음</span></a>';
 						for(var j=1 ; j<data.pageTotalCount+1 ; j++){
 							//paging += '<span class="paging"><a onclick="list('+j+')" >['+j+']</a></span> ';
+							 
+							paging += '<li class="page-item"><a class="page-link" href="#" onclick="list('+j+')">'+j+'</a></li>';
 							//paging += '<div><a href="qnaboard?p='+j+'&stype=stype&keyword=keyword">+'j'+</a></div>';
-							paging += '<div><a href="qnaboard?p='+j+'&stype=${param.stype}&keyword=${param.keyword}">['+j+']</a></div>';
+							//paging += '<div><a onclick="qnaboard?p=list('+j+')&stype=${param.stype}&keyword=${param.keyword}">['+j+']</a></div>';
 						//paging += '<div><a href="qnaboard?p='+j+'" onclick="list('+j+')">['+j+']</a></div>';
 						}
-						//<div><a href="managelist?p=${num}&stype=${param.stype}&keyword=${param.keyword}">${num}</a> </div> 
 						
-						$('#searchBox').html(searching);						
+						//<div><a href="managelist?p=${num}&stype=${param.stype}&keyword=${param.keyword}">${num}</a> </div> 
+						    
+						//$('#searchBox').html(searching);						
 						$('#list').html(html);
-						$('#paging').html(paging);
+						//$('#paging').html(paging);
+						$('.pagination').html(paging);
 										
 					}
 				});
@@ -552,6 +740,7 @@
 			            }
 			        });     
     		}
+ 		    
  		    
 		
 			

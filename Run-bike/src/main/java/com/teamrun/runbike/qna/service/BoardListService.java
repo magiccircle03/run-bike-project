@@ -13,7 +13,6 @@ import com.teamrun.runbike.qna.dao.BoardDaoInterface;
 import com.teamrun.runbike.qna.domain.ListViewBoardData;
 import com.teamrun.runbike.qna.domain.Message;
 import com.teamrun.runbike.qna.domain.SearchParam;
-import com.teamrun.runbike.user.domain.UserInfo;
 
 
 @Service("boardlistService")
