@@ -329,7 +329,7 @@ h3{
                         html += '<br>\n';
                         html += '<i class="fas fa-flag-checkered"> 목적지 &nbsp;&nbsp;</i>' + endPoint;
                         html += '<br>\n';
-                        html += '<i class="fas fa-road"> 코스 길이 &nbsp;&nbsp;</i>' + mc_distance + 'km';
+                        html += '<i class="fas fa-road"> 코스 길이 &nbsp;&nbsp;</i>' + mc_distance + 'm';
                         html += '<br>\n';
                         html += '<i class="fas fa-hourglass-half"> 예상 시간 &nbsp;&nbsp;</i>' + mc_time +'분'; 
                         html += '<br>\n';
