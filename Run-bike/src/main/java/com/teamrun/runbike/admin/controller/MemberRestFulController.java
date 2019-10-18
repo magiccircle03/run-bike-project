@@ -40,7 +40,7 @@ public class MemberRestFulController {
 		  
 		  ResponseEntity<List<UserInfo>> entity = new ResponseEntity<List<UserInfo>>(list,HttpStatus.OK);
 		  
-		  		return entity; 
+		  return entity; 
 	  }
 
 

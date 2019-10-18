@@ -140,7 +140,7 @@ public class RestFulController {
 		
 		
 		
-		int cnt = boardeditService.edit(editRequest, null);
+		int cnt = boardeditService.edit(editRequest);
 
 		return new ResponseEntity<String>(cnt > 0 ? "success" : "fail", HttpStatus.OK);
 

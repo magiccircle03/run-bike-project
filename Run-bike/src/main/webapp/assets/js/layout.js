@@ -15,7 +15,6 @@ $(document).ready(function() {
                   
               }
           });
-          console.log("하이루루루루루");
           
           var path = window.location.pathname;
           
@@ -26,7 +25,8 @@ $(document).ready(function() {
           	case '/runbike/record/startRide':
           		 $('nav a.pt-md-2[href$="/runbike/record/startRide"]').addClass("active");
           		 return;
-          	case '/runbike/party**':
+          	case '/runbike/party':
+          	case '/runbike/party/**':
           		$('nav a.pt-md-2[href$="/runbike/party"]').addClass("active");
           		return;
           	case '/runbike/stamp/getStamp':

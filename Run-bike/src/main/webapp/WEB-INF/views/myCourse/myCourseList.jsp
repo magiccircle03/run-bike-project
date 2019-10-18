@@ -323,10 +323,6 @@ h3{
                         html += '<div class="card-body">\n';
                         html += '<h5 class="card-title">\n';
                         html += mc_name;
-                        html += '<div style="float: right;">'
-                        html += '<i class="far fa-star">&nbsp;</i>'
-                        html += '<i class="fas fa-share-alt-square"></i>';
-                        html += '</div>'
                         html += '</h5>\n';
                         html += '<p class="card-text">\n';
                         html += '<i class="fas fa-flag"> 출발지 &nbsp;&nbsp;</i>'  + startPoint;
@@ -1015,6 +1011,7 @@ h3{
 	        });  
         });
 
+        
     </script>
     
     <!-- 푸터 시작 -->
