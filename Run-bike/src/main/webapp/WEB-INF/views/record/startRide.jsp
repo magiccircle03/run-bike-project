@@ -13,7 +13,6 @@
 
 <!--제이쿼리-->
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-<script src="/js/jquery.ajax-cross-origin.min.js"></script>
 
 <!-- Bootstrap CSS & JS -->
 <link rel="stylesheet"
@@ -654,56 +653,49 @@ font-family: 'Exo', sans-serif;
                 	
                 	direct.endPoint = null; //도착지 지정했던 값 null로 변경
                 	endPointChk=0; //도착지 지정했는지 체크했던 값 변경
-                	
-                	
-                	var startNum = 1;
-                	var endNum = 1000; 
-                	var startNum2 = 1001;
-                	var endNum2 = 2000;
 
                 		$.ajax({
-                			crossOrigin : true,
-                            url: "http://openapi.seoul.go.kr:8088/574c4c6e5173757038395565797a4f/json/bikeList/"+startNum+"/"+endNum+"/\"",
-                            type: 'GET',
+                			url: path + "/seoulBikeFirst",
+                			type: 'GET',
                             success: function(data) {
-                            	var connectStatues = data.rentBikeStatus.RESULT.CODE;
-                            	var rowData = data.rentBikeStatus.row;
+                            	
                             	var lon;
     							var lat;
     							var stationName;
     							var parkingBikeTotCnt;
-                            	for(var i = 0; i < rowData.length; i++){
+                            	
+    							for(var i = 0; i < data.length; i++){
                             		
-                                    lon = rowData[i].stationLongitude;
-                            		lat = rowData[i].stationLatitude;
-                            		stationName = rowData[i].stationName;
-                            		parkingBikeTotCnt = rowData[i].parkingBikeTotCnt
+                                    lon = data[i].stationLongitude;
+                            		lat = data[i].stationLatitude;
+                            		stationName = data[i].stationName;
+                            		parkingBikeTotCnt = data[i].parkingBikeTotCnt;
                             		   		       
                                     seoulBikeAroundMe(lon, lat, stationName, parkingBikeTotCnt);
                                     
                             	} 
-                            	console.log("첫번째 따릉이 정보 정상호출: " +connectStatues);
                             }
                     	});
                 		
                 		$.ajax({
-                			crossOrigin : true,
-                            url: "http://openapi.seoul.go.kr:8088/574c4c6e5173757038395565797a4f/json/bikeList/"+startNum2+"/"+endNum2+"/\"",
+                			url: path + "/seoulBikeSecond",
                             type: 'GET',
                             success: function(data) {
-                                                   	
-                            	var connectStatues = data.rentBikeStatus.RESULT.CODE;
-                            	var rowData = data.rentBikeStatus.row;
+
                             	var lon;
     							var lat;
-                            	for(var i = 0; i < rowData.length; i++){
+    							var stationName;
+    							var parkingBikeTotCnt;
+
+                            	for(var i = 0; i < data.length; i++){
                             		
-                            		lon = rowData[i].stationLongitude;
-                            		lat = rowData[i].stationLatitude;
+                            		lon = data[i].stationLongitude;
+                            		lat = data[i].stationLatitude;
+                            		stationName = data[i].stationName;
+                            		parkingBikeTotCnt = data[i].parkingBikeTotCnt;
                             		                            		
-                            		seoulBikeAroundMe(lon, lat);                                    
+                            		seoulBikeAroundMe(lon, lat, stationName, parkingBikeTotCnt);                                   
                             	} 
-                            	console.log("두번째 따릉이 정보 정상호출: " + connectStatues);
                             }
                     	});
  	
