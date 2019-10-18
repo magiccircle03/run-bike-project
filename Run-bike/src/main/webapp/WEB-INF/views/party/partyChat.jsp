@@ -168,14 +168,17 @@
 <!-- 푸터 끝 -->
 
 <!-- 소켓 -->
-<script src="http://localhost:3000/socket.io/socket.io.js"></script>
-<!-- <script src="http://54.180.26.199:3000/socket.io/socket.io.js"></script> -->
+<!-- <script src="http://localhost:3000/socket.io/socket.io.js"></script> -->
+<!-- <script src="https://13.125.253.7:3000/socket.io/socket.io.js"></script> -->
+<script src="https://socket.runbike.cf/socket.io/socket.io.js"></script>
 
 <script type="text/javascript">
 var p_num = $('#p_num').val();
 var user_name = $('#u_name').val();
-var socket = io('http://localhost:3000/chat');
-/* var socket = io('http://54.180.26.199:3000/chat'); */
+/* var socket = io('http://localhost:3000/chat');  */
+/* var socket = io('https://13.125.253.7:3000/chat'); */
+var socket = io('https://socket.runbike.cf/chat');
+
 
 const $chat = $('#chat'); 
 
