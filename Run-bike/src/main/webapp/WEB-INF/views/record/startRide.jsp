@@ -310,7 +310,7 @@ font-family: 'Exo', sans-serif;
                 "</div>" +
                 "</div>";
 
-            var popup = new Tmap.Popup("p1", options.lonlat, new Tmap.Size(250, 68), content, true);
+            var popup = new Tmap.Popup("p1", options.lonlat, new Tmap.Size(250, 70), content, true);
             popup.setBorder("1px solid #8d8d8d"); //popup border 조절                         
             map.addPopup(popup); //map에 popup 추가
             popup.hide();
@@ -897,8 +897,6 @@ font-family: 'Exo', sans-serif;
 			setTimeout(function() { // 지도를 띄우고 API 를 호출하기 위해 딜레이 줌
                DrawLine.splitPoint(); // 포인트 데이터 나눠서 요청하기 ( LoadApi 한번에 요청 가능한 개수 100개 제한 )
             }, 1000);
-        	
-        	DrawLine.setMapBound(); // 포인트에 따른 지도 바운드 설정
         }
          
         /**
@@ -1089,20 +1087,6 @@ font-family: 'Exo', sans-serif;
                     callback(data);
                 }
             });
-        }
-
-        /**
-         * 좌표가 한눈에 들어오는 바운드 찾기
-         */
-        DrawLine.setMapBound = function() {
-            var bounds = new Tmap.Bounds(); // bounds 인스턴스를 생성합니다.
-            var i;
-
-            for (i = 0; i < DrawLine.arrPoint.length; i += 2) { // 포인트 배열 (resource)의 길이만큼 반복
-                // 좌표변환 후 bounds 확장
-                bounds.extend(new Tmap.LonLat(DrawLine.arrPoint[i], DrawLine.arrPoint[i + 1]).transform("EPSG:4326", "EPSG:3857"));
-            }
-            map.zoomToExtent(bounds); // 매칭후 좌표가 한눈에 들어올 수 있는 지도 중심과 줌레벨 설정
         }
 
         /**
