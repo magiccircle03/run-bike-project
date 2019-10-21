@@ -14,7 +14,7 @@ import com.teamrun.runbike.qna.domain.Message;
 import com.teamrun.runbike.qna.domain.SearchParam;
 
 @Service("boardlistservice")
-public class BoardTestService {
+public class BoardListService2 {
 
 	
 	private BoardDaoInterface dao;
@@ -24,7 +24,7 @@ public class BoardTestService {
 	
 	final int BOARD_LIST = 7;
 	
-	public ListViewTest getTestData(int currentPageNumber,SearchParam searchParam) {
+	public ListViewTest getBoardData(int currentPageNumber,SearchParam searchParam) {
 	
 	dao = template.getMapper(BoardDaoInterface.class);
 	

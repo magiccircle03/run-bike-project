@@ -20,7 +20,7 @@
 		text-align:center;
 	}
 	div#sub{
-		text-align:center;
+		text-align:right;
 	}
 
 	table {
@@ -36,6 +36,11 @@
 
 /* 	} */
 	
+	#searchBox{
+		display: inline-block;
+	}
+	
+	
 	div#pagingBox {	
 		overflow: hidden;
 		/* margin-top:15px; */
@@ -43,18 +48,9 @@
 	}
 	div#pagingBox>div {
 		float: left;
-		width: 30px;
-	
+		width: 30px;	
 	}
 	
-/* 	div.searchBox { */
-/* 		margin : 15px 1000px; */
-/* 		width : 500px; */
-/* 		padding : 15px; */
-
-/* 	} */
-	
-
 
 
 	
@@ -70,19 +66,14 @@
 
 <!-- 컨텐츠 시작 -->
 <div class="container table-responsive table-hover">
-	<h1>게시물 리스트</h1> 
-	<div id="sub"><a class="btn btn-default" href="../board/writeform">글쓰기</a>  
-	<a class="btn btn-default" href="../qnaboard">문의글 관리 및 답글</a>
+	<h1>문의글 리스트</h1> 
+	<div id="sub">
+	<a class="btn btn-outline-primary" href="../board/writeform">글쓰기</a>  
+	<a class="btn btn-primary" href="../qnaboard">문의글 관리 및 답글</a>
 	</div>	
 	<hr>
 	<table class="table table-sm">
 		<tr class="table-primary">
-<!-- 			<td width="40">no</td> -->
-<!-- 			<td width="80">글번호</td> -->
-<!-- 			<td width="300">글제목</td> -->
-<!-- 			<td width="80">작성자</td> -->
-<!-- 			<td width="90">회원번호</td> -->
-<!-- 			<td>작성일자</td> -->
 			<td>no</td>
 			<td>글번호</td>
 			<td>글제목</td>
@@ -103,23 +94,23 @@
 		</tr>
 		</c:forEach>
 		<tr>
-		<td colspan="5">&nbsp;</td>
-		<td>
-		<div class="searchBox">
+		</table>
+		
+		<div class="searchBox float-right">
 		<form>
-			<select name="stype">
+			<select name="stype" style="width:100px;height:29px;">
 				<option value="q_title">글제목</option>
 				<option value="q_writer">글 작성자</option>
 			</select>
-			<input type="text" name="keyword"><input type="submit" value="검색">
+			<input type="text" name="keyword"><br>
+			<input type="submit" class="btn btn-outline-dark float-right" id="searchbtn" value="검색">
 		</form>
 		</div>
-		</td>
 		
-		</tr>
+		<br>
+
 		
-		
-	</table>
+	
 	
 
 

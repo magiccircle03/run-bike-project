@@ -22,7 +22,7 @@
                        from user
                        order by u_idx desc
                ]]> -->
-			select * from user order by u_idx
+			select * from user order by u_idx 
 		</select>
 		
 		
@@ -58,7 +58,7 @@
 
 	<!-- 회원 리스트 : 검색을 위해 동적쿼리 적용 -->
 	<select id="selectList" parameterType="map" resultMap="userInfoMap">
-		select * from user
+		select * from user 
 		<where>
 		
 			<if test="search != null">
@@ -75,6 +75,7 @@
 			</if>
 			
 		</where>	
+		order by u_idx DESC
 		limit #{index}, #{count}
 	</select>
 

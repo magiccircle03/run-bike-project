@@ -27,22 +27,21 @@
 /*  	} */
 
 	
-	table {
-		table-layout:fixed;
-		word-break:break-all;
+/* 	table { */
+/* 		table-layout:fixed; */
+/* 		word-break:break-all; */
+/* 	} */
+	td{
+	white-space: nowrap;	
 	}
 
-/* 	td { */
-/* 		padding : 5px 10px;	 */
-/*        	height:20px; */
-/*        /*  table-layout:fixed; */ */
-/* 	} */
+
 	
-		.container {
-			width:1500px;
-		  margin-right: auto;
-		  margin-left: auto;
-		}
+/* 		.container { */
+/* 			width:1500px; */
+/* 		  margin-right: auto; */
+/* 		  margin-left: auto; */
+/* 		} */
 	
 	#paging{
 
@@ -84,74 +83,43 @@
 				
 				
 	<!-- 문의글 전체 리스트, 페이징 포함 --> 
-	<div class="table-responsive">
-		<H1> 문의글 리스트</H1>
-<!-- 		<div style="text-align: center;"><a href="board/writeform">글쓰기</a></div>	     -->
-		
-<div class="container table-responsive">
-		
-		
-		<article id="list">
-		
-		<table id="board_all" class="table table-condensed"></table>
+		<div class="container table-responsive">
+			<H1> 문의글 리스트</H1>
 			
-		<article id="searchBox"></article>
-		
-		</article>
-
-	</div>		
-
-		<article id="paging"> </article>
-		
-				 <!-- Pagination -->
-		    <ul class="pagination justify-content-center">
-		      <li class="page-item">
-		        <a class="page-link" href="#" aria-label="Previous">
-		          <span aria-hidden="true">&laquo;</span>
-		          <span class="sr-only">Previous</span>
-		        </a>
-		      </li>
-		      <li class="page-item">
-		        <a class="page-link" href="#" aria-label="Next">
-		          <span aria-hidden="true">&raquo;</span>
-		          <span class="sr-only">Next</span>
-		        </a>
-		      </li>
-		    </ul>
-		  <!-- /.container -->
-</div>		  
-		  
-		  
-		  
-		  
-		  
-		  
-		  
-		  
-		  
-		  
-		  
-		  
-		  
-		  
-		  
-		  
-		  
-		  
-		  
-		  
-		  
-		  
-		  
-
+			<div id="list">		
 	
+			<table id="board_all" class="table"></table>			
+			<div id="searchBox"></div>
+			
+			</div>
+		
+			
+	
+			    <ul class="pagination justify-content-center">
+			      <li class="page-item">
+			        <a class="page-link" href="#" aria-label="Previous">
+			          <span aria-hidden="true">&laquo;</span>
+			        </a>
+			      </li>
+			      <li class="page-item">
+			        <a class="page-link" href="#" aria-label="Next">
+			          <span aria-hidden="true">&raquo;</span>
+			        </a>
+			      </li>
+			    </ul>
+
+		</div>  
+		  
+		  
+		  
+
 	
 	
 
       
       
      <!-- 문의글 수정 폼 --> 	
-	<div id="editFrame" style="display: none" >
+	<div id="editFrame" class="container table-responsive" style="display: none" >
 	      <div class="page-header">
 	       <hr>
 	    	 <h3>문의글 수정</h3>
@@ -180,7 +148,7 @@
 			        </tr>
 			        <tr>
 			          	<td>&nbsp;</td>
-			          	<td><input id="editbtn" type="submit" value="수정" onclick="editSubmit();"><button onclick="canceledit('+q_num+')">취소</button></td>
+			          	<td><input id="editbtn" type="submit" class="btn btn-primary" value="수정" onclick="editSubmit();"><button class="btn btn-secondary" onclick="canceledit('+q_num+')">취소</button></td>
 			        </tr>		 
 			    </table>    
 	   		 </form>
@@ -196,10 +164,11 @@
       
       
 	 <!-- 문의글 상세보기 -->
-	 <div id="detailFrame" style="display: none">
+	 <div id="detailFrame" class="container table-responsive" style="display: none">
 		     <div class="page-header">
 		   	 <hr>
 			 	 <h3>문의글 상세보기</h3>
+			 	 <button id="hidebtn" class="btn btn-outline-dark">상세보기 접기</button>
 			 </div>
         	  <hr> 
         	
@@ -225,19 +194,16 @@
 				        </tr>
 				        <tr>
 				            <td id="title"> 내 용</td>
-				            <td><textarea name="q_content" id="dq_content" class="form-control" cols="70" rows="15" readonly ></textarea></td>    
-				            <td>&nbsp;</td>
-				            <td><button id="hidebtn">상세보기 접기</button></td>     				        	
+				            <td><textarea name="q_content" id="dq_content" class="form-control" cols="70" rows="15" readonly ></textarea></td>     				        	
 				        </tr>
 			        
 		    		</table> 
 		    		 
 	    		</div>
 	    		</div>
-    	<!-- 	</div> -->
     		</form>
     </div>
-    		
+  		
 
 
 <!-- 푸터 시작 -->
@@ -267,131 +233,7 @@
 		});
 		    
 
-	
-	
-	
-	
-	
-	
-// 	 function list(pgNum){
-// 	        console.log($('#stype').val());
-// 	        console.log($('#keyword').val());
-// 	        $.ajax({
-// 	            url : 'http://localhost:8080/runbike/rest/board/list',
-// 	            contentType : 'application/json; charset=utf-8',
-// 	            data : {p : pgNum, searchType : $('#stype').val(), keyword : $('#keyword').val()},
-// 	            dataType : 'json',
-// 	            type : 'GET',
-// 	            success : function(data){
-// 	                var $row = $('.row')[0];
-// 	                var list = data.boardList; 
-// 	                var html = '';
-// 	                if(list.length>0){
-// 	                    for(var i=0;i<list.length;i++){
-							
-// 	                    	var q_num = list[i].q_num;
-// 	                    	var u_idx = list[i].u_idx;
-// 							var q_title = list[i].q_title;
-// 							var q_writer = list[i].q_writer;
-// 							var q_content = list[i].q_content;
-// 							var regdate = list[i].regdate;
-							
-	                    	
-	                    	
-	                    	
-// 	                        html += '<div class="col-lg-12 col-sm-12 portfolio-item">';
-// 	                        html += '<div class="card h-100">';
-// 	                        html += '<div class="card-body">';
-// 	                        html += '<h4 class="card-title">';
-// 	                        html += '<a onclick="detaildata('+q_num+')" style="font-weight:bold;text-decoration:underline;font-size:18px;">'+q_title+'</a>';
-// 	                        html += '</h4>';
 
-// 	                        html += u_idx;
-// 							html += q_writer;
-// 							html += regdate;
-// 	    //                    html += '<button type="button" onclick="writeCmt('+list[i].r_idx+')">리뷰 작성</button>'+'</p>'; 
-// 							if(${loginInfo.u_idx} == u_idx){
-// 				           		html += '<a href="#" onclick="editPreSet('+q_num+')">수정</td>';
-// 				            }else{
-// 				            	html+= '&nbsp;';
-// 				            }												
-// 							if(${loginInfo.u_idx} == u_idx || ${loginInfo.u_id == 'admin'}){
-// 				            	html += '<a href="#" onclick="del('+q_num+')">삭제';
-// 				            }else{
-// 				            	html+= '&nbsp;';
-// 				            }						
-// 								html += '<a href="#" onclick="getreplylist('+q_num+')">답글리스트';						
-// 							if(${loginInfo.u_id == 'admin'}){	
-// 								html += '<a href="#" onclick="replywrite('+q_num+')">답글작성';
-// 							}else{
-// 								html+= '&nbsp;';
-// 							}
-	    
-							
-	    
-// 	                        html += '<div id="getreplylist'+q_num+'">';
-// 	                        html += '</div>';
-// 	                        html += '<div id="writeForm'+q_num+'">';
-// 	                        html += '</div>';
-// 	                        html += '</div>';
-// 	                        html += '</div>';
-// 	                        html += '</div>';
-// 	                    }
-// 	                }
-	                
-	                	                
-	                
-	                
-// 	                html += '<div class="col-lg-12 input-group">';
-// 	                html += '<form id="searchBox" class="input-group-prepend" onsubmit="return false" class="float-lg-right">';
-// 	                html += '<select id="stype" class="custom-select"><option value="q_title">제목</option><option value="q_writer">작성자</option></select>';
-// 	                html += '<input type="text" class="control" name="keyword" id="keyword">';
-// 	                html += '<input type="submit" class="btn btn-primary" value="검색" onclick="list('+pgNum+')">';
-// 	                html += '</form>';
-// 	                html += '</div>';
-	                
-// 	                var paging = '';
-// 	                for(var j=1;j<=data.pageTotalCount;j++){
-// 	                    paging += '<li class="page-item"><a class="page-link" href="#" onclick="list('+j+')">'+j+'</a></li>';
-// 	                }
-// 	                $('.row').html(html);
-	                
-// 	                $('.pagination').html(paging);
-// 	            }
-	            
-// 	        });
-// 	    }
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	
@@ -408,10 +250,10 @@
 				data : {page:pgNum, stype:$('#stype').val(), keyword:$('#keyword').val()},
 				success : function(data){
 					
-					
-					var table = $('#board_all');
 					var html = '';
-					html +='<thead class>';
+
+					var table = $('#board_all');
+					html +='<thead class="table">';
 					html +='<tr class="table-primary">';
 					html +='<td>글번호</td>';
 					html +='<td>제목</td>';
@@ -429,11 +271,10 @@
 					html +='</tr>';
 					html +='<hr>';
 					html +='</thead>';
-					
 					html+='<tbody>';
 					var list = data.boardList;    //BoardListService의 boardList
 					for(var i = 0; i < list.length; i++){
-						//console.log(list[i]);
+						
 						
 						var q_num = list[i].q_num;
 						var u_idx = list[i].u_idx;
@@ -455,18 +296,18 @@
 	
 						//td안의 값이 null일때 공백(&nbsp;)입력
 						if(${loginInfo.u_idx} == u_idx){
-			           		html += '<td><a href="#" onclick="editPreSet('+q_num+')">수정</td>';
+			           		html += '<td><a class="btn btn-outline-primary" href="#" onclick="editPreSet('+q_num+')">수정</td>';
 			            }else{
 			            	html+= '<td>&nbsp;</td>';
 			            }												
 						if(${loginInfo.u_idx} == u_idx || ${loginInfo.u_id == 'admin'}){
-			            	html += '<td><a href="#" onclick="del('+q_num+')">삭제</td>';
+			            	html += '<td><a class="btn btn-outline-primary" href="#" onclick="del('+q_num+')">삭제</td>';
 			            }else{
 			            	html+= '<td>&nbsp;</td>';
 			            }						
-							html += '<td><a href="#" onclick="getreplylist('+q_num+')">답글리스트</td>';						
+							html += '<td><a class="btn btn-primary" href="#" onclick="getreplylist('+q_num+')">답글리스트</td>';						
 						if(${loginInfo.u_id == 'admin'}){	
-							html += '<td><a href="#" onclick="replywrite('+q_num+')">답글작성</td>';
+							html += '<td><a class="btn btn-primary" href="#" onclick="replywrite('+q_num+')">답글작성</td>';
 						}else{
 							html+= '<td>&nbsp;</td>';
 						}
@@ -484,44 +325,21 @@
 		                
 					}
 						
-					
-						 
-				      
-				      
-				      
-					     // var searching = '';
-					      
-					      
-// 					      searching += '<div class="searchBox">';
-// 					      searching += '<form id="searchBox" onsubmit="return false">';
-// 					      searching += '<select name="stype"><option value="q_title">제목</option><option value="q_writer">작성자</option></select>';
-// 					      searching += '<input type="text" name="keyword" id="keyword">';
-// 	 				      //searching += '<input type="submit" value="검색" href="#" onclick="list('+pgNum+')">';
-// 	 				      searching += '<input type="submit" value="검색" a href="list('+pgNum+')">';
-	 				      
-// 	 				     //searching += '<div><input type="submit" value="검색" a href="list?p='+pgNum+'></a></div>';
-// 	 				     // searching += '<input type="submit" value="검색" a href="list?p='+pgNum+'&stype='+${param.stype}+'&keyword='+${param.keyword}+'">'+pgNum+'</a>';
-// 					      searching += '</form>';
-// 					      searching += '</div>';
+
 					      
 					      html += '<tr>';
 					      html += '<div class="searchBox">';
 					      html += '<form id="searchBox">';
 					      html += '<select name="stype"><option value="q_title">제목</option><option value="q_writer">작성자</option></select>';
 					      html += '<input type="text" name="keyword">';
-					      html += '<input type="submit" value="검색" href="#" onclick="list('+pgNum+')">';
-					      
-	 				      //searching += '<input type="submit" value="검색" a href="qnaboard?page='+pgNum+'">';
-	 				      
-	 				     //searching += '<div><input type="submit" value="검색" a href="list?p='+pgNum+'></a></div>';
-	 				     // searching += '<input type="submit" value="검색" a href="list?p='+pgNum+'&stype='+${param.stype}+'&keyword='+${param.keyword}+'">'+pgNum+'</a>';
+					      html += '<input type="submit" value="검색" href="#" onclick="list('+pgNum+')">';				
 					      html += '</form>';
 					      html += '</div>';
 					      html += '</tr>';
 					      
 					      
 					      html+= '</tbody>';
-							 html+= '<hr>';
+							 html+= '<hr>';	 
 					     	 table.html(html);
 					      
 					     
@@ -530,21 +348,15 @@
 						
 						paging +='<a class="page-link" href="qnaboard"><span>처음</span></a>';
 						for(var j=1 ; j<data.pageTotalCount+1 ; j++){
-							//paging += '<span class="paging"><a onclick="list('+j+')" >['+j+']</a></span> ';
 							 
 							paging += '<li class="page-item"><a class="page-link" href="#" onclick="list('+j+')">'+j+'</a></li>';
-							//paging += '<div><a href="qnaboard?p='+j+'&stype=stype&keyword=keyword">+'j'+</a></div>';
-							//paging += '<div><a onclick="qnaboard?p=list('+j+')&stype=${param.stype}&keyword=${param.keyword}">['+j+']</a></div>';
-						//paging += '<div><a href="qnaboard?p='+j+'" onclick="list('+j+')">['+j+']</a></div>';
-						}
+
 						
-						//<div><a href="managelist?p=${num}&stype=${param.stype}&keyword=${param.keyword}">${num}</a> </div> 
-						    
-						//$('#searchBox').html(searching);						
+						}
+					
 						$('#list').html(html);
-						//$('#paging').html(paging);
 						$('.pagination').html(paging);
-										
+						
 					}
 				});
 			}
@@ -677,8 +489,8 @@
 			html += '<tr>';
 			html+= '<td>&nbsp;</td>';
 			html+= '<td>&nbsp;</td>';
-			html += '<td><input type="submit" value="작성완료" onclick="submitForm('+q_num+')"></td>';
-			html += '<td><button onclick="cancelwrite('+q_num+')">작성 취소</button></td>';
+			html += '<td><input type="submit" class="btn btn-primary" value="작성완료" onclick="submitForm('+q_num+')"></td>';
+			html += '<td><button class="btn btn-secondary" onclick="cancelwrite('+q_num+')">작성 취소</button></td>';
 			html += '</tr>';
 			html += '</table>';
 			html += '</form>';
@@ -779,13 +591,11 @@
 			                	 html += '</tr>';
 			                	 
 			                	 html += '<tr>';
-			                	 html += '<td id="title" style="font-weight:bold">원글번호</td>';
-			                	 html += '<td>' + data[i].q_num +'</td>';	
-			                	 html += '<td id="title" style="font-weight:bold">답글번호</td>';
-			                	 html += '<td>' + data[i].rp_num +'</td>';	
-	
-			                	 html += '<td><button onclick="delreply('+ data[i].rp_num +')">삭제하기</button></td>';
-			                	 html += '<td><button onclick="hidebox('+data[i].q_num+')">리스트 접기</button></td>';
+// 			                	 html += '<td id="title" style="font-weight:bold">원글번호</td>';
+// 			                	 html += '<td>' + data[i].q_num +'</td>';	
+// 			                	 html += '<td id="title" style="font-weight:bold">답글번호</td>';
+// 			                	 html += '<td>' + data[i].rp_num +'</td>';	
+			                	 html += '<td colspan="4"><button class="btn btn-outline-secondary float-right" onclick="delreply('+ data[i].rp_num +')">삭제하기</button><button class="btn btn-outline-secondary float-right" onclick="hidebox('+data[i].q_num+')">리스트 접기</button></td>';
 			                	 html +='</tr>';
 			                	 html += '</div>';
 			                	 html += '<br>';

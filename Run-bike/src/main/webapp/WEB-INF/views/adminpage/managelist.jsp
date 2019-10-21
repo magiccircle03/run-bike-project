@@ -92,12 +92,12 @@
 			<td>${userInfo.u_verify}</td>
 			<td>${userInfo.u_code}</td>
 			<td>${userInfo.u_sns}</td>	
-			<td style="text-align:center"><a href="#" onclick="del(${userInfo.u_idx})">삭제</a></td>
+			<td style="text-align:center"><a class="btn btn-outline-primary" href="#" onclick="del(${userInfo.u_idx})">삭제</a></td>
 		</tr>
 		</c:forEach>
 			<tr>
 		<td colspan="8">&nbsp;</td>
-		<td>
+		<td colspan="2">
 		<div class="searchBox">
 		<form>
 			<select name="stype">
@@ -105,7 +105,7 @@
 				<option value="id">아이디</option>
 				<option value="name">이름</option>
 			</select>
-			<input type="text" name="keyword"><input type="submit" value="검색">
+			<input type="text" name="keyword"><input type="submit" class="btn btn-outline-dark float-right" value="검색">
 		</form>
 		</div>
 		</td>

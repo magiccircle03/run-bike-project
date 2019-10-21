@@ -17,18 +17,9 @@
 
 
 
-
-
-	#detailFrame{
-		text-align:center;
-		width: 1100px;
- 		margin:auto; 
-		
+	td{
+	white-space: nowrap;
 	}
-	#detailForm{
-		display: inline-block;
-	}
-	
 
 
 
@@ -58,10 +49,10 @@
 
 
 
-<div id="detailFrame" class="table-responsive">
+<div id="detailFrame" class="container table-responsive">
 			<div class="page-header">
 		
-	     	<h1>게시글 상세보기</h1>
+	     	<h1>문의글 상세보기</h1>
 			</div>
 
 	     <!-- 파일 업로드 기능을 구현할 시에는 <form> 태그안에 반드시  enctype="multipart/form-data"를 작성해주어야 하고, 용량이 크기 때문에 method는 반드시 post로 작성해야 합니다. -->
@@ -74,17 +65,17 @@
 	       <table id=detailTable class="table">
 		       
 		       <tr>
-		            <td id="title">글 번호</td>
+		            <td id="title">글번호</td>
 		             <td> <input type="text" name="q_num" id="q_num" class="form-control" value="${detailData.q_num}" readonly/></td>    
 	       		 	<td id="title">작성자</td>
 		             <td> <input type="text" name="q_writer" id="q_writer" class="form-control" value="${detailData.q_writer}" readonly/></td>    
 	       		</tr>
 	       		<tr>
-	       		  	<td id="title">제 목</td>
+	       		  	<td id="title">제목</td>
            			<td> <input type="text" name="q_title" id="q_title" class="form-control" value="${detailData.q_title}" readonly/></td>     
 	       		</tr>
 	       		<tr>
-	       			 <td id="title"> 내 용</td>  
+	       			 <td id="title"> 내용</td>  
 	       			 <td> <textarea name="q_content" id="q_content" class="form-control" cols="70" rows="15" readonly>${detailData.q_content}</textarea></td>
 	       		</tr>
    			 </table>    

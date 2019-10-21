@@ -32,6 +32,10 @@
  		margin:auto;
  	}
 	
+	input[type=submit]{
+		margin:auto;
+		float:center;
+	}
 /* 	div#form-group{ */
 /* 		width:400px; */
 /* 	} */
@@ -59,7 +63,7 @@
 <div id="boardwriteform">
 			<div class="page-header">
 		
-	     	<h1>게시글 작성</h1>
+	     	<h1>문의글 작성</h1>
 			</div>
 			<hr>
 
@@ -90,7 +94,10 @@
 	       		</tr>
 		         <tr>
 				  <td>&nbsp;</td>
-		          <td><input id="writebtn" type="submit" value="등록" onclick="formSubmit();"><input id="canclebtn" type="submit" value="취소" onclick="cancelwrite();"></td>
+		          <td>
+		          <input id="writebtn" type="submit" class="btn btn-primary" value="등록" onclick="formSubmit();">
+		          <input id="canclebtn" type="submit"  class="btn btn-secondary" value="취소" onclick="cancelwrite();">
+		          </td>
 		        </tr>
 	    
    			 </table>    
@@ -179,7 +186,7 @@
 				msg = "작성을 취소하시겠습니까?";
 				if(confirm(msg)!=0){
 					$("#boardwriteform").hide();
-					location.href="../qnaboard";
+					location.href="../board/boardlist";
 				}else{
 					$("#boardwriteform").show();
 				}				
