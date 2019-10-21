@@ -14,10 +14,9 @@ public class ListViewBoardData {
 		//총 페이지 수
 		private int pageTotalCount;
 		
-		
-		
-		
-		
+
+
+
 		public ListViewBoardData() {}
 		
 		

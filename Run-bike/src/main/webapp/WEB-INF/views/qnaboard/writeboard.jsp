@@ -27,11 +27,15 @@
  			margin:auto; 
  	}
 	
-	#writebtn{
+	#writebtn,#canclebtn{
  		width:80px;
  		margin:auto;
  	}
 	
+	input[type=submit]{
+		margin:auto;
+		float:center;
+	}
 /* 	div#form-group{ */
 /* 		width:400px; */
 /* 	} */
@@ -59,7 +63,7 @@
 <div id="boardwriteform">
 			<div class="page-header">
 		
-	     	<h1>게시글 작성</h1>
+	     	<h1>문의글 작성</h1>
 			</div>
 			<hr>
 
@@ -85,12 +89,15 @@
            			<td> <input type="text" name="q_title" id="q_title" class="form-control" placeholder="제목을 입력하세요" required/></td>     
 	       		</tr>
 	       		<tr>
-	       			  <td id="title"> 내 용</td>
-	       			  <td> <textarea name="q_content" id="q_content" class="form-control" cols="70" rows="15" placeholder="내용을 입력하세요" required></textarea></td>
+	       			 <td id="title"> 내 용</td>
+	       			 <td> <textarea name="q_content" id="q_content" class="form-control" cols="70" rows="15" placeholder="내용을 입력하세요" required></textarea></td>
 	       		</tr>
 		         <tr>
 				  <td>&nbsp;</td>
-		          <td><input id="writebtn" type="submit" value="등록" onclick="formSubmit();"></td>
+		          <td>
+		          <input id="writebtn" type="submit" class="btn btn-primary" value="등록" onclick="formSubmit();">
+		          <input id="canclebtn" type="submit"  class="btn btn-secondary" value="취소" onclick="cancelwrite();">
+		          </td>
 		        </tr>
 	    
    			 </table>    
@@ -164,14 +171,28 @@
 
 	                	 alert("글 등록이 완료되었습니다");
 	                 	//location.href= 'http://localhost:8080/runbike/qnaboard';
-	                	 location.href= '../qnaboard';
+	                	 location.href= '../board/boardlist';
 	                }
-	                	
-	                       
 	                
 	            });
 	  }
         
+	  
+	  
+		//답글작성 폼 접기 버튼(확인 or 취소 alert)
+		function cancelwrite(){
+			
+			if($("#boardwriteform:visible")){
+				msg = "작성을 취소하시겠습니까?";
+				if(confirm(msg)!=0){
+					$("#boardwriteform").hide();
+					location.href="../board/boardlist";
+				}else{
+					$("#boardwriteform").show();
+				}				
+			}
+		}
+		
         
 
         

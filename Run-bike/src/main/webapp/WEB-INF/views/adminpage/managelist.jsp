@@ -21,38 +21,34 @@
 	}
 
 	table {
-		border-collapse: collapse;
-		border: 0;	
-		margin: auto;
+		table-layout:fixed;
+		word-break:break-all;
 	}
-	td {
-		padding : 3px 10px;		
-        height:50px;
-   		border: 1px solid #999;
 
-	}
+
 	
 	div#pagingBox {	
 		overflow: hidden;
 		/* margin-top:15px; */
-		margin : 15px 1000px;
+		/* margin : 15px 1000px; */
 	}
 	div#pagingBox>div {
 		float: left;
 		width: 30px;
-		height: 30px;
-		line-height: 30px;
-		text-align: center;
-		border : 1px solid #333;		
-		border-radius:10px;		
-		margin: 0 5px;
+	
 	}
 	
-	div.searchBox {
-		margin : 15px 243px;
-		width : 500px;
-		padding : 15px;
-	}
+/* 	div.searchBox { */
+/* 		margin : 15px 243px; */
+/* 		width : 500px; */
+/* 		padding : 15px; */
+/* 	} */
+
+	.container {
+	width:1000px;
+/*   margin-right: auto; */
+/*   margin-left: auto; */
+}
 	
 
 
@@ -68,11 +64,11 @@
 
 
 <!-- 컨텐츠 시작 -->
-<div id="contents">
+<div class="container table-responsive">
 	<h1>회원 리스트</h1>
 	<hr>
-	<table>
-		<tr bgcolor="#81BEF7">
+	<table class="table table-condensed table-sm">
+		<tr class="table-primary">
 			<td>no</td>
 			<td>회원번호</td>
 			<td>아이디</td>
@@ -82,7 +78,7 @@
 			<td>이메일 인증여부 T/F</td>
 			<td>sns 가입 여부</td>
 			<td>회원 인증 코드</td>
-			<td>회원삭제</td>
+			<td style="text-align:center">회원삭제</td>
 		</tr>
 		
 		<c:forEach items="${viewData.memberList}" var="userInfo" varStatus="stat" >
@@ -96,13 +92,12 @@
 			<td>${userInfo.u_verify}</td>
 			<td>${userInfo.u_code}</td>
 			<td>${userInfo.u_sns}</td>	
-			<td><a href="#" onclick="del(${userInfo.u_idx})">삭제</a></td>
+			<td style="text-align:center"><a class="btn btn-outline-primary" href="#" onclick="del(${userInfo.u_idx})">삭제</a></td>
 		</tr>
 		</c:forEach>
-		
-	</table>
-	
-	
+			<tr>
+		<td colspan="8">&nbsp;</td>
+		<td colspan="2">
 		<div class="searchBox">
 		<form>
 			<select name="stype">
@@ -110,20 +105,43 @@
 				<option value="id">아이디</option>
 				<option value="name">이름</option>
 			</select>
-			<input type="text" name="keyword"> <input type="submit" value="검색">
+			<input type="text" name="keyword"><input type="submit" class="btn btn-outline-dark float-right" value="검색">
 		</form>
 		</div>
-	
-	
-	
-	<c:if test="${viewData.totalCount>0}">
-	<div id="pagingBox">
-		<c:forEach begin="1" end="${viewData.pageTotalCount}" var="num">
-			<div><a href="managelist?p=${num}&stype=${param.stype}&keyword=${param.keyword}">${num}</a> </div> 
-		</c:forEach>
+		</td>
 		
-	</div>
-	</c:if>
+		</tr>
+		
+		
+		
+	</table>
+	
+
+			  
+		      <c:if test="${viewData.pageTotalCount>0}">
+			      	 
+			    <ul class="pagination justify-content-center">
+			      <li>
+			        <a class="page-link" href="managelist?p=1&stype=${param.stype}&keyword=${param.keyword}">
+			          <span>처음</span>
+			        </a>
+			      </li>	    
+			            <div id="pagingBox">
+							<c:forEach begin="1" end="${viewData.pageTotalCount}" var="num">
+								<div><a class="page-link" href="managelist?p=${num}&stype=${param.stype}&keyword=${param.keyword}">${num}</a></div>
+							</c:forEach>
+						</div>
+			      <li>
+			        <a class="page-link" href="managelist?p=${viewData.pageTotalCount}&stype=${param.stype}&keyword=${param.keyword}">
+			          <span>마지막</span>
+			        </a>
+			      </li>
+			    </ul>
+		 	</c:if>
+		 	
+	
+
+	<div style="text-align:center"><a href="../adminpage/managelist">목록으로 돌아가기</a></div>	
 	
 </div>
 

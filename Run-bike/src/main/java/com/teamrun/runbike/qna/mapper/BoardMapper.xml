@@ -119,7 +119,7 @@
 			
 			<select id="selectList" parameterType="map" resultMap="messageResultmap">
 				
-				SELECT * FROM board
+				SELECT * FROM board 
 				
 				<where>
 				
@@ -133,6 +133,7 @@
 					</if>
 					
 				</where>
+				order by q_num DESC
 				limit #{index}, #{count}
 			</select>
 	

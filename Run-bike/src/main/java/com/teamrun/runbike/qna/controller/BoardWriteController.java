@@ -1,6 +1,5 @@
 package com.teamrun.runbike.qna.controller;
 
-import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,11 +28,11 @@ public class BoardWriteController {
 	
 	@RequestMapping(method=RequestMethod.POST)
 	@ResponseBody
-	public String writeboard(RequestMemberWrite regRequest, HttpServletRequest request) {
+	public String writeboard(RequestMemberWrite regRequest) {
 	
 			System.out.println("문의글 작성 컨트롤러:"+regRequest);
 	
-			int cnt = writeboardService.write(request, regRequest);
+			int cnt = writeboardService.write(regRequest);
 	
 			return cnt > 0 ? "SUCCESS" : "FAIL";
 	
