@@ -69,10 +69,10 @@
 	<hr>
 	<table class="table table-condensed table-sm">
 		<tr class="table-primary">
-			<td>no</td>
-			<td>회원번호</td>
-			<td>아이디</td>
-			<td>이름</td>
+			<td style="width:4%">no</td>
+			<td style="width:9%">회원번호</td>
+			<td style="width:20%">아이디</td>
+			<td style="width:9%">이름</td>
 			<td>사진</td>
 			<td>가입일</td>
 			<td>이메일 인증여부 T/F</td>
@@ -84,14 +84,14 @@
 		<c:forEach items="${viewData.memberList}" var="userInfo" varStatus="stat" >
 		<tr>
 			<td>${viewData.no-stat.index}</td>
-			<td>${userInfo.u_idx}</td>
+			<td style="text-align:center">${userInfo.u_idx}</td>
 			<td>${userInfo.u_id}</td>
 			<td>${userInfo.u_name}</td>
 			<td>${userInfo.u_photo}</td>
 			<td>${userInfo.regdate}</td>
-			<td>${userInfo.u_verify}</td>
+			<td style="text-align:center">${userInfo.u_verify}</td>
 			<td>${userInfo.u_code}</td>
-			<td>${userInfo.u_sns}</td>	
+			<td style="text-align:center">${userInfo.u_sns}</td>	
 			<td style="text-align:center"><a class="btn btn-outline-primary" href="#" onclick="del(${userInfo.u_idx})">삭제</a></td>
 		</tr>
 		</c:forEach>

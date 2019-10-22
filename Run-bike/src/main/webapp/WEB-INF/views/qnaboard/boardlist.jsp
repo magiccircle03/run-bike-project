@@ -74,11 +74,11 @@
 	<hr>
 	<table class="table table-sm">
 		<tr class="table-primary">
-			<td>no</td>
-			<td>글번호</td>
-			<td>글제목</td>
-			<td>작성자</td>
-			<td>회원번호</td>
+			<td style="width:8%">no</td>
+			<td style="width:8%">글번호</td>
+			<td style="width:35%">글제목</td>
+			<td style="width:15%">작성자</td>
+			<td style="width:15%">회원번호</td>
 			<td>작성일자</td>
 			
 		</tr>
@@ -115,7 +115,7 @@
 
 
 	
-			  
+			  <div class="pagination float-center">
 		      <c:if test="${boardData.pageTotalCount>0}">
 			      	 
 			    <ul class="pagination justify-content-center">
@@ -136,9 +136,9 @@
 			      </li>
 			    </ul>
 		 	</c:if>
+		 </div>	
 		 	
-		 	
-		<div style="text-align:center"><a href="../board/boardlist">처음목록으로 돌아가기</a></div>	 	
+		<div style="text-align:center"><a href="../board/boardlist">전체목록으로 돌아가기</a></div>	 	
 		 	
 	
 </div>
