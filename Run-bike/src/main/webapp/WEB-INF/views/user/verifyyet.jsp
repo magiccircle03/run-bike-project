@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>이메일 인증</title>
 </head>
 <body>
 	<h1>이메일 인증이 되지 않았습니다. 인증 후 서비스를 이용해주세요.</h1>

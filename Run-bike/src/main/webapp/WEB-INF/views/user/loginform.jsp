@@ -9,13 +9,12 @@
 -->
 <html>
 	<head>
-		<title>Spectral by HTML5 UP</title>
+		<title>RUN BIKE :: LOGIN</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="<c:url value='/assets/css/main.css'/>" />
 		 
 		<style>
-		
 			
 			html,body{
 				font-size: 14px;
@@ -132,7 +131,7 @@
 			    position: absolute;
 			    left: 50%;
 			    top: 10%;
-			    transform: translatex(-50%);
+			    transform: translateX(-50%);
 			    z-index: 500;
 			    background-color: #fff;
 			    border-radius: 8px;
@@ -207,6 +206,15 @@
 			#naver_id_login a{
 				float: right;
 			}
+			
+			@media screen and (max-width: 736px){
+				section#banner{
+					min-height: none;
+					height: 100vh;
+				}
+				
+			}
+			
 			@media screen and (max-width: 767px){
 			    section#modal-register{			
 			        width: 80%;
@@ -280,11 +288,11 @@
 			<script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js" charset="utf-8"></script>
 			<script type="text/javascript">
 				var path = '<c:url value="/"/>';
-				var naver_id_login = new naver_id_login("bGcr_qQ18WcY_tp0AIjX", "http://localhost:8080/runbike/user/login");
+				var naver_id_login = new naver_id_login("bGcr_qQ18WcY_tp0AIjX", "http://localhost:8000/runbike/user/login");
 			  	var state = naver_id_login.getUniqState();
 			  	
-			  	naver_id_login.setButton("green",2, 45);
-			  	naver_id_login.setDomain("http://localhost:8080/runbike/user/login");
+			  	naver_id_login.setButton("green", 2, 45);
+			  	naver_id_login.setDomain("http://localhost:8000/runbike/user/login");
 			  	naver_id_login.setState(state);
 			  	naver_id_login.init_naver_id_login();
 			  	
@@ -349,6 +357,7 @@
 					var path = '<c:url value="/"/>';
 					
 					
+					// 로그인 폼 전송
 					$('#loginForm').submit(function(){
 						
 						var uId = $('#u_id');
@@ -369,7 +378,6 @@
 									} else if(data == 'leave'){
 										alert("이미 탈퇴한 회원입니다.");
 									} else if(data =='admin'){
-										//location.href='http://localhost:8080/runbike/verify/'+data;
 									} else {
 										alert("로그인에 실패했습니다. 아이디 혹은 비밀번호를 확인해주세요.");
 									}
