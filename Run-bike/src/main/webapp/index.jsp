@@ -14,6 +14,34 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="<c:url value='/assets/css/main.css'/>" />
 		<link rel="stylesheet" href="<c:url value='/assets/css/style.css'/>" />
+		<style>
+			body{
+			}
+			section#banner{
+				position: relative;
+				
+			}
+			section#banner #bgVideo{
+				position: fixed;
+				right: 0;
+				bottom: 0;
+				min-width: 100%;
+				min-height: 100%;				
+			}
+			@media screen and (max-width: 736px){
+				section#banner{
+					min-height: none;
+					height: 100vh;
+				}
+				
+			}
+			.inner{
+				position: absolute;
+				left: 50%;
+				top: 50%;
+				transform: translate(-50%,-50%);
+			}
+		</style>
 	</head>
 	<body class="landing is-preload">
 
@@ -25,11 +53,13 @@
 
 				<!-- Banner -->
 					<section id="banner">
+						<video autoplay muted loop id="bgVideo">
+							<source src="<c:url value='assets/video/Bicycles.mp4'/>" type="video/mp4">
+						</video>
 						<div class="inner">
 							<h2>RUNBIKE</h2>
-							<p>Another fine responsive<br />
-							site template freebie<br />
-							crafted by <a href="">HTML5 UP</a></p>
+							<p>Life is like riding a bicycle.<br>
+To keep your balance, <br> you must keep moving.</p>
 							<ul class="actions special">
 							<c:choose>
 								<c:when test="${loginInfo ne null}">
