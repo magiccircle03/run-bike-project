@@ -148,3 +148,41 @@ $RECYCLE.BIN/
 # End of https://www.gitignore.io/api/web,java,windows,eclipse
 
 Run-bike/.settings/
+
+# Directories #
+classes/
+*/target
+*/target/
+target/
+run-bike-client/.gitignore
+run-bike-client/src/views/Home.vue
+run-bike-client/src/views/About.vue
+run-bike-client/src/static/sass/main.scss
+run-bike-client/src/static/sass/_grid.scss
+run-bike-client/src/static/sass/_commons.sass
+run-bike-client/src/static/main.css
+run-bike-client/src/router/index.js
+run-bike-client/src/router.js
+run-bike-client/src/pages/Verify.vue
+run-bike-client/src/pages/MyPage.vue
+run-bike-client/src/pages/Login.vue
+run-bike-client/src/main.js
+run-bike-client/src/components/VerifyYet.vue
+run-bike-client/src/components/VerifyOk.vue
+run-bike-client/src/components/VerifyNo.vue
+run-bike-client/src/components/Record.vue
+run-bike-client/src/components/Header.vue
+run-bike-client/src/components/Footer.vue
+run-bike-client/src/assets/logo.png
+run-bike-client/src/App.vue
+run-bike-client/public/login.html
+run-bike-client/public/index.html
+run-bike-client/public/favicon.ico
+run-bike-client/package.json
+run-bike-client/package-lock.json
+run-bike-client/babel.config.js
+run-bike-client/README.md
+Run-bike/src/main/java/com/teamrun/runbike/user/service/RestLoginService.java
+Run-bike/src/main/java/com/teamrun/runbike/user/controller/RestRegisterController.java
+Run-bike/src/main/java/com/teamrun/runbike/user/controller/RestMyPageController.java
+Run-bike/src/main/java/com/teamrun/runbike/user/controller/RestLoginController.java
