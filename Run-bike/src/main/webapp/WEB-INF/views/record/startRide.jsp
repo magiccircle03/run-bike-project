@@ -1143,7 +1143,7 @@ font-family: 'Exo', sans-serif;
 
    		 console.log(":::::거리는 " + realDistance);
    		 
-       	 if(realDistance < 0.0001){ //1km내면 종료
+       	 if(realDistance < 0.001){ //1km내면 종료
        		 alert('라이딩 종료!');
        		 //라이딩 종료
              stop(); // 타이머 종료
