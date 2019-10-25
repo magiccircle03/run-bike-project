@@ -25,6 +25,7 @@
 		table-layout:fixed;
 		word-break:break-all;
 	}
+
 	
 	#paging{
 		width:80px;
@@ -44,6 +45,7 @@
 	}
 	#hidebtn{
 		height:30px;
+/* 		padding: 3px 10px; */
 	}
 
 
@@ -106,10 +108,10 @@
 	            <input type="hidden" name="u_idx" id="eu_idx" value="${loginInfo.u_idx}">
 	            
 	          		 <!--  <input type="hidden" name="q_num" id="q_num" value="32"> -->
-				<table id=editTable class="table">
+				<table id=editTable>
 					<tr>					
 						<td id="title">글번호</td>
-					  	<td style="width:50%"><input type="text" name="q_num" id="eq_num" class="form-control" readonly /></td>
+					  	<td><input type="text" name="q_num" id="eq_num" class="form-control" readonly /></td>
 			            <td id="title">작성자</td>
 			            <td><input type="text" name="q_writer" id="eq_writer" class="form-control" readonly /></td>
 			        </tr>
@@ -154,10 +156,10 @@
 	            <input type="hidden" name="u_idx" id="u_idx" value="${loginInfo.u_idx}">
 	            <!-- <input type="hidden" name="q_num" id="dq_num"> -->
 	            
-		            <table id=detailTable class="table">
+		            <table id=detailTable>
 						<tr>
 							<td id="title">글번호</td>
-						  	<td style="width:50%"> <input type="text" name="q_num" id="dq_num" class="form-control" readonly /></td>
+						  	<td> <input type="text" name="q_num" id="dq_num" class="form-control" readonly /></td>
 				            <td id="title">작성자</td>
 				            <td><input type="text" name="q_writer" id="dq_writer" class="form-control" readonly /></td>
 				        </tr>
@@ -234,6 +236,7 @@
 					html +='<tr class="table-primary">';
 					html +='<td style="width:8%">글번호</td>';
 					html +='<td style="width:20%">제목</td>';
+// 					html +='<td>idx</td>';
 					html +='<td style="width:10%">작성자</td>';
 					html +='<td style="width:10%">작성일</td>';
 					html +='<td style="width:10%">수정</td>';
@@ -262,6 +265,7 @@
 						html += '<tr>';
 						html += '<td>'+q_num+'</td>';
 						html += '<td><a onclick="detaildata('+q_num+')" style="font-weight:bold;text-decoration:underline;font-size:18px;">'+q_title+'</a></td>';
+// 						html += '<td>'+u_idx+'</td>';
 						html += '<td>'+q_writer+'</td>';
 						html += '<td>'+regdate+'</td>';
 						
@@ -299,6 +303,17 @@
 		                
 					}
 						
+
+					      
+// 					      html += '<tr>';
+// 					      html += '<div class="searchBox">';
+// 					      html += '<form id="searchBox">';
+// 					      html += '<select name="stype"><option value="q_title">제목</option><option value="q_writer">작성자</option></select>';
+// 					      html += '<input type="text" name="keyword">';
+// 					      html += '<input type="submit" value="검색" href="#" onclick="list('+pgNum+')">';				
+// 					      html += '</form>';
+// 					      html += '</div>';
+// 					      html += '</tr>';
 					      
 						  html +='</table>';	 
 					      table.html(html);
@@ -334,6 +349,7 @@
 
 	        disNone();
 	        
+	       // alert($('#eu_idx').val());
 	        
 	        $('#editFrame').css('display', 'block');
 	        
@@ -432,7 +448,7 @@
       	var html = '';
       	
       		html +='<div class="container table-responsive">';
-	        html += '<div id="writeBox'+q_num+'" style="display:block; border:1px solid #bbb">';
+	        html += '<div id="writeBox'+q_num+'" class="row" style="display:block; border:1px solid #bbb">';
 	        html += '<h3>답글작성</h3>';
 	        html += '<form id="replywrite'+q_num+'" onsubmit="return false" method="post">';
 	        html += '<input type="hidden" value="10" id="u_idx" name="u_idx">';         //관리자만 작성가능
@@ -539,7 +555,7 @@
 			                for(var i=0; i<data.length;i++){
 			                	//html += '<div class="card">\n';
 			                	html +='<div class="container table-responsive">';
-			                	 html += '<div id="writeBox'+q_num+'" style="display:block;">';
+			                	 html += '<div id="writeBox'+q_num+'" class="row" style="display:block;">';
 								html +='<table class="table" width="800" border="3" align="center">';
 
 			                	 html += '<tr>';
