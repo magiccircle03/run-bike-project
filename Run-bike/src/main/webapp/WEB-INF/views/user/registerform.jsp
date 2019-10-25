@@ -56,7 +56,7 @@
 					            <div class="row gtr-uniform">
 					                <div class="col-12 col-12-xsmall">
                                         <label for="u_id">아이디(이메일) *필수</label><input type="email" name="u_id" id="u_id" placeholder="example@email.com" />
-                                        <input type="checkbox" id="idChkBox">
+                                        <input type="checkbox" id="idChkBox" style="display: none">
                                         <p id="idChkMsg"></p>
                                         <button type="button" id="idCheck">아이디 중복 체크</button>
                                         
@@ -64,19 +64,19 @@
 					                <div class="col-12 col-11-xsmall">
                                         <label for="u_pw">비밀번호 *필수</label>
 					                    <input type="password" name="u_pw" id="u_pw" placeholder="password" />
-					                    <input type="checkbox" id="pwChkBox">
+					                    <input type="checkbox" id="pwChkBox" style="display: none">
 					                    <p id="pwChkMsg"></p>
 					                </div>
 					                <div class="col-12 col-11-xsmall">
                                         <label for="u_repw">비밀번호 확인 *필수</label>
 					                    <input type="password" id="u_repw" name="u_repw" placeholder="confirm password" />
-					                    <input type="checkbox" id="repwChkBox">
+					                    <input type="checkbox" id="repwChkBox" style="display: none">
 					                    <p id="repwChkMsg"></p>
 					                </div>
 					                <div class="col-12 col-11-xsmall">
                                         <label for="u_name">이름 *필수</label>
 					                    <input type="text" name="u_name" id="u_name" placeholder="name" />
-					                    <input type="checkbox" id="nameChkBox">
+					                    <input type="checkbox" id="nameChkBox" style="display: none">
 					                    <p id="nameChkMsg"></p>
 					                </div>
 					                <div class="col-12 col-11-xsmall">
@@ -203,6 +203,11 @@
 								$('#repwChkMsg').html("");
 								repwChkBox.prop('checked',true);
 							}
+						}  else {
+							bdcRed(e);
+							$('#repwChkMsg').html("비밀번호를 확인해주세요.");
+							$('#repwChkMsg').css('color','red');
+							repwChkBox.prop('checked',false);
 						}
 					});
 					$('#u_name').on('focusout',function(e){
