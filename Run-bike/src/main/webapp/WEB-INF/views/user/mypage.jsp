@@ -253,11 +253,11 @@
 					<div id="user-record">
 						<div class="row col-12 gtr-uniform">
 							<div class="col-12">
-								<div class="card card-record-view"><strong id="totalKM"><span>KM</span></strong><p>라이딩 총 KM</p></div>
+								<div class="card card-record-view"><strong id="totalKM"><span>M</span></strong><p>라이딩 총 거리</p></div>
 							</div>
 							<div class="col-sm-12 col-md-6 col-lg-3"><div class="card card-record-view"><strong id="totalCount"><span>회</span></strong><p>라이딩 총 횟수</p></div></div>
 							<div class="col-sm-12 col-md-6 col-lg-3"><div class="card card-record-view"><strong id="totalTime"><span>분</span></strong><p>라이딩 총 시간</p></div></div>
-							<div class="col-sm-12 col-md-6 col-lg-3"><div class="card card-record-view"><strong id="avgKM"><span>KM</span></strong><p>라이딩 평균 KM</p></div></div> 
+							<div class="col-sm-12 col-md-6 col-lg-3"><div class="card card-record-view"><strong id="avgKM"><span>M</span></strong><p>라이딩 평균 거리</p></div></div> 
 							<div class="col-sm-12 col-md-6 col-lg-3"><div class="card card-record-view"><strong id="avgTime"><span>분</span></strong><p>라이딩 평균 시간</p></div></div> 
 							
 							<div class="row col-12 gtr-uniform mt-4">

@@ -28,13 +28,6 @@ public class OwnBadgeController {
 	public String getUsersBadge(Model model, HttpServletRequest request) {
 		
 		String view = "rewards/myBadge";
-		
-		List<MyBadge> myBadgeList = getService.selectMyBadge(request);
-		
-		model.addAttribute("myBadgeList",myBadgeList);
-		
-		System.out.println(myBadgeList);
-		
 		insertService.insertFirstLoginBadge(request);
 		insertService.insertConsecutiveLoginBadge(request);
 		insertService.insertRidingAloneKmBadge(request);
@@ -42,6 +35,14 @@ public class OwnBadgeController {
 		insertService.insertRidingAloneTimeBadge(request);
 		insertService.insertOwnStampBadge(request);
 		insertService.insertIsMasterBadge(request);
+		
+		List<MyBadge> myBadgeList = getService.selectMyBadge(request);
+		
+		model.addAttribute("myBadgeList",myBadgeList);
+		
+		System.out.println(myBadgeList);
+		
+		
 		return view;
 	}
 
