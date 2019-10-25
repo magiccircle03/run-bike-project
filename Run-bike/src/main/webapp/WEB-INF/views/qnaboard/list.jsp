@@ -108,10 +108,10 @@
 	            <input type="hidden" name="u_idx" id="eu_idx" value="${loginInfo.u_idx}">
 	            
 	          		 <!--  <input type="hidden" name="q_num" id="q_num" value="32"> -->
-				<table id=editTable>
+				<table id=editTable class="table">
 					<tr>					
 						<td id="title">글번호</td>
-					  	<td><input type="text" name="q_num" id="eq_num" class="form-control" readonly /></td>
+					  	<td style="width:50%"><input type="text" name="q_num" id="eq_num" class="form-control" readonly /></td>
 			            <td id="title">작성자</td>
 			            <td><input type="text" name="q_writer" id="eq_writer" class="form-control" readonly /></td>
 			        </tr>
@@ -156,10 +156,10 @@
 	            <input type="hidden" name="u_idx" id="u_idx" value="${loginInfo.u_idx}">
 	            <!-- <input type="hidden" name="q_num" id="dq_num"> -->
 	            
-		            <table id=detailTable>
+		            <table id=detailTable class="table">
 						<tr>
 							<td id="title">글번호</td>
-						  	<td> <input type="text" name="q_num" id="dq_num" class="form-control" readonly /></td>
+						  	<td style="width:50%"> <input type="text" name="q_num" id="dq_num" class="form-control" readonly /></td>
 				            <td id="title">작성자</td>
 				            <td><input type="text" name="q_writer" id="dq_writer" class="form-control" readonly /></td>
 				        </tr>
