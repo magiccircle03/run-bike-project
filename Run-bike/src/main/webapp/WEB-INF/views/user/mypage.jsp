@@ -183,18 +183,18 @@
 									<label class="col-form-label" for="u_name">이름 </label>
 									<input type="text" id="u_name" class="form-control" name="u_name"
 										value="${loginInfo.u_name}">
-										<input type="checkbox" id="nameChkBox">
+										<input type="checkbox" id="nameChkBox" style="display: none">
 					                    <p id="nameChkMsg"></p>
 								</div>
 								<div class="form-group">
 									<label class="col-form-label" for="u_pw">새 비밀번호 </label>
 									<input type="password" id="u_pw" class="form-control" name="u_pw">
-									<input type="checkbox" id="pwChkBox"><p id="pwChkMsg"></p>
+									<input type="checkbox" id="pwChkBox" style="display: none"><p id="pwChkMsg"></p>
 								</div>
 								<div class="form-group">
 									<label class="col-form-label" for="u_repw">새 비밀번호 확인 </label>
 									<input type="password" id="u_repw" class="form-control">
-									<input type="checkbox" id="repwChkBox">
+									<input type="checkbox" id="repwChkBox" style="display: none">
 					                <p id="repwChkMsg"></p>
 								</div>
 								<div class="form-group">
@@ -462,6 +462,10 @@
 						$('#repwChkMsg').html("");
 						repwChkBox.prop('checked',true);
 					}
+				} else {
+					$('#repwChkMsg').html("비밀번호를 확인해주세요.");
+					$('#repwChkMsg').css('color','red');
+					repwChkBox.prop('checked',false);
 				}
 			});
     		
