@@ -12,7 +12,7 @@ import com.teamrun.runbike.qna.domain.Message;
 import com.teamrun.runbike.qna.service.BoardDetailService;
 
 @Controller
-@RequestMapping("/testdetail")
+@RequestMapping("/boarddetail")
 public class DetailController {
 	
 	@Autowired
@@ -27,7 +27,7 @@ public class DetailController {
 	
 	
 	@RequestMapping(value="/{q_num}", method = RequestMethod.GET)
-	public String testDetail(Model model, @PathVariable("q_num") int q_num) {
+	public String boardDetail(Model model, @PathVariable("q_num") int q_num) {
 		//public Message testDetail(int q_num) {
 		
 		Message detailtestInfo = testdetailService.getDetaildata(q_num);
