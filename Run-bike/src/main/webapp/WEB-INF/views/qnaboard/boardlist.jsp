@@ -86,7 +86,7 @@
 		<tr>
 			<td>${boardData.no-stat.index}</td>
 			<td>${boardInfo.q_num}</td>
-			<td><a href="../testdetail/${boardInfo.q_num}">${boardInfo.q_title}</a></td>   <!-- 상세보기 페이지로 이동 -->
+			<td><a href="../boarddetail/${boardInfo.q_num}">${boardInfo.q_title}</a></td>   <!-- 상세보기 페이지로 이동 -->
 			<td>${boardInfo.q_writer}</td>
 			<td>${boardInfo.u_idx}</td>
 			<td>${boardInfo.regdate}</td>
