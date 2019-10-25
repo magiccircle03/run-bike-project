@@ -167,14 +167,14 @@ function del(u_idx){
     if(confirm('정말 삭제하시겠습니까?')){
        $.ajax({
             //url : 'http://localhost:8080/runbike/rest/admin/'+u_idx,
-            url : '../../rest/admin/'+u_idx,
+            url : '../rest/admin/'+u_idx,
             type : 'DELETE',
             success : function(data){
          
                 if(data=='SUCCESS'){
                     alert('삭제가 완료되었습니다');
                    // location.href= 'http://localhost:8080/runbike/adminpage/managelist';
-                    location.href= '../../adminpage/managelist';
+                    location.href= '../adminpage/managelist';
                 }          
             }
         });
