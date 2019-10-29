@@ -277,7 +277,7 @@ $(document).ready(function() {
 	
 });
 
-/* 방에 새로운 유저가 왔을 때 실행*/
+/* 유저 상태에 update가 있을 시 실행*/
 socket.on('update', function(data) {
 	showPartyUserList();
 });
@@ -512,6 +512,7 @@ function changeMaster(u_idx_t){ // 타겟 유저의 idx를 받는다
 	  		success : function(data) {
 	  			alert(data); // 방장 위임 결과를 띄워줌
 	  			showMasterArea();
+	  			showPartyUserList();
 	  		}
 	  	});
 	}
@@ -588,6 +589,7 @@ function ban(idx) {
 	if (confirm('해당 유저를 내보낼까요?')) {
 		exitParty(idx+"");
 		alert('내보냈습니다!');
+		showPartyUserList();
 	}
 }
 
