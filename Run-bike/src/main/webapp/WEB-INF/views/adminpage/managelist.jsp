@@ -19,24 +19,42 @@
 	h1{
 		text-align:center;
 	}
+
 	table {
 		table-layout:fixed;
 		word-break:break-all;
 	}
 
+
+	
 	div#pagingBox {	
 		overflow: hidden;
+		/* margin-top:15px; */
+		/* margin : 15px 1000px; */
 	}
 	div#pagingBox>div {
 		float: left;
 		width: 30px;
+	
 	}
+	
+/* 	div.searchBox { */
+/* 		margin : 15px 243px; */
+/* 		width : 500px; */
+/* 		padding : 15px; */
+/* 	} */
+
 	.container {
 	width:1000px;
-	}
+/*   margin-right: auto; */
+/*   margin-left: auto; */
+}
+	
+
+
+	
 </style>
 </head>
-
 <body>
 
 <!-- 해더 시작 -->
