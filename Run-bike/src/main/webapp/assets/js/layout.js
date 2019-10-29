@@ -54,7 +54,8 @@ $(document).ready(function() {
           		$('nav a.pt-md-2[href$="/runbike/adminpage/managelist"]').addClass("active");
           		$('.page-select-name').html('회원관리');
           		return;
-          		
+          	case '/runbike/user/mypage':
+          		$('.page-select-name').html('마이페이지');
           }
           
           
