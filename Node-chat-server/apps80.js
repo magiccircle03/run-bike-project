@@ -88,7 +88,14 @@ socket_room.on('connection', function(socket) {
   });
 
   /* 시작하면 업뎃 */
+  socket.on('start', function(data) {
 
+    console.log('['+socket.room_num+'] 번 방 라이딩이 시작되었습니다.');
+
+    /* 유저에게 전송 */
+    socket_room.in(socket.room_num).emit('start_up', data);
+
+  });
 
   /* 접속 종료 */
   socket.on('disconnect', function() {
@@ -134,7 +141,14 @@ socket_rooming.on('connection', function(socket) {
   });
 
   /* 모두 라이딩 종료 */
-  
+  socket.on('all_end', function(data) {
+
+    console.log('['+socket.room_num+'] 번 방 라이딩이 종료되었습니다.');
+
+    /* 유저에게 전송 */
+    socket_rooming.in(socket.room_num).emit('all_end_up', data);
+   /* socket.broadcast.to(socket.room_num).emit('all_end_up_msg', {'allendmsg':'라이딩을 종료합니다! 모두 수고하셨습니다!٩(*˙︶˙*)۶'});*/
+  });
 
   /* 접속 종료 */
   socket.on('disconnect', function() {

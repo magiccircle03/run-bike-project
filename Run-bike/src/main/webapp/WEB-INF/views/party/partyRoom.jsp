@@ -233,20 +233,20 @@ h5{
 <!-- 푸터 끝 -->
 
 <!-- 소켓 -->
-<script src="http://localhost:3000/socket.io/socket.io.js"></script>
+<!-- <script src="http://localhost:3000/socket.io/socket.io.js"></script> -->
 <!-- <script src="https://13.125.253.7:3000/socket.io/socket.io.js"></script> -->
-<!-- <script src="https://socket.runbike.cf/socket.io/socket.io.js"></script>
- -->
+<script src="https://socket.runbike.cf/socket.io/socket.io.js"></script>
+
 <script>
 
 var xy=${partyInfo.p_XY}; // 목표 시작지, 도착지 좌표가 있는 json객체
 var p_num = ${partyInfo.p_num}; // 방 번호
 var u_idx = $('#u_idx').val();// 유저 번호
 var user_name = $('#u_name').val(); // 유저 이름
- var socket = io('http://localhost:3000/room');  
+/*  var socket = io('http://localhost:3000/room');   */
 /* var socket = io('https://13.125.253.7:3000/room'); */
-/* var socket = io('https://socket.runbike.cf/room');
- */
+var socket = io('https://socket.runbike.cf/room');
+
 $(document).ready(function() {
 	var isStarted;
 	initTmap(xy); // 맵을 초기화한다

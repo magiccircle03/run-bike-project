@@ -225,9 +225,9 @@ h5{
 <!-- 푸터 끝 -->
 
 <!-- 소켓 -->
-<script src="http://localhost:3000/socket.io/socket.io.js"></script>
+<!-- <script src="http://localhost:3000/socket.io/socket.io.js"></script> -->
 <!-- <script src="https://13.125.253.7:3000/socket.io/socket.io.js"></script> -->
-<!-- <script src="https://socket.runbike.cf/socket.io/socket.io.js"></script> -->
+<script src="https://socket.runbike.cf/socket.io/socket.io.js"></script>
 
 <script>
 
@@ -236,11 +236,11 @@ var p_num = ${partyInfo.p_num};
 var u_idx = $('#u_idx').val();// 아이디 값 세션에서 가져오기. 
 var user_name = $('#u_name').val(); // 유저 이름
 
-var socket = io('http://localhost:3000/rooming');  
+/* var socket = io('http://localhost:3000/rooming');   */
 /* var socket = io('https://13.125.253.7:3000/rooming'); */
 /* var socket = io('https://13.209.72.95/rooming'); */
-/* var socket = io('https://socket.runbike.cf/rooming');
- */
+var socket = io('https://socket.runbike.cf/rooming');
+
 $(document).ready(function() {
 	initTmap(xy);
 	chkIsStarted();
