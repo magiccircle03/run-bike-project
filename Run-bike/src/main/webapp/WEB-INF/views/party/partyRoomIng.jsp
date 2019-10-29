@@ -236,7 +236,7 @@ var p_num = ${partyInfo.p_num};
 var u_idx = $('#u_idx').val();// 아이디 값 세션에서 가져오기. 
 var user_name = $('#u_name').val(); // 유저 이름
 
-/* var socket = io('http://localhost:3000/rooming');  */
+/* var socket = io('http://localhost:3000/rooming');   */
 /* var socket = io('https://13.125.253.7:3000/rooming'); */
 /* var socket = io('https://13.209.72.95/rooming'); */
 var socket = io('https://socket.runbike.cf/rooming');
@@ -248,7 +248,7 @@ $(document).ready(function() {
 	showMasterArea();
 	showEndArea();
 	showCurrentPos();
-	
+	isAllEnd();
 	//==========
 	/* 접속 되었을 때 실행 */
 	socket.on('connect', function() {
@@ -344,6 +344,8 @@ socket.on('end_up_msg', function(data) {
 	toast(data.does_success,data.endmsg);
 });
 
+
+
 function toast(does_success,endmsg) {
 	toastr.options = {
 			  "closeButton": false,
@@ -393,15 +395,21 @@ function endRidingMaster(){
 	 		}),
 	 		contentType : 'application/json; charset=utf-8',
 	 		success : function() {
-	 			endRidingGreet();
+			    /* 전체 종료 */
+				socket.emit('all_end', {'room_num':p_num});
+	 			/* endRidingGreet(); */
 	 		}
 	 	}); 
 	}
 }
+/* 서버로부터 all_end_up 받은 경우(모든 라이딩이 끝난 경우) */
+socket.on('all_end_up', function() {
+	endRidingGreet();
+});
 
 /* 종료인사와 보내주기 */
 function endRidingGreet() {
-	alert('종료합니다! 수고하셨습니다!');
+	alert('라이딩을 종료합니다! 모두 수고하셨습니다!٩(*˙︶˙*)۶');
 	location.href="../../party";
 }
 

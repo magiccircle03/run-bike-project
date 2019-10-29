@@ -243,7 +243,7 @@ var xy=${partyInfo.p_XY}; // 목표 시작지, 도착지 좌표가 있는 json�
 var p_num = ${partyInfo.p_num}; // 방 번호
 var u_idx = $('#u_idx').val();// 유저 번호
 var user_name = $('#u_name').val(); // 유저 이름
-/* var socket = io('http://localhost:3000/room');  */
+/*  var socket = io('http://localhost:3000/room');   */
 /* var socket = io('https://13.125.253.7:3000/room'); */
 var socket = io('https://socket.runbike.cf/room');
 
@@ -331,14 +331,15 @@ $('#readyChk').change(function() {
     }else{
         setReady('N'); // 레디 취소
     }
+    isAllReady();
     socket.emit('ready',{'u_idx':u_idx, 'name':user_name,'room_num':p_num});
 });
 
 /* 서버로부터 ready 받은 경우 */
 socket.on('ready_up', function(data) {
 //	alert(data.u_idx+' 준비상태변경');
-	showPartyUserList();
 	isAllReady();
+	showPartyUserList();
 });
 
 /* readyYN 컬럼 업데이트 함수 */
@@ -564,14 +565,21 @@ function startRiding() {
 		 		url : '../party/'+p_num+'/start',
 		  		type : 'get',
 		 		success : function() {
-		 			location.href="./"+p_num+"/ing";
+				    /* 시작 */
+					socket.emit('start', {'room_num':p_num});
+		 			/* location.href="./"+p_num+"/ing"; */
 		 		}
 		 }); 
 	}else{
 		alert('2명 이상일때 시작 가능합니다!');
-	}
-	
+	}	
 }
+
+/* 시작되었을 때 실행 */
+socket.on('start_up', function() {
+	/* 진행중 페이지로 감 */
+	location.href="./"+p_num+"/ing";
+});
 
 /* 회원 강퇴 */
 function ban(idx) {
