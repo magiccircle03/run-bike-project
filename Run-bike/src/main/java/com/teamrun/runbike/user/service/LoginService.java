@@ -36,22 +36,26 @@ public class LoginService implements UserService {
 		dao = template.getMapper(UserDao.class);
 		
 		
-		userInfo = dao.selectUserById(u_id);
-		System.out.println("userInfo : "+userInfo);
 		
+		userInfo = dao.selectUserById(u_id);
+		System.out.println(userInfo.getU_id());
+		System.out.println(userInfo.getU_name());
+		System.out.println("userInfo : "+userInfo);
 		if(userInfo !=null && userInfo.checkPW(u_pw)) {
 			isLeave = dao.selectLeaveById(u_id);	
 			if(isLeave) {
 				loginChk=3;
 			} else {
 				if(userInfo.isU_verify()) {
-					LoginInfo loginInfo = userInfo.toLoginInfo();
-					request.getSession(true).setAttribute("loginInfo",loginInfo);
-					if(userInfo.getU_name() == "admin") {
+					if(userInfo.getU_id().equals("admin") || userInfo.getU_name().equals("관리자")) {
+						System.out.println("관리자 로그인???");
 						loginChk = 4;
 					} else {
+						System.out.println("일반로그인?????");
 						loginChk = 2;
 					}
+					LoginInfo loginInfo = userInfo.toLoginInfo();
+					request.getSession(true).setAttribute("loginInfo",loginInfo);
 					dateService.saveDate(userInfo.getU_idx());
 				} else {
 					loginChk = 1;
