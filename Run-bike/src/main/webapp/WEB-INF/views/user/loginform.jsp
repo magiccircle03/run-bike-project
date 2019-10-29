@@ -378,6 +378,7 @@
 									} else if(data == 'leave'){
 										alert("이미 탈퇴한 회원입니다.");
 									} else if(data =='admin'){
+										location.href = path+'adminpage/managelist';
 									} else {
 										alert("로그인에 실패했습니다. 아이디 혹은 비밀번호를 확인해주세요.");
 									}
