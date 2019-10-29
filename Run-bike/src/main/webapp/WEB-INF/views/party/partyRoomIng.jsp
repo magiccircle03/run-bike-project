@@ -262,7 +262,10 @@ $(document).ready(function() {
 	
 });
 
-
+/* 유저 상태에 update가 있을 시 실행*/
+socket.on('update', function(data) {
+	showPartyUserList();
+});
 
 /* 직선 거리를 계산하는 함수 */
 function getDistanceCE() {

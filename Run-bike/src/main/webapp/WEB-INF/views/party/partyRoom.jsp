@@ -253,7 +253,7 @@ $(document).ready(function() {
 	showPartyUserList(); // 파티에 속한 유저 정보를 보여준다
 	showMasterArea(); // 방장이면 방장 영역을 보여준다
 	setReady('N'); // 어디 나갔다오면 처음엔 준비 안된 걸로
-	showCurrentPos()// 내 현재위치
+	showCurrentPos();// 내 현재위치
 	
 	// 라이딩 진행중이 아닐 땐, 현재정보 페이지로 가는 걸 막는다
 	$("#curInfoA").on("click",function(event){
@@ -275,8 +275,11 @@ $(document).ready(function() {
 		});
 	});
 	
-	
-	
+});
+
+/* 방에 새로운 유저가 왔을 때 실행*/
+socket.on('update', function(data) {
+	showPartyUserList();
 });
 
 /* 라이딩이 진행중인지 체크한다 */
