@@ -498,7 +498,9 @@ h3{
             //좌표계 변환
             var lonlat = new Tmap.LonLat(lon, lat);
             lonlat = lonlat.transform(new Tmap.Projection("EPSG:3857"), new Tmap.Projection("EPSG:4326"));
-
+			
+            console.log(lonlat);
+            
             $.ajax({
                 method: "GET",
                 url: "https://apis.openapi.sk.com/tmap/geo/reversegeocoding?version=1&format=json&callback=result", // ReverseGeocoding api 요청 url입니다.
