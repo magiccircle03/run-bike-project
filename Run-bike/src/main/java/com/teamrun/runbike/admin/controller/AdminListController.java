@@ -19,15 +19,8 @@ import com.teamrun.runbike.user.domain.UserInfo;
 @RequestMapping("/adminpage")
 public class AdminListController {
 
-
-
 		 	@Autowired 
 		 	private MemberListService listService;
-			
-//			@RequestMapping(method=RequestMethod.GET)
-//			public String adminlist() {
-//				return "adminpage/adminlist";
-//			}
 			
 			@RequestMapping(value="/list", method = RequestMethod.GET)
 			@ResponseBody
