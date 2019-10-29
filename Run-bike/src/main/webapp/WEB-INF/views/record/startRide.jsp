@@ -214,7 +214,8 @@ font-family: 'Exo', sans-serif;
         var startLonLat; //시작지점
         var endLonLat; //끝지점
         var direct = new Object(); // startPoint와 endPoint 값을 저장하고 있는 경로 객체
-		var endPointChk = 0; //목적지가 정상적으로 찾아졌는지를 확인하는 함수
+		var myCourse = new Object(); // 나의 코스 정보를 저장 
+        var endPointChk = 0; //목적지가 정상적으로 찾아졌는지를 확인하는 함수
 		var path = '<c:url value="/record" />';
 		
         // 1. 지도 띄우기
@@ -622,8 +623,8 @@ font-family: 'Exo', sans-serif;
                         mc_time: exTime,
                         mc_startPoint_lon: direct.startPoint.lon,
                         mc_startPoint_lat: direct.startPoint.lat,
-                        mc_endPoint_lon: direct.endPoint.lon,
-                        mc_endPoint_lat: direct.endPoint.lat,
+                        mc_endPoint_lon: myCourse.endPoint.lon,
+                        mc_endPoint_lat: myCourse.endPoint.lat,
                         mc_descript:  $('#myCourse_descript').val(),
                         mc_name: $('#myCourse_name').val()
                     },
@@ -888,6 +889,21 @@ font-family: 'Exo', sans-serif;
 		
 		//위치 기록 종료
         function stopMyLocation(){
+        	if (navigator.geolocation) {
+        		navigator.geolocation.getCurrentPosition(function(position) {
+       
+                    var lat = position.coords.latitude;
+                    var lon = position.coords.longitude;
+                    var PR_3857 = new Tmap.Projection("EPSG:3857"); // Google Mercator 좌표계인 EPSG:3857
+                    var PR_4326 = new Tmap.Projection("EPSG:4326"); // WGS84 GEO 좌표계인 EPSG:4326        
+                    
+                    var endPoint = new Tmap.LonLat(lon, lat).transform(PR_4326, PR_3857);
+                    
+                    myCourse.endPoint = endPoint;
+                    
+                    console.log("끝지점 " + endPoint);
+        		}); 
+        	}
 			
             clearInterval(repeat);
         }
