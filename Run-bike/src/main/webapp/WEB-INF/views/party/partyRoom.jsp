@@ -505,6 +505,23 @@ function exitParty(idx) {
  	});
 }
 
+/* 강퇴 */
+function exitParty_f(idx) {
+	// alert(p_num+","+u_idx);
+ 	 $.ajax({
+ 		url : '../party/room/'+p_num,
+ 		type : 'DELETE',
+ 		data : JSON.stringify({
+ 			u_idx : idx
+		}),
+		contentType : 'application/json; charset=utf-8',
+ 		success : function(data) {
+ 			//alert(data);
+ 			socket.emit('exit', {'u_idx':idx,'room_num':p_num}); // idx번 유저가 나갔음을 서버에 알린다.
+ 		}
+ 	});
+}
+
 /* 방장이면 보이게 하는 함수 */
 function showMasterArea() {
 
@@ -621,9 +638,10 @@ socket.on('start_up', function() {
 /* 회원 강퇴 */
 function ban(idx) {
 	if (confirm('해당 유저를 내보낼까요?')) {
-		exitParty(idx+"");
-		alert('내보냈습니다!');
+		//exitParty(idx+"");
+		exitParty_f(idx+"");
 		showPartyUserList();
+		alert('내보냈습니다!');
 	}
 }
 
