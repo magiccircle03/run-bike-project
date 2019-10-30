@@ -706,7 +706,7 @@ font-family: 'Exo', sans-serif;
         	});
         }
         
-        /**********************************내 주변 반경 5km 내에 따릉이가 있는지 구하는 서비스*******************************************/
+        /**********************************내 주변 반경 1km 내에 따릉이가 있는지 구하는 서비스*******************************************/
         function seoulBikeAroundMe(lon, lat, stationName, parkingBikeTotCnt){
 
         	var pr_3857 = new Tmap.Projection("EPSG:3857");
@@ -1159,7 +1159,7 @@ font-family: 'Exo', sans-serif;
 
    		 console.log(":::::거리는 " + realDistance);
    		 
-       	 if(realDistance < 0.001){ //1km내면 종료
+       	 if(realDistance < 0.01){
        		 alert('라이딩 종료!');
        		 //라이딩 종료
              stop(); // 타이머 종료
