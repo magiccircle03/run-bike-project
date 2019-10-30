@@ -540,7 +540,7 @@ function exitPartyFn() {
 		}
 	}else{
 		if(confirm('현재 참여한 방에서 나가시겠습니까?')){
-			socket.emit('exit', {'name':user_name}); // 현재 로그인된 유저가 나갔음을 서버에 알린다.
+			socket.emit('exit', {'name':user_name,'room_num':p_num}); // 현재 로그인된 유저가 나갔음을 서버에 알린다.
 			exitParty(u_idx); // 현재 로그인된 유저를 얌전히 보내준다
 		}
 	}
