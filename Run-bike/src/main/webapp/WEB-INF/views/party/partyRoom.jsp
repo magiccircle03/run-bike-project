@@ -499,7 +499,7 @@ function exitParty(idx) {
 		contentType : 'application/json; charset=utf-8',
  		success : function(data) {
  			//alert(data);
- 			socket.emit('exit', {'u_idx':idx,'room_num':p_num}); // 현재 로그인된 유저가 나갔음을 서버에 알린다.
+ 			socket.emit('exit', {'u_idx':idx,'room_num':p_num}); // idx번 유저가 나갔음을 서버에 알린다.
  			location.href="../party";
  		}
  	});
