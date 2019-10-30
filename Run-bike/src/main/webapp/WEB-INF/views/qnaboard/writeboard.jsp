@@ -72,7 +72,7 @@
 	            	<!-- user테이블의 u_idx를 임의 지정 -->
 	          <input type="hidden" value="${loginInfo.u_idx}" name="u_idx" id="u_idx">
 	           <input type="hidden" name="q_num" id="q_num" value="1">
-	       <table id=writeTable>
+	       <table id=writeTable class="table">
 		       	<tr>
 		            <td id="title">작성자</td>
 		             <c:choose>
