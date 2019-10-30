@@ -684,6 +684,7 @@ h3{
 
             markers.events.register("click", popup, onOverMarker);
             markers.events.register("touchstart", popup, onOverMarker);
+            
             //마커를 클릭했을 때 발생하는 이벤트 함수입니다.
             function onOverMarker(evt) {
                 this.show(); //마커를 클릭하였을 때 팝업이 보입니다.
@@ -693,12 +694,12 @@ h3{
 
             modalMap.events.register("mouseup", popup, onOutMarker);
             modalMap.events.register("touchstart", popup, onOutMarker);
+            
             //지도를 클릭했을 때 발생하는 이벤트 함수입니다.
             function onOutMarker(evt) {
                 this.hide(); //지도를 클릭하였을 때 팝업이 사라집니다.
                 options.select = 0;
             }
-
         }
 
         //검색 시에 마커를 찍는 함수입니다.
@@ -734,7 +735,7 @@ h3{
             popup.hide();
 
             markers.events.register("click", popup, onOverMarker);
-            markers.events.register("touchstart", popup, onOverMarker);
+            
             //마커를 클릭했을 때 발생하는 이벤트 함수입니다.
             function onOverMarker(evt) {
                 this.show(); //마커를 클릭하였을 때 팝업이 보입니다.
@@ -751,6 +752,8 @@ h3{
                 this.hide(); //지도를 클릭하였을 때 팝업이 사라집니다.
                 options.select = 0;
             }
+            
+            var startLocation;
             
             //앱에서 실행했을 때의 이벤트 함수
 			function onTouchMarker(){
@@ -804,16 +807,18 @@ h3{
 
             }
             
+            var endLocation;
+            
           //앱에서 실행했을 때의 이벤트 함수
 			function onTouchMarker(){
-				endLocation = confirm(options.name + "\도착지로 설정하시겠습니까?");
+				endLocation = confirm(options.name + "\n도착지로 설정하시겠습니까?");
 				if(endLocation == true){
 					ModalSetEndPoint(lon, lat);
 				}
             }    
 
             modalMap.events.register("mouseup", popup, onOutMarker);
-            modalMap.events.register("touchstart", popup, onOutMarker);
+            
             //지도를 클릭했을 때 발생하는 이벤트 함수입니다.
             function onOutMarker(evt) {
                 this.hide(); //지도를 클릭하였을 때 팝업이 사라집니다.
