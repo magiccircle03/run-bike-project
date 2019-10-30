@@ -299,7 +299,7 @@ h3{
                     
 					if(data==""){
 						html += '<div class="none-record-status">\n';
-		                html += '<h3><i class="fas fa-exclamation-triangle"> 아직 등록된 나의 코스가 없습니다.</i></h3>';
+		                html += '<h5><i class="fas fa-exclamation-triangle"> 아직 등록된 나의 코스가 없습니다.</i></h5>';
 		                html += '</div>';
 					} else{
 						
@@ -744,7 +744,7 @@ h3{
             }
 
             modalMap.events.register("mouseup", popup, onOutMarker);
-            modalMap.events.register("touchstart", popup, onOutMarker);
+           /*  modalMap.events.register("touchstart", popup, onOutMarker); */
             markers.events.register("touchstart", startLocation, onTouchMarker);
             
             //지도를 클릭했을 때 발생하는 이벤트 함수입니다.
@@ -797,7 +797,6 @@ h3{
             popup.hide();
 
             markers.events.register("click", popup, onOverMarker);
-            markers.events.register("touchstart", popup, onOverMarker);
             markers.events.register("touchstart", endLocation, onTouchMarker);
             
             //마커를 클릭했을 때 발생하는 이벤트 함수입니다.
