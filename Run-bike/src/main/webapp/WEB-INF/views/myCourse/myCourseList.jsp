@@ -701,6 +701,126 @@ h3{
 
         }
 
+        //검색 시에 마커를 찍는 함수입니다.
+        function addStartMarker(options) {
+
+            var size = new Tmap.Size(12, 19); //아이콘 크기입니다.
+            var offset = new Tmap.Pixel(-(size.w / 2), -size.h); //아이콘 중심점입니다.
+            var icon = new Tmap.Icon("http://tmapapis.sktelecom.com/upload/tmap/marker/pin_b_s_simple.png", size, offset); //마커 아이콘입니다.
+            var markers = new Tmap.Markers(options.lonlat, icon); //마커를 생성합니다.
+            modalMarkersLayer.addMarker(markers); //레이어에 마커를 추가합니다.
+
+            var lon = options.lonlat.lon;
+            var lat = options.lonlat.lat;
+
+            /****************마커 위에 뜨는 팝업 내용**********************/
+            var content = "<div style='border-bottom: 1px solid #dcdcdc; line-height: 18px; padding: 0 35px 2px 0;'>" +
+                "<div style='font-size: 12px;'>" +
+                "<span style='display: inline-block; vertical-align: middle; margin-right: 5px;'>" + options.name + "</span>" +
+                "</div>" +
+                "</div>" +
+                "<div style='position: relative; padding-top: 5px; display:inline-block'>" +
+                "<div style='display:inline-block; margin-left:5px; vertical-align: top;'>" +
+                "<span style='font-size: 12px; margin-left:2px;'>" +
+                "<input type=\"button\" id=\"startBtn\" class='btn btn-primary btn-sm' onclick=\"modalSetStartPoint(" + lon + "," + lat + ")\" value=\"출발\">" +
+                "</span>" +
+                "</div>" +
+                "</div>";
+
+            var popup = new Tmap.Popup("p1", options.lonlat, new Tmap.Size(120, 50), content, true);
+            popup.setBorder("1px solid #8d8d8d"); //popup border 조절
+            popup.autoSize = true; //popup 사이즈 자동 조절		                         
+            modalMap.addPopup(popup); //map에 popup 추가
+            popup.hide();
+
+            markers.events.register("click", popup, onOverMarker);
+            markers.events.register("touchstart", popup, onOverMarker);
+            //마커를 클릭했을 때 발생하는 이벤트 함수입니다.
+            function onOverMarker(evt) {
+                this.show(); //마커를 클릭하였을 때 팝업이 보입니다.
+                options.select = 1;
+
+            }
+
+            modalMap.events.register("mouseup", popup, onOutMarker);
+            modalMap.events.register("touchstart", popup, onOutMarker);
+            markers.events.register("touchstart", startLocation, onTouchMarker);
+            
+            //지도를 클릭했을 때 발생하는 이벤트 함수입니다.
+            function onOutMarker(evt) {
+                this.hide(); //지도를 클릭하였을 때 팝업이 사라집니다.
+                options.select = 0;
+            }
+            
+            //앱에서 실행했을 때의 이벤트 함수
+			function onTouchMarker(){
+				startLocation = confirm(options.name + "\n출발지로 설정하시겠습니까?");
+				if(startLocation == true){
+					modalSetStartPoint(lon, lat);
+				}
+            }
+        }
+        
+        //검색 시에 마커를 찍는 함수입니다.
+        function addEndMarker(options) {
+
+            var size = new Tmap.Size(12, 19); //아이콘 크기입니다.
+            var offset = new Tmap.Pixel(-(size.w / 2), -size.h); //아이콘 중심점입니다.
+            var icon = new Tmap.Icon("http://tmapapis.sktelecom.com/upload/tmap/marker/pin_b_s_simple.png", size, offset); //마커 아이콘입니다.
+            var markers = new Tmap.Markers(options.lonlat, icon); //마커를 생성합니다.
+            modalMarkersLayer.addMarker(markers); //레이어에 마커를 추가합니다.
+
+            var lon = options.lonlat.lon;
+            var lat = options.lonlat.lat;
+
+            /****************마커 위에 뜨는 팝업 내용**********************/
+            var content = "<div style='border-bottom: 1px solid #dcdcdc; line-height: 18px; padding: 0 35px 2px 0;'>" +
+                "<div style='font-size: 12px;'>" +
+                "<span style='display: inline-block; vertical-align: middle; margin-right: 5px;'>" + options.name + "</span>" +
+                "</div>" +
+                "</div>" +
+                "<div style='position: relative; padding-top: 5px; display:inline-block'>" +
+                "<div style='display:inline-block; margin-left:5px; vertical-align: top;'>" +
+                "<span style='font-size: 12px; margin-left:2px;'>" +
+                "<input type=\"button\" class='btn btn-primary btn-sm' id=\"endBtn\" onclick=\"ModalSetEndPoint(" + lon + "," + lat + ")\"value=\"도착\">" +
+                "</span>" +
+                "</div>" +
+                "</div>";
+
+            var popup = new Tmap.Popup("p1", options.lonlat, new Tmap.Size(120, 50), content, true);
+            popup.setBorder("1px solid #8d8d8d"); //popup border 조절
+            popup.autoSize = true; //popup 사이즈 자동 조절		                         
+            modalMap.addPopup(popup); //map에 popup 추가
+            popup.hide();
+
+            markers.events.register("click", popup, onOverMarker);
+            markers.events.register("touchstart", popup, onOverMarker);
+            markers.events.register("touchstart", endLocation, onTouchMarker);
+            
+            //마커를 클릭했을 때 발생하는 이벤트 함수입니다.
+            function onOverMarker(evt) {
+                this.show(); //마커를 클릭하였을 때 팝업이 보입니다.
+                options.select = 1;
+
+            }
+            
+          //앱에서 실행했을 때의 이벤트 함수
+			function onTouchMarker(){
+				endLocation = confirm(options.name + "\도착지로 설정하시겠습니까?");
+				if(endLocation == true){
+					ModalSetEndPoint(lon, lat);
+				}
+            }    
+
+            modalMap.events.register("mouseup", popup, onOutMarker);
+            modalMap.events.register("touchstart", popup, onOutMarker);
+            //지도를 클릭했을 때 발생하는 이벤트 함수입니다.
+            function onOutMarker(evt) {
+                this.hide(); //지도를 클릭하였을 때 팝업이 사라집니다.
+                options.select = 0;
+            }
+        }
+        
         //데이터 로드가 섬공적으로 완료 되었을 때 발생하는 함수입니다.
         function onCompleteTData(e) {
 
@@ -720,6 +840,52 @@ h3{
                         select: 0
                     };
                     addMarker(options); //위에서 만들어 놓은 마커를 등록하는 함수 실행합니다.
+                });
+            }
+            
+        }
+        
+        function onCompleteTDataModalEnd(e) {
+
+        	modalMarkersLayer.clearMarkers(); //시작지점 선택 마커들 전체 삭제합니다.
+        	modalMarkersLayer.setVisibility(true); //시작지점의 레이어를 다시 보이게 한다. 
+
+            //return 받은 xml에서 'searchPoiInfo pois poi'가 존재하는지 확인합니다.
+            if (jQuery(this.responseXML).find("searchPoiInfo pois poi").text() != '') {
+                //each문을 실행하여 마커를 추가합니다.
+                jQuery(this.responseXML).find("searchPoiInfo pois poi").each(function() {
+                    var name = jQuery(this).find("name").text(); //name의 값을 추출 합니다.
+                    var lon = jQuery(this).find("frontLon").text(); //lon 값을 추출 합니다.
+                    var lat = jQuery(this).find("frontLat").text(); //lat 값을 추출 합니다.
+                    var options = {
+                        name: name, //마커의 라벨 옵션 설정
+                        lonlat: new Tmap.LonLat(lon, lat), //마커의 좌표 옵션 지정
+                        select: 0
+                    };
+                    addEndMarker(options); //위에서 만들어 놓은 마커를 등록하는 함수 실행합니다.
+                });
+            }
+            modalMap.zoomToExtent(modalMarkersLayer.getDataExtent()); //map의 zoom을 마커 레이어의 해상도에 맞게 변경합니다.
+        }
+        
+        function onCompleteTDataModalStart(e) {
+
+        	modalMarkersLayer.clearMarkers(); //시작지점 선택 마커들 전체 삭제합니다.
+        	modalMarkersLayer.setVisibility(true); //시작지점의 레이어를 다시 보이게 한다. 
+
+            //return 받은 xml에서 'searchPoiInfo pois poi'가 존재하는지 확인합니다.
+            if (jQuery(this.responseXML).find("searchPoiInfo pois poi").text() != '') {
+                //each문을 실행하여 마커를 추가합니다.
+                jQuery(this.responseXML).find("searchPoiInfo pois poi").each(function() {
+                    var name = jQuery(this).find("name").text(); //name의 값을 추출 합니다.
+                    var lon = jQuery(this).find("frontLon").text(); //lon 값을 추출 합니다.
+                    var lat = jQuery(this).find("frontLat").text(); //lat 값을 추출 합니다.
+                    var options = {
+                        name: name, //마커의 라벨 옵션 설정
+                        lonlat: new Tmap.LonLat(lon, lat), //마커의 좌표 옵션 지정
+                        select: 0
+                    };
+                    addStartMarker(options); //위에서 만들어 놓은 마커를 등록하는 함수 실행합니다.
                 });
             }
             modalMap.zoomToExtent(modalMarkersLayer.getDataExtent()); //map의 zoom을 마커 레이어의 해상도에 맞게 변경합니다.
@@ -777,7 +943,7 @@ h3{
                 alert("출발지를 입력해주세요.")
             } else {
                 tdata = new Tmap.TData(); //REST API 에서 제공되는 경로, 교통정보, POI 데이터를 쉽게 처리할 수 있는 클래스입니다.
-                tdata.events.register("onComplete", tdata, onCompleteTData); //데이터 로드가 성공적으로 완료되었을 때 발생하는 이벤트입니다.
+                tdata.events.register("onComplete", tdata, onCompleteTDataModalStart); //데이터 로드가 성공적으로 완료되었을 때 발생하는 이벤트입니다.
                 var center = modalMap.getCenter(); //map의 중심 좌표 값을 받아 옵니다.
                 //POI 검색 데이터를 콜백 함수를 통해 XML로 리턴
                 tdata.getPOIDataFromSearch(encodeURIComponent(startPoint), {
@@ -838,12 +1004,12 @@ h3{
                 alert("도착지를 입력해주세요.")
             } else {
                 tdata = new Tmap.TData(); //REST API 에서 제공되는 경로, 교통정보, POI 데이터를 쉽게 처리할 수 있는 클래스입니다.
-                tdata.events.register("onComplete", tdata, onCompleteTData); //데이터 로드가 성공적으로 완료되었을 때 발생하는 이벤트입니다.
+                tdata.events.register("onComplete", tdata, onCompleteTDataModalEnd); //데이터 로드가 성공적으로 완료되었을 때 발생하는 이벤트입니다.
                 var center = modalMap.getCenter(); //map의 중심 좌표 값을 받아 옵니다.
                 //POI 검색 데이터를 콜백 함수를 통해 XML로 리턴
                 tdata.getPOIDataFromSearch(encodeURIComponent(endPoint), {
                     centerLon: center.lon,
-                    centerLat: center.lat,
+                    centeronCompleteTDataLat: center.lat,
                     reqCoordType: "EPSG3857",
                     resCoordType: "EPSG3857"
                 }); //encodeURIComponent함수로 해당 파라메터 값을 처리합니다.
