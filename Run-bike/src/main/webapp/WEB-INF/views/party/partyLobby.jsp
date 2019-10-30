@@ -390,7 +390,7 @@ h3{
                 map = new Tmap.Map({
                     div: 'map_div', // map을 표시해줄 div
                     //width: "100%", // map의 width 설정
-                    width: "470px", // 일단은 고정
+                    width: "420px", // 일단은 고정
                     height: "400px", // map의 height 설정
                 });
             } else {
