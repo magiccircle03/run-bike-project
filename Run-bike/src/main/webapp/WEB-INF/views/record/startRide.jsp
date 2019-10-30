@@ -369,10 +369,12 @@ font-family: 'Exo', sans-serif;
         function setEndPoint(lon, lat) {
         	
             //기존에 등록했던 endPointMarker 삭제
-            markerEndPointLayer.clearMarkers();
-
+            markerEndPointLayer.clearMarkers();      
+            
             var endPoint = new Tmap.LonLat(lon, lat);
-
+            
+            console.log(":::::::::::::::" + endPoint);
+            
             //endPoint의 좌표를 direct 객체에 저장
             direct.endPoint = endPoint;
 
@@ -1148,35 +1150,59 @@ font-family: 'Exo', sans-serif;
             DrawLine.arrPoint = [];          
         }
 
+   		var realDistance;
+   		
         function endRide(){
-        var endLat = DrawLine.arrPoint[DrawLine.arrPoint.length-1];
-     	var endLon = DrawLine.arrPoint[DrawLine.arrPoint.length-2];
-   		var myLon = direct.endPoint.lon;
-   		var myLat = direct.endPoint.lat;
-   		 
-       	 var distance = Math.sqrt(Math.pow((endLon-myLon),2) + Math.pow((endLat-myLat),2));
-    		 var realDistance = distance.toFixed(3);
+        	
+        	var myLat = direct.endPoint.lat;
+         	var myLon = direct.endPoint.lon;
 
-   		 console.log(":::::거리는 " + realDistance);
-   		 
-       	 if(realDistance < 0.01){
-       		 alert('라이딩 종료!');
-       		 //라이딩 종료
-             stop(); // 타이머 종료
-             stopMyLocation(); //내 위치 받기 종료
-             drowMyRoad(); //내가 이동한 위치 그리기   	
-       		       		
-       	 } else{
-       		var askEnd = confirm('목표지점에 도달하지 못했습니다. 종료하시겠습니까?');
+         	var distance;
+     
+        	if (navigator.geolocation) {
+                // GeoLocation을 이용해서 접속 위치를 얻어옵니다
+                navigator.geolocation.getCurrentPosition(function(position) {
 
-       		if(askEnd == true){
-       			stop(); // 타이머 종료
-                stopMyLocation(); //내 위치 받기 종료
-                drowMyRoad(); //내가 이동한 위치 그리기   	
-       		}            
-       	 }
-       	 
-   	 }
+                    // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
+                    var lat = position.coords.latitude;
+                    var lon = position.coords.longitude;
+                  
+                    DrawLine.arrPoint.push(lon);
+                    DrawLine.arrPoint.push(lat);
+                    
+                    var PR_3857 = new Tmap.Projection("EPSG:3857"); // Google Mercator 좌표계인 EPSG:3857
+                    var PR_4326 = new Tmap.Projection("EPSG:4326"); // WGS84 GEO 좌표계인 EPSG:4326   
+                    
+                    lonlat = new Tmap.LonLat(lon, lat).transform(PR_4326, PR_3857);
+                    distance = Math.sqrt(Math.pow((lonlat.lon-myLon),2) + Math.pow((lonlat.lat-myLat),2));
+                    realDistance = distance.toFixed(3);
+                    
+                    console.log(":::::종료 시 위치는 " + myLon + "," + myLat);
+                    console.log("::::::종료지점 위치는 " + lonlat.lon + "," + lonlat.lat); 
+                    console.log(":::::거리는 " + realDistance);
+                    realEnd();
+                });
+            }    	
+   		 }
+        
+        function realEnd(){
+	       	 if(realDistance <= 100){
+	       		 alert('라이딩 종료!');
+	       		 //라이딩 종료
+	             stop(); // 타이머 종료
+	             stopMyLocation(); //내 위치 받기 종료
+	             drowMyRoad(); //내가 이동한 위치 그리기   	
+	       		       		
+	       	 } else{
+	       		var askEnd = confirm('목표지점에 도달하지 못했습니다. 종료하시겠습니까?');
+	
+	       		if(askEnd == true){
+	       			stop(); // 타이머 종료
+	                stopMyLocation(); //내 위치 받기 종료
+	                drowMyRoad(); //내가 이동한 위치 그리기   	
+	       		}            
+	       	 }    
+        }
     </script>
     
     <!-- 푸터 시작 -->
