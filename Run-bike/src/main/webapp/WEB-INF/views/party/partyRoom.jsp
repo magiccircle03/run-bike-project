@@ -248,6 +248,7 @@ var user_name = $('#u_name').val(); // 유저 이름
 /* var socket = io('https://13.125.253.7:3000/room'); */
 var socket = io('https://socket.runbike.cf/room');
 
+
 $(document).ready(function() {
 	var isStarted;
 	initTmap(xy); // 맵을 초기화한다
@@ -479,7 +480,6 @@ function exitPartyFn() {
 		}
 	}else{
 		if(confirm('현재 참여한 방에서 나가시겠습니까?')){
- 			socket.emit('exit', {'name':user_name,'room_num':p_num}); // 현재 로그인된 유저가 나갔음을 서버에 알린다.
 			exitParty(u_idx); // 현재 로그인된 유저를 얌전히 보내준다
 		}
 	}
@@ -499,6 +499,7 @@ function exitParty(idx) {
 		contentType : 'application/json; charset=utf-8',
  		success : function(data) {
  			//alert(data);
+ 			socket.emit('exit', {'u_idx':idx,'room_num':p_num}); // 현재 로그인된 유저가 나갔음을 서버에 알린다.
  			location.href="../party";
  		}
  	});

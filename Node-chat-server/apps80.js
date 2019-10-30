@@ -91,13 +91,14 @@ socket_room.on('connection', function(socket) {
 
   /* 방에서 나갈 때( 파티 탈퇴 ) 실행됨 */
   socket.on('exit', function(data) {
-    var name = socket.name = data.name;
+    var u_idx = data.u_idx;
     var room_num = socket.room_num = data.room_num;
 
-    console.log('['+room_num+']번 방에서 '+ name + ' 님이 나가셨습니다.(탈퇴)');
+    console.log('['+room_num+']번 방에서 '+ u_idx + '번 회원이 나갔습니다.(탈퇴)');
 
     /* 그 방의 소켓에게 전송 */
-    socket_room.in(room_num).emit('exit_up', {name: name});
+    socket_room.in(room_num).emit('exit_up', {u_idx: u_idx});
+    socket_rooming.in(room_num).emit('exit_up', {u_idx: u_idx});
   });
 
 
@@ -154,13 +155,13 @@ socket_rooming.on('connection', function(socket) {
 
   /* 방에서 나갈 때( 파티 탈퇴 ) 실행됨 */
   socket.on('exit', function(data) {
-    var name = socket.name = data.name;
+    var u_idx = data.u_idx;
     var room_num = socket.room_num = data.room_num;
-  
-    console.log('['+room_num+']번 방에서 '+ name + ' 님이 나가셨습니다.(탈퇴)');
-  
+
+    console.log('['+room_num+']번 방에서 '+ u_idx + '번 회원이 나갔습니다.(탈퇴)');
+
     /* 그 방의 소켓에게 전송 */
-    socket_rooming.in(room_num).emit('exit_up', {name: name});
+    socket_rooming.in(room_num).emit('exit_up', {u_idx: u_idx});
   });
 
   /* 라이딩 종료 */
