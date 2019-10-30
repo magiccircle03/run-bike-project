@@ -18,7 +18,9 @@
 
 <link href="//cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.4.0/css/bootstrap4-toggle.min.css" rel="stylesheet">  
 <script src="//cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.4.0/js/bootstrap4-toggle.min.js"></script>
-
+<!-- Toastr -->
+<link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
+<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/moonspam/NanumSquare@1.0/nanumsquare.css">
 <style type="text/css">
 .container{
@@ -242,7 +244,7 @@ var xy=${partyInfo.p_XY}; // 목표 시작지, 도착지 좌표가 있는 json�
 var p_num = ${partyInfo.p_num}; // 방 번호
 var u_idx = $('#u_idx').val();// 유저 번호
 var user_name = $('#u_name').val(); // 유저 이름
-/*  var socket = io('http://localhost:3000/room');   */
+/* var socket = io('http://localhost:3000/room');  */
 /* var socket = io('https://13.125.253.7:3000/room'); */
 var socket = io('https://socket.runbike.cf/room');
 
@@ -270,12 +272,42 @@ $(document).ready(function() {
 		    var latitude = pos.coords.latitude;
 		    var longitude = pos.coords.longitude;	
 		    
-		    /* 서버에 새로운 유저가 왔다고 알림 (join) */
+		    /* 서버에 새로운 유저가 페이지에 접속했음을 알림 (join) */
 			socket.emit('join', {'name':user_name,'room_num':p_num,'u_idx':u_idx, 'latitude':latitude, 'longitude':longitude});
 		});
 	});
 	
 });
+
+socket.on('participate_up', function(data) {
+	toast(data.message); // 새로운 유저를 환영하는 메시지
+	showPartyUserList();
+});
+socket.on('exit_up', function(data) {
+	// 사기를 떨어트릴 수 있으니 들어올 때와 달리 나갈 땐 그냥 조용히 나간다.
+	showPartyUserList();
+});
+
+function toast(msg) {
+	toastr.options = {
+			  "closeButton": false,
+			  "debug": false,
+			  "newestOnTop": false,
+			  "progressBar": false,
+			  "positionClass": "toast-top-center",
+			  "preventDuplicates": false,
+			  "onclick": null,
+			  "showDuration": "300",
+			  "hideDuration": "1000",
+			  "timeOut": "5000",
+			  "extendedTimeOut": "1000",
+			  "showEasing": "swing",
+			  "hideEasing": "linear",
+			  "showMethod": "fadeIn",
+			  "hideMethod": "fadeOut"
+	};
+    toastr["success"](msg);
+} 
 
 /* 유저 상태에 update가 있을 시 실행*/
 socket.on('update', function(data) {
@@ -447,6 +479,7 @@ function exitPartyFn() {
 		}
 	}else{
 		if(confirm('현재 참여한 방에서 나가시겠습니까?')){
+ 			socket.emit('exit', {'name':user_name}); // 현재 로그인된 유저가 나갔음을 서버에 알린다.
 			exitParty(u_idx); // 현재 로그인된 유저를 얌전히 보내준다
 		}
 	}
