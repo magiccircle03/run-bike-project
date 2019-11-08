@@ -323,17 +323,13 @@ h3{
                         html += '<div class="card-body">\n';
                         html += '<h5 class="card-title">\n';
                         html += mc_name;
-                        html += '<div style="float: right;">'
-                        html += '<i class="far fa-star">&nbsp;</i>'
-                        html += '<i class="fas fa-share-alt-square"></i>';
-                        html += '</div>'
                         html += '</h5>\n';
                         html += '<p class="card-text">\n';
                         html += '<i class="fas fa-flag"> 출발지 &nbsp;&nbsp;</i>'  + startPoint;
                         html += '<br>\n';
                         html += '<i class="fas fa-flag-checkered"> 목적지 &nbsp;&nbsp;</i>' + endPoint;
                         html += '<br>\n';
-                        html += '<i class="fas fa-road"> 코스 길이 &nbsp;&nbsp;</i>' + mc_distance + 'km';
+                        html += '<i class="fas fa-road"> 코스 길이 &nbsp;&nbsp;</i>' + mc_distance + 'm';
                         html += '<br>\n';
                         html += '<i class="fas fa-hourglass-half"> 예상 시간 &nbsp;&nbsp;</i>' + mc_time +'분'; 
                         html += '<br>\n';
@@ -502,7 +498,9 @@ h3{
             //좌표계 변환
             var lonlat = new Tmap.LonLat(lon, lat);
             lonlat = lonlat.transform(new Tmap.Projection("EPSG:3857"), new Tmap.Projection("EPSG:4326"));
-
+			
+            console.log(lonlat);
+            
             $.ajax({
                 method: "GET",
                 url: "https://apis.openapi.sk.com/tmap/geo/reversegeocoding?version=1&format=json&callback=result", // ReverseGeocoding api 요청 url입니다.
@@ -1015,6 +1013,7 @@ h3{
 	        });  
         });
 
+        
     </script>
     
     <!-- 푸터 시작 -->

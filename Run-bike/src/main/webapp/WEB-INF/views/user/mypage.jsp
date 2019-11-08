@@ -3,6 +3,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!doctype html>
 <html lang="en">
 <head>
@@ -17,10 +18,9 @@
 	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
 	crossorigin="anonymous">
 <link rel="stylesheet" href="<c:url value='/assets/css/layout.css'/>">
-<link href="https://fonts.googleapis.com/css?family=Anton|Exo&display=swap" rel="stylesheet">
-<title>Hello, world!</title>
+<link href="https://fonts.googleapis.com/css?family=Anton|Exo|Noto+Sans+KR&display=swap" rel="stylesheet">
+<title>마이 페이지</title>
 <style>
-	
 	#list-tab a{
 		padding: .5rem
 	}
@@ -149,7 +149,7 @@
 				<div class="row-profile-name text-center pt-4 gtr-uniform">
 					<strong>${loginInfo.u_name} 님</strong>
 					<p> ${loginInfo.u_id}</p>
-					<p> 회원 가입일 : ${loginInfo.regdate}</p>
+					<p> 회원 가입일 : <fmt:formatDate value="${loginInfo.regdate}" pattern="yyyy-MM-dd"/></p>
 				</div>
 				<div class="text-center">
 					<button id="updateBtn" class="btn btn-outline-secondary col-6" data-target="#modalUpdate" data-toggle="modal">프로필 편집</button>
@@ -183,14 +183,19 @@
 									<label class="col-form-label" for="u_name">이름 </label>
 									<input type="text" id="u_name" class="form-control" name="u_name"
 										value="${loginInfo.u_name}">
+										<input type="checkbox" id="nameChkBox" style="display: none">
+					                    <p id="nameChkMsg"></p>
 								</div>
 								<div class="form-group">
 									<label class="col-form-label" for="u_pw">새 비밀번호 </label>
 									<input type="password" id="u_pw" class="form-control" name="u_pw">
+									<input type="checkbox" id="pwChkBox" style="display: none"><p id="pwChkMsg"></p>
 								</div>
 								<div class="form-group">
 									<label class="col-form-label" for="u_repw">새 비밀번호 확인 </label>
 									<input type="password" id="u_repw" class="form-control">
+									<input type="checkbox" id="repwChkBox" style="display: none">
+					                <p id="repwChkMsg"></p>
 								</div>
 								<div class="form-group">
 									<input type="hidden" id="oldFile" class="form-control" name="oldFile"
@@ -248,11 +253,11 @@
 					<div id="user-record">
 						<div class="row col-12 gtr-uniform">
 							<div class="col-12">
-								<div class="card card-record-view"><strong id="totalKM"><span>KM</span></strong><p>라이딩 총 KM</p></div>
+								<div class="card card-record-view"><strong id="totalKM"><span>M</span></strong><p>라이딩 총 거리</p></div>
 							</div>
 							<div class="col-sm-12 col-md-6 col-lg-3"><div class="card card-record-view"><strong id="totalCount"><span>회</span></strong><p>라이딩 총 횟수</p></div></div>
 							<div class="col-sm-12 col-md-6 col-lg-3"><div class="card card-record-view"><strong id="totalTime"><span>분</span></strong><p>라이딩 총 시간</p></div></div>
-							<div class="col-sm-12 col-md-6 col-lg-3"><div class="card card-record-view"><strong id="avgKM"><span>KM</span></strong><p>라이딩 평균 KM</p></div></div> 
+							<div class="col-sm-12 col-md-6 col-lg-3"><div class="card card-record-view"><strong id="avgKM"><span>M</span></strong><p>라이딩 평균 거리</p></div></div> 
 							<div class="col-sm-12 col-md-6 col-lg-3"><div class="card card-record-view"><strong id="avgTime"><span>분</span></strong><p>라이딩 평균 시간</p></div></div> 
 							
 							<div class="row col-12 gtr-uniform mt-4">
@@ -313,14 +318,21 @@
 	<script>
     
     	$(document).ready(function(){
+    		// url 경로 꺼내오기
     		var path = '<c:url value="/"/>';
     		var u_idx = ${loginInfo.u_idx};
+    		
     		var datalist = "";
+    		
+    		
+             
+             
     		// 회원 기록 가져오기
     		$.ajax({
     			type: 'GET',
     			url: path+'user/record/'+u_idx,
     			success: function(data){
+    				// 전체 기록 가져오기
     				if(data.userRecord.total_count>0){
     					$('#user-record-status').css('display','none');
     					$('#user-record').css('display','block');
@@ -371,6 +383,8 @@
     					$('#user-record').css('display','none');
     				}
     				console.log(data.partyRecord[0].cnt);
+    				
+    				// 방 참여 정보 가져오기
     				if(data.partyRecord[0].cnt>0){
     					$('#party-record-status').css('display','none');
     					$('#party-record').css('display','block');
@@ -411,10 +425,71 @@
     		});
     		
     		
+    		// 유효성 체크 정규식
+   		 	var pwChk = /^[A-Za-z0-9가-힣~!@#$%^&*()_]{8,20}$/;
+            // 특수기호, 공백 X
+            var nameChk = /^[가-힣A-Z]{0,30}$/;
+            
+            var pwChkBox = $('#pwChkBox');
+			var repwChkBox = $('#repwChkBox');
+			var nameChkBox = $('#nameChkBox');
+			
+            $('#u_pw').on('focusout', function(e){
+            	if($(this).val().length>0){
+            		if(!pwChk.test($(this).val())){
+            			$('#pwChkMsg').html('8자~20자 사이에 영어 대 소문자, 특수문자, 숫자가 반드시 포함되어야 합니다.');
+						$('#pwChkMsg').css('color','red');
+						pwChkBox.prop('checked',false);
+            		} else{
+            			$('#pwChkMsg').html("");
+						pwChkBox.prop('checked',true);
+					
+            		} 
+            	} else {
+					$('#pwChkMsg').html("필수 사항입니다.");
+					$('#pwChkMsg').css('color','red');
+					pwChkBox.prop('checked',false);
+				}
+            });
+            
+            $('#u_repw').on('focusout',function(e){
+				if($(this).val().length>0){
+					if($(this).val() != $('#u_pw').val()){
+						$('#repwChkMsg').html('입력한 비밀번호와 일치하지 않습니다. 다시 확인해주세요.');
+						$('#repwChkMsg').css('color','red');
+						repwChkBox.prop('checked',false);
+					} else{
+						$('#repwChkMsg').html("");
+						repwChkBox.prop('checked',true);
+					}
+				} else {
+					$('#repwChkMsg').html("비밀번호를 확인해주세요.");
+					$('#repwChkMsg').css('color','red');
+					repwChkBox.prop('checked',false);
+				}
+			});
+    		
+            $('#u_name').on('focusout',function(e){
+				if($(this).val().length>0){
+					if(!nameChk.test($(this).val())){
+						$('#nameChkMsg').html('한글 또는 영문 이름만 가능합니다.');
+						$('#nameChkMsg').css('color','red');
+						nameChkBox.prop('checked',false);
+					} else{
+						$('#nameChkMsg').html("");
+						nameChkBox.prop('checked',true);
+					}
+				} else {
+					$('#nameChkMsg').html("필수 사항입니다.");
+					$('#nameChkMsg').css('color','red');
+					nameChkBox.prop('checked',false);
+				}
+			});
     		
     		// 회원 정보 업데이트 기능
     		$('#userUpdateForm').on('submit',function(){
-    			if($('#u_name').val()!= "" && $('#u_pw').val != "" && $('#u_repw').val() == $('#u_pw').val()){
+    			
+    			if(pwChkBox.is(':checked') && repwChkBox.is(':checked') && nameChkBox.is(':checked')){
 	    			var formData = new FormData();
 	    			var file = $('#u_photo')[0].files[0];
 	    			formData.append('u_idx',$('#u_idx').val())
@@ -445,7 +520,23 @@
 	    				}
 	    			});
     			} else{
-    				
+						if(!pwChkBox.is(':checked')){
+							$('#pwChkMsg').html('비밀번호를 다시 확인하세요.');
+							$('#pwChkMsg').css('color','red');
+							pwChkBox.prop('checked',false);
+						}
+						
+						if(!repwChkBox.is(':checked')){
+							$('#repwChkMsg').html('비밀번호가 일치하지 않습니다.');
+							$('#repwChkMsg').css('color','red');
+							repwChkBox.prop('checked',false);
+						}
+						
+						if(!nameChkBox.is(':checked')){
+							$('#nameChkMsg').html('이름을 확인해주세요.');
+							$('#nameChkMsg').css('color','red');
+							nameChkBox.prop('checked',false);
+						}
     			}   
     			return false;
     		});
@@ -474,7 +565,6 @@
         		    					}
         		    				},
         		    				error: function(data){
-        		    					console.log("안ㅠ됨");
         		    				}
         		    			});
     						} else{

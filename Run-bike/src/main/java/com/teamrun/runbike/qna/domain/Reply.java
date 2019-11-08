@@ -2,6 +2,8 @@ package com.teamrun.runbike.qna.domain;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class Reply {
 	
 	//답글 번호
@@ -13,6 +15,7 @@ public class Reply {
 	//답글 작성자
 	private String rp_writer;
 	//날짜
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yy.MM.dd HH:mm", timezone="GMT+18")
 	private Date rp_regdate;
 	
 	//원글 번호

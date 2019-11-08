@@ -14,7 +14,6 @@
 <!-- Bootstrap CSS -->
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 <link rel="stylesheet" href="<c:url value='/assets/css/layout.css'/>">
-<script src="<c:url value='/assets/js/layout.js'/>"></script>
 
 <script src="https://kit.fontawesome.com/8653072c68.js"></script>
 
@@ -23,8 +22,9 @@
 
 
 <style type="text/css">
-body{
+.container{
 	color : #333333;
+	font-family: 'NanumSquare', sans-serif;
 }
 
 .StartP{
@@ -165,14 +165,19 @@ body{
 <!-- 푸터 시작 -->
 <%@ include file="/WEB-INF/views/frame/footer.jsp" %>
 <!-- 푸터 끝 -->
-<script src="http://localhost:3000/socket.io/socket.io.js"></script>
-<!-- <script src="http://54.180.26.199:3000/socket.io/socket.io.js"></script> -->
+
+<!-- 소켓 -->
+<!-- <script src="http://localhost:3000/socket.io/socket.io.js"></script> -->
+<!-- <script src="https://13.125.253.7:3000/socket.io/socket.io.js"></script> -->
+<script src="https://socket.runbike.cf/socket.io/socket.io.js"></script>
 
 <script type="text/javascript">
 var p_num = $('#p_num').val();
 var user_name = $('#u_name').val();
-var socket = io('http://localhost:3000');
-/* var socket = io('http://54.180.26.199:3000'); */
+/* var socket = io('http://localhost:3000/chat');  */
+/* var socket = io('https://13.125.253.7:3000/chat'); */
+var socket = io('https://socket.runbike.cf/chat');
+
 
 const $chat = $('#chat'); 
 
@@ -207,7 +212,7 @@ $(document).ready(function() {
 	  var divClassName = '';
 	  var spanClassName='';
 
-	  // 타입에 따라 적용할 클래스를 다르게 지정
+	  // 타입에 따라 적용할 클래스를 다르게 지정 
 	  switch(data.type) {
 	    case 'message':
 	   	  divClassName = 'balloon_other';

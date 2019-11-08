@@ -39,6 +39,14 @@
 
 <style type="text/css">
 
+#clock{
+	margin: 10px;
+	text-align: center;
+	font-style: italic;
+	font-weight: bold;
+	font-family: 'Anton', sans-serif;
+}
+
 #myRecord{
 	margin: 10px;
 	text-align: center;
@@ -56,6 +64,8 @@ font-family: 'Exo', sans-serif;
 	font-size: 40px;
 }
 </style>
+
+
 </head>
 
 <body>
@@ -81,14 +91,9 @@ font-family: 'Exo', sans-serif;
 		<hr>
 
 		<div style="margin-bottom: 20px;">
-			<div style="margin-bottom: 4px">
-			<i class="fas fa-flag"> 시작지점</i>
-			<input type="text" id="startPoint" style="word-spacing: -2px; width: 300px; margin-left: 10px" readonly> 
-			</div>
-			
 			<div>
 			<i class="fas fa-flag-checkered"> 도착지점</i>
-			<input type="text" id="endPoint" style="width: 300px; margin-left: 10px" placeholder="예)명동역"> 
+			<input type="text" id="endPoint" style="width: 180px; margin-left: 10px" placeholder="예)명동역"> 
 			<button type="button" id="searchEndPoint" style="margin-top: -3px"  class="btn btn-primary btn-sm" onclick="searchPOIEnd()"><i class="fas fa-search-location"> 검색</i></button>
 			</div>
 		</div>
@@ -103,20 +108,26 @@ font-family: 'Exo', sans-serif;
 		<div id="map_div"></div>
 		<br>
 		
+		<!-- 타임워치  -->
+		<div id="clock" class="contents">
+        </div>
+        
 		<!-- 해당 운동에 대한 레코드 기록 보여주기  -->
-		<div class="row" id="myRecord">			
+		<div id="myRecord" style="display: none">
+		<div class="row">			
 			<div class="col">
 				<h4>Distance</h4>
-				<div class="contents" id=todayDistance>0.0</div>
-					<p>km</p>
+				<div class="contents" id=todayDistance></div>
+					<p>meter</p>
 				</div>
 				
 				<div class="col">
 				<h4>Time</h4>
-					<div class="contents" id=todayTime>0.0</div>
-					<p>min</p>
+					<div class="contents" id=todayTime></div>
+					<p>minute</p>
 				</div>			
 			</div>
+		</div>
 		<br>
 		<div id="btnArea">
 			<div id="startBtnArea">
@@ -124,7 +135,7 @@ font-family: 'Exo', sans-serif;
 				<input type="button" class="btn btn-primary btn-lg btn-block" onclick="startRide()" value="시작하기">
 			</div>
 			<div id="endBtnArea" style="display: none">
-				<input type="button" class="btn btn-primary btn-lg btn-block" onclick="saveData()" value="종료하기">
+				<input type="button" class="btn btn-primary btn-lg btn-block" onclick="endRide()" value="종료하기">
 			</div>
 			
 			<div id="regMyCourseBtn" style="display: none">
@@ -188,7 +199,8 @@ font-family: 'Exo', sans-serif;
 	    	if(endPointChk==0){
 	    		alert('도착지를 지정해주세요!')
 	    	}else{
-	    		findRoad();
+	    		startTime();
+	    		movingLocation();
 	    		$('#startBtnArea').css("display", "none");
 		    	$('#endBtnArea').css("display", "block");
 		    	
@@ -202,9 +214,8 @@ font-family: 'Exo', sans-serif;
         var startLonLat; //시작지점
         var endLonLat; //끝지점
         var direct = new Object(); // startPoint와 endPoint 값을 저장하고 있는 경로 객체
-        var tDistance; //거리
-        var tTime; //소요시간
-		var endPointChk = 0; //목적지가 정상적으로 찾아졌는지를 확인하는 함수
+		var myCourse = new Object(); // 나의 코스 정보를 저장 
+        var endPointChk = 0; //목적지가 정상적으로 찾아졌는지를 확인하는 함수
 		var path = '<c:url value="/record" />';
 		
         // 1. 지도 띄우기
@@ -216,17 +227,21 @@ font-family: 'Exo', sans-serif;
                 width: '100%', // map의 width 설정
                 height: '400px' // map의 height 설정
             });
+            
+            DrawLine.vectorLayer2 = new Tmap.Layer.Vector('TmapVectorLayer');
+            seoulBikeLayer = new Tmap.Layer.Markers();
+            routeLayer = new Tmap.Layer.Vector("route"); // 루트를 표시하는 백터 레이어 생성
             markerStartPointLayer = new Tmap.Layer.Markers();
             markerEndPointLayer = new Tmap.Layer.Markers();
             markersLayer = new Tmap.Layer.Markers();
-            seoulBikeLayer = new Tmap.Layer.Markers();
-            routeLayer = new Tmap.Layer.Vector("route"); // 루트를 표시하는 백터 레이어 생성
-
+            
             map.addLayer(markerStartPointLayer);
             map.addLayer(markerEndPointLayer);
-            map.addLayer(markersLayer);
+            map.addLayers([DrawLine.vectorLayer2]); // 지도에 백터 레이어 추가           
             map.addLayer(seoulBikeLayer);
-
+            map.addLayer(markersLayer);  
+            
+            DrawLine.initData(); // 포인트 데이터 초기화  
             getStartPoint();
         }
 
@@ -260,8 +275,6 @@ font-family: 'Exo', sans-serif;
                     var startPoint = new Tmap.LonLat(lon, lat).transform(PR_4326, PR_3857);
                     direct.startPoint = startPoint;
 
-                    $('#startPoint').val("나의 위치:  " + reverseGeo(lonlat.lon, lonlat.lat));
-
                 }, function(error) {
                 	alert(error);
                 });
@@ -272,7 +285,7 @@ font-family: 'Exo', sans-serif;
 
         //검색 시에 마커를 찍는 함수입니다.
         function addMarker(options) {
-
+        	
             var size = new Tmap.Size(12, 19); //아이콘 크기입니다.
             var offset = new Tmap.Pixel(-(size.w / 2), -size.h); //아이콘 중심점입니다.
             var icon = new Tmap.Icon("http://tmapapis.sktelecom.com/upload/tmap/marker/pin_b_s_simple.png", size, offset); //마커 아이콘입니다.
@@ -291,39 +304,46 @@ font-family: 'Exo', sans-serif;
                 "<div style='position: relative; padding-top: 5px; display:inline-block'>" +
                 "<div style='display:inline-block; margin-left:5px; vertical-align: top;'>" +
                 "<span style='font-size: 12px; margin-left:2px;'>" +
-                "<input type=\"button\" id=\"endBtn\" onclick=\"setEndPoint(" + lon + "," + lat + ")\"value=\"도착지로 지정\">" +
+                "<button type='button' class='btn btn-primary btn-sm' onclick='setEndPoint(" + lon + "," + lat + ")'>" +
+                "도착지로 지정" +
+                "</button>" +
                 "</span>" +
                 "</div>" +
                 "</div>";
 
-            var popup = new Tmap.Popup("p1", options.lonlat, new Tmap.Size(120, 50), content, true);
-            popup.setBorder("1px solid #8d8d8d"); //popup border 조절
-            popup.autoSize = true; //popup 사이즈 자동 조절		                         
+            var popup = new Tmap.Popup("p1", options.lonlat, new Tmap.Size(250, 70), content, true);
+            popup.setBorder("1px solid #8d8d8d"); //popup border 조절                         
             map.addPopup(popup); //map에 popup 추가
             popup.hide();
 
+            var endLocation; 
+            
             markers.events.register("click", popup, onOverMarker);
-            markers.events.register("touchstart", popup, onOverMarker);
+            markers.events.register("touchstart", endLocation, onTouchMarker);
+            map.events.register("mouseup", popup, onOutMarker);
+            
             //마커를 클릭했을 때 발생하는 이벤트 함수입니다.
             function onOverMarker(evt) {
                 this.show(); //마커를 클릭하였을 때 팝업이 보입니다.
-                options.select = 1;
-
             }
+            //앱에서 실행했을 때의 이벤트 함수
+			function onTouchMarker(){
+				endLocation = confirm(options.name + "\n도착지로 설정하시겠습니까?");
+				if(endLocation == true){
+					setEndPoint(lon, lat);
+				}
+            }    				
 
-            map.events.register("mouseup", popup, onOutMarker);
-            map.events.register("touchstart", popup, onOutMarker);
             //지도를 클릭했을 때 발생하는 이벤트 함수입니다.
             function onOutMarker(evt) {
-                this.hide(); //지도를 클릭하였을 때 팝업이 사라집니다.
-                options.select = 0;
+                this.hide();
             }
-
         }
 
         //데이터 로드가 섬공적으로 완료 되었을 때 발생하는 함수입니다.
         function onCompleteTData(e) {
 
+        	console.log(e);
             markersLayer.clearMarkers();
             markersLayer.setVisibility(true);
 
@@ -334,11 +354,12 @@ font-family: 'Exo', sans-serif;
                     var name = jQuery(this).find("name").text(); //name의 값을 추출 합니다.
                     var lon = jQuery(this).find("frontLon").text(); //lon 값을 추출 합니다.
                     var lat = jQuery(this).find("frontLat").text(); //lat 값을 추출 합니다.
-                    var options = {
-                        name: name, //마커의 라벨 옵션 설정
-                        lonlat: new Tmap.LonLat(lon, lat), //마커의 좌표 옵션 지정
-                    };
-                    addMarker(options); //위에서 만들어 놓은 마커를 등록하는 함수 실행합니다.
+					var options = {
+                            name: name, //마커의 라벨 옵션 설정
+                            lonlat: new Tmap.LonLat(lon, lat), //마커의 좌표 옵션 지정
+                            touched: 0
+                       };
+			         addMarker(options); //위에서 만들어 놓은 마커를 등록하는 함수 실행합니다.
                 });
             }
             map.zoomToExtent(markersLayer.getDataExtent()); //map의 zoom을 마커 레이어의 해상도에 맞게 변경합니다.
@@ -346,7 +367,7 @@ font-family: 'Exo', sans-serif;
 
         /*********************************************endPoint를 direct에 저장하고, endPoint의 Marker를 변경************************************************/
         function setEndPoint(lon, lat) {
-
+        	
             //기존에 등록했던 endPointMarker 삭제
             markerEndPointLayer.clearMarkers();
 
@@ -363,16 +384,18 @@ font-family: 'Exo', sans-serif;
 
             var size = new Tmap.Size(24, 38); //아이콘 크기 설정
             var offset = new Tmap.Pixel(-(size.w / 2), -size.h); //아이콘 중심점 설정
-            var icon = new Tmap.IconHtml('<img src=http://tmapapis.sktelecom.com/upload/tmap/marker/pin_r_m_e.png />', size, offset); //마커 아이콘 설정
+            var icon = new Tmap.IconHtml('<img src=http://tmapapis.sktelecom.com/upload/tmap/marker/pin_r_m_g.png />', size, offset); //마커 아이콘 설정
             var marker_e = new Tmap.Marker(endPoint, icon); //설정한 좌표를 "EPSG:3857"로 좌표변환한 좌표값으로 설정합니다.
             markerEndPointLayer.addMarker(marker_e); //마커 레이어에 마커 추가
             
             endPointChk = 1;
+            
+            findRoad();
         }
 
         /***********************************************************************EndPoint를 검색하는 함수!!!!!*********************************************************/
         function searchPOIEnd() {
-
+        	
         	$("#customSwitch1").attr("checked", false);
 			
             //기존 endPoint로 지정했던 마커를 삭제한다.
@@ -402,7 +425,7 @@ font-family: 'Exo', sans-serif;
 
         /********************************************티맵 경로찾기***********************************************************/
         function findRoad() {
-
+        	
             routeLayer.setVisibility(true);
             
             var startX = direct.startPoint.lon;
@@ -453,11 +476,6 @@ font-family: 'Exo', sans-serif;
                     xmlDoc = $.parseXML(prtclString),
                         $xml = $(xmlDoc),
                         $intRate = $xml.find("Document");
-
-                    tDistance = ($intRate[0].getElementsByTagName("tmap:totalDistance")[0].childNodes[0].nodeValue / 1000).toFixed(1); //총 거리(km)
-                    tTime = ($intRate[0].getElementsByTagName("tmap:totalTime")[0].childNodes[0].nodeValue / 60).toFixed(0); //총 시간(분)
-
-                    console.log("거리: " + tDistance + ",시간: " + tTime);
 
                     prtcl = new Tmap.Format.KML({
                         extractStyles: true,
@@ -560,41 +578,36 @@ font-family: 'Exo', sans-serif;
 
             return result;
         }
-        
-        //데이터 저장하기!!!
-        function saveData() {
-        	
-        	$('#todayDistance').html(tDistance);
-        	$('#todayTime').html(tTime);
+      	
+        function changeCss(){
+        	$('#clock').css("display", "none");
+        	$('#myRecord').css("display", "block");
+        	$('#todayDistance').html(DrawLine.totDistance.toFixed(2));
+        	$('#todayTime').html(exTime);
         	$('#endBtnArea').css("display", "none");
         	$('#regMyCourseBtn').css("display", "block");
-        	
+   
         	$("#searchEndPoint").removeAttr("disabled");
-        	$("#endPoint").removeAttr("disabled");         
-            
+        	$("#endPoint").removeAttr("disabled"); 
+        }
+        
+        //데이터 저장하기!!!
+        function saveData() {     	        
             $.ajax({
                 url: path,
                 type: 'POST',
                 data: {
-                    r_riding_time: tTime,
-                    r_riding_km: tDistance,
+                    r_riding_time: exTime,
+                    r_riding_km: DrawLine.totDistance.toFixed(2),
                     r_startPoint_lon: direct.startPoint.lon,
                     r_startPoint_lat: direct.startPoint.lat,
                     r_endPoint_lon: direct.endPoint.lon,
                     r_endPoint_lat: direct.endPoint.lat
                 },
-                success: function(data) {
-                    if (data == "success") {
-                        var myCourse = confirm('나의 코스에 저장하시겠습니까?');
-                        if (myCourse == true) {
-                           $("#myCourseModal").modal();
-                        }
-                    }
+                success: function(data) {                 
                 }
             });
         }
-		
-        
         
         function regMyCourse() {
 
@@ -603,15 +616,15 @@ font-family: 'Exo', sans-serif;
             
             }else{
             	$.ajax({
-                    url: path + '/myCourse',
+                    url: '<c:url value="/myCourse" />',
                     type: 'POST',
                     data: {
-                        mc_distance: tDistance,
-                        mc_time: tTime,
+                        mc_distance: DrawLine.totDistance.toFixed(2),
+                        mc_time: exTime,
                         mc_startPoint_lon: direct.startPoint.lon,
                         mc_startPoint_lat: direct.startPoint.lat,
-                        mc_endPoint_lon: direct.endPoint.lon,
-                        mc_endPoint_lat: direct.endPoint.lat,
+                        mc_endPoint_lon: myCourse.endPoint.lon,
+                        mc_endPoint_lat: myCourse.endPoint.lat,
                         mc_descript:  $('#myCourse_descript').val(),
                         mc_name: $('#myCourse_name').val()
                     },
@@ -635,59 +648,55 @@ font-family: 'Exo', sans-serif;
                 if($("#customSwitch1").is(":checked")){
                 	
                 	//따릉이 이용하기를 누르면, 
+                	routeLayer.setVisibility(false);
                 	markerEndPointLayer.clearMarkers(); //endPointMarker 해제
                 	markersLayer.clearMarkers(); // endPoint 검색한 Markers 해제
+                	
                 	direct.endPoint = null; //도착지 지정했던 값 null로 변경
                 	endPointChk=0; //도착지 지정했는지 체크했던 값 변경
-                	
-                	
-                	var startNum = 1;
-                	var endNum = 1000; 
-                	var startNum2 = 1001;
-                	var endNum2 = 2000;
 
                 		$.ajax({
-                            url: "http://openapi.seoul.go.kr:8088/574c4c6e5173757038395565797a4f/json/bikeList/"+startNum+"/"+endNum+"/\"",
-                            type: 'GET',
+                			url: path + "/seoulBikeFirst",
+                			type: 'GET',
                             success: function(data) {
-								alert(data);
-                            	var connectStatues = data.rentBikeStatus.RESULT.CODE;
-                            	var rowData = data.rentBikeStatus.row;
+                            	
                             	var lon;
     							var lat;
     							var stationName;
     							var parkingBikeTotCnt;
-                            	for(var i = 0; i < rowData.length; i++){
+                            	
+    							for(var i = 0; i < data.length; i++){
                             		
-                                    lon = rowData[i].stationLongitude;
-                            		lat = rowData[i].stationLatitude;
-                            		stationName = rowData[i].stationName;
-                            		parkingBikeTotCnt = rowData[i].parkingBikeTotCnt
+                                    lon = data[i].stationLongitude;
+                            		lat = data[i].stationLatitude;
+                            		stationName = data[i].stationName;
+                            		parkingBikeTotCnt = data[i].parkingBikeTotCnt;
                             		   		       
                                     seoulBikeAroundMe(lon, lat, stationName, parkingBikeTotCnt);
                                     
                             	} 
-                            	console.log("첫번째 따릉이 정보 정상호출: " +connectStatues);
                             }
                     	});
                 		
                 		$.ajax({
-                            url: "http://openapi.seoul.go.kr:8088/574c4c6e5173757038395565797a4f/json/bikeList/"+startNum2+"/"+endNum2+"/\"",
+                			url: path + "/seoulBikeSecond",
                             type: 'GET',
                             success: function(data) {
-                                                   	
-                            	var connectStatues = data.rentBikeStatus.RESULT.CODE;
-                            	var rowData = data.rentBikeStatus.row;
+
                             	var lon;
     							var lat;
-                            	for(var i = 0; i < rowData.length; i++){
+    							var stationName;
+    							var parkingBikeTotCnt;
+
+                            	for(var i = 0; i < data.length; i++){
                             		
-                            		lon = rowData[i].stationLongitude;
-                            		lat = rowData[i].stationLatitude;
+                            		lon = data[i].stationLongitude;
+                            		lat = data[i].stationLatitude;
+                            		stationName = data[i].stationName;
+                            		parkingBikeTotCnt = data[i].parkingBikeTotCnt;
                             		                            		
-                            		seoulBikeAroundMe(lon, lat);                                    
+                            		seoulBikeAroundMe(lon, lat, stationName, parkingBikeTotCnt);                                   
                             	} 
-                            	console.log("두번째 따릉이 정보 정상호출: " + connectStatues);
                             }
                     	});
  	
@@ -774,7 +783,400 @@ font-family: 'Exo', sans-serif;
             	$(this).find('form')[0].reset();
            });
         });
+	/*******************************타임워치********************************************/
+	 	var h = 0;
+        var m = 0;
+        var s = 0;
+		var timetime;
+        var exTime;
+        
+        function calcTime() {
 
+            s = parseInt(s);
+            m = parseInt(m);
+            h = parseInt(h);
+            
+            s += 1;
+
+            if (s == 60) {
+                m += 1;
+                s = 1;
+            }
+            if (m == 60) {
+                h += 1;
+                m = 1;
+            }                  
+        }
+
+        
+        function addZeros(num, digit) { // 자릿수 맞춰주기
+            var zero = '';
+            num = num.toString();
+            if (num.length < digit) {
+                for (i = 0; i < digit - num.length; i++) {
+                    zero += '0';
+                }
+            }
+            return zero + num;
+        }
+        
+        function startTime(){
+            calcTime();
+            var hour = addZeros(h, 2);
+            var minute = addZeros(m, 2);
+            var second = addZeros(s, 2);           
+            timetime = setTimeout("startTime()", 1000);  
+            $('#clock').html(hour + ' : ' + minute + ' : ' + second);            
+        }
+
+        function stop(){
+        	clearTimeout(timetime);
+        	exTime = ((h*360) + (m*60) + s) / 60;
+        	exTime = exTime.toFixed(2);
+        }
+        
+/***********************************************************나의 위치*********************************************************/
+ 		
+ 		//각종 변수들
+        var DrawLine = DrawLine || {}; // NameSpace
+
+        DrawLine.CNT_BUFF = 10; // 매끄러운 매칭을 위한 버퍼 포인트 개수
+        DrawLine.SPLIT_VALUE = 20; // Road API 로 한번에 요청할 포인트 개수. 최대 100개 까지 가능  ex)샘플코드에서는 SPLIT_VALUE 를 10으로 가정했을 때 요청 포인트 개수가 총 25개라면 API 가 3번 호출됨
+        DrawLine.REQ_LIMIT_PER_SEC = 1; // API 초당 요청 제한건수
+
+        DrawLine.vectorLayer2 = null; // 이동한도로찾기 API 사용후 벡터 레이어
+        DrawLine.arrPoint = null; // 포인트 배열 (resource)
+
+        DrawLine.totDistance = 0; // 매칭된 거리 (단위: m)
+        DrawLine.totPointCount = 0; // 매칭된 좌표의 개수 (단위: count)
+        DrawLine.arrMatchedId = []; // 매칭된 링크 아이디 (중복제거)
+
+        DrawLine.currentIndex = 0;
+        DrawLine.startSourceIndex = 0; // 버퍼 포인트(이전 포인트의 일부를 포함하여 요청)를 제외한 실제 포인트 시작 인덱스
+
+        DrawLine.cntReqApi = 0; // API 요청횟수
+        DrawLine.lastMatchedLocation = null; // 이전 마지막 포인트를 저장( 이후 포인트와 연결하기 위함 )
+ 		
+        var lon;
+        var lat;
+        var repeat;
+        
+ 		//나의 위치를 구해주는 함수
+ 		function myLocation() {
+            if (navigator.geolocation) {
+                // GeoLocation을 이용해서 접속 위치를 얻어옵니다
+                navigator.geolocation.getCurrentPosition(function(position) {
+
+                    // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
+                    var lat = position.coords.latitude;
+                    var lon = position.coords.longitude;
+                  
+                    DrawLine.arrPoint.push(lon);
+                    DrawLine.arrPoint.push(lat);
+                    
+                    console.log(lon + "," + lat);               
+                });
+            }
+        }
+	
+		//나의 위치를 계속 해서 기록 하는 함수
+        function movingLocation() {
+			
+        	myLocation();
+        	
+            repeat = setInterval(myLocation, 10000);
+        }
+		
+		//위치 기록 종료
+        function stopMyLocation(){
+        	if (navigator.geolocation) {
+        		navigator.geolocation.getCurrentPosition(function(position) {
+       
+                    var lat = position.coords.latitude;
+                    var lon = position.coords.longitude;
+                    var PR_3857 = new Tmap.Projection("EPSG:3857"); // Google Mercator 좌표계인 EPSG:3857
+                    var PR_4326 = new Tmap.Projection("EPSG:4326"); // WGS84 GEO 좌표계인 EPSG:4326        
+                    
+                    var endPoint = new Tmap.LonLat(lon, lat).transform(PR_4326, PR_3857);
+                    
+                    myCourse.endPoint = endPoint;
+                    
+                    console.log("끝지점 " + endPoint);
+        		}); 
+        	}
+			
+            clearInterval(repeat);
+        }
+        
+        /* 내가 이동한 좌표 그리기 함수 */
+        function drowMyRoad(){
+			setTimeout(function() { // 지도를 띄우고 API 를 호출하기 위해 딜레이 줌
+               DrawLine.splitPoint(); // 포인트 데이터 나눠서 요청하기 ( LoadApi 한번에 요청 가능한 개수 100개 제한 )
+            }, 1000);
+        }
+         
+        /**
+         * 포인트 개수 나누기 ( LoadApi request limit 100 )
+         */
+        DrawLine.splitPoint = function() {
+            var cntAllPoint = DrawLine.arrPoint.length; // 포인트 배열 갯수 구하기
+            var pointString = ""; // LoadApi 에 요청할 포인트 스트링
+            var arrMatchedPoint = {}; // response 결과
+            var i, j, k, cntPointString = 0;
+
+            for (i = DrawLine.currentIndex; i < cntAllPoint; i += 2) {
+                // 포인트 스트링 만들기
+                // 경도와 위도 사이는 ‘,’ 좌표와 좌표 사이는 ‘|’ 로 구분 지어 요청 합니다.
+                if (pointString != "") {
+                    pointString += '|';
+                }
+                pointString += DrawLine.arrPoint[i] + ',' + DrawLine.arrPoint[i + 1]; // ex) 127.925710,37.557086|127.954464,37.556542
+                cntPointString++; // 포인트 스트링 개수 카운트
+
+                var coord = new Tmap.LonLat(DrawLine.arrPoint[i], DrawLine.arrPoint[i + 1]).transform("EPSG:4326", "EPSG:3857");
+
+                if (cntPointString == DrawLine.SPLIT_VALUE || (i + 2) >= cntAllPoint) {
+                    // 포인트 개수가 제한 수에 도달했다면 || 반복문의 마지막 항목 이라면 할 작업 
+
+                    // 0. LoadApi 요청
+                    DrawLine.reqLoadApi(pointString, function(response) {
+                        DrawLine.cntReqApi++; // API 요청횟수 카운트
+
+                        // LoadApi Response 받은 후 작업
+                        var matchedId = ""; // 매칭된 아이디
+                        var objNextMatchedLocation = {}; // 바로 직전에 매칭된 좌표
+                        var objSourceLocation = {}; // 요청한 좌표
+                        var lastSourceIndex = -1; // 요청 포인트 인덱스 번호
+                        var arrPointForLine = []; // 선으로 그려질 포인트
+                        var arrPointForMarker = []; // 마커로 그려질 포인트
+                        var arrPointForCalDistance = []; // 거리 계산을 위한 포인트
+
+                        // 결과 값이 존재한다면 실행할 작업
+                        if (response && response.resultData.matchedPoints) {
+                            arrMatchedPoint = response.resultData.matchedPoints; // 매칭된 정보 데이터(matchedPoints)를 arrMatchedPoint 배열에 담는다.
+                            for (j = 0; j < arrMatchedPoint.length; j++) {
+                                objMatchedLocation = arrMatchedPoint[j].matchedLocation;
+                                objSourceLocation = arrMatchedPoint[j].sourceLocation;
+
+                                // 1. 매칭 아이디 추가 (중복제거)
+                                //----------------------------------------------------------------
+                                matchedId = arrMatchedPoint[j].linkId + "_" + arrMatchedPoint[j].idxName;
+                                for (k = 0; k < DrawLine.arrMatchedId.length; k++) {
+                                    if (DrawLine.arrMatchedId[k] == matchedId) {
+                                        break;
+                                    }
+                                }
+                                if (k >= DrawLine.arrMatchedId.length) {
+                                    // 중복된 아이디가 존재하지 않는다면 할 작업
+                                    DrawLine.arrMatchedId.push(matchedId); // 매칭된 아이디 목록에 추가
+                                }
+                                //----------------------------------------------------------------
+
+                                if (arrMatchedPoint[j].sourceIndex >= 0) {
+                                    // sourceIndex 가 존재한다면 마지막 sourceIndex 갱신
+                                    lastSourceIndex = arrMatchedPoint[j].sourceIndex;
+                                }
+
+                                // 2. 라인으로 그려질 소스 포인트 리스트 만들기
+                                if (objSourceLocation) {
+                                    arrPointForMarker.push(new Tmap.Geometry.Point(objSourceLocation.longitude, objSourceLocation.latitude).transform("EPSG:4326", "EPSG:3857")); // 좌표변환
+                                }
+
+                                // 3-1. 라인으로 그려질 매칭 포인트 리스트 만들기
+                                // 한번에 모든 좌표를 요청하면 문제가 없겠지만 100개 이상의 좌표를 여러번 나눠서 요청해야할 경우 요청과 요청 사이의 매칭된 링크가 어긋날 수 있다.
+                                // 이를 보정하기 위해 이전 요청 좌표의 일부(버퍼)를 함깨 요청하고 매 요청의 곂치는 부분의 결과를 (버퍼사이즈/2 만큼)덜 그림으로써 좀더 매끄러운 결과를 얻을 수 있다.
+                                if (arrPointForLine.length == 0 && DrawLine.lastMatchedLocation) {
+                                    // 이전 요청의 마지막 매칭좌표가 존재한다면 현재 매칭 좌표라인의 맨 앞에 추가 ( 이전 요청 라인과 이어지게 하기 위함 )
+                                    arrPointForLine.push(new Tmap.Geometry.Point(DrawLine.lastMatchedLocation.longitude, DrawLine.lastMatchedLocation.latitude).transform("EPSG:4326", "EPSG:3857")); // 좌표변환
+                                    arrPointForCalDistance.push(DrawLine.lastMatchedLocation); // 거리 계산을 위해 저장
+                                    DrawLine.lastMatchedLocation = null;
+                                }
+                                if (cntAllPoint / 2 <= DrawLine.SPLIT_VALUE) {
+                                    // 1) 처음이자 마지막 요청이라면(전체 요청 좌표개수가 분할요청 기준보다 적다면) => 매칭된 좌표를 모두 라인으로 그림
+                                    if (objMatchedLocation) {
+                                        arrPointForLine.push(new Tmap.Geometry.Point(objMatchedLocation.longitude, objMatchedLocation.latitude).transform("EPSG:4326", "EPSG:3857")); // 좌표변환
+                                        arrPointForCalDistance.push(objMatchedLocation); // 거리 계산을 위해 저장
+                                    }
+                                } else if (DrawLine.cntReqApi == 1) {
+                                    // 2) 처음 요청이면서 이후에 요청이 있을 예정이라면 => 뒤쪽좌표 중 버퍼의 절반 만큼 그리지 않음
+                                    if (objMatchedLocation && lastSourceIndex < (cntPointString - (DrawLine.CNT_BUFF / 2))) {
+                                        arrPointForLine.push(new Tmap.Geometry.Point(objMatchedLocation.longitude, objMatchedLocation.latitude).transform("EPSG:4326", "EPSG:3857")); // 좌표변환
+                                        DrawLine.lastMatchedLocation = objMatchedLocation; // 이후 API 요청결과와 라인을 이어가기 위해 마지막 포인트 저장
+                                        arrPointForCalDistance.push(objMatchedLocation); // 거리 계산을 위해 저장
+                                    }
+                                } else if (DrawLine.cntReqApi > 1 && (i + 2) >= cntAllPoint) {
+                                    // 3) 처음이 아니면서 마지막 API 요청이라면 => 앞쪽좌표 중 버퍼의 절반 만큼 그리지 않음
+                                    if (objMatchedLocation && lastSourceIndex >= (DrawLine.CNT_BUFF / 2)) {
+                                        arrPointForLine.push(new Tmap.Geometry.Point(objMatchedLocation.longitude, objMatchedLocation.latitude).transform("EPSG:4326", "EPSG:3857")); // 좌표변환
+                                        DrawLine.lastMatchedLocation = objMatchedLocation; // 이후 API 요청결과와 라인을 이어가기 위해 마지막 포인트 저장
+                                        arrPointForCalDistance.push(objMatchedLocation); // 거리 계산을 위해 저장
+                                    }
+                                } else if (DrawLine.cntReqApi > 1) {
+                                    // 4) 처음이 아니면서 이후에 API 요청이 있을 예정이라면 => 앞쪽좌표 중 버퍼의 절반, 뒤쪽좌표 중 버퍼의 절반 만큼 그리지 않음
+                                    if (objMatchedLocation && lastSourceIndex >= (DrawLine.CNT_BUFF / 2) && lastSourceIndex < (cntPointString - (DrawLine.CNT_BUFF / 2))) {
+                                        arrPointForLine.push(new Tmap.Geometry.Point(objMatchedLocation.longitude, objMatchedLocation.latitude).transform("EPSG:4326", "EPSG:3857")); // 좌표변환
+                                        DrawLine.lastMatchedLocation = objMatchedLocation; // 이후 API 요청결과와 라인을 이어가기 위해 마지막 포인트 저장
+                                        arrPointForCalDistance.push(objMatchedLocation); // 거리 계산을 위해 저장
+                                    }
+                                }
+                            }
+
+                            // 3-2. 매칭 포인트 리스트로 라인 그리기
+                            // 요청한 좌표와 매칭되는 좌표를 사용해 라인을 그려줍니다.(파랑색)
+                            // 마커를 추가합니다.
+                            var lat = DrawLine.arrPoint[DrawLine.arrPoint.length-1];
+                    		var lon = DrawLine.arrPoint[DrawLine.arrPoint.length-2];
+
+                    		var PR_3857 = new Tmap.Projection("EPSG:3857"); // Google Mercator 좌표계인 EPSG:3857
+                    		var PR_4326 = new Tmap.Projection("EPSG:4326"); // WGS84 GEO 좌표계인 EPSG:4326        
+                    		var lonlat = new Tmap.LonLat(lon, lat).transform(PR_4326, PR_3857);
+
+                    		var size = new Tmap.Size(24, 38);
+                    		var offset = new Tmap.Pixel(-(size.w / 2), -(size.h));
+                    		var icon = new Tmap.IconHtml('<img src=http://tmapapis.sktelecom.com/upload/tmap/marker/pin_b_m_e.png />', size, offset);
+                    		var marker = new Tmap.Marker(lonlat, icon);
+                    		
+                    		markerEndPointLayer.addMarker(marker);
+                            DrawLine.drawLine(arrPointForLine);
+
+                            // 4. 매칭된 좌표의 거리 구하기
+                            for (k = 0; k < (arrPointForCalDistance.length - 1); k++) {
+                                DrawLine.totDistance += DrawLine.calDistance(arrPointForCalDistance[k].longitude, arrPointForCalDistance[k].latitude, arrPointForCalDistance[k + 1].longitude, arrPointForCalDistance[k + 1].latitude);
+                            }
+                            
+                            // 거리 계산용 포인트 리스트 초기화
+                            arrPointForCalDistance = [];
+                        }
+                    });
+
+                    if ((i + 2) < cntAllPoint) {
+                        // 마지막 항목이 아니라면 버퍼 포인트 추가
+                        pointString = ""; // LoadAPI 의 파라미터 초기화
+                        cntPointString = 0; // 포인트 스트링 개수 초기화(LoadAPI 에 포인트 분할 요청을 위한 카운트)
+                        i -= (DrawLine.CNT_BUFF * 2); // 매끄러운 링크 매칭을 위해 이전 일부 포인트를 포함한 매칭을 한다. (매칭 버퍼)
+                        DrawLine.startSourceIndex = DrawLine.CNT_BUFF; // 매칭 버퍼 포인트를 제외하고 매칭 좌표 수를 카운트 하기 위한 변수
+                        
+                    }
+                    DrawLine.currentIndex = i;
+                    console.log("총 거리 : " + DrawLine.totDistance.toFixed(2) + "m");
+                	changeCss();
+                	saveData();  
+                }             
+            }
+        }
+
+        /**
+         * 라인 그리기
+         */
+        DrawLine.drawLine = function(pointList) {
+
+            // 지도상에 그려질 스타일을 설정합니다.
+            var lineStyle = {
+                strokeWidth: 6,
+                strokeColor: "#0000FF"
+            };
+
+            lineString = new Tmap.Geometry.LineString(pointList); // 라인 스트링 생성
+            lineFeature = new Tmap.Feature.Vector(lineString, null, lineStyle); // 백터 생성
+            DrawLine.vectorLayer2.addFeatures([lineFeature]); // 백터를 백터 레이어에 추가
+            
+
+        }
+
+
+        /**
+         * 로드 매칭 API 요청
+         */
+        DrawLine.reqLoadApi = function(pointString, callback) {
+            var url = 'https://apis.openapi.sk.com/tmap/road/matchToRoads?version=1&appKey=6d5877dc-c348-457f-a25d-46b11bcd07a9'; // 이동한 도로 찾기 api 요청 url입니다.
+
+            $.ajax({
+                type: 'POST',
+                contentType: "application/x-www-form-urlencoded",
+                url: url,
+                data: {
+                    "responseType": "1", // 1:전체 데이터 요청, 2:요청좌표 및 매치된 좌표를 제외한 데이터 요청
+                    "coords": pointString // 좌표계는 WGS84GEO, 매핑에 사용될 좌표 목록입니다.  경도와 위도 사이는 "," 좌표와 좌표 사이에는 "|"로 구분지어 요청합니다. 
+                },
+                async: false,
+                success: function(data) {
+                    callback(data);
+                }
+            });
+        }
+
+        /**
+         * 위경도로 거리 구하기
+         */
+        DrawLine.calDistance = function(lon1, lat1, lon2, lat2) {
+            var theta, dist;
+
+            if (lon1 == lon2 && lat1 == lat2)
+                return 0;
+
+            theta = lon1 - lon2;
+            dist = Math.sin(DrawLine.deg2rad(lat1)) * Math.sin(DrawLine.deg2rad(lat2)) + Math.cos(DrawLine.deg2rad(lat1)) *
+                Math.cos(DrawLine.deg2rad(lat2)) * Math.cos(DrawLine.deg2rad(theta));
+            dist = Math.acos(dist);
+            dist = DrawLine.rad2deg(dist);
+
+            dist = dist * 60 * 1.1515;
+            dist = dist * 1.609344; // 단위 mile 에서 km 변환
+            dist = dist * 1000.0; // 단위  km 에서 m 로 변환
+
+            return Number(Number(dist).toFixed(2));
+        }
+
+        /**
+         * 주어진 도(degree) 값을 라디언으로 변환
+         */
+        DrawLine.deg2rad = function(deg) {
+            return (deg * Math.PI / 180);
+        }
+
+        /**
+         * 주어진 라디언(radian) 값을 도(degree) 값으로 변환
+         */
+        DrawLine.rad2deg = function(rad) {
+            return (rad * 180 / Math.PI);
+        }
+        
+        /**
+         * 포인트 배열 초기화
+         */
+        DrawLine.initData = function() {
+            DrawLine.arrPoint = [];          
+        }
+
+        function endRide(){
+        var endLat = DrawLine.arrPoint[DrawLine.arrPoint.length-1];
+     	var endLon = DrawLine.arrPoint[DrawLine.arrPoint.length-2];
+   		var myLon = direct.endPoint.lon;
+   		var myLat = direct.endPoint.lat;
+   		 
+       	 var distance = Math.sqrt(Math.pow((endLon-myLon),2) + Math.pow((endLat-myLat),2));
+    		 var realDistance = distance.toFixed(3);
+
+   		 console.log(":::::거리는 " + realDistance);
+   		 
+       	 if(realDistance < 0.001){ //1km내면 종료
+       		 alert('라이딩 종료!');
+       		 //라이딩 종료
+             stop(); // 타이머 종료
+             stopMyLocation(); //내 위치 받기 종료
+             drowMyRoad(); //내가 이동한 위치 그리기   	
+       		       		
+       	 } else{
+       		var askEnd = confirm('목표지점에 도달하지 못했습니다. 종료하시겠습니까?');
+
+       		if(askEnd == true){
+       			stop(); // 타이머 종료
+                stopMyLocation(); //내 위치 받기 종료
+                drowMyRoad(); //내가 이동한 위치 그리기   	
+       		}            
+       	 }
+       	 
+   	 }
     </script>
     
     <!-- 푸터 시작 -->

@@ -1,7 +1,6 @@
 package com.teamrun.runbike.qna.service;
 
 import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Service;
@@ -34,16 +33,21 @@ public class BoardEditService implements BoardService{
 	
 	
 	//수정하기
-	public int edit(RequestMemberEdit editRequest, HttpServletRequest request) {
+	public int edit(RequestMemberEdit editRequest) {
 
 		dao = template.getMapper(BoardDaoInterface.class);
+		System.out.println("idx : "+editRequest.getU_idx());
 		
 		System.out.println("BoardEditService: "+editRequest);
 	
 		Message message = editRequest.toMessage();
 		System.out.println("수정서비스 :"+message);
 		
+		
+		System.out.println("메시지"+message.toString());
+		
 		int rCnt = dao.boardUpdate(message);
+		System.out.println("rCnt : "+ rCnt);
 		return rCnt;
 	}
 	

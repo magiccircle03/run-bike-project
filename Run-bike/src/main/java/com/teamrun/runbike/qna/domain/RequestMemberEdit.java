@@ -60,7 +60,7 @@ public class RequestMemberEdit {
 		info.setQ_title(q_title);
 		info.setQ_content(q_content);
 		
-		System.out.println(info);
+		System.out.println("memberEdit :"+info);
 		
 		return info;
 	}

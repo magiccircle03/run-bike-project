@@ -83,7 +83,7 @@ p{
 				<c:set var="serial" value="${myBadgelist.serial}" />
 				<c:choose>
 					<c:when test="${1 eq serial}">
-						<div class="col-4" id="badgeArea">
+						<div class="col-md-4 col-sm-6" id="badgeArea">
 							<img alt="myBadge"
 								src="<c:url value='/uploadfile/color_badgePhoto/${myBadgelist.b_photo}'/>"
 								style="width: 150px; height: 147px;">
@@ -91,7 +91,7 @@ p{
 						</div>
 					</c:when>
 					<c:when test="${0 eq serial}">
-						<div class="col-4" id="badgeArea">
+						<div class="col-md-4 col-sm-6" id="badgeArea">
 							<img alt="myBadge"
 								src="<c:url value='/uploadfile/cs_badgePhoto/${myBadgelist.cb_photo}'/>"
 								style="width: 150px; height: 147px;">

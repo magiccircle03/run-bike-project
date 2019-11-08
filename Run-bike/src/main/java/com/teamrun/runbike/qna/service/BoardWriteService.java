@@ -1,6 +1,5 @@
 package com.teamrun.runbike.qna.service;
 
-import javax.servlet.http.HttpServletRequest;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +8,6 @@ import org.springframework.stereotype.Service;
 import com.teamrun.runbike.qna.dao.BoardDaoInterface;
 import com.teamrun.runbike.qna.domain.Message;
 import com.teamrun.runbike.qna.domain.RequestMemberWrite;
-
-
 
 
 @Service("writeService")
@@ -25,7 +22,7 @@ public class BoardWriteService implements BoardService {
 	
 	
 	//게시글 입력
-	public int write(HttpServletRequest request, RequestMemberWrite regRequest) {
+	public int write(RequestMemberWrite regRequest) {
 		
 		
 		dao = template.getMapper(BoardDaoInterface.class);

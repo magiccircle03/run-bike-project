@@ -32,7 +32,8 @@
 	<!-- Handles HTTP GET requests for /resources/** by efficiently serving 
 		up static resources in the ${webappRoot}/resources directory -->
 	<resources mapping="/resources/**" location="/resources/" />
-	<resources mapping="/assets/**" location="/assets/" />
+	<resources mapping="/uploadfile/**" location="/uploadfile/" />
+	<resources mapping="/js/**" location="/js/" />
 	<resources mapping="/images/**" location="/images/" />
 	<resources mapping="/assets/**" location="/assets/" />
 	<resources mapping="/uploadfile/**" location="/uploadfile/" />
@@ -80,7 +81,7 @@
 		<beans:property name="host" value="smtp.gmail.com" />
 		<beans:property name="port" value="587" /><!-- 465 or 25 -->
 		<beans:property name="username" value="orongeee@gmail.com" />
-		<beans:property name="password" value="gntzlzl333" />
+		<beans:property name="password" value="fntkzldlagnt2@" />
 		<beans:property name="defaultEncoding" value="utf-8" />
 		<beans:property name="javaMailProperties">
 			<beans:props>
@@ -100,7 +101,7 @@
          <mapping path="/record/**"></mapping>
          <mapping path="/party/**"></mapping>
          <mapping path="/stamp/**"></mapping>
-         <mapping path="/reward/**"></mapping>
+         <mapping path="/badge/**"></mapping>
          <mapping path="/qnaboard/**"></mapping>
          <mapping path="/adminpage/**"></mapping>
          <exclude-mapping path="/user/register/**" />

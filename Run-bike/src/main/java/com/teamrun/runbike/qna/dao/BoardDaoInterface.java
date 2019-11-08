@@ -25,7 +25,7 @@ public interface BoardDaoInterface {
 	 public Message selectMessageByNum(int q_num);
 	 //게시글 수정
 	 //public int boardUpdate(Message message);
-	 public Integer boardUpdate(Message message);
+	 public int boardUpdate(Message message);
 	 
 	 
 	 

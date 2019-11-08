@@ -37,7 +37,7 @@ public class LoginController {
 		int loginChk = 0;
 
 		loginChk = loginService.login(u_id, u_pw, request);
-
+		System.out.println("loginchk"+loginChk);
 		switch (loginChk) {
 		case 4:
 			result = "admin";

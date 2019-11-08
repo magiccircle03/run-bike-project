@@ -13,14 +13,20 @@
 <!-- Bootstrap CSS -->
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 <link rel="stylesheet" href="<c:url value='/assets/css/layout.css'/>">
-<script src="<c:url value='/assets/js/layout.js'/>"></script>
 
 <script src="https://kit.fontawesome.com/8653072c68.js"></script>
 
 <link href="//cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.4.0/css/bootstrap4-toggle.min.css" rel="stylesheet">  
 <script src="//cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.4.0/js/bootstrap4-toggle.min.js"></script>
+<!-- Toastr -->
+<link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
+<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/moonspam/NanumSquare@1.0/nanumsquare.css">
 
 <style type="text/css">
+.container{
+	font-family: 'NanumSquare', sans-serif;
+}
 .title{
 	margin:20px 0;
 }
@@ -152,6 +158,7 @@ h5{
 	height: 40px;
 	
 }
+
 </style>
 </head>
 <body>
@@ -161,10 +168,10 @@ h5{
 <!-- 해더 끝 -->
 
 <div class="container">
-
 	<!-- 숨겨진 u_idx -->
 	<input id="u_idx" name="u_idx" type="hidden" class="form-control" value="${loginInfo.u_idx}">
-	
+	<input id="u_name" name="u_name" type="hidden" class="form-control" value="${loginInfo.u_name}">
+
 	<!-- 같이하기 내비게이션 -->
 	<ul class="nav nav-pills nav-justified">
 	  <li class="nav-item">
@@ -216,11 +223,22 @@ h5{
 <%@ include file="/WEB-INF/views/frame/footer.jsp" %>
 <!-- 푸터 끝 -->
 
+<!-- 소켓 -->
+<!-- <script src="http://localhost:3000/socket.io/socket.io.js"></script> -->
+<!-- <script src="https://13.125.253.7:3000/socket.io/socket.io.js"></script> -->
+<script src="https://socket.runbike.cf/socket.io/socket.io.js"></script>
+
 <script>
 
 var xy=${partyInfo.p_XY};
 var p_num = ${partyInfo.p_num};
 var u_idx = $('#u_idx').val();// 아이디 값 세션에서 가져오기. 
+var user_name = $('#u_name').val(); // 유저 이름
+
+/* var socket = io('http://localhost:3000/rooming');   */
+/* var socket = io('https://13.125.253.7:3000/rooming'); */
+/* var socket = io('https://13.209.72.95/rooming'); */
+var socket = io('https://socket.runbike.cf/rooming');
 
 $(document).ready(function() {
 	initTmap(xy);
@@ -229,6 +247,24 @@ $(document).ready(function() {
 	showMasterArea();
 	showEndArea();
 	showCurrentPos();
+	isAllEnd();
+	//==========
+	/* 접속 되었을 때 실행 */
+	socket.on('connect', function() {
+		navigator.geolocation.getCurrentPosition(function(pos) {
+		    var latitude = pos.coords.latitude;
+		    var longitude = pos.coords.longitude;	
+		    
+		    /* 서버에 새로운 유저가 왔다고 알림 (join) */
+			socket.emit('join', {'name':user_name,'room_num':p_num,'u_idx':u_idx, 'latitude':latitude, 'longitude':longitude});
+		});
+	});
+	
+});
+
+/* 유저 상태에 update가 있을 시 실행*/
+socket.on('update', function(data) {
+	showPartyUserList();
 });
 
 /* 직선 거리를 계산하는 함수 */
@@ -279,17 +315,64 @@ function getDistanceCE() {
 
 /* 개인이 라이딩을 종료하는 함수 */
 function endRidingOne(chk){
+	var endmsg='';
+	var does_success='';
 	// 현재 위치가 도착지 좌표 반경 300m 이내면, 완주여주 Y / 아니면 N //중도 포기하겠냐고 물어봄
 	if(chk){
+		alert('완주 성공!!');
 		updateEnd('Y'); // 완주여부 Y, end여부 Y로 업데이트
+		does_success = 'success';
+		endmsg = user_name+'님이 완주에 성공하였습니다! \n축하해주세요! ٩(*˙︶˙*)۶';
 	}else{
 		if (confirm('아직 도착지에 도착하지 않았습니다. 중도 포기하시겠습니까?')) {
+			alert('라이딩을 종료하셨습니다!(중도포기)');
 			updateEnd('N'); // 완주여부 N, end여부 Y로 업데이트
+			does_success = 'warning';
+			endmsg = user_name+'님이 중도 포기하셨습니다.. \n너무 힘들어요 _(:3」∠)_';
 		}
 	}
-	alert('라이딩을 종료하였습니다!');
+	socket.emit('end',{'u_idx':u_idx, 'name':user_name,'room_num':p_num, 'endmsg':endmsg, 'does_success':does_success});
+
 	$('#endArea').css('display','none');
 }
+
+/* 서버로부터 end 받은 경우 */
+socket.on('end_up', function(data) {
+	showPartyUserList();
+	isAllEnd();
+});
+
+socket.on('end_up_msg', function(data) {
+	toast(data.does_success,data.endmsg);
+});
+
+/* 회원이 나간 경우 */
+socket.on('exit_up', function(data) {
+	// 사기를 떨어트릴 수 있으니 들어올 때와 달리 나갈 땐 그냥 조용히 나간다.
+	showPartyUserList();
+});
+
+function toast(does_success,endmsg) {
+	toastr.options = {
+			  "closeButton": false,
+			  "debug": false,
+			  "newestOnTop": false,
+			  "progressBar": false,
+			  "positionClass": "toast-top-center",
+			  "preventDuplicates": false,
+			  "onclick": null,
+			  "showDuration": "300",
+			  "hideDuration": "1000",
+			  "timeOut": "5000",
+			  "extendedTimeOut": "1000",
+			  "showEasing": "swing",
+			  "hideEasing": "linear",
+			  "showMethod": "fadeIn",
+			  "hideMethod": "fadeOut"
+	};
+    toastr[does_success](endmsg);
+} 
+
 
 /* 라이딩종료 시, 완주 여부와 함께 컬럼 업데이트 */
 function updateEnd(finishYN) {
@@ -318,15 +401,21 @@ function endRidingMaster(){
 	 		}),
 	 		contentType : 'application/json; charset=utf-8',
 	 		success : function() {
-	 			endRidingGreet();
+			    /* 전체 종료 */
+				socket.emit('all_end', {'room_num':p_num});
+	 			/* endRidingGreet(); */
 	 		}
 	 	}); 
 	}
 }
+/* 서버로부터 all_end_up 받은 경우(모든 라이딩이 끝난 경우) */
+socket.on('all_end_up', function() {
+	endRidingGreet();
+});
 
 /* 종료인사와 보내주기 */
 function endRidingGreet() {
-	alert('종료합니다! 수고하셨습니다!');
+	alert('라이딩을 종료합니다! 모두 수고하셨습니다!٩(*˙︶˙*)۶');
 	location.href="../../party";
 }
 
@@ -413,12 +502,12 @@ function showPartyUserList() {
 				
 				if(data[i].pc_endYN=='Y'){
 					if(data[i].pc_finishYN=='Y'){
-						readyStr='<p class="">[★ 완주★] 라이딩 종료!</p>';
+						readyStr='<p class="">[★ 완주 성공!٩(*˙︶˙*)۶ ★] </p>';
 					}else{
-						readyStr='<p class="">중도 포기</p>';
+						readyStr='<p class="">중도 포기_(:3」∠)_</p>';
 					}
 				}else{
-					readyStr='<p class="">열심히 달리는 중...</p>';
+					readyStr='<p class="">열심히 달리는 중...( •̀.•̫́)✧</p>';
 				}
 				
 				
@@ -467,6 +556,7 @@ function exitParty(idx) {
 		}),
 		contentType : 'application/json; charset=utf-8',
  		success : function(data) {
+ 			socket.emit('exit', {'u_idx':idx,'room_num':p_num}); // idx번 유저가 나갔음을 서버에 알린다.
  			location.href="../../party";
  		}
  	});
@@ -547,6 +637,7 @@ function changeMaster(u_idx_t){ // 타겟 유저의 idx를 받는다
 	  		success : function(data) {
 	  			alert(data); // 방장 위임 결과를 띄워줌
 	  			showMasterArea();
+	  			showPartyUserList();
 	  		}
 	  		
 	  	});
@@ -555,9 +646,9 @@ function changeMaster(u_idx_t){ // 타겟 유저의 idx를 받는다
 
 /* 회원정보 계속 업데이트( 현재 위치 및 유저정보 바로 반영) */
 var refreshReady = setInterval(function() {
-		showPartyUserList();
+/* 		showPartyUserList();
+		isAllEnd(); */
 		showCurrentPos();
-		isAllEnd();
 }, 1000);
 
 /* 강퇴 */
@@ -565,6 +656,7 @@ function ban(idx) {
 	if (confirm('해당 유저를 내보낼까요?')) {
 		exitParty(idx+"");
 		alert('내보냈습니다!');
+		showPartyUserList();
 	}
 }
 

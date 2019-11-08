@@ -13,7 +13,6 @@ import com.teamrun.runbike.qna.dao.BoardDaoInterface;
 import com.teamrun.runbike.qna.domain.ListViewBoardData;
 import com.teamrun.runbike.qna.domain.Message;
 import com.teamrun.runbike.qna.domain.SearchParam;
-import com.teamrun.runbike.user.domain.UserInfo;
 
 
 @Service("boardlistService")
@@ -58,6 +57,7 @@ public class BoardListService implements BoardService{
 		
 		List<Message> boardList = null;  
 		
+		//데이터를 맵에 저장
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("search", searchParam);
 		params.put("index", index);
@@ -74,6 +74,8 @@ public class BoardListService implements BoardService{
 		int no = totalCnt - index;
 		
 		pagelistdata.setNo(no);
+		
+		pagelistdata.setTotalCount(totalCnt);
 		
 		return pagelistdata;
 

@@ -14,8 +14,9 @@ public class ListViewAdmin {
 	private int currentPageNumber;
 	private int pageTotalCount;
 	
+
 	
-	
+
 	public List<UserInfo> getMemberList() {
 		return memberList;
 	}

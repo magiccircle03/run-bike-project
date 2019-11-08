@@ -12,10 +12,13 @@
 <!-- Bootstrap CSS -->
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 <link rel="stylesheet" href="<c:url value='/assets/css/layout.css'/>">
-<script src="<c:url value='/assets/js/layout.js'/>"></script>
 <script src="https://kit.fontawesome.com/8653072c68.js"></script>
-<style type="text/css">
 
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/moonspam/NanumSquare@1.0/nanumsquare.css">
+<style type="text/css">
+.container{
+	font-family: 'NanumSquare', sans-serif;
+}
 .right{
 	text-align: right;
 }
@@ -97,7 +100,8 @@ h3{
 
 	<!-- 숨겨진 u_idx -->
 	<input id="u_idx" name="u_idx" type="hidden" class="form-control" value="${loginInfo.u_idx}">
-
+	<input id="u_name" name="u_name" type="hidden" class="form-control" value="${loginInfo.u_name}">
+	
 	<!-- nav -->
 	<div id="top-nav">
     	    <div class="row">
@@ -211,10 +215,18 @@ h3{
 <!-- 푸터 시작 -->
 <%@ include file="/WEB-INF/views/frame/footer.jsp" %>
 <!-- 푸터 끝 -->
-
+	<!-- 소켓 -->
+	<!-- <script src="http://localhost:3000/socket.io/socket.io.js"></script> -->
+	<script src="https://socket.runbike.cf/socket.io/socket.io.js"></script>
+	
     <script type="text/javascript">
+   		/* 소켓 */
+	    /*var socket = io('http://localhost:3000/room');*/
+	    var socket = io('https://socket.runbike.cf/room');
+    
     	/* 현재 접속한 유저 번호 구해오기 */
    		var u_idx = $('#u_idx').val();
+   		var user_name = $('#u_name').val(); // 유저 이름
 
     	/* 방 만들기에 사용하는 지도 변수 */
         var markerLayer = null;
@@ -354,6 +366,7 @@ h3{
 					u_idx : u_idx
 				},
 				success : function(data) {
+					socket.emit('participate',{'name':user_name,'room_num':p_num});
 					location.href='party';
 				}
 			});  
@@ -377,7 +390,7 @@ h3{
                 map = new Tmap.Map({
                     div: 'map_div', // map을 표시해줄 div
                     //width: "100%", // map의 width 설정
-                    width: "470px", // 일단은 고정
+                    width: "420px", // 일단은 고정
                     height: "400px", // map의 height 설정
                 });
             } else {

@@ -23,7 +23,7 @@ public class MemberListService {
 	@Autowired
 	private SqlSessionTemplate template;
 	
-	final int MEMBER_ADMIN_List = 10;
+	final int MEMBER_ADMIN_List = 8;
 	
 	public ListViewAdmin getListData(int currentPageNumber,SearchParam searchParam) {
 		

@@ -13,14 +13,19 @@
 <!-- Bootstrap CSS -->
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 <link rel="stylesheet" href="<c:url value='/assets/css/layout.css'/>">
-<script src="<c:url value='/assets/js/layout.js'/>"></script>
 
 <script src="https://kit.fontawesome.com/8653072c68.js"></script>
 
 <link href="//cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.4.0/css/bootstrap4-toggle.min.css" rel="stylesheet">  
 <script src="//cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.4.0/js/bootstrap4-toggle.min.js"></script>
-
+<!-- Toastr -->
+<link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
+<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/moonspam/NanumSquare@1.0/nanumsquare.css">
 <style type="text/css">
+.container{
+	font-family: 'NanumSquare', sans-serif;
+}
 .title{
 	margin:20px 0;
 }
@@ -152,6 +157,7 @@ h5{
 
 <!-- 숨겨진 u_idx -->
 <input id="u_idx" name="u_idx" type="hidden" class="form-control" value="${loginInfo.u_idx}">
+<input id="u_name" name="u_name" type="hidden" class="form-control" value="${loginInfo.u_name}">
 
 <!-- 같이하기 내비게이션 -->
 <ul class="nav nav-pills nav-justified">
@@ -227,11 +233,21 @@ h5{
 <%@ include file="/WEB-INF/views/frame/footer.jsp" %>
 <!-- 푸터 끝 -->
 
+<!-- 소켓 -->
+<!-- <script src="http://localhost:3000/socket.io/socket.io.js"></script> -->
+<!-- <script src="https://13.125.253.7:3000/socket.io/socket.io.js"></script> -->
+<script src="https://socket.runbike.cf/socket.io/socket.io.js"></script>
+
 <script>
 
 var xy=${partyInfo.p_XY}; // 목표 시작지, 도착지 좌표가 있는 json객체
 var p_num = ${partyInfo.p_num}; // 방 번호
 var u_idx = $('#u_idx').val();// 유저 번호
+var user_name = $('#u_name').val(); // 유저 이름
+/* var socket = io('http://localhost:3000/room');  */
+/* var socket = io('https://13.125.253.7:3000/room'); */
+var socket = io('https://socket.runbike.cf/room');
+
 
 $(document).ready(function() {
 	var isStarted;
@@ -240,6 +256,7 @@ $(document).ready(function() {
 	showPartyUserList(); // 파티에 속한 유저 정보를 보여준다
 	showMasterArea(); // 방장이면 방장 영역을 보여준다
 	setReady('N'); // 어디 나갔다오면 처음엔 준비 안된 걸로
+	showCurrentPos();// 내 현재위치
 	
 	// 라이딩 진행중이 아닐 땐, 현재정보 페이지로 가는 걸 막는다
 	$("#curInfoA").on("click",function(event){
@@ -249,6 +266,53 @@ $(document).ready(function() {
 		}
      });	
 	
+	//==========
+	/* 접속 되었을 때 실행 */
+	socket.on('connect', function() {
+		navigator.geolocation.getCurrentPosition(function(pos) {
+		    var latitude = pos.coords.latitude;
+		    var longitude = pos.coords.longitude;	
+		    
+		    /* 서버에 새로운 유저가 페이지에 접속했음을 알림 (join) */
+			socket.emit('join', {'name':user_name,'room_num':p_num,'u_idx':u_idx, 'latitude':latitude, 'longitude':longitude});
+		});
+	});
+	
+});
+
+socket.on('participate_up', function(data) {
+	toast(data.message); // 새로운 유저를 환영하는 메시지
+	showPartyUserList();
+});
+socket.on('exit_up', function(data) {
+	// 사기를 떨어트릴 수 있으니 들어올 때와 달리 나갈 땐 그냥 조용히 나간다.
+	showPartyUserList();
+});
+
+function toast(msg) {
+	toastr.options = {
+			  "closeButton": false,
+			  "debug": false,
+			  "newestOnTop": false,
+			  "progressBar": false,
+			  "positionClass": "toast-top-center",
+			  "preventDuplicates": false,
+			  "onclick": null,
+			  "showDuration": "300",
+			  "hideDuration": "1000",
+			  "timeOut": "5000",
+			  "extendedTimeOut": "1000",
+			  "showEasing": "swing",
+			  "hideEasing": "linear",
+			  "showMethod": "fadeIn",
+			  "hideMethod": "fadeOut"
+	};
+    toastr["success"](msg);
+} 
+
+/* 유저 상태에 update가 있을 시 실행*/
+socket.on('update', function(data) {
+	showPartyUserList();
 });
 
 /* 라이딩이 진행중인지 체크한다 */
@@ -296,11 +360,21 @@ function getUserCount() {
 
 /* 준비 버튼을 누르면, 준비 상태가 변하도록 한다 */
 $('#readyChk').change(function() {
+	
     if($("#readyChk").is(":checked")){
         setReady('Y'); // 레디
     }else{
         setReady('N'); // 레디 취소
     }
+    isAllReady();
+    socket.emit('ready',{'u_idx':u_idx, 'name':user_name,'room_num':p_num});
+});
+
+/* 서버로부터 ready 받은 경우 */
+socket.on('ready_up', function(data) {
+//	alert(data.u_idx+' 준비상태변경');
+	isAllReady();
+	showPartyUserList();
 });
 
 /* readyYN 컬럼 업데이트 함수 */
@@ -425,6 +499,7 @@ function exitParty(idx) {
 		contentType : 'application/json; charset=utf-8',
  		success : function(data) {
  			//alert(data);
+ 			socket.emit('exit', {'u_idx':idx,'room_num':p_num}); // idx번 유저가 나갔음을 서버에 알린다.
  			location.href="../party";
  		}
  	});
@@ -471,6 +546,7 @@ function changeMaster(u_idx_t){ // 타겟 유저의 idx를 받는다
 	  		success : function(data) {
 	  			alert(data); // 방장 위임 결과를 띄워줌
 	  			showMasterArea();
+	  			showPartyUserList();
 	  		}
 	  	});
 	}
@@ -495,17 +571,6 @@ function deleteParty(){
 	 });
 }
 
-/* 회원 준비 정보 계속 업데이트하는 함수(준비 상태 바로 반영되게) */
-var refreshReady = setInterval(function() {
-		showPartyUserList();
-		isAllReady();
-}, 1000);
-
-/* 회원 준비 정보 그만 업데이트 하는 함수 */
-function stopRefreshReady() {
-	clearInterval(refreshReady);
-}
-
 /* 모두가 준비했는지 체크하는 함수 */
 function isAllReady() {
 	// 준비 N인 사람이 있으면 -> N / 준비 N인 사람 수가 0이면 -> Y 반환
@@ -516,7 +581,6 @@ function isAllReady() {
 			async : false,
 	 		success : function(data) {
 	 			cnt = parseInt(data);
-	 			//alert(cnt);
 	 		}
 	 }); 
 	
@@ -538,20 +602,28 @@ function startRiding() {
 		 		url : '../party/'+p_num+'/start',
 		  		type : 'get',
 		 		success : function() {
-		 			location.href="./"+p_num+"/ing";
+				    /* 시작 */
+					socket.emit('start', {'room_num':p_num});
+		 			/* location.href="./"+p_num+"/ing"; */
 		 		}
 		 }); 
 	}else{
 		alert('2명 이상일때 시작 가능합니다!');
-	}
-	
+	}	
 }
+
+/* 시작되었을 때 실행 */
+socket.on('start_up', function() {
+	/* 진행중 페이지로 감 */
+	location.href="./"+p_num+"/ing";
+});
 
 /* 회원 강퇴 */
 function ban(idx) {
 	if (confirm('해당 유저를 내보낼까요?')) {
 		exitParty(idx+"");
 		alert('내보냈습니다!');
+		showPartyUserList();
 	}
 }
 
@@ -678,6 +750,26 @@ function getRoute(xy) {
             console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
         }
     });
+}
+
+
+/* 내 현재위치 보여주는 함수 */
+function showCurrentPos(){
+	navigator.geolocation.getCurrentPosition(function(pos) {
+	    var latitude = pos.coords.latitude;
+	    var longitude = pos.coords.longitude;
+	    
+		markerLayer = new Tmap.Layer.Markers();//마커 레이어 생성
+		map.addLayer(markerLayer);//map에 마커 레이어 추가
+		   
+		var lonlat = new Tmap.LonLat(longitude, latitude).transform("EPSG:4326", "EPSG:3857");//좌표 설정
+		var size = new Tmap.Size(24, 38);//아이콘 크기 설정
+		var offset = new Tmap.Pixel(-(size.w / 2), -(size.h));//아이콘 중심점 설정
+		var icon = new Tmap.Icon('http://tmapapis.sktelecom.com/upload/tmap/marker/pin_b_m_i.png',size, offset);//마커 아이콘 설정
+		
+		marker = new Tmap.Marker(lonlat, icon);//마커 생성
+		markerLayer.addMarker(marker);//레이어에 마커 추가
+	});
 }
 
 /* 뒤로가기 버튼 비활성화 (나가기를 해야 로비로 갈 수 있게) */

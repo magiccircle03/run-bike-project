@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>이메일 인증</title>
 </head>
 <body>
 	<h1>이메일 인증이 완료되었습니다.</h1>

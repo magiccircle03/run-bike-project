@@ -77,12 +77,9 @@
 		
 		
 		<!-- 문의글 수정 -->
-		<select id="boardUpdate" parameterType="com.teamrun.runbike.qna.domain.Message">
-		update board set q_title=#{q_title}, q_content=#{q_content}, q_writer=#{q_writer} where q_num=#{q_num}
-		</select>
-		
-
-
+		<update id="boardUpdate" parameterType="com.teamrun.runbike.qna.domain.Message">
+		update board set q_title=#{q_title}, q_content=#{q_content}, q_writer=#{q_writer} where q_num=#{q_num} and u_idx=#{u_idx}
+		</update>
 		
 		
 		<!-- 문의글 삭제 -->
@@ -110,7 +107,6 @@
 						</if>
 
 					</if>
-
 			 	</where>
 			 </select>
 		
@@ -119,28 +115,27 @@
 		
 		
 		
-	<!-- 게시판 리스트 : 검색을 위해 동적쿼리 적용 -->
-	
-	<select id="selectList" parameterType="map"
-		resultMap="messageResultmap">
-		
-		SELECT * FROM board
-		
-		<where>
-		
-			<if test="search != null">
-				<if test="search.stype == 'q_title'">				
-					q_title LIKE CONCAT('%', #{search.keyword}, '%')
-				</if>
-				<if test="search.stype == 'q_writer'">
-					q_writer LIKE CONCAT('%', #{search.keyword}, '%')
-				</if>
-			</if>
+			<!-- 게시판 리스트 : 검색을 위해 동적쿼리 적용 -->
 			
-		</where>
-
-		limit #{index}, #{count}
-	</select>
+			<select id="selectList" parameterType="map" resultMap="messageResultmap">
+				
+				SELECT * FROM board 
+				
+				<where>
+				
+					<if test="search != null">
+						<if test="search.stype == 'q_title'">				
+							q_title LIKE CONCAT('%', #{search.keyword}, '%')
+						</if>
+						<if test="search.stype == 'q_writer'">
+							q_writer LIKE CONCAT('%', #{search.keyword}, '%')
+						</if>
+					</if>
+					
+				</where>
+				order by q_num DESC
+				limit #{index}, #{count}
+			</select>
 	
 			
 

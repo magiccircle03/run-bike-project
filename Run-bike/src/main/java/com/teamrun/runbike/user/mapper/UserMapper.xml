@@ -51,7 +51,7 @@ select count(*) as login_date from run_bike.login_log where u_idx = #{u_idx} and
 </select>
 
 <select id="getRecord" resultType="map">
-	select count(r_idx) as total_count, sum(r_riding_time) as total_time,round(sum(r_riding_km),2) as total_KM,round(avg(r_riding_km),2) as avg_KM, round(avg(r_riding_time),2) as avg_time
+	    select count(r_idx) as total_count, round(sum(r_riding_time),0) as total_time,round(sum(r_riding_km),1) as total_KM,round(avg(r_riding_km),1) as avg_KM, round(avg(r_riding_time),1) as avg_time
 	from run_bike.user u
 	inner join run_bike.record r
 	where u.u_idx = r.u_idx and u.u_idx = #{u_idx}
