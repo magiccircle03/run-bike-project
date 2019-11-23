@@ -8,7 +8,7 @@
 
 
 
-### 참여자  
+## 참여자  
 
 **김다애 ( @[magiccircle03](https://github.com/magiccircle03) )**  
 김한솔 ( @[HANSOLKIM30](https://github.com/HANSOLKIM30) )   
@@ -16,13 +16,14 @@
 주예리나 ( @[orongee22](https://github.com/orongee22) )
 
 
-### 테이블 구조
+
+## 테이블 구조
 
 
 ![테이블 구조](https://user-images.githubusercontent.com/51072198/69480578-effea300-0e4b-11ea-94f4-1692a526c6d5.PNG)
 
 
-### 기능
+## 기능
 * 회원 관리
 * 혼자 라이딩
 * **함께 라이딩 (방 CRUD, 참여, 방장 기능, 라이딩 시작 및 종료, 채팅)**
@@ -30,7 +31,7 @@
 * 관리자 페이지
 
 
-### 함께라이딩에 사용된 기술
+## 함께라이딩에 사용된 기술
 
 * 사용 언어 및 프레임워크
   * `Java`
@@ -57,7 +58,7 @@
   * `CloudFlare`를 이용한 `보안접속(SSL)`
 
 
-### 프로젝트 설명 PPT와 발표영상
+## 프로젝트 설명 PPT와 발표영상
 * [PPT LINK](https://docs.google.com/presentation/d/1-ev-xINKcZvE2PZuUH929ff95VMC-zH2X3Hujy5CaF4/edit?usp=sharing)
 * [발표 영상 LINK (https://youtu.be/l89zUgKG4cw)](https://youtu.be/l89zUgKG4cw)
   * 발표 영상 댓글에 타임스탬프가 적용된 목차가 있습니다.
