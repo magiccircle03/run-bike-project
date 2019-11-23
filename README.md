@@ -11,7 +11,7 @@
 주예리나([orongee22](https://github.com/orongee22))
 
 
-## 테이블 구조
+### 테이블 구조
 
 
 ![테이블 구조](https://user-images.githubusercontent.com/51072198/69480578-effea300-0e4b-11ea-94f4-1692a526c6d5.PNG)
