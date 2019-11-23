@@ -1,7 +1,7 @@
 # Runbike
 > 실시간 커뮤니티 기능(함께 라이딩)과, 여러 재미요소(기록, 스탬프 등)를 통해 자전거를 더욱 재미있게 즐길 수 있도록 도와주는 서비스
 >
-> [Runbike 사이트 바로가기 LINK (https://runbike.cf/runbike)](https://runbike.cf/runbike)  
+> [Runbike 사이트 바로가기 LINK](https://runbike.cf/runbike) (https://runbike.cf/runbike)
 >
 > * 테스트용 아이디 : `mail94@gmail.com`, `mail95@gmail.com`, `mail96@gmail.com` ( 직접 가입하셔도 됩니다. )
 > * 테스트용 비밀번호 : `ekdo321!`
