@@ -25,7 +25,7 @@
 
 
 ### 함께라이딩에 사용된 기술
- 
+
 * 사용 언어 및 프레임워크
   * `Java`
   * `Spring Framework`
@@ -49,7 +49,7 @@
   * `FileZila`를 이용한 `FTP 업로드`
   * `Putty`를 이용한 `SSH 접속`
   * `CloudFlare`를 이용한 `보안접속(SSL)`
-  
+
 
 ### 프로젝트 설명 PPT 
 * [LINK](https://docs.google.com/presentation/d/1-ev-xINKcZvE2PZuUH929ff95VMC-zH2X3Hujy5CaF4/edit?usp=sharing)
