@@ -10,7 +10,7 @@
 **김다애([magiccircle03](https://github.com/magiccircle03))**  
 김한솔([HANSOLKIM30](https://github.com/HANSOLKIM30))   
 김희수([soo74](https://github.com/soo74))  
-주예리나([orongee22](https://github.com/orongee22))(orongee22)  
+주예리나([orongee22](https://github.com/orongee22))
 
 
 ## 테이블 구조
