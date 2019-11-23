@@ -19,7 +19,7 @@
 
 ## 프로젝트 설명 PPT 및 발표영상
 
-* [PPT LINK](https://docs.google.com/presentation/d/1-ev-xINKcZvE2PZuUH929ff95VMC-zH2X3Hujy5CaF4/edit?usp=sharing)
+* [프로젝트 설명 PPT LINK](https://docs.google.com/presentation/d/1-ev-xINKcZvE2PZuUH929ff95VMC-zH2X3Hujy5CaF4/edit?usp=sharing)
 * [발표 영상 LINK (https://youtu.be/l89zUgKG4cw)](https://youtu.be/l89zUgKG4cw)
   * 발표 영상 댓글에 타임스탬프가 적용된 목차가 있습니다.
   * 발표 영상에서 프로젝트 구현에 대한 더 많은 정보를 확인할 수 있습니다.
