@@ -3,8 +3,8 @@
 >
 > [Runbike 사이트 바로가기 LINK (https://runbike.cf/runbike)](https://runbike.cf/runbike)  
 >
-> * 테스트용 아이디 : mail94@gmail.com, mail95@gmail.com, mail96@gmail.com ( 직접 가입하셔도 됩니다. )
-> * 테스트용 비밀번호 : ekdo321!
+> * 테스트용 아이디 : `mail94@gmail.com`, `mail95@gmail.com`, `mail96@gmail.com` ( 직접 가입하셔도 됩니다. )
+> * 테스트용 비밀번호 : `ekdo321!`
 
 ### 참여자
 **김다애 ( @[magiccircle03](https://github.com/magiccircle03) )**  
