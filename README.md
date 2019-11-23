@@ -1,7 +1,7 @@
 # Runbike
 > 실시간 커뮤니티 기능(함께 라이딩)과, 여러 재미요소(기록, 스탬프 등)를 통해 자전거를 더욱 재미있게 즐길 수 있도록 도와주는 서비스
 >
-> [웹 사이트 LINK(https://runbike.cf/runbike)](https://runbike.cf/runbike)  
+> [웹 사이트 LINK (https://runbike.cf/runbike)](https://runbike.cf/runbike)  
 
 
 ### 참여자
@@ -56,5 +56,5 @@
 * [LINK](https://docs.google.com/presentation/d/1-ev-xINKcZvE2PZuUH929ff95VMC-zH2X3Hujy5CaF4/edit?usp=sharing)
 
 ### 프로젝트 발표 영상  
-* [발표 영상 LINK(https://youtu.be/l89zUgKG4cw)](https://youtu.be/l89zUgKG4cw)
+* [발표 영상 LINK (https://youtu.be/l89zUgKG4cw)](https://youtu.be/l89zUgKG4cw)
 
