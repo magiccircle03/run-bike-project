@@ -52,9 +52,17 @@
   * `CloudFlare`를 이용한 `보안접속(SSL)`
 
 
-### 프로젝트 설명 PPT 
+### 프로젝트 설명 PPT와 발표영상
 * [LINK](https://docs.google.com/presentation/d/1-ev-xINKcZvE2PZuUH929ff95VMC-zH2X3Hujy5CaF4/edit?usp=sharing)
-
-### 프로젝트 발표 영상  
 * [발표 영상 LINK (https://youtu.be/l89zUgKG4cw)](https://youtu.be/l89zUgKG4cw)
+  * 발표 영상 댓글에 타임스탬프가 적용된 목차가 있습니다.
+  
+* PPT 목차
+  1. 프로젝트 개요
+  2. 프로젝트 시연 영상
+  3. 사용 기술
+  4. Architecture 구성도
+  5. 프로세스 흐름도
+
+
 
